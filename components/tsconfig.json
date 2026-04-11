@@ -13,15 +13,20 @@
     "isolatedModules": true,
     "noEmit": true,
     "incremental": true,
-    "baseUrl": ".",
     "paths": {
-      "@components/*": ["./library/*"]
+      "@components/*": ["./library/*"],
+      "@ui/*": ["./ui/*"],
+      "@lib/*": ["./lib/*"],
+      "@hooks/*": ["./hooks/*"]
     }
   },
   "include": [
     "*.ts",
     "library/**/*.ts",
     "library/**/*.tsx",
+    "ui/**/*.ts",
+    "ui/**/*.tsx",
+    "lib/**/*.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
     ".storybook/**/*.ts",
