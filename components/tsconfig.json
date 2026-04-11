@@ -19,6 +19,7 @@
     }
   },
   "include": [
+    "*.ts",
     "library/**/*.ts",
     "library/**/*.tsx",
     "src/**/*.ts",
