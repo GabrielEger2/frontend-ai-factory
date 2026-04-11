@@ -1,0 +1,21 @@
+{
+  "id": "hero-split-01",
+  "name": "Split Hero",
+  "category": "hero",
+  "style": ["modern", "editorial"],
+  "mood": ["professional", "elegant"],
+  "layout": "split",
+  "density": "medium",
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    { "name": "subheadline", "type": "text", "maxLength": 160 },
+    { "name": "ctaText", "type": "text", "maxLength": 30 },
+    { "name": "ctaUrl", "type": "url" },
+    { "name": "imageSrc", "type": "image", "aspectRatio": "4:3" },
+    { "name": "imageAlt", "type": "text", "maxLength": 120 },
+    { "name": "badgeText", "type": "text", "maxLength": 40 }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": ["features-icon-list-01", "cta-inline-01"],
+  "pairsPoorly": ["hero-full-width-01"]
+}
