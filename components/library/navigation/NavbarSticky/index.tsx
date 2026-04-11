@@ -285,9 +285,8 @@ export default function NavbarSticky({
       className={cn(
         "fixed top-0 z-50 w-full px-6 transition-all duration-300 ease-out lg:px-12",
         scrolled
-          ? "bg-neutral/95 py-3 shadow-xl backdrop-blur-sm"
-          : "bg-transparent py-6 shadow-none",
-        "text-neutral-content",
+          ? "bg-neutral/95 py-3 shadow-xl backdrop-blur-sm text-neutral-content"
+          : "bg-transparent py-6 shadow-none text-base-content",
         className,
       )}
       aria-label="Main navigation"

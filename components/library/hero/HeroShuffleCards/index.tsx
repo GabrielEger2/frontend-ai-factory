@@ -149,7 +149,7 @@ export default function HeroShuffleCards({
   return (
     <section
       className={cn(
-        "w-full overflow-hidden text-neutral-content min-h-screen items-center flex",
+        "w-full overflow-hidden text-base-content min-h-screen items-center flex bg-base-100",
         className,
       )}
     >
@@ -172,7 +172,7 @@ export default function HeroShuffleCards({
               </>
             )}
           </h2>
-          <p className="mb-8 mt-4 text-lg text-neutral-content/70">
+          <p className="mb-8 mt-4 text-lg text-base-content/70">
             {subheadline}
           </p>
 
@@ -187,7 +187,7 @@ export default function HeroShuffleCards({
                 placeholder={emailPlaceholder}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-lg border-transparent bg-base-200/10 px-3 py-2 text-neutral-content placeholder:text-neutral-content/40 transition-colors focus:bg-base-200/20 focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full rounded-lg border-transparent bg-base-200/10 px-3 py-2 text-base-content placeholder:text-base-content/40 transition-colors focus:bg-base-200/20 focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <Button type="submit" className="whitespace-nowrap">
                 {ctaText}
