@@ -70,32 +70,6 @@ const config: Config = {
           foreground: oklch("--color-error-content"),
         },
         "error-content": oklch("--color-error-content"),
-
-        // ── shadcn semantic aliases (mapped to existing tokens) ──
-        background: oklch("--color-base-100"),
-        foreground: oklch("--color-base-content"),
-
-        card: {
-          DEFAULT: oklch("--color-base-200"),
-          foreground: oklch("--color-base-content"),
-        },
-        popover: {
-          DEFAULT: oklch("--color-base-100"),
-          foreground: oklch("--color-base-content"),
-        },
-        muted: {
-          DEFAULT: oklch("--color-base-200"),
-          foreground: oklch("--color-neutral"),
-        },
-        destructive: {
-          DEFAULT: oklch("--color-error"),
-          foreground: oklch("--color-error-content"),
-        },
-
-        // shadcn border/input/ring colors
-        border: oklch("--color-base-300"),
-        input: oklch("--color-base-300"),
-        ring: oklch("--color-primary"),
       },
       borderRadius: {
         lg: "var(--radius-box)",

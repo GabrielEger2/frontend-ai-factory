@@ -10,7 +10,7 @@ import {
 import { FiArrowRight, FiChevronDown, FiMenu, FiX } from "react-icons/fi";
 import { cn } from "@lib/utils";
 import { ClientSideLink } from "@ui/ClientSideLink";
-import { Button } from "@ui/button";
+import { buttonStyles } from "@ui/button";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -301,9 +301,9 @@ export default function NavbarSticky({
           <DesktopLinks links={links} />
 
           {ctaText && ctaUrl && (
-            <Button asChild size="sm">
-              <a href={ctaUrl}>{ctaText}</a>
-            </Button>
+            <a href={ctaUrl} className={buttonStyles({ size: "sm" })}>
+              {ctaText}
+            </a>
           )}
         </div>
 
