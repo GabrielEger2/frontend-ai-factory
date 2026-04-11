@@ -1,0 +1,20 @@
+{
+  "id": "hero-centered-01",
+  "name": "Centered Hero",
+  "category": "hero",
+  "style": ["minimal", "modern"],
+  "mood": ["professional", "calm"],
+  "layout": "centered",
+  "density": "low",
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    { "name": "subheadline", "type": "text", "maxLength": 160 },
+    { "name": "ctaText", "type": "text", "maxLength": 30 },
+    { "name": "ctaUrl", "type": "url" },
+    { "name": "ctaSecondaryText", "type": "text", "maxLength": 30 },
+    { "name": "ctaSecondaryUrl", "type": "url" }
+  ],
+  "mobileBehavior": "scale",
+  "pairsWell": ["features-grid-01", "cta-inline-01"],
+  "pairsPoorly": ["hero-full-width-01"]
+}
