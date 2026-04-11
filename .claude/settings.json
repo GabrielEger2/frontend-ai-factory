@@ -1,0 +1,75 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(jq -r '.tool_input.file_path'); case \"$FILE\" in *.ts|*.tsx|*.js|*.jsx|*.css|*.json) npx prettier --write \"$FILE\" 2>/dev/null;; esac; exit 0"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(jq -r '.tool_input.file_path'); case \"$FILE\" in *.ts|*.tsx|*.js|*.jsx) HITS=$(grep -n 'console\\.log' \"$FILE\" 2>/dev/null); if [ -n \"$HITS\" ]; then echo \"WARNING: console.log detected in $FILE:\" >&2; echo \"$HITS\" >&2; fi;; esac; exit 0"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(jq -r '.tool_input.file_path'); case \"$FILE\" in *.ts|*.tsx) npx tsc --noEmit --pretty 2>&1 | head -20 >&2; exit 0;; esac; exit 0"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'if git diff --stat --exit-code > /dev/null 2>&1 && git diff --cached --stat --exit-code > /dev/null 2>&1; then exit 0; else echo \"WARNING: You have uncommitted changes:\" >&2; git status --short >&2; exit 0; fi'"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'STATE=\".claude/work/state.md\"; if [ -f \"$STATE\" ]; then echo \"PRE-COMPACT: state.md exists — context will be preserved via disk handoff.\" >&2; else echo \"PRE-COMPACT: No state.md found. If mid-task, consider running /execute to checkpoint progress.\" >&2; fi; exit 0'"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'COMMAND=$(jq -r \".tool_input.command // empty\"); if echo \"$COMMAND\" | grep -qE \"git push.*(main|master)\"; then echo \"BLOCKED: Never push directly to main. Use a feature branch and create a PR.\" >&2; exit 2; fi'"
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(jq -r '.tool_input.file_path'); case \"$FILE\" in *.md) if echo \"$FILE\" | grep -qE '(CLAUDE\\.md|README\\.md|[\\\\/]\\.claude[\\\\/]|[\\\\/]docs[\\\\/]|[\\\\/]\\.planning[\\\\/]|MEMORY\\.md)'; then exit 0; else echo 'BLOCKED: Do not create .md files outside docs/, .claude/, or .planning/. Ask the user first.' >&2; exit 2; fi;; esac; exit 0"
+          }
+        ]
+      }
+    ]
+  }
+}

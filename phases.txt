@@ -1,0 +1,231 @@
+  SiteGen — AI-Powered Website Generator
+
+  What It Is
+
+  A product layer on top of your CRM. Sellers input a company's info, AI generates a complete, SEO-optimized website in minutes, seller demos it to the client, deploys with
+  one click. Also serves as an AI portfolio piece.
+  Core Insight
+
+  AI handles subjective decisions (what mood fits this brand, what copy to write). The graph handles structured knowledge (what components pair well, what styles fit what
+  segments). The assembler is deterministic (slots content into pre-designed components). None of them do each other's job.
+
+  Tech Stack
+
+  ┌────────────────────────┬─────────────────────┬──────────────────────────────────────────────────────────────────┐
+  │         Layer          │       Choice        │                               Why                                │
+  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
+  │ Infra as Code          │ CDK                 │ You already built 15 stacks with it — no reason to switch to SST │
+  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
+  │ Orchestration          │ Step Functions      │ Visual debugging, built-in retry, right scale for this product   │
+  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
+  │ Entry buffer           │ SQS                 │ Seller submits → instant response → pipeline runs async          │
+  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
+  │ Auth                   │ None new            │ Sellers auth through your CRM, generated sites are public        │
+  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
+  │ Project data           │ MongoDB or DynamoDB │ Projects, content, deployments                                   │
+  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
+  │ Component intelligence │ Neo4j (later)       │ Component compatibility, mood/style/segment graph                │
+  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
+  │ AI agents              │ Claude/GPT API      │ Specialized prompts per agent, not one monolithic call           │
+  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
+  │ Generated sites        │ Vercel API deploy   │ Best Next.js support, edge network, programmatic deploys         │
+  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
+  │ Seller dashboard       │ Next.js on AWS      │ Your OpenNext pattern from Codex Arcana                          │
+  └────────────────────────┴─────────────────────┴──────────────────────────────────────────────────────────────────┘
+
+  Agent Pipeline (Step Functions)
+
+  SQS → Step Function:
+    1. Research Agent      → searches company, competitors, segment
+    2. Style Agent         → selects palette, typography, mood tags
+    3. Composer Agent      → queries graph, picks + chains components
+    4. ┌ Content Agent     → generates copy per component slot
+       └ SEO Agent         → JSON-LD, meta tags, Open Graph, sitemap
+         (parallel)
+    5. Humanizer Agent     → adapts pt-BR tone to brand personality
+    6. Assembler           → deterministic: blueprint + tokens + content → Next.js
+    7. QA Agent            → responsive, TS, accessibility, Lighthouse
+    8. Choice: QA passed?
+       → yes: Deploy to Vercel → notify seller via WebSocket
+       → no:  Flag issues → notify seller
+
+  Graph DB Model
+
+  Nodes: Segment, Mood, Style, Component, ColorPalette, Font, Layout, Project
+
+  Key relationships:
+  - Segment -[:NATURALLY_FEELS]-> Mood — pet shops feel fun, law firms feel serious
+  - Mood -[:EXPRESSED_AS]-> Style — elegant expresses as editorial/luxury
+  - Component -[:HAS_STYLE]-> Style — tags each component
+  - Component -[:PAIRS_WITH {score}]-> Component — the core intelligence — which components look good together
+  - Mood -[:SUGGESTS_PALETTE]-> ColorPalette — mood-to-color mapping
+  - Project -[:CLIENT_APPROVED]-> Layout — learning loop data
+
+  The Composer Agent traverses: segment → moods → styles → components → chain by PAIRS_WITH score to produce full page compositions ranked by compatibility.
+
+  Component Library
+
+  ~50 pre-designed components tagged with metadata:
+
+  15 heroes | 10 features | 8 CTAs | 6 testimonials
+  5 contact | 4 pricing | 4 FAQ | 3 footers
+
+  Each tagged with: style[], mood[], category, layout, density, slots[], mobileBehavior, and PAIRS_WITH scores against other components.
+
+  CDK Stacks
+
+  infra/
+  ├── stacks/
+  │   ├── ApiStack.ts            ← API Gateway + CRM JWT/API key validation
+  │   ├── PipelineStack.ts       ← Step Functions + SQS + agent Lambdas
+  │   ├── DatabaseStack.ts       ← DynamoDB tables
+  │   ├── GraphStack.ts          ← Neo4j EC2 or Aura connection
+  │   ├── SiteDeployStack.ts     ← Vercel deployment Lambda
+  │   └── DashboardStack.ts      ← Seller dashboard (OpenNext pattern)
+  ├── constructs/
+  │   ├── AgentLambda.ts         ← reusable construct per AI agent
+  │   └── AgentPipeline.ts       ← Step Function definition
+  └── common/
+      └── lambda-defaults.ts
+
+  ---
+  Phases
+
+  Phase 1 — Foundation (2-3 weeks)
+
+  Component Library v1
+  ├── Design 16 components across 5 categories
+  │   (5 heroes, 4 features, 3 CTAs, 2 contact, 2 footers)
+  ├── Tag each: style[], mood[], category, slots[]
+  └── Store in DynamoDB (no graph yet)
+
+  CDK Infrastructure
+  ├── Scaffold monorepo: infra/ + agents/ + dashboard/ + components/
+  ├── ApiStack — API Gateway with API key auth
+  ├── DatabaseStack — DynamoDB (projects, components)
+  ├── PipelineStack — Step Function with one agent (Content)
+  ├── SiteDeployStack — Lambda that calls Vercel API
+  └── Reuse lambda-defaults, construct patterns from Codex Arcana
+
+  Agent v1 — Content Only
+  ├── Single Lambda: business info → generates all copy
+  ├── Hardcoded component selection (no graph)
+  ├── Deterministic assembler: template + content → Next.js files
+  └── Auto-deploy to Vercel
+
+  Seller UI v1
+  ├── Simple form: company name, segment, description
+  ├── Calls API → SQS → Step Function → returns project ID
+  └── Polls for completion → redirects to preview URL
+
+  Milestone: form → deployed site in 2-3 minutes
+
+  Phase 2 — Full Pipeline (2-3 weeks)
+
+  All Agents Online
+  ├── Research Agent — web search for company/competitors
+  ├── Style Agent — palette, typography, density
+  ├── Composer Agent — mood/style matching (DynamoDB queries)
+  ├── Content Agent — copy per slot
+  ├── Assembler — deterministic render
+  └── QA Agent — TS check, responsive, basic SEO
+
+  Step Functions Orchestration
+  ├── Full 7-step pipeline wired up
+  ├── Parallel branch for Content + SEO
+  ├── QA choice gate (pass/fail)
+  ├── Each step writes output to DynamoDB project doc
+  └── Error handling + retry per step
+
+  Real-Time Progress
+  ├── WebSocket API for seller dashboard
+  ├── Each step pushes status update
+  └── "Researching..." → "Styling..." → "Writing..." → "Deploying..."
+
+  Milestone: full pipeline, seller watches progress live
+
+  Phase 3 — Graph Intelligence (3-4 weeks)
+
+  Neo4j Setup
+  ├── Neo4j Aura (managed) or self-hosted EC2
+  ├── Seed nodes: 15-20 segments, 8-10 moods, 6-8 styles
+  ├── Migrate component metadata from DynamoDB → Neo4j nodes
+  ├── Manually score PAIRS_WITH relationships
+  └── Add NATURALLY_FEELS, EXPRESSED_AS, SUGGESTS_PALETTE edges
+
+  Composer Agent v2
+  ├── Rewire to query Neo4j
+  ├── Multi-hop: segment → mood → style → components → chain
+  ├── Returns top 3 layouts ranked by PAIRS_WITH scores
+  └── Fallback to DynamoDB if Neo4j is down
+
+  Component Library v2
+  ├── Expand to 50 components
+  ├── PAIRS_WITH scores for every component pair
+  └── Variant support (same component, different density/color mode)
+
+  Humanizer Agent
+  ├── Dedicated pt-BR localization agent
+  ├── Tone: formal (advocacia) vs casual (pet shop)
+  ├── Regional: SP vs RS vs NE expressions
+  └── Runs after Content Agent, before Assembler
+
+  Milestone: "Pet Shop em Porto Alegre" and "Advocacia em SP"
+  produce visually and tonally different sites automatically
+
+  Phase 4 — Seller Experience (2-3 weeks)
+
+  Seller Dashboard v2
+  ├── Project list with status
+  ├── Visual editor: reorder sections, swap variants, edit copy
+  ├── Component picker: "see 3 alternative heroes"
+  ├── Color palette switcher
+  ├── Client preview: shareable URL with feedback form
+  └── Version history + revert
+
+  Editing Agent
+  ├── Takes client feedback ("make hero bigger", "add WhatsApp button")
+  ├── Maps natural language → component swaps or content changes
+  └── Applies edits without full regeneration
+
+  SEO Agent v2
+  ├── JSON-LD (LocalBusiness, Product, FAQ)
+  ├── Auto sitemap.xml
+  ├── Open Graph + Twitter cards
+  ├── Lighthouse target: 90+ performance, 95+ SEO
+  └── Brazilian SEO: .com.br, hreflang pt-BR
+
+  Milestone: generate → edit → share with client → deploy, one flow
+
+  Phase 5 — Learning Loop (2-3 weeks)
+
+  Graph Learning
+  ├── Track which layouts get client approval
+  ├── Track which components sellers swap out (= bad fit)
+  ├── Auto-adjust PAIRS_WITH scores from real data
+  │   approved together → score up
+  │   frequently swapped → score down
+  └── New query: "what works for this segment?" backed by data
+
+  Analytics
+  ├── Inject Plausible/Umami into generated sites
+  ├── Track bounce rate, time on page, CTA clicks per component
+  ├── Components with low engagement → lower graph scores
+  └── Monthly seller report: traffic + performance
+
+  A/B Composition
+  ├── Generate 2 layout variants per brief
+  ├── Split traffic, auto-pick winner
+  └── Feed results back into graph
+
+  Milestone: system recommends based on what converts, not just what looks good
+
+  Phase 6 — Production Scale (ongoing)
+
+  ├── Multi-tenant isolation per CRM client
+  ├── Custom domain support (.com.br) + SSL provisioning
+  ├── Rate limiting + cost monitoring per generation
+  ├── Pricing tiers (X generations/month)
+  ├── White-label (seller branding)
+  ├── Bulk generation ("generate for all 50 clients")
+  └── Template marketplace (sellers favorite/save layouts)
