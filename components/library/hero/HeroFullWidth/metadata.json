@@ -1,0 +1,20 @@
+{
+  "id": "hero-full-width-01",
+  "name": "Full Width Hero",
+  "category": "hero",
+  "style": ["bold", "modern"],
+  "mood": ["energetic", "professional"],
+  "layout": "full-width",
+  "density": "high",
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    { "name": "subheadline", "type": "text", "maxLength": 160 },
+    { "name": "ctaText", "type": "text", "maxLength": 30 },
+    { "name": "ctaUrl", "type": "url" },
+    { "name": "imageSrc", "type": "image", "aspectRatio": "16:9" },
+    { "name": "imageAlt", "type": "text", "maxLength": 120 }
+  ],
+  "mobileBehavior": "scale",
+  "pairsWell": ["features-grid-01", "cta-banner-01"],
+  "pairsPoorly": ["hero-video-bg-01"]
+}
