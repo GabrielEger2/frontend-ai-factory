@@ -1,0 +1,26 @@
+{
+  "id": "features-grid-01",
+  "name": "Features Grid",
+  "category": "features",
+  "style": ["modern", "corporate"],
+  "mood": ["professional", "trustworthy"],
+  "layout": "grid",
+  "density": "medium",
+  "slots": [
+    { "name": "sectionTitle", "type": "text", "maxLength": 80 },
+    { "name": "sectionSubtitle", "type": "text", "maxLength": 160 },
+    {
+      "name": "features",
+      "type": "list",
+      "maxItems": 6,
+      "itemSchema": {
+        "icon": { "type": "image" },
+        "title": { "type": "text", "maxLength": 60 },
+        "description": { "type": "text", "maxLength": 160 }
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": ["hero-split-01", "hero-full-width-01", "cta-banner-01"],
+  "pairsPoorly": ["features-icon-list-01"]
+}
