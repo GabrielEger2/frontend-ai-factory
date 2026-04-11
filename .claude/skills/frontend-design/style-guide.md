@@ -13,7 +13,6 @@
 - **Text colors:** `text-base-content`, `text-base-content/60` (muted), `text-primary`, `text-error`
 - **Background:** `bg-base-100` (page), `bg-base-200` (cards/surfaces), `bg-base-300` (elevated/borders)
 - **On colored backgrounds:** Use `-content` tokens — `text-primary-content` on `bg-primary`, `text-secondary-content` on `bg-secondary`
-- **shadcn aliases:** `bg-background`, `text-foreground`, `bg-card`, `text-muted-foreground`, `bg-destructive`, `border-border`, `ring-ring` — these map to the same OKLCH tokens
 - **Never use raw Tailwind colors** (no `text-gray-500`, no `bg-blue-600`) — they break theme switching and per-site palettes
 
 ### Spacing
@@ -22,12 +21,12 @@
 - Section vertical spacing: `py-12 md:py-16 lg:py-24`
 - Card padding: `p-4 md:p-6`
 
-### Components (shadcn/UI)
+### Components (@ui/ primitives)
 Prefer `@ui/` primitives over custom implementations for interactive elements:
-- **Buttons:** `<Button>` with variants: `default`, `secondary`, `outline`, `ghost`, `link`, `destructive`
-- **Inputs:** shadcn `<Input>` with `input-bordered` styling
-- **Cards:** Build with semantic tokens (`bg-card`, `text-card-foreground`, `rounded-lg`, `border`)
-- **Badges:** Build with CVA or use semantic tokens (`bg-primary/10 text-primary rounded-full px-3 py-1`)
+- **Buttons:** `<Button>` from `@ui/button` with variants: `primary`, `secondary`, `accent`, `outline`, `ghost`, `link` and sizes: `sm`, `md`, `lg`, `icon`
+- **Button-styled links:** `buttonStyles({ variant, size })` from `@ui/button` — returns class string for `<a>` or other non-button elements
+- **Cards:** Build with semantic tokens (`bg-base-200`, `text-base-content`, `rounded-lg`, `border border-base-300`)
+- **Badges:** Use semantic tokens (`bg-primary/10 text-primary rounded-full px-3 py-1`)
 
 ### Layout Patterns
 - **Section wrapper:** `max-w-7xl mx-auto px-4 md:px-8` for content areas
@@ -46,8 +45,8 @@ Prefer `@ui/` primitives over custom implementations for interactive elements:
 ### Library components (website sections)
 `components/library/<category>/<ComponentName>/index.tsx` + `metadata.json` + `<ComponentName>.stories.tsx`
 
-### shadcn/UI primitives
-`components/@ui/<component>.tsx` — low-level interactive components (Button, Input, etc.)
+### UI primitives
+`components/ui/<component>.tsx` — low-level interactive components (Button, TypeWriter, ClientSideLink, etc.)
 
 ### Utilities
 `components/lib/utils.ts` — `cn()` class merge utility

@@ -41,7 +41,7 @@ Map these to a TypeScript props interface.
 - Optional `className` prop for composition
 - `cn()` from `@lib/utils` for class merging
 - Semantic color tokens (`bg-base-100`, `text-base-content`, `bg-primary`, etc.)
-- `@ui/` primitives (Button) for interactive elements
+- `@ui/` primitives (`Button` for buttons, `buttonStyles()` for button-styled links) for interactive elements
 - Semantic HTML (`section`, `h1`/`h2`, `nav`, etc.)
 - Mobile-first responsive layout
 - Add `"use client"` ONLY if using Framer Motion, hooks, or event handlers

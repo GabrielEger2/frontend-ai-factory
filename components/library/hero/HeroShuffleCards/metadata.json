@@ -1,0 +1,46 @@
+{
+  "id": "hero-shuffle-cards-01",
+  "name": "Shuffle Cards Hero",
+  "category": "hero",
+  "style": ["modern", "bold"],
+  "mood": ["energetic", "professional"],
+  "layout": "split",
+  "density": "medium",
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    {
+      "name": "headlineRotatingWords",
+      "type": "list",
+      "optional": true,
+      "maxItems": 6,
+      "itemSchema": { "type": "text", "maxLength": 40 }
+    },
+    { "name": "subheadline", "type": "text", "maxLength": 200 },
+    { "name": "ctaText", "type": "text", "maxLength": 30 },
+    { "name": "ctaUrl", "type": "url" },
+    {
+      "name": "emailPlaceholder",
+      "type": "text",
+      "optional": true,
+      "maxLength": 50
+    },
+    {
+      "name": "cards",
+      "type": "list",
+      "maxItems": 3,
+      "itemSchema": {
+        "image": { "type": "image", "aspectRatio": "1:1" },
+        "imageAlt": { "type": "text", "maxLength": 120 },
+        "quote": { "type": "text", "maxLength": 200 },
+        "author": { "type": "text", "maxLength": 60 }
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "features-grid-01",
+    "cta-banner-01",
+    "testimonials-carousel-01"
+  ],
+  "pairsPoorly": ["hero-split-01", "hero-video-01"]
+}

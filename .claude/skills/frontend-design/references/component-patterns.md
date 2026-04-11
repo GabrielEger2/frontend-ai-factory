@@ -8,7 +8,7 @@ Library components live in `components/library/<category>/<ComponentName>/` and 
 
 ```tsx
 import { cn } from "@lib/utils";
-import { Button } from "@ui/button";
+import { buttonStyles } from "@ui/button";
 
 export interface HeroSplitProps {
   headline: string;
@@ -44,9 +44,9 @@ export default function HeroSplit({
           <p className="text-lg text-base-content/70">
             {subheadline}
           </p>
-          <Button asChild size="lg">
-            <a href={ctaUrl}>{ctaText}</a>
-          </Button>
+          <a href={ctaUrl} className={buttonStyles({ size: "lg" })}>
+            {ctaText}
+          </a>
         </div>
         <div className="relative aspect-video overflow-hidden rounded-lg">
           <img
@@ -65,7 +65,7 @@ Key points:
 - Props interface mirrors the slots defined in `metadata.json`
 - Uses semantic color tokens (`bg-base-100`, `text-base-content`)
 - Uses `cn()` for class composition with optional `className` prop
-- Uses `@ui/` primitives (Button) for interactive elements
+- Uses `@ui/` primitives (`buttonStyles()` for links, `Button` for actual buttons) for interactive elements
 - Mobile-first responsive layout
 - Semantic HTML (`section`, `h1`)
 
@@ -195,6 +195,106 @@ Key points:
 - Staggered children for lists/grids
 - Subtle motion — small `y` offset (8-16px), short duration (200-300ms)
 - Still uses semantic tokens and `cn()` like all other components
+
+## Adapted Component (from reference code)
+
+When adapting external/reference code into a SiteGen library component, follow this transformation pattern:
+
+### Color token mapping
+
+| Raw Tailwind | Semantic Token | When to use |
+|---|---|---|
+| `bg-slate-900`, `bg-gray-900`, `bg-zinc-900` | `bg-neutral` | Dark section backgrounds |
+| `bg-slate-800`, `bg-gray-800` | `bg-base-200` or `bg-base-300` | Cards, elevated surfaces |
+| `bg-slate-800/20` | `bg-base-200/20` | Translucent surfaces (backdrop-blur) |
+| `text-slate-50`, `text-white` | `text-neutral-content` | Text on dark backgrounds |
+| `text-slate-400`, `text-gray-400` | `text-base-content/60` | Muted/secondary text |
+| `bg-indigo-600`, `bg-blue-600` | `bg-primary` | Primary actions, accents |
+| `text-indigo-400`, `text-blue-400` | `text-primary` | Accent text, links |
+| `border-slate-700`, `border-gray-700` | `border-base-300` | Borders on dark surfaces |
+| `bg-slate-200`, `bg-gray-200` | `bg-base-200` | Light surface fallback (images, avatars) |
+| `focus:bg-slate-700` | `focus:bg-base-300` | Focus states |
+
+### Extracting slots from hardcoded content
+
+```tsx
+// BEFORE — hardcoded content in reference code
+<h3 className="text-5xl font-black">You don't know marketing</h3>
+<p className="text-slate-400">...but we're going to help.</p>
+<button>Join newsletter</button>
+
+// AFTER — slot-driven props
+interface Props {
+  headline: string;
+  subheadline: string;
+  ctaText: string;
+}
+<h2 className="text-5xl font-black text-base-content">{headline}</h2>
+<p className="text-base-content/60">{subheadline}</p>
+<Button>{ctaText}</Button>
+```
+
+### Handling repeated sub-components (cards, items)
+
+```tsx
+// BEFORE — multiple hardcoded instances
+<Card imgUrl="/imgs/7.jpg" testimonial="I feel like..." author="Jenn F." />
+<Card imgUrl="/imgs/8.jpg" testimonial="My boss thinks..." author="Adrian Y." />
+
+// AFTER — array slot prop
+interface Props {
+  cards: Array<{
+    image: string;
+    imageAlt: string;
+    quote: string;
+    author: string;
+  }>;
+}
+{cards.map((card, i) => (
+  <Card key={i} {...card} />
+))}
+```
+
+### Optional feature props (variations)
+
+Use optional props to toggle component features. This drives Storybook variations:
+
+```tsx
+interface Props {
+  headline: string;
+  /** When provided, last line animates through these words */
+  headlineRotatingWords?: string[];
+  ctaText: string;
+  ctaUrl: string;
+  /** When provided, shows email form instead of plain CTA */
+  emailPlaceholder?: string;
+  onEmailSubmit?: (email: string) => void;
+}
+
+// In the component:
+{emailPlaceholder ? (
+  <form onSubmit={handleSubmit}>
+    <input placeholder={emailPlaceholder} />
+    <Button type="submit">{ctaText}</Button>
+  </form>
+) : (
+  <a href={ctaUrl} className={buttonStyles()}>{ctaText}</a>
+)}
+```
+
+### Keeping animation-dynamic inline styles
+
+Framer Motion `animate`, `style`, and drag constraints may need dynamic values.
+These are the ONE exception to the "no inline styles" rule:
+
+```tsx
+// OK — dynamic values from animation state
+<motion.div
+  style={{ zIndex }}
+  animate={{ rotate: rotateZ, x }}
+  className="absolute left-0 top-0 rounded-2xl border border-base-300 bg-base-200/20 p-6 shadow-xl backdrop-blur-md"
+>
+```
 
 ## Utility Pattern — cn() usage
 
