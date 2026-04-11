@@ -1,0 +1,26 @@
+{
+  "id": "features-icon-list-01",
+  "name": "Features Icon List",
+  "category": "features",
+  "style": ["minimal", "modern"],
+  "mood": ["calm", "trustworthy"],
+  "layout": "list",
+  "density": "low",
+  "slots": [
+    { "name": "sectionTitle", "type": "text", "maxLength": 80 },
+    { "name": "sectionSubtitle", "type": "text", "maxLength": 160 },
+    {
+      "name": "features",
+      "type": "list",
+      "maxItems": 8,
+      "itemSchema": {
+        "icon": { "type": "image" },
+        "title": { "type": "text", "maxLength": 60 },
+        "description": { "type": "text", "maxLength": 160 }
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": ["hero-gradient-01", "hero-split-01"],
+  "pairsPoorly": ["features-grid-01"]
+}
