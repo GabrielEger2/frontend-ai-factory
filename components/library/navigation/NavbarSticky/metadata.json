@@ -1,0 +1,26 @@
+{
+  "id": "navbar-sticky-01",
+  "name": "Sticky Navbar",
+  "category": "navigation",
+  "style": ["modern", "minimal"],
+  "mood": ["professional", "trustworthy"],
+  "layout": "horizontal",
+  "density": "low",
+  "slots": [
+    { "name": "logo", "type": "image", "aspectRatio": "auto" },
+    {
+      "name": "links",
+      "type": "list",
+      "maxItems": 6,
+      "itemSchema": {
+        "text": { "type": "text", "maxLength": 30 },
+        "href": { "type": "url" }
+      }
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 20 },
+    { "name": "ctaUrl", "type": "url" }
+  ],
+  "mobileBehavior": "collapse",
+  "pairsWell": ["hero-full-width-01", "hero-gradient-01", "hero-split-01"],
+  "pairsPoorly": []
+}

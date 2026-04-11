@@ -1,0 +1,50 @@
+{
+  "id": "footer-reveal-01",
+  "name": "Sticky Reveal Footer",
+  "category": "footers",
+  "style": ["modern", "editorial"],
+  "mood": ["professional", "elegant"],
+  "layout": "multi-column",
+  "density": "medium",
+  "slots": [
+    { "name": "logo", "type": "image", "aspectRatio": "auto" },
+    { "name": "whatsappUrl", "type": "url" },
+    { "name": "whatsappText", "type": "text", "maxLength": 30 },
+    { "name": "phoneUrl", "type": "url" },
+    { "name": "phoneText", "type": "text", "maxLength": 30 },
+    { "name": "emailUrl", "type": "url" },
+    { "name": "emailText", "type": "text", "maxLength": 60 },
+    { "name": "addressText", "type": "text", "maxLength": 120 },
+    { "name": "addressMapsUrl", "type": "url" },
+    {
+      "name": "navColumns",
+      "type": "list",
+      "maxItems": 4,
+      "itemSchema": {
+        "title": { "type": "text", "maxLength": 30 },
+        "links": {
+          "type": "list",
+          "maxItems": 6,
+          "itemSchema": {
+            "text": { "type": "text", "maxLength": 30 },
+            "href": { "type": "url" }
+          }
+        }
+      }
+    },
+    {
+      "name": "socialLinks",
+      "type": "list",
+      "maxItems": 4,
+      "itemSchema": {
+        "network": { "type": "text", "maxLength": 20 },
+        "url": { "type": "url" },
+        "label": { "type": "text", "maxLength": 60 }
+      }
+    },
+    { "name": "companyName", "type": "text", "maxLength": 60 }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": ["cta-banner-01", "faq-accordion-01", "contact-form-01"],
+  "pairsPoorly": []
+}

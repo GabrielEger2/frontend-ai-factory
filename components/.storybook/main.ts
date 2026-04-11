@@ -13,6 +13,16 @@ const config: StorybookConfig = {
     options: {},
   },
   webpackFinal: async (config) => {
+    // Path aliases matching tsconfig.json paths
+    config.resolve = config.resolve ?? {};
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@ui": path.resolve(__dirname, "../ui"),
+      "@lib": path.resolve(__dirname, "../lib"),
+      "@components": path.resolve(__dirname, "../library"),
+      "@hooks": path.resolve(__dirname, "../hooks"),
+    };
+
     const cssRule = config.module?.rules?.find(
       (rule) =>
         rule &&
