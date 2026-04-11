@@ -9,6 +9,7 @@ const config: Config = {
   content: [
     "./library/**/*.{ts,tsx}",
     "./ui/**/*.{ts,tsx}",
+    "./@ui/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
   ],
   theme: {

@@ -26,6 +26,8 @@
     "library/**/*.tsx",
     "ui/**/*.ts",
     "ui/**/*.tsx",
+    "@ui/**/*.ts",
+    "@ui/**/*.tsx",
     "lib/**/*.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
