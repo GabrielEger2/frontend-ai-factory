@@ -1,0 +1,58 @@
+{
+  "id": "content-features-list-01",
+  "name": "Features List",
+  "category": "layouts",
+  "style": ["modern", "corporate", "minimal"],
+  "mood": ["professional", "trustworthy", "calm"],
+  "layout": "centered",
+  "density": "medium",
+  "slots": [
+    { "name": "label", "type": "text", "optional": true, "maxLength": 40 },
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    {
+      "name": "description",
+      "type": "text",
+      "optional": true,
+      "maxLength": 250
+    },
+    {
+      "name": "features",
+      "type": "list",
+      "maxItems": 8,
+      "itemSchema": {
+        "title": { "type": "text", "maxLength": 60 },
+        "description": { "type": "text", "maxLength": 200 },
+        "ctaText": { "type": "text", "optional": true, "maxLength": 30 },
+        "ctaUrl": { "type": "url", "optional": true }
+      }
+    },
+    { "name": "ctaText", "type": "text", "optional": true, "maxLength": 30 },
+    { "name": "ctaUrl", "type": "url", "optional": true },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "columns",
+      "type": "text",
+      "optional": true,
+      "enum": ["2", "3", "4"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-split-image-01",
+    "testimonials-stacked-01",
+    "cta-banner-01",
+    "stats-count-up-01"
+  ],
+  "pairsPoorly": ["content-features-list-01"]
+}

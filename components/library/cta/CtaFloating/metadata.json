@@ -1,0 +1,16 @@
+{
+  "id": "cta-floating-01",
+  "name": "CTA Floating",
+  "category": "cta",
+  "style": ["modern", "bold"],
+  "mood": ["energetic", "friendly"],
+  "layout": "floating",
+  "density": "low",
+  "slots": [
+    { "name": "cta_text", "type": "text", "maxLength": 30 },
+    { "name": "cta_url", "type": "url" }
+  ],
+  "mobileBehavior": "preserve",
+  "pairsWell": ["hero-geometric-01", "hero-split-image-01"],
+  "pairsPoorly": ["cta-banner-01", "cta-inline-01"]
+}

@@ -1,0 +1,22 @@
+{
+  "id": "cta-inline-01",
+  "name": "CTA Inline",
+  "category": "cta",
+  "style": ["minimal", "modern"],
+  "mood": ["professional", "friendly"],
+  "layout": "split",
+  "density": "low",
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 60 },
+    { "name": "description", "type": "text", "maxLength": 120 },
+    { "name": "cta_text", "type": "text", "maxLength": 30 },
+    { "name": "cta_url", "type": "url" }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "features-parallax-content-01",
+    "faq-accordion-01",
+    "footer-reveal-01"
+  ],
+  "pairsPoorly": ["cta-banner-01", "cta-floating-01"]
+}

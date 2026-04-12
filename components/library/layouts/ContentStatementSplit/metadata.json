@@ -1,0 +1,53 @@
+{
+  "id": "content-statement-split-01",
+  "name": "Statement Split",
+  "category": "layouts",
+  "style": ["editorial", "bold", "modern"],
+  "mood": ["elegant", "serious", "professional"],
+  "layout": "asymmetric",
+  "density": "low",
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 120 },
+    { "name": "description", "type": "text", "maxLength": 400 },
+    {
+      "name": "descriptionEmphasis",
+      "type": "text",
+      "optional": true,
+      "maxLength": 80
+    },
+    { "name": "image", "type": "image", "aspectRatio": "16:9" },
+    { "name": "imageAlt", "type": "text", "maxLength": 120 },
+    {
+      "name": "accentImage",
+      "type": "image",
+      "optional": true,
+      "aspectRatio": "1:1"
+    },
+    {
+      "name": "accentImageAlt",
+      "type": "text",
+      "optional": true,
+      "maxLength": 120
+    },
+    {
+      "name": "colorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["dark", "light"]
+    },
+    {
+      "name": "headlinePosition",
+      "type": "text",
+      "optional": true,
+      "enum": ["left", "right"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "features-sticky-cards-01",
+    "content-image-text-01",
+    "stats-count-up-01",
+    "testimonials-scrolling-01"
+  ],
+  "pairsPoorly": ["hero-geometric-01"]
+}

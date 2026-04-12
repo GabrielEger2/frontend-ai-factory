@@ -1,0 +1,102 @@
+{
+  "id": "features-cards-01",
+  "name": "Features Cards Grid",
+  "category": "layouts",
+  "style": ["modern", "minimal", "bold"],
+  "mood": ["professional", "friendly", "energetic"],
+  "layout": "grid",
+  "density": "medium",
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 80, "optional": true },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "maxLength": 200,
+      "optional": true
+    },
+    {
+      "name": "cardStyle",
+      "type": "text",
+      "optional": true,
+      "enum": [
+        "base",
+        "flip",
+        "reveal",
+        "magic-gradient",
+        "magic-orb",
+        "product",
+        "outline"
+      ]
+    },
+    {
+      "name": "columns",
+      "type": "number",
+      "optional": true,
+      "enum": [2, 3, 4]
+    },
+    {
+      "name": "cards",
+      "type": "list",
+      "maxItems": 8,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "image", "type": "image", "aspectRatio": "16:9" },
+          { "name": "imageAlt", "type": "text", "maxLength": 120 },
+          { "name": "title", "type": "text", "maxLength": 60 },
+          { "name": "description", "type": "text", "maxLength": 200 },
+          {
+            "name": "ctaText",
+            "type": "text",
+            "maxLength": 30,
+            "optional": true
+          },
+          { "name": "ctaUrl", "type": "url", "optional": true },
+          {
+            "name": "badge",
+            "type": "text",
+            "maxLength": 20,
+            "optional": true
+          },
+          {
+            "name": "backTitle",
+            "type": "text",
+            "maxLength": 60,
+            "optional": true
+          },
+          {
+            "name": "backDescription",
+            "type": "text",
+            "maxLength": 200,
+            "optional": true
+          },
+          {
+            "name": "backCtaText",
+            "type": "text",
+            "maxLength": 30,
+            "optional": true
+          },
+          { "name": "backCtaUrl", "type": "url", "optional": true },
+          { "name": "price", "type": "number", "optional": true },
+          { "name": "originalPrice", "type": "number", "optional": true },
+          {
+            "name": "currency",
+            "type": "text",
+            "maxLength": 5,
+            "optional": true
+          },
+          { "name": "rating", "type": "number", "optional": true },
+          { "name": "url", "type": "url", "optional": true }
+        ]
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-split-01",
+    "hero-geometric-01",
+    "cta-banner-01",
+    "footers-reveal-01"
+  ],
+  "pairsPoorly": ["features-sticky-cards-01", "features-parallax-content-01"]
+}

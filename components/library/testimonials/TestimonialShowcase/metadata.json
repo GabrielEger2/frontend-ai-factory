@@ -1,0 +1,33 @@
+{
+  "id": "testimonial-showcase-01",
+  "name": "Testimonial Showcase",
+  "category": "testimonials",
+  "style": ["modern", "bold"],
+  "mood": ["trustworthy", "professional", "energetic"],
+  "layout": "split",
+  "density": "medium",
+  "slots": [
+    { "name": "label", "type": "text", "optional": true, "maxLength": 40 },
+    { "name": "headline", "type": "text", "maxLength": 60 },
+    {
+      "name": "testimonials",
+      "type": "list",
+      "maxItems": 6,
+      "itemSchema": {
+        "image": { "type": "image", "aspectRatio": "3:4" },
+        "imageAlt": { "type": "text", "maxLength": 120 },
+        "name": { "type": "text", "maxLength": 60 },
+        "title": { "type": "text", "maxLength": 80 },
+        "quote": { "type": "text", "maxLength": 300 }
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "features-sticky-cards-01",
+    "content-features-list-01",
+    "stats-count-up-01",
+    "cta-banner-01"
+  ],
+  "pairsPoorly": ["testimonials-stacked-01", "testimonials-scrolling-01"]
+}

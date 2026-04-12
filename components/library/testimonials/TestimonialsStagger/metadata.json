@@ -1,0 +1,34 @@
+{
+  "id": "testimonials-stagger-01",
+  "name": "Stagger Testimonials",
+  "category": "testimonials",
+  "style": ["bold", "playful"],
+  "mood": ["energetic", "fun"],
+  "layout": "centered",
+  "density": "medium",
+  "slots": [
+    {
+      "name": "testimonials",
+      "type": "list",
+      "maxItems": 12,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "image", "type": "image", "aspectRatio": "3:4" },
+          { "name": "imageAlt", "type": "text", "maxLength": 120 },
+          { "name": "name", "type": "text", "maxLength": 40 },
+          { "name": "title", "type": "text", "maxLength": 60 },
+          { "name": "quote", "type": "text", "maxLength": 200 }
+        ]
+      }
+    }
+  ],
+  "mobileBehavior": "scroll",
+  "pairsWell": [
+    "hero-geometric-01",
+    "hero-parallax-images-01",
+    "features-cards-01",
+    "cta-banner-01"
+  ],
+  "pairsPoorly": ["testimonials-scrolling-01", "testimonials-stacked-01"]
+}

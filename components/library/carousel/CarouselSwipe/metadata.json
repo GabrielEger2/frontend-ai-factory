@@ -1,0 +1,30 @@
+{
+  "id": "carousel-swipe-01",
+  "name": "Swipe Carousel",
+  "category": "carousel",
+  "style": ["modern", "minimal"],
+  "mood": ["professional", "calm"],
+  "layout": "centered",
+  "density": "low",
+  "slots": [
+    {
+      "name": "items",
+      "type": "list",
+      "maxItems": 10,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "image", "type": "image", "aspectRatio": "16:9" },
+          { "name": "imageAlt", "type": "text", "maxLength": 120 }
+        ]
+      }
+    }
+  ],
+  "mobileBehavior": "scroll",
+  "pairsWell": [
+    "hero-split-01",
+    "features-grid-01",
+    "testimonials-scrolling-01"
+  ],
+  "pairsPoorly": ["carousel-3d-01", "carousel-cards-01"]
+}

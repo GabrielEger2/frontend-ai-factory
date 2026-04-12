@@ -1,0 +1,25 @@
+{
+  "id": "faq-accordion-01",
+  "name": "FAQ Accordion",
+  "category": "faq",
+  "style": ["modern", "minimal"],
+  "mood": ["professional", "trustworthy"],
+  "layout": "centered",
+  "density": "medium",
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    { "name": "subheadline", "type": "text", "maxLength": 160 },
+    {
+      "name": "items",
+      "type": "list",
+      "maxItems": 10,
+      "itemSchema": [
+        { "name": "question", "type": "text", "maxLength": 120 },
+        { "name": "answer", "type": "text", "maxLength": 500 }
+      ]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": ["cta-banner-01", "contact-form-01"],
+  "pairsPoorly": ["faq-minimal-01", "faq-solutions-01"]
+}
