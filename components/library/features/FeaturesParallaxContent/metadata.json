@@ -1,0 +1,64 @@
+{
+  "id": "features-parallax-content-01",
+  "name": "Parallax Content Features",
+  "category": "features",
+  "style": ["modern", "editorial", "bold"],
+  "mood": ["professional", "elegant", "energetic"],
+  "layout": "stacked",
+  "density": "low",
+  "slots": [
+    {
+      "name": "sections",
+      "type": "list",
+      "maxItems": 5,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "image", "type": "image", "aspectRatio": "16:9" },
+          { "name": "imageAlt", "type": "text", "maxLength": 120 },
+          { "name": "label", "type": "text", "maxLength": 40 },
+          { "name": "heading", "type": "text", "maxLength": 60 },
+          {
+            "name": "content",
+            "type": "object",
+            "fields": [
+              { "name": "contentHeadline", "type": "text", "maxLength": 80 },
+              {
+                "name": "contentDescription",
+                "type": "text",
+                "maxLength": 300
+              },
+              { "name": "ctaText", "type": "text", "maxLength": 30 },
+              { "name": "ctaUrl", "type": "url" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "imagePadding",
+      "type": "number",
+      "optional": true
+    }
+  ],
+  "mobileBehavior": "scroll",
+  "pairsWell": [
+    "hero-geometric-01",
+    "hero-split-image-01",
+    "cta-banner-01",
+    "footers-reveal-01"
+  ],
+  "pairsPoorly": ["features-sticky-cards-01", "hero-parallax-images-01"]
+}
