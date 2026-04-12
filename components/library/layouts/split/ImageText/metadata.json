@@ -1,0 +1,45 @@
+{
+  "id": "layout-imagetext-01",
+  "name": "Image Text",
+  "category": "layout/split",
+  "style": ["modern", "editorial", "corporate"],
+  "mood": ["professional", "friendly", "trustworthy"],
+  "layout": "split",
+  "density": "medium",
+  "purpose": ["features", "services", "about", "products"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    { "name": "description", "type": "text", "maxLength": 300 },
+    { "name": "ctaText", "type": "text", "maxLength": 30, "optional": true },
+    { "name": "ctaUrl", "type": "url", "optional": true },
+    { "name": "image", "type": "image", "aspectRatio": "16:9" },
+    { "name": "imageAlt", "type": "text", "maxLength": 120 },
+    { "name": "label", "type": "text", "maxLength": 60, "optional": true },
+    {
+      "name": "imagePosition",
+      "type": "text",
+      "enum": ["left", "right"],
+      "optional": true
+    },
+    {
+      "name": "colorScheme",
+      "type": "text",
+      "enum": ["light", "dark"],
+      "optional": true
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "layout-cardgrid-01",
+    "layout-statementsplit-01",
+    "hero-split-image-01",
+    "cta-banner-01"
+  ],
+  "pairsPoorly": ["layout-authorsplit-01"]
+}

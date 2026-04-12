@@ -1,0 +1,60 @@
+{
+  "id": "layout-statementsplit-01",
+  "name": "Statement Split",
+  "category": "layout/split",
+  "style": ["editorial", "luxury", "minimal"],
+  "mood": ["elegant", "professional", "calm"],
+  "layout": "asymmetric",
+  "density": "low",
+  "purpose": ["about", "features", "services"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 120 },
+    { "name": "description", "type": "text", "maxLength": 400 },
+    {
+      "name": "descriptionEmphasis",
+      "type": "text",
+      "maxLength": 80,
+      "optional": true
+    },
+    { "name": "image", "type": "image", "aspectRatio": "16:9" },
+    { "name": "imageAlt", "type": "text", "maxLength": 120 },
+    {
+      "name": "accentImage",
+      "type": "image",
+      "aspectRatio": "1:1",
+      "optional": true
+    },
+    {
+      "name": "accentImageAlt",
+      "type": "text",
+      "maxLength": 120,
+      "optional": true
+    },
+    {
+      "name": "colorScheme",
+      "type": "text",
+      "enum": ["dark", "light"],
+      "optional": true
+    },
+    {
+      "name": "headlinePosition",
+      "type": "text",
+      "enum": ["left", "right"],
+      "optional": true
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "layout-stickycards-01",
+    "layout-imagetext-01",
+    "stats-count-up-01",
+    "layout-infinitescroll-01"
+  ],
+  "pairsPoorly": ["hero-geometric-01"]
+}
