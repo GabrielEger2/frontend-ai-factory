@@ -20,6 +20,12 @@ export interface CardRevealSlideProps {
   ctaText?: string;
   /** CTA destination */
   ctaUrl?: string;
+  /**
+   * Content mode — declared for API consistency with CardBase so that
+   * layout dispatchers can pass `mode` uniformly to all card types.
+   * Only `"feature"` is supported; the prop has no visual effect.
+   */
+  mode?: "feature";
   className?: string;
 }
 
@@ -67,6 +73,8 @@ export function CardRevealSlide({
   description,
   ctaText = "More",
   ctaUrl = "#",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  mode: _mode = "feature",
   className,
 }: CardRevealSlideProps) {
   return (
