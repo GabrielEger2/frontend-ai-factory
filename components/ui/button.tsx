@@ -165,6 +165,8 @@ const DotExpandLink = React.forwardRef<HTMLAnchorElement, DotExpandLinkProps>(
           {/* Arrow icon — slides in from left on hover */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
+            width="1em"
+            height="1em"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"

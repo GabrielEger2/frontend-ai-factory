@@ -1,0 +1,137 @@
+{
+  "id": "hero-split-image-01",
+  "name": "Split Image Hero",
+  "category": "hero",
+  "style": ["modern", "editorial"],
+  "mood": ["professional", "elegant"],
+  "layout": "split",
+  "density": "medium",
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    {
+      "name": "headlineAccent",
+      "type": "text",
+      "optional": true,
+      "maxLength": 40
+    },
+    {
+      "name": "headlineRotatingWords",
+      "type": "list",
+      "optional": true,
+      "maxItems": 6,
+      "itemSchema": { "type": "text", "maxLength": 40 }
+    },
+    { "name": "subheadline", "type": "text", "maxLength": 200 },
+    { "name": "ctaText", "type": "text", "maxLength": 30 },
+    { "name": "ctaUrl", "type": "url" },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "secondaryCtaText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    { "name": "secondaryCtaUrl", "type": "url", "optional": true },
+    {
+      "name": "secondaryCtaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+    },
+    {
+      "name": "secondaryCtaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    { "name": "whatsappUrl", "type": "url", "optional": true },
+    {
+      "name": "whatsappLabel",
+      "type": "text",
+      "optional": true,
+      "maxLength": 40
+    },
+    { "name": "image", "type": "image", "aspectRatio": "1:1" },
+    { "name": "imageAlt", "type": "text", "maxLength": 120 },
+    {
+      "name": "badgeHeadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 40
+    },
+    {
+      "name": "badgeDescription",
+      "type": "text",
+      "optional": true,
+      "maxLength": 100
+    },
+    {
+      "name": "rotatingBadgeText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    },
+    {
+      "name": "featuredItems",
+      "type": "list",
+      "optional": true,
+      "maxItems": 6,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "image", "type": "image", "aspectRatio": "4:3" },
+          { "name": "imageAlt", "type": "text", "maxLength": 80 },
+          { "name": "title", "type": "text", "maxLength": 40 },
+          {
+            "name": "price",
+            "type": "text",
+            "optional": true,
+            "maxLength": 20
+          },
+          {
+            "name": "discountPrice",
+            "type": "text",
+            "optional": true,
+            "maxLength": 20
+          }
+        ]
+      }
+    },
+    {
+      "name": "featuredItemsLabel",
+      "type": "text",
+      "optional": true,
+      "maxLength": 40
+    },
+    {
+      "name": "featuredItemsLinkText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    { "name": "featuredItemsLinkUrl", "type": "url", "optional": true },
+    {
+      "name": "gridBackground",
+      "type": "boolean",
+      "optional": true
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "features-grid-01",
+    "cta-banner-01",
+    "testimonials-carousel-01"
+  ],
+  "pairsPoorly": ["hero-shuffle-cards-01", "hero-video-01"]
+}
