@@ -1,0 +1,81 @@
+{
+  "id": "hero-geometric-01",
+  "name": "Geometric Hero",
+  "category": "hero",
+  "style": ["modern", "minimal", "corporate"],
+  "mood": ["professional", "trustworthy", "calm"],
+  "layout": "split",
+  "density": "medium",
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    {
+      "name": "headlineRotatingWords",
+      "type": "list",
+      "optional": true,
+      "maxItems": 6,
+      "itemSchema": { "type": "text", "maxLength": 40 }
+    },
+    { "name": "subheadline", "type": "text", "maxLength": 200 },
+    { "name": "ctaText", "type": "text", "maxLength": 30 },
+    { "name": "ctaUrl", "type": "url" },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "secondaryCtaText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    { "name": "secondaryCtaUrl", "type": "url", "optional": true },
+    {
+      "name": "secondaryCtaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+    },
+    {
+      "name": "secondaryCtaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    { "name": "image", "type": "image", "aspectRatio": "4:5" },
+    { "name": "imageAlt", "type": "text", "maxLength": 120 },
+    {
+      "name": "socialProofAvatars",
+      "type": "list",
+      "optional": true,
+      "maxItems": 5,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "image", "type": "image", "aspectRatio": "1:1" },
+          { "name": "imageAlt", "type": "text", "maxLength": 60 }
+        ]
+      }
+    },
+    {
+      "name": "socialProofLabel",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "features-grid-01",
+    "cta-banner-01",
+    "testimonials-carousel-01"
+  ],
+  "pairsPoorly": ["hero-split-image-01", "hero-parallax-images-01"]
+}
