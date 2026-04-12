@@ -47,7 +47,7 @@ export default function CtaInline({
         </div>
         <a
           href={ctaUrl}
-          className="shrink-0 rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground"
+          className="shrink-0 rounded-lg bg-primary px-6 py-3 font-semibold text-primary-content"
         >
           {ctaText}
         </a>

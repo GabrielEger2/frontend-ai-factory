@@ -52,7 +52,7 @@ export default function CtaBanner({
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <a
             href={ctaUrl}
-            className="rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground"
+            className="rounded-lg bg-primary px-6 py-3 font-semibold text-primary-content"
           >
             {ctaText}
           </a>
