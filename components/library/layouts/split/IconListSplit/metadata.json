@@ -1,0 +1,60 @@
+{
+  "id": "layout-iconlistsplit-01",
+  "name": "Icon List Split",
+  "category": "layout/split",
+  "style": ["modern", "corporate", "minimal"],
+  "mood": ["professional", "trustworthy", "calm"],
+  "layout": "split",
+  "density": "medium",
+  "purpose": ["features", "services", "process"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    {
+      "name": "features",
+      "type": "list",
+      "maxItems": 5,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "icon", "type": "text", "maxLength": 10 },
+          { "name": "title", "type": "text", "maxLength": 60 },
+          { "name": "description", "type": "text", "maxLength": 200 }
+        ]
+      }
+    },
+    {
+      "name": "image",
+      "type": "image",
+      "aspectRatio": "1:1",
+      "optional": true
+    },
+    { "name": "imageAlt", "type": "text", "maxLength": 120, "optional": true },
+    {
+      "name": "logos",
+      "type": "list",
+      "optional": true,
+      "maxItems": 8,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "image", "type": "image" },
+          { "name": "imageAlt", "type": "text", "maxLength": 60 }
+        ]
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-split-image-01",
+    "layout-showcasesplit-01",
+    "cta-banner-01",
+    "layout-authorsplit-01"
+  ],
+  "pairsPoorly": ["layout-cardgrid-01"]
+}
