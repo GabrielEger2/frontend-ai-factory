@@ -1,7 +1,14 @@
 {
   "id": "hero-parallax-images-01",
   "name": "Parallax Images Hero",
-  "category": "heroes",
+  "category": "hero",
+  "purpose": ["hero"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": true,
+    "button": true
+  },
   "style": ["modern", "editorial", "bold"],
   "mood": ["energetic", "elegant", "professional"],
   "layout": "centered",
@@ -85,9 +92,9 @@
   ],
   "mobileBehavior": "stack",
   "pairsWell": [
-    "features-grid-01",
+    "layout-cardgrid-01",
     "cta-banner-01",
-    "testimonials-carousel-01"
+    "layout-infinitescroll-01"
   ],
   "pairsPoorly": [
     "hero-shuffle-cards-01",

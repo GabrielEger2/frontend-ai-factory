@@ -1,7 +1,14 @@
 {
   "id": "hero-shuffle-cards-01",
   "name": "Shuffle Cards Hero",
-  "category": "heroes",
+  "category": "hero",
+  "purpose": ["hero"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": true,
+    "button": true
+  },
   "style": ["modern", "bold"],
   "mood": ["energetic", "professional"],
   "layout": "split",
@@ -44,9 +51,9 @@
   ],
   "mobileBehavior": "stack",
   "pairsWell": [
-    "features-grid-01",
+    "layout-cardgrid-01",
     "cta-banner-01",
-    "testimonials-carousel-01"
+    "layout-infinitescroll-01"
   ],
   "pairsPoorly": ["hero-split-01", "hero-video-01"]
 }
