@@ -23,6 +23,14 @@ export interface CardBaseProps {
   ctaUrl?: string;
   /** Optional badge label displayed over the image */
   badge?: string;
+  /**
+   * Content mode — controls which fields are rendered.
+   * - `"feature"` (default): standard card with title + description + optional CTA.
+   * - `"team"`: renders `role` below the title for team/people grids.
+   */
+  mode?: "feature" | "team";
+  /** Person's role / job title — only rendered when `mode === "team"` */
+  role?: string;
   className?: string;
 }
 
@@ -47,6 +55,8 @@ export default function CardBase({
   ctaText,
   ctaUrl,
   badge,
+  mode = "feature",
+  role,
   className,
 }: CardBaseProps) {
   const shouldReduceMotion = useReducedMotion();
@@ -85,6 +95,9 @@ export default function CardBase({
         <h3 className="text-lg font-semibold leading-tight text-base-content">
           {title}
         </h3>
+        {mode === "team" && role && (
+          <p className="text-sm text-base-content/60">{role}</p>
+        )}
         <p className="text-sm text-base-content/60">{description}</p>
 
         {ctaText && ctaUrl && (
