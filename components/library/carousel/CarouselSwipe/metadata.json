@@ -2,6 +2,13 @@
   "id": "carousel-swipe-01",
   "name": "Swipe Carousel",
   "category": "carousel",
+  "purpose": ["features", "products", "testimonials"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
   "style": ["modern", "minimal"],
   "mood": ["professional", "calm"],
   "layout": "centered",

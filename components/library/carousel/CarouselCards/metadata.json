@@ -2,6 +2,13 @@
   "id": "carousel-cards-01",
   "name": "Card Carousel",
   "category": "carousel",
+  "purpose": ["features", "products", "testimonials"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
   "style": ["modern", "corporate"],
   "mood": ["professional", "trustworthy"],
   "layout": "stacked",

@@ -2,6 +2,13 @@
   "id": "stats-count-up-01",
   "name": "Count-Up Stats",
   "category": "stats",
+  "purpose": ["stats"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
   "style": ["modern", "minimal", "corporate"],
   "mood": ["professional", "trustworthy"],
   "layout": "horizontal",

@@ -2,6 +2,13 @@
   "id": "contact-map-info-01",
   "name": "Contact Map + Info",
   "category": "contact",
+  "purpose": ["contact"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
   "style": ["modern", "corporate"],
   "mood": ["professional", "trustworthy"],
   "layout": "split",
