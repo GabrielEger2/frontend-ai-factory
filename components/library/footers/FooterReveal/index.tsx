@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import { HiOutlineMail, HiOutlineMap } from "react-icons/hi";
 import { cn } from "@lib/utils";
+import { CtaButton, type CtaVariant } from "@ui/button";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -57,6 +58,12 @@ export interface FooterRevealProps {
   socialLinks: FooterSocialLink[];
   /** Company name for copyright */
   companyName: string;
+  /** Optional CTA button label */
+  ctaText?: string;
+  /** CTA destination URL */
+  ctaUrl?: string;
+  /** CTA button style — "default" uses the standard filled button, others use animated variants */
+  ctaStyle?: CtaVariant;
   /** Footer height in pixels — controls the reveal viewport */
   height?: number;
   /** Extra classes on the root element */
@@ -94,6 +101,9 @@ export default function FooterReveal({
   navColumns,
   socialLinks,
   companyName,
+  ctaText,
+  ctaUrl,
+  ctaStyle = "default",
   height = 450,
   className,
 }: FooterRevealProps) {
@@ -181,6 +191,17 @@ export default function FooterReveal({
                       </a>
                     )}
                   </div>
+
+                  {ctaText && ctaUrl && (
+                    <CtaButton
+                      variant={ctaStyle}
+                      href={ctaUrl}
+                      colorScheme="primary"
+                      className="text-sm"
+                    >
+                      {ctaText}
+                    </CtaButton>
+                  )}
                 </div>
 
                 {/* Navigation columns */}

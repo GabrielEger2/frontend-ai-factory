@@ -9,7 +9,7 @@ const ThemeDecorator: Decorator = (Story, context) => {
   const theme = context.globals.theme || "default";
 
   return (
-    <div data-theme={theme} className="font-sans">
+    <div data-theme={theme}>
       <Story />
     </div>
   );

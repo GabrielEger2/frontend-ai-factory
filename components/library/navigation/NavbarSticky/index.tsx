@@ -10,7 +10,7 @@ import {
 import { FiArrowRight, FiChevronDown, FiMenu, FiX } from "react-icons/fi";
 import { cn } from "@lib/utils";
 import { ClientSideLink } from "@ui/ClientSideLink";
-import { buttonStyles } from "@ui/button";
+import { CtaButton, type CtaVariant } from "@ui/button";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -25,6 +25,8 @@ export interface NavbarLink {
   flyoutContent?: React.ComponentType;
 }
 
+export type CtaStyle = CtaVariant;
+
 export interface NavbarStickyProps {
   /** Logo rendered at the start of the bar (accepts any ReactNode, typically an SVG or image) */
   logo: React.ReactNode;
@@ -36,6 +38,8 @@ export interface NavbarStickyProps {
   ctaText?: string;
   /** CTA destination URL */
   ctaUrl?: string;
+  /** CTA button style — "default" uses the standard filled button, others use animated variants */
+  ctaStyle?: CtaStyle;
   /** Pixel threshold after which the bar switches to the scrolled (filled) style */
   scrollThreshold?: number;
   /** Extra classes on the root `<nav>` element */
@@ -48,6 +52,31 @@ export interface NavbarStickyProps {
 
 /** Normalise anchor-only hrefs so they route through the home page. */
 const buildHref = (href: string) => (href?.startsWith("#") ? `/${href}` : href);
+
+/* ------------------------------------------------------------------ */
+/*  NavbarCta — renders the CTA with the chosen animated style         */
+/* ------------------------------------------------------------------ */
+
+function NavbarCta({
+  text,
+  url,
+  style,
+}: {
+  text: string;
+  url: string;
+  style: CtaStyle;
+}) {
+  return (
+    <CtaButton
+      variant={style}
+      href={url}
+      colorScheme="primary"
+      className="text-sm"
+    >
+      {text}
+    </CtaButton>
+  );
+}
 
 /* ------------------------------------------------------------------ */
 /*  Sub-components                                                     */
@@ -269,6 +298,7 @@ export default function NavbarSticky({
   links,
   ctaText,
   ctaUrl,
+  ctaStyle = "default",
   scrollThreshold = 250,
   className,
 }: NavbarStickyProps) {
@@ -300,9 +330,7 @@ export default function NavbarSticky({
           <DesktopLinks links={links} />
 
           {ctaText && ctaUrl && (
-            <a href={ctaUrl} className={buttonStyles({ size: "sm" })}>
-              {ctaText}
-            </a>
+            <NavbarCta text={ctaText} url={ctaUrl} style={ctaStyle} />
           )}
         </div>
 

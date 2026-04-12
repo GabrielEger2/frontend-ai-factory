@@ -3,6 +3,10 @@ import type { Meta, StoryObj } from "@storybook/react";
 import NavbarSticky from "./index";
 import type { NavbarLink } from "./index";
 
+/* ------------------------------------------------------------------ */
+/*  Shared helpers                                                     */
+/* ------------------------------------------------------------------ */
+
 const SampleLogo = () => (
   <svg
     width="120"
@@ -26,7 +30,7 @@ const SampleLogo = () => (
   </svg>
 );
 
-const SampleFlyout = () => (
+const ServicesFlyout = () => (
   <div className="w-64 p-4">
     <p className="mb-2 text-sm font-semibold text-base-content">Our Services</p>
     <ul className="space-y-2 text-sm text-base-content/70">
@@ -49,12 +53,9 @@ const SampleFlyout = () => (
   </div>
 );
 
-const defaultLinks: NavbarLink[] = [
-  { text: "Services", href: "#services", flyoutContent: SampleFlyout },
-  { text: "About", href: "/about" },
-  { text: "Portfolio", href: "#portfolio" },
-  { text: "Contact", href: "#contact" },
-];
+/* ------------------------------------------------------------------ */
+/*  Meta                                                               */
+/* ------------------------------------------------------------------ */
 
 const meta: Meta<typeof NavbarSticky> = {
   title: "Navigation/NavbarSticky",
@@ -62,11 +63,16 @@ const meta: Meta<typeof NavbarSticky> = {
   parameters: {
     layout: "fullscreen",
   },
+  argTypes: {
+    ctaStyle: {
+      control: "select",
+      options: ["default", "slide", "dotExpand", "drawOutline", "glow"],
+    },
+  },
   decorators: [
     (Story) => (
       <div>
         <Story />
-        {/* Spacer so the scroll behavior is testable */}
         <div className="flex min-h-[200vh] items-center justify-center bg-base-200 pt-24">
           <p className="text-base-content/40">
             Scroll down to see the navbar transition
@@ -80,46 +86,82 @@ const meta: Meta<typeof NavbarSticky> = {
 export default meta;
 type Story = StoryObj<typeof NavbarSticky>;
 
-export const Default: Story = {
+/* ------------------------------------------------------------------ */
+/*  Stories                                                            */
+/* ------------------------------------------------------------------ */
+
+/** Agency site — flyout menu, slide CTA */
+export const AgencySite: Story = {
   args: {
     logo: <SampleLogo />,
-    links: defaultLinks,
+    links: [
+      { text: "Services", href: "#services", flyoutContent: ServicesFlyout },
+      { text: "About", href: "/about" },
+      { text: "Portfolio", href: "#portfolio" },
+      { text: "Contact", href: "#contact" },
+    ],
     ctaText: "Get Started",
     ctaUrl: "#cta",
+    ctaStyle: "slide",
   },
 };
 
-export const WithoutCta: Story = {
-  args: {
-    logo: <SampleLogo />,
-    links: defaultLinks,
-  },
-};
-
-export const MinimalLinks: Story = {
+/** Minimal landing page — two links, no CTA */
+export const MinimalLanding: Story = {
   args: {
     logo: <SampleLogo />,
     links: [
       { text: "Home", href: "/" },
       { text: "Contact", href: "#contact" },
     ],
-    ctaText: "Call Now",
-    ctaUrl: "tel:+1234567890",
   },
 };
 
-export const ManyLinks: Story = {
+/** SaaS product — many nav items, glow CTA */
+export const SaasProduct: Story = {
   args: {
     logo: <SampleLogo />,
     links: [
-      { text: "Services", href: "#services", flyoutContent: SampleFlyout },
-      { text: "About", href: "/about" },
-      { text: "Portfolio", href: "#portfolio" },
+      { text: "Features", href: "#features" },
+      { text: "Pricing", href: "/pricing" },
+      { text: "Docs", href: "/docs" },
       { text: "Blog", href: "/blog" },
-      { text: "Careers", href: "/careers" },
+      { text: "Changelog", href: "/changelog" },
+    ],
+    ctaText: "Start Free Trial",
+    ctaUrl: "#trial",
+    ctaStyle: "glow",
+  },
+};
+
+/** Real estate — property-focused nav, drawOutline CTA */
+export const RealEstate: Story = {
+  args: {
+    logo: <SampleLogo />,
+    links: [
+      { text: "Properties", href: "#properties" },
+      { text: "About", href: "/about" },
       { text: "Contact", href: "#contact" },
     ],
-    ctaText: "Free Quote",
-    ctaUrl: "#quote",
+    ctaText: "Schedule Visit",
+    ctaUrl: "#schedule",
+    ctaStyle: "drawOutline",
+  },
+};
+
+/** E-commerce — dotExpand CTA, custom scroll threshold */
+export const Ecommerce: Story = {
+  args: {
+    logo: <SampleLogo />,
+    links: [
+      { text: "Shop", href: "/shop" },
+      { text: "New Arrivals", href: "#new" },
+      { text: "Sale", href: "#sale" },
+      { text: "About", href: "/about" },
+    ],
+    ctaText: "My Cart",
+    ctaUrl: "#cart",
+    ctaStyle: "dotExpand",
+    scrollThreshold: 150,
   },
 };

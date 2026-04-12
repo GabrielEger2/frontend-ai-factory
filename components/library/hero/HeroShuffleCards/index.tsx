@@ -3,8 +3,7 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@lib/utils";
-import { Button } from "@ui/button";
-import { buttonStyles } from "@ui/button";
+import { Button, CtaButton, type CtaVariant } from "@ui/button";
 import { TypeWriter } from "@ui/TypeWriter";
 
 /* ------------------------------------------------------------------ */
@@ -18,6 +17,8 @@ export interface HeroShuffleCardsProps {
   subheadline: string;
   ctaText: string;
   ctaUrl: string;
+  /** CTA button style — "default" uses the standard filled button, others use animated variants */
+  ctaStyle?: CtaVariant;
   /** When provided, shows an email capture form instead of a plain CTA link */
   emailPlaceholder?: string;
   /** Callback when the email form is submitted */
@@ -120,6 +121,7 @@ export default function HeroShuffleCards({
   subheadline,
   ctaText,
   ctaUrl,
+  ctaStyle = "default",
   emailPlaceholder,
   onEmailSubmit,
   cards,
@@ -194,9 +196,9 @@ export default function HeroShuffleCards({
               </Button>
             </form>
           ) : (
-            <a href={ctaUrl} className={buttonStyles({ size: "lg" })}>
+            <CtaButton variant={ctaStyle} href={ctaUrl} className="text-base">
               {ctaText}
-            </a>
+            </CtaButton>
           )}
         </div>
 

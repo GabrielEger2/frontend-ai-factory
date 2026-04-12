@@ -19,6 +19,12 @@
     { "name": "ctaText", "type": "text", "maxLength": 30 },
     { "name": "ctaUrl", "type": "url" },
     {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline"]
+    },
+    {
       "name": "emailPlaceholder",
       "type": "text",
       "optional": true,

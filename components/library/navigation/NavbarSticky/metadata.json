@@ -18,7 +18,13 @@
       }
     },
     { "name": "ctaText", "type": "text", "maxLength": 20 },
-    { "name": "ctaUrl", "type": "url" }
+    { "name": "ctaUrl", "type": "url" },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline"]
+    }
   ],
   "mobileBehavior": "collapse",
   "pairsWell": ["hero-full-width-01", "hero-gradient-01", "hero-split-01"],
