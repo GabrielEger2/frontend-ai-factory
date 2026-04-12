@@ -2,6 +2,13 @@
   "id": "navbar-sticky-01",
   "name": "Sticky Navbar",
   "category": "navigation",
+  "purpose": ["navigation"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
   "style": ["modern", "minimal"],
   "mood": ["professional", "trustworthy"],
   "layout": "horizontal",
