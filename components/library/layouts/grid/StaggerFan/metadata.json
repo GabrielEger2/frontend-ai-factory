@@ -1,0 +1,42 @@
+{
+  "id": "layout-staggerfan-01",
+  "name": "Stagger Fan",
+  "category": "layout/grid",
+  "style": ["bold", "playful"],
+  "mood": ["energetic", "fun"],
+  "layout": "centered",
+  "density": "medium",
+  "purpose": ["testimonials"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "slots": [
+    {
+      "name": "testimonials",
+      "type": "list",
+      "maxItems": 12,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "image", "type": "image", "aspectRatio": "3:4" },
+          { "name": "imageAlt", "type": "text", "maxLength": 120 },
+          { "name": "name", "type": "text", "maxLength": 40 },
+          { "name": "title", "type": "text", "maxLength": 60 },
+          { "name": "quote", "type": "text", "maxLength": 200 }
+        ]
+      }
+    },
+    { "name": "sectionHeight", "type": "number", "optional": true }
+  ],
+  "mobileBehavior": "scroll",
+  "pairsWell": [
+    "hero-geometric-01",
+    "hero-parallax-images-01",
+    "layout-cardgrid-01",
+    "cta-banner-01"
+  ],
+  "pairsPoorly": ["layout-infinitescroll-01", "layout-stackedsplit-01"]
+}
