@@ -2,6 +2,13 @@
   "id": "contact-form-01",
   "name": "Contact Form",
   "category": "contact",
+  "purpose": ["contact"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
   "style": ["modern", "minimal"],
   "mood": ["professional", "friendly"],
   "layout": "centered",

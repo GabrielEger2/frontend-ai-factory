@@ -2,13 +2,20 @@
   "id": "cta-floating-01",
   "name": "CTA Floating",
   "category": "cta",
+  "purpose": ["cta"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
   "style": ["modern", "bold"],
   "mood": ["energetic", "friendly"],
   "layout": "floating",
   "density": "low",
   "slots": [
-    { "name": "cta_text", "type": "text", "maxLength": 30 },
-    { "name": "cta_url", "type": "url" }
+    { "name": "ctaText", "type": "text", "maxLength": 30 },
+    { "name": "ctaUrl", "type": "url" }
   ],
   "mobileBehavior": "preserve",
   "pairsWell": ["hero-geometric-01", "hero-split-image-01"],

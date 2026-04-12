@@ -2,6 +2,13 @@
   "id": "faq-solutions-01",
   "name": "FAQ Solutions",
   "category": "faq",
+  "purpose": ["faq"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
   "style": ["modern", "bold"],
   "mood": ["professional", "energetic"],
   "layout": "split",

@@ -36,7 +36,7 @@ export default function CtaFloating({
     <div className={cn("fixed z-50", positionClasses[position], className)}>
       <a
         href={ctaUrl}
-        className="rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground shadow-lg"
+        className="rounded-full bg-primary px-6 py-3 font-semibold text-primary-content shadow-lg"
       >
         {ctaText}
       </a>
