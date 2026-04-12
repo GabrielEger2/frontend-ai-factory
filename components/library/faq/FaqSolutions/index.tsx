@@ -1,0 +1,202 @@
+"use client";
+
+import { cn } from "@lib/utils";
+import { buttonStyles } from "@ui/button";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useState } from "react";
+import { FiArrowRight } from "react-icons/fi";
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+
+export interface FaqSolutionsItem {
+  title: string;
+  description: string;
+  ctaText: string;
+  ctaUrl: string;
+  image: string;
+  imageAlt: string;
+}
+
+export interface FaqSolutionsProps {
+  /** Section heading */
+  headline: string;
+  /** Optional supporting text below the headline */
+  subheadline?: string;
+  /** Array of solution items with title, description, CTA, and image */
+  items: FaqSolutionsItem[];
+  /** Index of the item to expand by default (default: 0) */
+  defaultOpenIndex?: number;
+  className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Sub-component — individual solution panel                          */
+/* ------------------------------------------------------------------ */
+
+function SolutionItem({
+  item,
+  index,
+  isOpen,
+  onSelect,
+}: {
+  item: FaqSolutionsItem;
+  index: number;
+  isOpen: boolean;
+  onSelect: () => void;
+}) {
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <div
+      onClick={onSelect}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onSelect();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-expanded={isOpen}
+      className="relative cursor-pointer overflow-hidden rounded-lg p-0.5 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ring-offset-base-100"
+    >
+      <motion.div
+        initial={false}
+        animate={{
+          height: isOpen ? 240 : 72,
+        }}
+        transition={{
+          duration: shouldReduceMotion ? 0 : 0.25,
+          ease: "easeOut",
+        }}
+        className="relative z-20 flex flex-col justify-between rounded-[7px] bg-base-100 p-6"
+      >
+        <div>
+          <p
+            className={cn(
+              "w-fit text-xl font-medium transition-colors duration-200",
+              isOpen ? "text-primary" : "text-base-content",
+            )}
+          >
+            {item.title}
+          </p>
+          <motion.p
+            initial={false}
+            animate={{ opacity: isOpen ? 1 : 0 }}
+            transition={{
+              duration: shouldReduceMotion ? 0 : 0.2,
+              ease: "easeOut",
+            }}
+            className="mt-4 text-base-content/70"
+          >
+            {item.description}
+          </motion.p>
+        </div>
+        <motion.div
+          initial={false}
+          animate={{ opacity: isOpen ? 1 : 0 }}
+          transition={{
+            duration: shouldReduceMotion ? 0 : 0.2,
+            ease: "easeOut",
+          }}
+        >
+          <a
+            href={item.ctaUrl}
+            className={cn(
+              buttonStyles({ variant: "primary", size: "md" }),
+              "-mx-6 -mb-6 mt-4 flex items-center justify-center gap-1 rounded-t-none",
+            )}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span>{item.ctaText}</span>
+            <FiArrowRight className="transition-transform group-hover:translate-x-1" />
+          </a>
+        </motion.div>
+      </motion.div>
+
+      {/* Active indicator — gradient border */}
+      <motion.div
+        initial={false}
+        animate={{ opacity: isOpen ? 1 : 0 }}
+        transition={{
+          duration: shouldReduceMotion ? 0 : 0.2,
+          ease: "easeOut",
+        }}
+        className="absolute inset-0 z-10 rounded-lg bg-primary"
+      />
+      {/* Inactive background */}
+      <div className="absolute inset-0 z-0 rounded-lg bg-base-300" />
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Component                                                          */
+/* ------------------------------------------------------------------ */
+
+export default function FaqSolutions({
+  headline,
+  subheadline,
+  items,
+  defaultOpenIndex = 0,
+  className,
+}: FaqSolutionsProps) {
+  const [openIndex, setOpenIndex] = useState(defaultOpenIndex);
+
+  const activeImage = items[openIndex]?.image;
+  const activeImageAlt = items[openIndex]?.imageAlt ?? "";
+
+  return (
+    <section
+      className={cn("w-full bg-base-100 py-12 md:py-16 lg:py-24", className)}
+    >
+      <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-8 px-4 md:px-8 lg:grid-cols-[1fr_350px]">
+        <div>
+          {/* Header */}
+          <h2 className="mb-2 text-3xl font-bold leading-tight text-base-content md:text-4xl">
+            {headline}
+          </h2>
+          {subheadline && (
+            <p className="mb-8 text-base text-base-content/60 md:text-lg">
+              {subheadline}
+            </p>
+          )}
+          {!subheadline && <div className="mb-8" />}
+
+          {/* Solution list */}
+          <div className="flex flex-col gap-4">
+            {items.map((item, index) => (
+              <SolutionItem
+                key={index}
+                item={item}
+                index={index}
+                isOpen={openIndex === index}
+                onSelect={() => setOpenIndex(index)}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Image panel */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeImage}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="hidden aspect-[4/3] overflow-hidden rounded-2xl bg-base-200 lg:block lg:aspect-auto"
+          >
+            <img
+              src={activeImage}
+              alt={activeImageAlt}
+              className="h-full w-full object-cover"
+            />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </section>
+  );
+}

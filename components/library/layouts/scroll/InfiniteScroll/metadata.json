@@ -1,0 +1,52 @@
+{
+  "id": "layout-infinitescroll-01",
+  "name": "Infinite Scroll",
+  "category": "layout/scroll",
+  "style": ["modern", "bold"],
+  "mood": ["energetic", "trustworthy"],
+  "layout": "stacked",
+  "density": "high",
+  "purpose": ["testimonials"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "maxLength": 200,
+      "optional": true
+    },
+    {
+      "name": "rows",
+      "type": "list",
+      "maxItems": 3,
+      "itemSchema": {
+        "type": "list",
+        "maxItems": 8,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            { "name": "image", "type": "image", "aspectRatio": "1:1" },
+            { "name": "imageAlt", "type": "text", "maxLength": 120 },
+            { "name": "name", "type": "text", "maxLength": 40 },
+            { "name": "title", "type": "text", "maxLength": 60 },
+            { "name": "quote", "type": "text", "maxLength": 200 }
+          ]
+        }
+      }
+    }
+  ],
+  "mobileBehavior": "scroll",
+  "pairsWell": [
+    "hero-geometric-01",
+    "hero-split-image-01",
+    "cta-banner-01",
+    "layout-cardgrid-01"
+  ],
+  "pairsPoorly": ["layout-stackedsplit-01", "layout-staggerfan-01"]
+}

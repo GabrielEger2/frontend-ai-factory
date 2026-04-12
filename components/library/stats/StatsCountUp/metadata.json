@@ -1,0 +1,58 @@
+{
+  "id": "stats-count-up-01",
+  "name": "Count-Up Stats",
+  "category": "stats",
+  "purpose": ["stats"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["modern", "minimal", "corporate"],
+  "mood": ["professional", "trustworthy"],
+  "layout": "horizontal",
+  "density": "low",
+  "slots": [
+    { "name": "headline", "type": "text", "optional": true, "maxLength": 120 },
+    {
+      "name": "headlineHighlight",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    },
+    {
+      "name": "stats",
+      "type": "list",
+      "maxItems": 5,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "value", "type": "number" },
+          { "name": "decimals", "type": "number", "optional": true },
+          {
+            "name": "prefix",
+            "type": "text",
+            "optional": true,
+            "maxLength": 5
+          },
+          {
+            "name": "suffix",
+            "type": "text",
+            "optional": true,
+            "maxLength": 10
+          },
+          { "name": "label", "type": "text", "maxLength": 80 }
+        ]
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-geometric-01",
+    "hero-split-image-01",
+    "cta-banner-01",
+    "features-sticky-cards-01"
+  ],
+  "pairsPoorly": []
+}

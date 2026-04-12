@@ -1,0 +1,28 @@
+{
+  "id": "contact-map-info-01",
+  "name": "Contact Map + Info",
+  "category": "contact",
+  "purpose": ["contact"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["modern", "corporate"],
+  "mood": ["professional", "trustworthy"],
+  "layout": "split",
+  "density": "medium",
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    { "name": "subheadline", "type": "text", "maxLength": 160 },
+    { "name": "address", "type": "text", "maxLength": 200 },
+    { "name": "phone", "type": "text", "maxLength": 20 },
+    { "name": "email", "type": "text", "maxLength": 60 },
+    { "name": "hours", "type": "text", "maxLength": 100 },
+    { "name": "map_embed_url", "type": "url" }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": ["cta-inline-01", "faq-minimal-01", "footer-reveal-01"],
+  "pairsPoorly": ["contact-form-01"]
+}

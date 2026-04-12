@@ -1,0 +1,31 @@
+{
+  "id": "cta-banner-01",
+  "name": "CTA Banner",
+  "category": "cta",
+  "purpose": ["cta"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "bold"],
+  "mood": ["energetic", "professional"],
+  "layout": "centered",
+  "density": "low",
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    { "name": "subheadline", "type": "text", "maxLength": 160 },
+    { "name": "ctaText", "type": "text", "maxLength": 30 },
+    { "name": "ctaUrl", "type": "url" },
+    { "name": "secondaryCtaText", "type": "text", "maxLength": 30 },
+    { "name": "secondaryCtaUrl", "type": "url" }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "features-cards-01",
+    "testimonials-scrolling-01",
+    "footer-reveal-01"
+  ],
+  "pairsPoorly": ["cta-inline-01", "cta-floating-01"]
+}

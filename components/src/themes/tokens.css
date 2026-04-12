@@ -1,0 +1,93 @@
+/*
+ * SiteGen Design Token Contract
+ * ==============================
+ * This file documents the full set of CSS custom properties (design tokens)
+ * that every SiteGen theme must define. Themes apply values via the
+ * [data-theme] attribute on <html>.
+ *
+ * Color tokens use oklch (Oklab Lightness, Chroma, Hue) without the
+ * oklch() wrapper — just the three values (e.g., "0.97 0.001 106.42").
+ * The Tailwind config wraps them as: oklch(var(--color-*) / <alpha-value>)
+ * so alpha compositing works with Tailwind opacity utilities.
+ *
+ * To create a new theme:
+ *   1. Copy default.css
+ *   2. Replace oklch values for both light and dark palettes
+ *   3. Import the new theme CSS in the site layout
+ *
+ * Token categories:
+ *   - Colors (oklch)    — surfaces, semantics, states
+ *   - Radius            — border radius scale
+ *   - Sizes             — interactive element sizing
+ *   - Border            — border width
+ *   - Effects           — depth (shadow intensity), noise (texture)
+ *   - Fonts             — font family stacks
+ */
+
+/* --------------------------------------------------------------------------
+ * COLOR TOKENS (oklch values without wrapper)
+ * Pattern: --color-<name>: L C H
+ * --------------------------------------------------------------------------
+ *
+ * Surface colors:
+ *   --color-base-100         Main background
+ *   --color-base-200         Slightly darker surface (cards, sidebars)
+ *   --color-base-300         Even darker surface (borders, dividers)
+ *   --color-base-content     Default text color on base surfaces
+ *
+ * Semantic colors (each with a -content variant for text on that color):
+ *   --color-primary           Brand primary
+ *   --color-primary-content   Text on primary
+ *   --color-secondary         Brand secondary
+ *   --color-secondary-content Text on secondary
+ *   --color-accent            Accent / highlight
+ *   --color-accent-content    Text on accent
+ *   --color-neutral           Neutral / muted
+ *   --color-neutral-content   Text on neutral
+ *
+ * State colors (each with a -content variant):
+ *   --color-info              Informational
+ *   --color-info-content      Text on info
+ *   --color-success           Success / positive
+ *   --color-success-content   Text on success
+ *   --color-warning           Warning / caution
+ *   --color-warning-content   Text on warning
+ *   --color-error             Error / destructive
+ *   --color-error-content     Text on error
+ *
+ * --------------------------------------------------------------------------
+ * RADIUS TOKENS
+ * --------------------------------------------------------------------------
+ *
+ *   --radius-selector         Toggle, checkbox, chip radius (larger, pill-like)
+ *   --radius-field            Input, select, textarea radius (subtle)
+ *   --radius-box              Card, modal, dropdown radius (medium)
+ *
+ * --------------------------------------------------------------------------
+ * SIZE TOKENS
+ * --------------------------------------------------------------------------
+ *
+ *   --size-selector           Padding for toggle/chip elements
+ *   --size-field              Padding for input/select elements
+ *
+ * --------------------------------------------------------------------------
+ * BORDER TOKENS
+ * --------------------------------------------------------------------------
+ *
+ *   --border                  Default border width
+ *
+ * --------------------------------------------------------------------------
+ * EFFECT TOKENS
+ * --------------------------------------------------------------------------
+ *
+ *   --depth                   Shadow intensity multiplier (0 = flat, 1 = normal)
+ *   --noise                   Background noise texture intensity (0 = none, 1 = full)
+ *
+ * --------------------------------------------------------------------------
+ * FONT TOKENS
+ * --------------------------------------------------------------------------
+ *
+ *   --font-sans               Sans-serif font stack
+ *   --font-serif              Serif font stack
+ *   --font-mono               Monospace font stack
+ */

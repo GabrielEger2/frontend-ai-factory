@@ -1,0 +1,15 @@
+{
+  "name": "sitegen",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "components",
+    "dashboard",
+    "agents",
+    "infra"
+  ],
+  "scripts": {
+    "components:storybook": "npm run storybook --workspace=components",
+    "components:type-check": "npm run type-check --workspace=components"
+  }
+}

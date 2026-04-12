@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  [data-theme] {
+    background-color: oklch(var(--color-base-100) / 1);
+    color: oklch(var(--color-base-content) / 1);
+    font-family: var(--font-sans);
+  }
+}

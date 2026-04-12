@@ -1,0 +1,34 @@
+{
+  "id": "contact-form-01",
+  "name": "Contact Form",
+  "category": "contact",
+  "purpose": ["contact"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "minimal"],
+  "mood": ["professional", "friendly"],
+  "layout": "centered",
+  "density": "medium",
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    { "name": "subheadline", "type": "text", "maxLength": 160 },
+    { "name": "submit_text", "type": "text", "maxLength": 30 },
+    {
+      "name": "fields",
+      "type": "list",
+      "maxItems": 6,
+      "itemSchema": [
+        { "name": "name", "type": "text", "maxLength": 30 },
+        { "name": "label", "type": "text", "maxLength": 50 },
+        { "name": "type", "type": "text", "maxLength": 10 }
+      ]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": ["faq-accordion-01", "cta-banner-01", "footer-reveal-01"],
+  "pairsPoorly": ["contact-map-info-01"]
+}

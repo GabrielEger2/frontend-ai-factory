@@ -1,60 +1,77 @@
-# Context: Component Library v1
+# Component Library Architecture Reorganization
 
 ## Task Boundary
-Build 16 pre-designed website components across 5 categories (5 heroes, 4 features, 3 CTAs, 2 contact, 2 footers) with a full theming system. These components are for **AI-generated websites** (client-facing output), NOT the seller dashboard. Each component tagged with style[], mood[], category, slots[] metadata. Local development via Storybook.
+Reorganize the component library from self-contained opinionated components into a **style kit + parameterized layout** architecture. Every component should respect a site-wide style kit for visual consistency. Full migration — not incremental.
 
-## Implementation Decisions (locked)
+## Implementation Decisions (LOCKED)
 
-### UI Framework
-- **shadcn/UI + Tailwind CSS** — copy-paste components the team owns
-- Use DaisyUI's token structure as **inspiration** for CSS variable naming, but NOT DaisyUI as a dependency
-- Components are React/Next.js components with slot props
+### 1. Style Kit as First-Class Concept
+- The Style Agent outputs a style kit: background, card, textDecoration, buttonVariant, buttonColorScheme, theme tokens
+- Every section on the page respects the style kit
+- One card style per site, one background pattern, 1-2 text decorations max
 
-### Theming System
-- **DaisyUI-style CSS variable naming**: `--color-base-100`, `--color-primary`, `--radius-box`, etc.
-- **oklch color space** for all color tokens
-- **Full token set from day 1**:
-  - Colors: base-100/200/300/content, primary/content, secondary/content, accent/content, neutral/content, info/content, success/content, warning/content, error/content
-  - Border radius: --radius-selector, --radius-field, --radius-box
-  - Base sizes: --size-selector, --size-field
-  - Border: --border
-  - Effects: --depth, --noise
-  - Fonts: TBD but included in token system
-- **Both light + dark mode from the start** — each theme defines both palettes
-- Theme tokens are for **generated sites only** — dashboard has separate styling
+### 2. Heroes Stay Opinionated
+- Heroes remain as distinct components (not parameterized layouts)
+- Each hero declares which style kit slots it uses (background, textDecoration, button)
+- Some heroes don't use background (SplitImage, ParallaxImages — their images ARE the visual)
+- Style kit fills in the blanks heroes expose, doesn't override their structure
 
-### Component Architecture
-- **CSS-first, minimal JS** — server components by default, `'use client'` only for forms and essential interactions
-- CSS for hover states, transitions, responsive behavior
-- Components consume theme tokens via CSS variables + Tailwind classes
+### 3. Layouts Organized by Spatial Structure
+- Directory structure: `layouts/grid/`, `layouts/split/`, `layouts/scroll/`
+- NOT organized by semantic purpose (features vs content)
+- Purpose is a metadata tag, not a directory
 
-### Local Development
-- **Storybook** for component development and testing
-- Each component gets stories with different themes, slot content, and viewport sizes
+### 4. Cards Are Content-Aware with Modes (NOT pure containers)
+- Cards have predefined content modes: feature, testimonial, product, team, etc.
+- Each mode defines which props are expected and how they're laid out inside the card
+- The style kit picks which card (Magic, Base, Flip, etc.)
+- The layout's purpose determines which content mode
+- This keeps AI output constrained — no freeform children
 
-### Component Structure (from CLAUDE.md)
-- Path: `components/library/<category>/<ComponentName>/`
-- Files: `index.tsx` (component), `metadata.json` (tags), optional `variants/`
-- Metadata: style[], mood[], category, layout, density, slots[], mobileBehavior, pairsWell[], pairsPoorly[]
+### 5. Testimonials Standardized into Layout System
+- No separate testimonial category
+- Testimonials are grid/split/scroll layouts with `purpose: "testimonials"`
+- TestimonialShowcase → split layout with purpose testimonial
+- TestimonialsScrolling → InfiniteScroll layout
+- TestimonialsStacked → SimpleGrid with purpose testimonial
+- TestimonialsStagger → CardGrid with stagger animation
+
+### 6. Layout Components Accept Style Kit Props
+- Layouts receive which card/background/textDecoration to use as props
+- The Assembler passes style kit choices to each layout
+- Layouts declare what they accept via `acceptsStyleKit` in metadata
+
+### 7. Metadata Schema Updates
+- Add `purpose` array (features, testimonials, team, products, services, etc.)
+- Add `acceptsStyleKit` object (card: bool, background: bool, textDecoration: bool)
+- Category becomes structural: "layout/grid", "layout/split", "layout/scroll", "hero", "cta", etc.
 
 ## Claude's Discretion
-- Exact shadcn/UI components to use as base (if any) vs fully custom
-- Storybook configuration details
-- Tailwind config structure for custom theme tokens
-- Component internal implementation patterns
-- File organization within components/ workspace
+- Exact content mode names for cards
+- Internal prop interface design
+- How to handle AuthorSplit (merge into ImageText or keep separate)
+- Animation patterns for each layout
+- Storybook story organization after migration
 
 ## Existing Code Insights
-- Repo is greenfield — only phases.txt and .claude/ config exist
-- No existing components, no package.json, no workspace setup yet
-- Monorepo structure defined in CLAUDE.md: infra/, agents/, dashboard/, components/
+- 29 components across 10 categories in components/library/
+- 20+ UI primitives in components/ui/ (backgrounds/6, cards/7, text-decorations/6, button/5 variants)
+- Token-based theme system with CSS custom properties (oklch)
+- Only 1 theme implemented (default light + dark)
+- FeaturesCards imports 6 card primitives — most coupled component
+- 4 components missing metadata.json: ContentImageText, TestimonialsScrolling, TestimonialsStacked, TestimonialsStagger
+- Dual motion library: motion/react vs framer-motion coexist
+- Stories files exist inside ui/ subdirs (anomaly)
+- itemSchema format inconsistency in metadata (fields array vs flat object)
 
 ## Specific Ideas
-- User provided a complete DaisyUI theme config as reference for token structure (oklch values, radius, sizes, border, depth, noise)
-- Phase 1 scope: 16 components across heroes (5), features (4), CTAs (3), contact (2), footers (2)
+- CardGrid purpose examples: features, testimonials, team, products, services
+- IconGrid purpose examples: features, services, process
+- SimpleGrid purpose examples: features, benefits, stats
+- Background rhythm: hero always, CTA sometimes, not every section — Composer decides
+- Card content modes: feature (icon+title+desc+CTA), testimonial (avatar+quote+name+role), product (image+price+rating+CTA), team (photo+name+title+bio)
 
 ## Deferred Ideas
-- Neo4j PAIRS_WITH scoring (Phase 3)
-- Component variants (Phase 3)
-- 50-component full library (Phase 3)
-- Dashboard styling (separate concern)
+- Style kit schema TypeScript interface (needs research on what exactly the Style Agent outputs)
+- Multiple theme support (only default theme exists now)
+- Neo4j graph model updates for layout vs style compatibility (Phase 3)

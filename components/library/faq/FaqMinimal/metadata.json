@@ -1,0 +1,32 @@
+{
+  "id": "faq-minimal-01",
+  "name": "FAQ Minimal",
+  "category": "faq",
+  "purpose": ["faq"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["minimal", "editorial"],
+  "mood": ["calm", "professional"],
+  "layout": "centered",
+  "density": "low",
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    { "name": "subheadline", "type": "text", "maxLength": 160 },
+    {
+      "name": "items",
+      "type": "list",
+      "maxItems": 8,
+      "itemSchema": [
+        { "name": "question", "type": "text", "maxLength": 120 },
+        { "name": "answer", "type": "text", "maxLength": 500 }
+      ]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": ["cta-banner-01", "contact-form-01", "footers-simple-01"],
+  "pairsPoorly": ["faq-accordion-01", "faq-solutions-01"]
+}

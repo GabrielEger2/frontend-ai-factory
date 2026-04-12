@@ -64,10 +64,19 @@ Full library target: ~55 components across 8 categories.
 - Styles: modern, classic, editorial, luxury, playful, minimal, bold, corporate
 - Moods: professional, elegant, fun, serious, friendly, energetic, calm, trustworthy
 
+## Storybook Stories
+
+- **Max 5 stories per component.**
+- Every story must have **unique content** — different business context, copy, and data. Never duplicate content across stories just to swap a prop.
+- **Mix button/CTA variants naturally** across stories instead of creating dedicated "WithXButton" stories. Each story already represents a different use case — assign a different `ctaStyle` to each.
+- Name stories after the scenario they represent (e.g. `RealEstate`, `SaasOnboarding`, `FreelancerPortfolio`), not after the prop being demoed.
+- Use `argTypes` with `control: "select"` so any variant can still be tested interactively via the Storybook controls panel.
+
 ## Adding a New Component
 1. Create directory: `components/library/<category>/<ComponentName>/`
 2. Create `index.tsx` with slot props interface.
 3. Create `metadata.json` with all required fields.
-4. Add PAIRS_WITH data (which components it goes well/poorly with).
-5. Test with assembler to verify slot mapping works.
-6. Update component count in relevant docs.
+4. Create `<ComponentName>.stories.tsx` following the story rules above.
+5. Add PAIRS_WITH data (which components it goes well/poorly with).
+6. Test with assembler to verify slot mapping works.
+7. Update component count in relevant docs.

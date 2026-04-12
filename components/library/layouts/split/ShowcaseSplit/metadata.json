@@ -1,0 +1,43 @@
+{
+  "id": "layout-showcasesplit-01",
+  "name": "Showcase Split",
+  "category": "layout/split",
+  "style": ["bold", "modern", "corporate"],
+  "mood": ["professional", "trustworthy", "energetic"],
+  "layout": "split",
+  "density": "medium",
+  "purpose": ["testimonials"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "slots": [
+    { "name": "label", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 60 },
+    {
+      "name": "testimonials",
+      "type": "list",
+      "maxItems": 6,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "image", "type": "image", "aspectRatio": "3:4" },
+          { "name": "imageAlt", "type": "text", "maxLength": 120 },
+          { "name": "name", "type": "text", "maxLength": 60 },
+          { "name": "title", "type": "text", "maxLength": 80 },
+          { "name": "quote", "type": "text", "maxLength": 300 }
+        ]
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "layout-stickycards-01",
+    "layout-simplegrid-01",
+    "stats-count-up-01",
+    "cta-banner-01"
+  ],
+  "pairsPoorly": ["layout-stackedsplit-01", "layout-infinitescroll-01"]
+}
