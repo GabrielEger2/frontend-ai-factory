@@ -84,6 +84,15 @@ const config: Config = {
         serif: "var(--font-serif)",
         mono: "var(--font-mono)",
       },
+      keyframes: {
+        "line-shadow": {
+          "0%": { backgroundPosition: "0 0" },
+          "100%": { backgroundPosition: "100% -100%" },
+        },
+      },
+      animation: {
+        "line-shadow": "line-shadow 15s linear infinite",
+      },
     },
   },
   plugins: [tailwindcssAnimate],

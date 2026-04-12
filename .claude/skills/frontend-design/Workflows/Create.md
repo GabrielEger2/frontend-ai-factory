@@ -240,7 +240,7 @@ type Story = StoryObj<typeof ComponentName>;
 - **Match the context** the user described — if they said "testimonials or products", write real-sounding testimonials and real-sounding product descriptions
 - **Vary content length** across stories — test short headlines and long ones
 - **Use placehold.co for images** — `https://placehold.co/WxH` with appropriate dimensions
-- **pt-BR content is fine** if the user's context suggests it — the project targets Brazilian Portuguese
+- **Always use English** for story content — Storybook is a developer tool. The AI pipeline handles pt-BR localization at runtime
 
 #### Decorator pattern
 If the component benefits from scroll context (sticky, reveal, parallax), add a decorator:
