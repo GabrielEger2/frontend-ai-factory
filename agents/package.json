@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "seed:components": "ts-node scripts/seed-components.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@types/aws-lambda": "^8",
     "@types/node": "^20",
+    "ts-node": "^10",
     "typescript": "^5"
   }
 }
