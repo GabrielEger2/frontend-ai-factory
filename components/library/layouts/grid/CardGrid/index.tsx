@@ -2,16 +2,14 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@lib/utils";
-import { containerVariants, fadeUp } from "@lib/motion-variants";
-import type { StyleKit } from "@lib/style-kit";
-import type { CardStyle } from "@lib/style-kit";
+import type { StyleKit, CardStyle } from "@lib/style-kit";
 import { buttonStyles } from "@ui/button";
 import CardBase from "@ui/cards/CardBase";
 import { CardFlip } from "@ui/cards/CardFlip";
 import { CardRevealSlide } from "@ui/cards/CardRevealSlide";
 import { CardMagic } from "@ui/cards/CardMagic";
-import { CardProduct, type CardProductProps } from "@ui/cards/CardProduct";
-import { CardOutlineGrid, type CardOutlineItem } from "@ui/cards/CardOutline";
+import { CardProduct } from "@ui/cards/CardProduct";
+import { CardOutlineGrid } from "@ui/cards/CardOutline";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
