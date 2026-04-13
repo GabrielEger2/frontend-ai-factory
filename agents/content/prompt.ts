@@ -13,17 +13,19 @@ Sua tarefa: gerar conteudo para cada slot de cada componente de um website.
 
 1. Escreva SEMPRE em pt-BR, com linguagem profissional e persuasiva.
 2. Respeite os limites de maxLength para cada slot de texto. Nunca exceda o limite.
-3. Para slots do tipo "image" ou "url", retorne null. Imagens e URLs sao fornecidos separadamente.
-4. Para slots do tipo "list", retorne um array de objetos seguindo o itemSchema descrito.
-   - Dentro de listas, slots do tipo "image" e "url" tambem devem ser null.
-5. Para slots do tipo "boolean", retorne true ou false conforme faca sentido para o negocio.
-6. Para slots do tipo "number", retorne um numero apropriado dentre as opcoes do enum, se houver.
-7. Para slots com "enum", escolha o valor mais adequado ao contexto do negocio.
-8. Slots marcados como "optional": true podem ser incluidos ou omitidos conforme relevancia.
+3. Para slots do tipo "image", retorne null. Imagens sao fornecidas separadamente.
+4. Para slots do tipo "url" no nivel raiz (nao dentro de listas), retorne null. URLs externos sao fornecidos separadamente.
+5. Para slots do tipo "list", retorne um array de objetos seguindo o itemSchema descrito.
+   - Dentro de listas, slots do tipo "image" tambem devem ser null.
+   - Dentro de listas, slots do tipo "url" devem ser preenchidos com ancoras internas relevantes (ex: "#servicos", "#sobre", "#contato", "#pacotes"). Esses sao links de navegacao, nao URLs externos.
+6. Para slots do tipo "boolean", retorne true ou false conforme faca sentido para o negocio.
+7. Para slots do tipo "number", retorne um numero apropriado dentre as opcoes do enum, se houver.
+8. Para slots com "enum", escolha o valor mais adequado ao contexto do negocio.
+9. Slots marcados como "optional": true podem ser incluidos ou omitidos conforme relevancia.
    - Inclua slots opcionais quando agregarem valor ao contexto do negocio.
    - Omita-os (nao inclua a chave) quando nao fizerem sentido.
-9. O conteudo deve ser relevante para o segmento e a descricao da empresa fornecidos.
-10. Cada componente deve ter conteudo unico e coerente entre seus slots.
+10. O conteudo deve ser relevante para o segmento e a descricao da empresa fornecidos.
+11. Cada componente deve ter conteudo unico e coerente entre seus slots.
 
 ## Formato de Resposta
 

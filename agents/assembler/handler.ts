@@ -29,6 +29,38 @@ function toComponentName(componentId: string): string {
 }
 
 /**
+ * Replace null/undefined values with safe defaults based on key name.
+ *
+ * The Content Agent returns null for "url" and "image" slot types.
+ * When those nulls are nested inside arrays/objects (e.g. navbar links),
+ * JSON.stringify preserves them, causing TypeScript build failures.
+ * This function walks the value tree and replaces nulls with defaults.
+ */
+function sanitizeSlotValue(value: unknown, key?: string): unknown {
+  if (value === null || value === undefined) {
+    if (key && /url|href|src/i.test(key)) return "#";
+    if (key && /image|img|banner|photo|avatar|logo|icon/i.test(key))
+      return "/placeholder.svg";
+    if (key && /alt/i.test(key)) return "";
+    return undefined;
+  }
+  if (Array.isArray(value)) {
+    return value.map((item) => sanitizeSlotValue(item, key));
+  }
+  if (typeof value === "object") {
+    const result: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+      const sanitized = sanitizeSlotValue(v, k);
+      if (sanitized !== undefined) {
+        result[k] = sanitized;
+      }
+    }
+    return result;
+  }
+  return value;
+}
+
+/**
  * Serialize a slot value for embedding in JSX props.
  */
 function serializeSlotValue(value: unknown): string {
@@ -61,7 +93,10 @@ function generateComponentSection(
   }
 
   const propsStr = propsEntries
-    .map(([key, value]) => `        ${key}=${serializeSlotValue(value)}`)
+    .map(
+      ([key, value]) =>
+        `        ${key}=${serializeSlotValue(sanitizeSlotValue(value, key))}`,
+    )
     .join("\n");
 
   return `      <${name}\n${propsStr}\n      />`;
@@ -344,6 +379,17 @@ function generateGlobalsCss(): string {
 }
 
 /**
+ * Generate a minimal placeholder SVG for image slots that received null
+ * from the Content Agent. Served from /placeholder.svg in the public dir.
+ */
+function generatePlaceholderSvg(): string {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="#e2e8f0"/>
+  <text x="300" y="200" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="18" fill="#94a3b8">Imagem</text>
+</svg>`;
+}
+
+/**
  * Generate layout.tsx for the Next.js app.
  */
 function generateLayoutTsx(): string {
@@ -488,6 +534,9 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
   files["tailwind.config.ts"] = generateTailwindConfig();
   files["tsconfig.json"] = generateTsConfig();
   files["postcss.config.js"] = generatePostCssConfig();
+
+  // Public static assets
+  files["public/placeholder.svg"] = generatePlaceholderSvg();
 
   // App source files
   files["src/app/globals.css"] = generateGlobalsCss();
