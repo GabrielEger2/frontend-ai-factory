@@ -42,14 +42,43 @@
     {
       "name": "socialLinks",
       "type": "list",
-      "maxItems": 4,
+      "maxItems": 6,
       "itemSchema": {
-        "network": { "type": "text", "maxLength": 20 },
+        "network": {
+          "type": "text",
+          "maxLength": 20,
+          "enum": [
+            "instagram",
+            "linkedin",
+            "facebook",
+            "whatsapp",
+            "twitter",
+            "youtube",
+            "tiktok",
+            "google",
+            "pinterest",
+            "telegram"
+          ]
+        },
         "url": { "type": "url" },
         "label": { "type": "text", "maxLength": 60 }
       }
     },
-    { "name": "companyName", "type": "text", "maxLength": 60 }
+    { "name": "companyName", "type": "text", "maxLength": 60 },
+    { "name": "ctaText", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "ctaUrl", "type": "url", "optional": true },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "optional": true,
+      "enum": [350, 400, 450, 500, 550]
+    }
   ],
   "mobileBehavior": "stack",
   "pairsWell": ["cta-banner-01", "faq-accordion-01", "contact-form-01"],
