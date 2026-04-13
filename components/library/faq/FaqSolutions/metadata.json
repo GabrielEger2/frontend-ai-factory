@@ -20,14 +20,17 @@
       "name": "items",
       "type": "list",
       "maxItems": 5,
-      "itemSchema": [
-        { "name": "title", "type": "text", "maxLength": 60 },
-        { "name": "description", "type": "text", "maxLength": 300 },
-        { "name": "ctaText", "type": "text", "maxLength": 30 },
-        { "name": "ctaUrl", "type": "url" },
-        { "name": "image", "type": "image", "aspectRatio": "4:3" },
-        { "name": "imageAlt", "type": "text", "maxLength": 120 }
-      ]
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "title", "type": "text", "maxLength": 60 },
+          { "name": "description", "type": "text", "maxLength": 300 },
+          { "name": "ctaText", "type": "text", "maxLength": 30 },
+          { "name": "ctaUrl", "type": "url" },
+          { "name": "image", "type": "image", "aspectRatio": "4:3" },
+          { "name": "imageAlt", "type": "text", "maxLength": 120 }
+        ]
+      }
     }
   ],
   "mobileBehavior": "stack",

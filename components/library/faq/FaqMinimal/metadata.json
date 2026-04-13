@@ -20,10 +20,13 @@
       "name": "items",
       "type": "list",
       "maxItems": 8,
-      "itemSchema": [
-        { "name": "question", "type": "text", "maxLength": 120 },
-        { "name": "answer", "type": "text", "maxLength": 500 }
-      ]
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "question", "type": "text", "maxLength": 120 },
+          { "name": "answer", "type": "text", "maxLength": 500 }
+        ]
+      }
     }
   ],
   "mobileBehavior": "stack",
