@@ -4,6 +4,10 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { AssemblerInputSchema } from "./types";
 import type { AssemblerResult } from "./types";
 import type { ContentOutput } from "../shared/types";
+import {
+  COMPONENT_SOURCES,
+  COMPONENT_ID_TO_PATH,
+} from "./component-sources.generated";
 import * as zlib from "zlib";
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
@@ -70,6 +74,14 @@ function generatePageTsx(contentOutput: ContentOutput): string {
   const imports = contentOutput.components
     .map((c) => {
       const name = toComponentName(c.componentId);
+      // Use COMPONENT_ID_TO_PATH for real component directory paths.
+      // The map stores "src/components/category/Name" — strip "src/" for @/ alias.
+      const mappedPath = COMPONENT_ID_TO_PATH[c.componentId];
+      if (mappedPath) {
+        const importPath = `@/${mappedPath.replace(/^src\//, "")}`;
+        return `import ${name} from "${importPath}";`;
+      }
+      // Fallback for unmapped components
       return `import ${name} from "@/components/${c.componentId}";`;
     })
     .join("\n");
@@ -91,39 +103,7 @@ ${sections}
 }
 
 /**
- * Generate a stub component file for each component ID.
- * In production these would come from the component library,
- * but the assembler produces standalone deployable code.
- */
-function generateComponentStub(
-  componentId: string,
-  slots: Record<string, unknown>,
-): string {
-  const name = toComponentName(componentId);
-  const propsInterface = Object.keys(slots)
-    .map((key) => `  ${key}?: unknown;`)
-    .join("\n");
-
-  return `interface ${name}Props {
-${propsInterface}
-}
-
-export default function ${name}(props: ${name}Props) {
-  return (
-    <section data-component="${componentId}">
-      {Object.entries(props).map(([key, value]) => (
-        <div key={key} data-slot={key}>
-          {typeof value === "string" ? value : JSON.stringify(value)}
-        </div>
-      ))}
-    </section>
-  );
-}
-`;
-}
-
-/**
- * Generate a minimal package.json for the Next.js app.
+ * Generate package.json with real component library dependencies.
  */
 function generatePackageJson(projectId: string): string {
   return JSON.stringify(
@@ -140,6 +120,13 @@ function generatePackageJson(projectId: string): string {
         next: "^14",
         react: "^18",
         "react-dom": "^18",
+        clsx: "^2.1.1",
+        "framer-motion": "^12.38.0",
+        lenis: "^1.3.21",
+        motion: "^12.38.0",
+        "react-icons": "^5.6.0",
+        "rough-notation": "^0.5.1",
+        "tailwind-merge": "^3.5.0",
       },
       devDependencies: {
         "@types/node": "^20",
@@ -148,6 +135,7 @@ function generatePackageJson(projectId: string): string {
         tailwindcss: "^3",
         autoprefixer: "^10",
         postcss: "^8",
+        "tailwindcss-animate": "^1.0.7",
       },
     },
     null,
@@ -169,19 +157,103 @@ module.exports = nextConfig;
 }
 
 /**
- * Generate tailwind.config.ts for the Next.js app.
+ * Generate tailwind.config.ts with the full design token set
+ * matching the components workspace configuration.
  */
 function generateTailwindConfig(): string {
   return `import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
+
+function oklch(variable: string): string {
+  return \`oklch(var(\${variable}) / <alpha-value>)\`;
+}
 
 const config: Config = {
   content: [
     "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/lib/**/*.{ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "base-100": oklch("--color-base-100"),
+        "base-200": oklch("--color-base-200"),
+        "base-300": oklch("--color-base-300"),
+        "base-content": oklch("--color-base-content"),
+
+        primary: {
+          DEFAULT: oklch("--color-primary"),
+          foreground: oklch("--color-primary-content"),
+        },
+        "primary-content": oklch("--color-primary-content"),
+
+        secondary: {
+          DEFAULT: oklch("--color-secondary"),
+          foreground: oklch("--color-secondary-content"),
+        },
+        "secondary-content": oklch("--color-secondary-content"),
+
+        accent: {
+          DEFAULT: oklch("--color-accent"),
+          foreground: oklch("--color-accent-content"),
+        },
+        "accent-content": oklch("--color-accent-content"),
+
+        neutral: {
+          DEFAULT: oklch("--color-neutral"),
+          foreground: oklch("--color-neutral-content"),
+        },
+        "neutral-content": oklch("--color-neutral-content"),
+
+        info: {
+          DEFAULT: oklch("--color-info"),
+          foreground: oklch("--color-info-content"),
+        },
+        "info-content": oklch("--color-info-content"),
+
+        success: {
+          DEFAULT: oklch("--color-success"),
+          foreground: oklch("--color-success-content"),
+        },
+        "success-content": oklch("--color-success-content"),
+
+        warning: {
+          DEFAULT: oklch("--color-warning"),
+          foreground: oklch("--color-warning-content"),
+        },
+        "warning-content": oklch("--color-warning-content"),
+
+        error: {
+          DEFAULT: oklch("--color-error"),
+          foreground: oklch("--color-error-content"),
+        },
+        "error-content": oklch("--color-error-content"),
+      },
+      borderRadius: {
+        lg: "var(--radius-box)",
+        md: "calc(var(--radius-box) - 2px)",
+        sm: "calc(var(--radius-box) - 4px)",
+        selector: "var(--radius-selector)",
+        field: "var(--radius-field)",
+        box: "var(--radius-box)",
+      },
+      fontFamily: {
+        sans: "var(--font-sans)",
+        serif: "var(--font-serif)",
+        mono: "var(--font-mono)",
+      },
+      keyframes: {
+        "line-shadow": {
+          "0%": { backgroundPosition: "0 0" },
+          "100%": { backgroundPosition: "100% -100%" },
+        },
+      },
+      animation: {
+        "line-shadow": "line-shadow 15s linear infinite",
+      },
+    },
   },
-  plugins: [],
+  plugins: [tailwindcssAnimate],
 };
 
 export default config;
@@ -393,10 +465,9 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
   files["src/app/layout.tsx"] = generateLayoutTsx();
   files["src/app/page.tsx"] = generatePageTsx(input.contentOutput);
 
-  // Component stubs
-  for (const component of input.contentOutput.components) {
-    files[`src/components/${component.componentId}/index.tsx`] =
-      generateComponentStub(component.componentId, component.slots);
+  // Real component library source files (bundled at build time)
+  for (const [filePath, content] of Object.entries(COMPONENT_SOURCES)) {
+    files[filePath] = content;
   }
 
   /* ---- Create tar.gz archive ---- */
