@@ -17,6 +17,7 @@
     "content/**/*.ts",
     "assembler/**/*.ts",
     "deploy/**/*.ts",
+    "fail-handler/**/*.ts",
     "pipeline-starter/**/*.ts",
     "scripts/**/*.ts"
   ],
