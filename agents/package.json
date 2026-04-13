@@ -1,0 +1,26 @@
+{
+  "name": "@sitegen/agents",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "seed:components": "ts-node scripts/seed-components.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39",
+    "@aws-sdk/client-dynamodb": "^3",
+    "@aws-sdk/lib-dynamodb": "^3",
+    "@aws-sdk/client-s3": "^3",
+    "@aws-sdk/client-ssm": "^3",
+    "@aws-sdk/client-sfn": "^3",
+    "@aws-sdk/client-sqs": "^3",
+    "zod": "^3"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8",
+    "@types/node": "^20",
+    "ts-node": "^10",
+    "typescript": "^5"
+  }
+}

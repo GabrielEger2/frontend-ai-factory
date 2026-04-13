@@ -1,77 +1,105 @@
-# Component Library Architecture Reorganization
+# CDK Infrastructure Scaffolding — Phase 1
 
 ## Task Boundary
-Reorganize the component library from self-contained opinionated components into a **style kit + parameterized layout** architecture. Every component should respect a site-wide style kit for visual consistency. Full migration — not incremental.
+Scaffold the CDK infrastructure for SiteGen Phase 1: 4 CDK stacks (ApiStack, DatabaseStack, PipelineStack, SiteDeployStack), the `infra/` workspace, the `agents/` workspace with Content Agent handler, and the simplified 3-step pipeline. No dashboard infra, no graph.
 
 ## Implementation Decisions (LOCKED)
 
-### 1. Style Kit as First-Class Concept
-- The Style Agent outputs a style kit: background, card, textDecoration, buttonVariant, buttonColorScheme, theme tokens
-- Every section on the page respects the style kit
-- One card style per site, one background pattern, 1-2 text decorations max
+### 1. DynamoDB — Fat Document for Projects
+- Single item per project: PK=PROJECT#<id>, SK=PROJECT#<id>
+- Each agent appends its output as a top-level attribute (researchOutput, styleOutput, contentOutput, etc.)
+- Status field tracks pipeline progress: queued → content → assembling → deploying → deployed → failed
+- 400KB limit is plenty for one site's data
 
-### 2. Heroes Stay Opinionated
-- Heroes remain as distinct components (not parameterized layouts)
-- Each hero declares which style kit slots it uses (background, textDecoration, button)
-- Some heroes don't use background (SplitImage, ParallaxImages — their images ARE the visual)
-- Style kit fills in the blanks heroes expose, doesn't override their structure
+### 2. Separate Components Table
+- Dedicated ComponentsTable with PK=COMP#<id>
+- Seeded from metadata.json files in components/library/
+- Composer Agent queries this table (Phase 2+); Phase 1 uses segment-based presets instead
 
-### 3. Layouts Organized by Spatial Structure
-- Directory structure: `layouts/grid/`, `layouts/split/`, `layouts/scroll/`
-- NOT organized by semantic purpose (features vs content)
-- Purpose is a metadata tag, not a directory
+### 3. Three-Step Pipeline (Phase 1)
+- SQS trigger → Step Function with 3 states:
+  1. ContentAgent Lambda — calls Claude API, generates copy for hardcoded component slots
+  2. Assembler Lambda — deterministic, slots content into templates, produces Next.js files
+  3. Deploy Lambda — pushes assembled files to Vercel API
+- Each step updates project status in DynamoDB
+- Error handling: Catch block per step, 2 retries with exponential backoff
 
-### 4. Cards Are Content-Aware with Modes (NOT pure containers)
-- Cards have predefined content modes: feature, testimonial, product, team, etc.
-- Each mode defines which props are expected and how they're laid out inside the card
-- The style kit picks which card (Magic, Base, Flip, etc.)
-- The layout's purpose determines which content mode
-- This keeps AI output constrained — no freeform children
+### 4. Segment-Based Presets (Hardcoded Composition)
+- 3-5 preset layouts mapped to segments (pet-shop, law-firm, restaurant, etc.)
+- Each preset is an ordered list of component IDs from the library
+- Content Agent receives the preset layout and generates copy for each component's slots
+- No AI composition — that's Phase 2 (Composer Agent)
 
-### 5. Testimonials Standardized into Layout System
-- No separate testimonial category
-- Testimonials are grid/split/scroll layouts with `purpose: "testimonials"`
-- TestimonialShowcase → split layout with purpose testimonial
-- TestimonialsScrolling → InfiniteScroll layout
-- TestimonialsStacked → SimpleGrid with purpose testimonial
-- TestimonialsStagger → CardGrid with stagger animation
+### 5. CDK Conventions (Fresh, Codex Arcana Style)
+- Start fresh, don't port code from Codex Arcana
+- ARM64 Lambdas, Node.js 20, esbuild bundling
+- Typed environment variables
+- Construct-per-resource pattern
+- Stack isolation: stacks never import each other, resources flow through MainStage as props
 
-### 6. Layout Components Accept Style Kit Props
-- Layouts receive which card/background/textDecoration to use as props
-- The Assembler passes style kit choices to each layout
-- Layouts declare what they accept via `acceptsStyleKit` in metadata
+### 6. Skip Dashboard Infrastructure
+- No DashboardStack in Phase 1
+- Dashboard runs locally with `npm run dev`
+- Will scaffold DashboardStack in Phase 2 or later
 
-### 7. Metadata Schema Updates
-- Add `purpose` array (features, testimonials, team, products, services, etc.)
-- Add `acceptsStyleKit` object (card: bool, background: bool, textDecoration: bool)
-- Category becomes structural: "layout/grid", "layout/split", "layout/scroll", "hero", "cta", etc.
+### 7. Minimal API Surface
+- POST /projects — submit brief (companyName, segment, description) → SQS → returns projectId
+- GET /projects/{id} — poll status + previewUrl
+- That's it for Phase 1
+
+### 8. API Gateway API Key Auth
+- Built-in API Gateway API key + usage plan
+- x-api-key header from dashboard
+- One key per environment
+- Throttle: rateLimit 10, burstLimit 5
+
+### 9. Standard Step Functions Workflow
+- Standard Workflow (not Express) for full execution history and visual debugging
+- Exactly-once semantics
+- Worth the marginal cost increase for observability during Phase 1
+
+### 10. New Vercel Project Per Site
+- Each generated site gets its own Vercel project: sitegen-<projectId>
+- Preview URL: sitegen-<projectId>.vercel.app
+- Clean isolation, production-ready from day one
+- Phase 4 adds custom domains
+
+### 11. S3 Bucket as Pipeline Bus
+- Step Functions state carries only projectId + status + s3Key (tiny payload)
+- Assembler writes generated Next.js files to S3 bucket as zip
+- Deploy Lambda reads from S3 and pushes to Vercel
+- DynamoDB stores full project doc (all agent outputs persisted)
+- Avoids Step Functions 256KB payload limit entirely
+
+### 12. Secrets in SSM SecureString
+- Claude API key: /sitegen/dev/claude-api-key
+- Vercel API token: /sitegen/dev/vercel-api-token
+- SSM SecureString (cheaper than Secrets Manager for Phase 1)
+- Lambdas get ssm:GetParameter permission on specific paths
 
 ## Claude's Discretion
-- Exact content mode names for cards
-- Internal prop interface design
-- How to handle AuthorSplit (merge into ImageText or keep separate)
-- Animation patterns for each layout
-- Storybook story organization after migration
+- Exact CDK construct interface design
+- Lambda handler internal structure (but follow: handler.ts + prompt.ts + types.ts per agent)
+- esbuild bundling config details
+- SQS queue settings (visibility timeout, DLQ config)
+- Step Function definition language details
+- How to structure the seed script for components table
+- Whether to use a shared types package or duplicate types minimally
 
 ## Existing Code Insights
-- 29 components across 10 categories in components/library/
-- 20+ UI primitives in components/ui/ (backgrounds/6, cards/7, text-decorations/6, button/5 variants)
-- Token-based theme system with CSS custom properties (oklch)
-- Only 1 theme implemented (default light + dark)
-- FeaturesCards imports 6 card primitives — most coupled component
-- 4 components missing metadata.json: ContentImageText, TestimonialsScrolling, TestimonialsStacked, TestimonialsStagger
-- Dual motion library: motion/react vs framer-motion coexist
-- Stories files exist inside ui/ subdirs (anomaly)
-- itemSchema format inconsistency in metadata (fields array vs flat object)
+- 28 components in components/library/ with full metadata.json — source data for ComponentsTable seeding
+- components/lib/style-kit.ts has StyleKit interface — relevant for Content Agent output typing
+- No existing infra/, agents/, or dashboard/ directories — building from scratch
+- Root package.json already declares workspaces: ["components", "dashboard", "agents", "infra"]
 
 ## Specific Ideas
-- CardGrid purpose examples: features, testimonials, team, products, services
-- IconGrid purpose examples: features, services, process
-- SimpleGrid purpose examples: features, benefits, stats
-- Background rhythm: hero always, CTA sometimes, not every section — Composer decides
-- Card content modes: feature (icon+title+desc+CTA), testimonial (avatar+quote+name+role), product (image+price+rating+CTA), team (photo+name+title+bio)
+- Segment presets example: pet-shop → hero-parallax-images-01, layout-cardgrid-01, stats-count-up-01, cta-banner-01, footer-reveal-01
+- Segment presets example: law-firm → hero-split-image-01, layout-iconlistsplit-01, faq-accordion-01, contact-form-01, footer-reveal-01
+- Project statuses: queued | content | assembling | deploying | deployed | failed
 
 ## Deferred Ideas
-- Style kit schema TypeScript interface (needs research on what exactly the Style Agent outputs)
-- Multiple theme support (only default theme exists now)
-- Neo4j graph model updates for layout vs style compatibility (Phase 3)
+- DashboardStack (Phase 2+)
+- GraphStack / Neo4j (Phase 3)
+- WebSocket API for real-time progress (Phase 2)
+- CRM JWT auth / Lambda authorizer (Phase 2)
+- Full 8-step pipeline with all agents (Phase 2)
