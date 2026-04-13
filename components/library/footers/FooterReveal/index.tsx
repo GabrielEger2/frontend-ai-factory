@@ -5,6 +5,13 @@ import {
   FaInstagram,
   FaLinkedinIn,
   FaFacebook,
+  FaTwitter,
+  FaYoutube,
+  FaTiktok,
+  FaGoogle,
+  FaPinterest,
+  FaTelegram,
+  FaGlobe,
 } from "react-icons/fa";
 import { HiOutlineMail, HiOutlineMap } from "react-icons/hi";
 import { cn } from "@lib/utils";
@@ -26,7 +33,17 @@ export interface FooterNavColumn {
 
 export interface FooterSocialLink {
   /** Social network name — determines which icon renders */
-  network: "instagram" | "linkedin" | "facebook" | "whatsapp";
+  network:
+    | "instagram"
+    | "linkedin"
+    | "facebook"
+    | "whatsapp"
+    | "twitter"
+    | "youtube"
+    | "tiktok"
+    | "google"
+    | "pinterest"
+    | "telegram";
   /** Profile URL */
   url: string;
   /** Accessible label (e.g. "Instagram da Empresa X") */
@@ -75,13 +92,19 @@ export interface FooterRevealProps {
 /* ------------------------------------------------------------------ */
 
 const SOCIAL_ICONS: Record<
-  FooterSocialLink["network"],
+  string,
   React.ComponentType<{ className?: string }>
 > = {
   instagram: FaInstagram,
   linkedin: FaLinkedinIn,
   facebook: FaFacebook,
   whatsapp: FaWhatsapp,
+  twitter: FaTwitter,
+  youtube: FaYoutube,
+  tiktok: FaTiktok,
+  google: FaGoogle,
+  pinterest: FaPinterest,
+  telegram: FaTelegram,
 };
 
 /* ------------------------------------------------------------------ */
@@ -243,7 +266,7 @@ export default function FooterReveal({
                 {socialLinks.length > 0 && (
                   <div className="flex items-center gap-4 text-lg">
                     {socialLinks.map((social) => {
-                      const Icon = SOCIAL_ICONS[social.network];
+                      const Icon = SOCIAL_ICONS[social.network] ?? FaGlobe;
                       return (
                         <a
                           key={social.network}
