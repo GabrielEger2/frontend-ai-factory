@@ -15,6 +15,7 @@
     "shared/**/*.ts",
     "api/**/*.ts",
     "content/**/*.ts",
+    "humanizer/**/*.ts",
     "assembler/**/*.ts",
     "deploy/**/*.ts",
     "fail-handler/**/*.ts",
