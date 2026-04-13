@@ -149,13 +149,34 @@ export class PipelineStack extends Stack {
     pipelineBucket.grantWrite(assemblerFn.fn);
 
     /* -------------------------------------------------------------- */
+    /*  Fail Handler Lambda                                           */
+    /* -------------------------------------------------------------- */
+
+    const failHandlerFn = new AgentLambda(this, "FailHandlerAgent", {
+      entry: path.join(__dirname, "../../agents/fail-handler/handler.ts"),
+      agentName: "fail-handler",
+      timeout: Duration.seconds(30),
+      memorySize: 256,
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+      },
+    });
+
+    projectsTable.grantReadWriteData(failHandlerFn.fn);
+
+    /* -------------------------------------------------------------- */
     /*  Step Functions State Machine                                   */
     /* -------------------------------------------------------------- */
 
-    const failState = new sfn.Fail(this, "PipelineFailed", {
+    const terminalFail = new sfn.Fail(this, "PipelineFailed", {
       cause: "A pipeline step failed after retries",
       error: "PipelineError",
     });
+
+    const failHandlerStep = new tasks.LambdaInvoke(this, "FailHandlerStep", {
+      lambdaFunction: failHandlerFn.fn,
+      outputPath: "$.Payload",
+    }).next(terminalFail);
 
     const retryConfig: sfn.RetryProps = {
       maxAttempts: 2,
@@ -169,21 +190,21 @@ export class PipelineStack extends Stack {
       outputPath: "$.Payload",
     });
     contentStep.addRetry(retryConfig);
-    contentStep.addCatch(failState);
+    contentStep.addCatch(failHandlerStep, { resultPath: "$.error" });
 
     const assemblerStep = new tasks.LambdaInvoke(this, "AssemblerStep", {
       lambdaFunction: assemblerFn.fn,
       outputPath: "$.Payload",
     });
     assemblerStep.addRetry(retryConfig);
-    assemblerStep.addCatch(failState);
+    assemblerStep.addCatch(failHandlerStep, { resultPath: "$.error" });
 
     const deployStep = new tasks.LambdaInvoke(this, "DeployStep", {
       lambdaFunction: deployFn,
       outputPath: "$.Payload",
     });
     deployStep.addRetry(retryConfig);
-    deployStep.addCatch(failState);
+    deployStep.addCatch(failHandlerStep, { resultPath: "$.error" });
 
     const succeedState = new sfn.Succeed(this, "PipelineSucceeded");
 

@@ -5,7 +5,8 @@
   "scripts": {
     "build": "tsc",
     "type-check": "tsc --noEmit",
-    "seed:components": "ts-node scripts/seed-components.ts"
+    "seed:components": "ts-node scripts/seed-components.ts",
+    "generate-sources": "ts-node assembler/generate-sources.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39",

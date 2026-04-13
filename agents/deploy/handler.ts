@@ -42,6 +42,14 @@ async function getVercelToken(): Promise<string> {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Vercel Polling Constants                                           */
+/* ------------------------------------------------------------------ */
+
+const POLL_INTERVAL_MS = 5_000;
+const POLL_MAX_ATTEMPTS = 90;
+const POLL_WARNING_ATTEMPT = 60;
+
+/* ------------------------------------------------------------------ */
 /*  Tar Extraction                                                     */
 /* ------------------------------------------------------------------ */
 
@@ -103,6 +111,7 @@ function extractTar(tarBuffer: Buffer): TarEntry[] {
 interface VercelFile {
   file: string;
   data: string; // base64 encoded
+  encoding: "base64";
 }
 
 interface VercelDeployResponse {
@@ -149,6 +158,76 @@ async function deployToVercel(
   }
 
   return (await response.json()) as VercelDeployResponse;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Vercel Readiness Polling                                           */
+/* ------------------------------------------------------------------ */
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * Poll the Vercel Deployments API until the deployment reaches
+ * readyState "READY" or "ERROR". Throws on error or timeout.
+ */
+async function pollVercelDeployment(
+  token: string,
+  deploymentId: string,
+): Promise<void> {
+  for (let attempt = 1; attempt <= POLL_MAX_ATTEMPTS; attempt++) {
+    await sleep(POLL_INTERVAL_MS);
+
+    const response = await fetch(
+      `https://api.vercel.com/v13/deployments/${deploymentId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      throw new Error(`Vercel poll API error ${response.status}: ${errorBody}`);
+    }
+
+    const data = (await response.json()) as { readyState: string };
+
+    console.log(
+      JSON.stringify({
+        message: "Vercel poll",
+        deploymentId,
+        attempt,
+        readyState: data.readyState,
+      }),
+    );
+
+    if (data.readyState === "READY") {
+      return;
+    }
+
+    if (data.readyState === "ERROR") {
+      throw new Error(`Vercel deployment ${deploymentId} reached ERROR state`);
+    }
+
+    if (attempt === POLL_WARNING_ATTEMPT) {
+      console.warn(
+        JSON.stringify({
+          message: "Vercel poll approaching timeout",
+          deploymentId,
+          attempt,
+          maxAttempts: POLL_MAX_ATTEMPTS,
+        }),
+      );
+    }
+  }
+
+  throw new Error(
+    `Vercel deployment ${deploymentId} did not reach READY after ${POLL_MAX_ATTEMPTS} attempts`,
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -216,6 +295,7 @@ export const handler = async (event: unknown): Promise<DeployResult> => {
   const vercelFiles: VercelFile[] = entries.map((entry) => ({
     file: entry.path,
     data: entry.content.toString("base64"),
+    encoding: "base64" as const,
   }));
 
   /* ---- Deploy to Vercel ---- */
@@ -236,6 +316,15 @@ export const handler = async (event: unknown): Promise<DeployResult> => {
       readyState: deployment.readyState,
     }),
   );
+
+  /* ---- Poll Vercel for readiness ---- */
+  console.log(
+    JSON.stringify({
+      message: "Polling Vercel for readiness",
+      deploymentId: deployment.id,
+    }),
+  );
+  await pollVercelDeployment(vercelToken, deployment.id);
 
   /* ---- Update DynamoDB ---- */
   const now = new Date().toISOString();
