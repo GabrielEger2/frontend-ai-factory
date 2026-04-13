@@ -160,6 +160,30 @@ async function generateContent(
 }
 
 /* ------------------------------------------------------------------ */
+/*  Mark project as "content" in DynamoDB (pre-Claude)                 */
+/* ------------------------------------------------------------------ */
+
+async function markContentStarted(projectId: string): Promise<void> {
+  const tableName = process.env.PROJECTS_TABLE_NAME;
+  if (!tableName) {
+    throw new Error("PROJECTS_TABLE_NAME environment variable is not set");
+  }
+
+  await ddbClient.send(
+    new UpdateCommand({
+      TableName: tableName,
+      Key: { pk: `PROJECT#${projectId}`, sk: `PROJECT#${projectId}` },
+      UpdateExpression: "SET #s = :status, updatedAt = :now",
+      ExpressionAttributeNames: { "#s": "status" },
+      ExpressionAttributeValues: {
+        ":status": "content",
+        ":now": new Date().toISOString(),
+      },
+    }),
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Update project in DynamoDB                                         */
 /* ------------------------------------------------------------------ */
 
@@ -219,7 +243,10 @@ export const handler: Handler<PipelineState, PipelineState> = async (event) => {
     );
   }
 
-  // 5. Generate content via Claude
+  // 5. Mark project as "content" before calling Claude
+  await markContentStarted(input.projectId);
+
+  // 6. Generate content via Claude
   const contentOutput = await generateContent(
     {
       companyName: input.companyName,
@@ -237,10 +264,10 @@ export const handler: Handler<PipelineState, PipelineState> = async (event) => {
     }),
   );
 
-  // 6. Persist to DynamoDB
+  // 7. Persist to DynamoDB (status -> "assembling")
   await updateProject(input.projectId, contentOutput);
 
-  // 7. Return accumulated pipeline state
+  // 8. Return accumulated pipeline state
   const result: PipelineState = {
     ...event,
     status: "assembling",
