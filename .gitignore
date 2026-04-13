@@ -13,3 +13,6 @@ cdk.out/
 
 .DS_Store
 Thumbs.db
+
+# Generated files
+agents/assembler/*.generated.ts
