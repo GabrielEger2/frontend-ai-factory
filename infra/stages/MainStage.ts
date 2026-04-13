@@ -1,4 +1,3 @@
-import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { DatabaseStack } from "../stacks/DatabaseStack";
 import { SiteDeployStack } from "../stacks/SiteDeployStack";
@@ -21,9 +20,9 @@ import { ApiStack } from "../stacks/ApiStack";
  * All cross-stack communication uses string props (names, ARNs, URLs).
  * No construct objects cross stack boundaries.
  */
-export class MainStage extends cdk.Stage {
-  constructor(scope: Construct, id: string, props?: cdk.StageProps) {
-    super(scope, id, props);
+export class MainStage extends Construct {
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
 
     /* ---------------------------------------------------------------- */
     /*  1. DatabaseStack — tables and pipeline bucket                    */

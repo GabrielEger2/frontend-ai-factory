@@ -9,7 +9,7 @@
     "infra"
   ],
   "scripts": {
-    "synth": "cd infra && npx cdk synth",
+    "synth": "cd infra && npx cdk synth --all",
     "deploy": "cd infra && npx cdk deploy --all",
     "db:seed": "npm run seed:components --workspace=agents",
     "components:storybook": "npm run storybook --workspace=components",
