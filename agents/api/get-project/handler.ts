@@ -8,7 +8,7 @@ const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
  * GET /projects/{id} — reads project status and preview URL from DynamoDB.
  *
  * Path parameter: id (project ID)
- * Response 200: { projectId, status, previewUrl, createdAt, updatedAt }
+ * Response 200: { projectId, status, previewUrl, createdAt, updatedAt, contentOutput, humanizerOutput, assemblerOutput, qaOutput, qaIssues }
  * Response 400: missing id
  * Response 404: project not found
  */
@@ -63,6 +63,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         previewUrl: item.previewUrl ?? null,
         createdAt: item.createdAt,
         updatedAt: item.updatedAt,
+        contentOutput: item.contentOutput ?? null,
+        humanizerOutput: item.humanizerOutput ?? null,
+        assemblerOutput: item.assemblerOutput ?? null,
+        qaOutput: item.qaOutput ?? null,
+        qaIssues: item.qaIssues ?? null,
       }),
     };
   } catch (err) {
