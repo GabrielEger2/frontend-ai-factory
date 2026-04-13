@@ -15,7 +15,11 @@ export function StatusPoller({ projectId, initialStatus }: StatusPollerProps) {
   const router = useRouter();
 
   useEffect(() => {
-    if (status === "deployed" || status === "failed") {
+    if (
+      status === "deployed" ||
+      status === "failed" ||
+      status === "qa_failed"
+    ) {
       return;
     }
 
@@ -29,7 +33,9 @@ export function StatusPoller({ projectId, initialStatus }: StatusPollerProps) {
 
       if (
         project &&
-        (project.status === "deployed" || project.status === "failed")
+        (project.status === "deployed" ||
+          project.status === "failed" ||
+          project.status === "qa_failed")
       ) {
         clearInterval(interval);
       }
