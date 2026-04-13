@@ -13,6 +13,7 @@
     "deploy": "cd infra && npx cdk deploy --all",
     "db:seed": "npm run seed:components --workspace=agents",
     "components:storybook": "npm run storybook --workspace=components",
+    "predeploy": "npm run generate-sources --workspace=agents",
     "components:type-check": "npm run type-check --workspace=components"
   }
 }
