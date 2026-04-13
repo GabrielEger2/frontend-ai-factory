@@ -35,6 +35,7 @@ export interface ApiStackProps extends StackProps {
  *
  * Endpoints:
  *   POST /projects  — create project, enqueue to pipeline
+ *   GET  /projects  — list project summaries
  *   GET  /projects/{id} — read project status
  */
 export class ApiStack extends Stack {
@@ -139,11 +140,40 @@ export class ApiStack extends Stack {
     );
 
     /* -------------------------------------------------------------- */
+    /*  GET /projects Lambda                                           */
+    /* -------------------------------------------------------------- */
+
+    const listProjectsFn = new NodejsFunction(this, "ListProjectsFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(__dirname, "../../agents/api/list-projects/handler.ts"),
+      handler: "handler",
+      functionName: "sitegen-list-projects",
+      description: "SiteGen GET /projects — list project summaries",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    // DynamoDB scan access on projects table
+    listProjectsFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:Scan"],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
     /*  Routes                                                         */
     /* -------------------------------------------------------------- */
 
     const projects = this.restApi.root.addResource("projects");
     projects.addMethod("POST", new LambdaIntegration(postProjectsFn), {
+      apiKeyRequired: true,
+    });
+    projects.addMethod("GET", new LambdaIntegration(listProjectsFn), {
       apiKeyRequired: true,
     });
 
