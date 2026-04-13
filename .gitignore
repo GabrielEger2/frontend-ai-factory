@@ -16,3 +16,5 @@ Thumbs.db
 
 # Generated files
 agents/assembler/*.generated.ts
+.claude/work/*
+.claude/settings.local.json
