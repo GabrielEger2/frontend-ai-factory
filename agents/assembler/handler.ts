@@ -311,6 +311,35 @@ function generateGlobalsCss(): string {
   return `@tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --color-base-100: 0.97 0.001 106.42;
+  --color-base-200: 0.93 0.002 106.42;
+  --color-base-300: 0.87 0.003 106.42;
+  --color-base-content: 0.27 0.02 261.3;
+  --color-primary: 0.49 0.16 264.38;
+  --color-primary-content: 0.98 0.005 264.38;
+  --color-secondary: 0.62 0.08 230.5;
+  --color-secondary-content: 0.98 0.005 230.5;
+  --color-accent: 0.55 0.18 280.12;
+  --color-accent-content: 0.98 0.005 280.12;
+  --color-neutral: 0.32 0.02 261.3;
+  --color-neutral-content: 0.94 0.005 106.42;
+  --color-info: 0.62 0.14 243.65;
+  --color-info-content: 0.98 0.005 243.65;
+  --color-success: 0.62 0.17 152.55;
+  --color-success-content: 0.98 0.005 152.55;
+  --color-warning: 0.75 0.16 75.84;
+  --color-warning-content: 0.27 0.04 75.84;
+  --color-error: 0.58 0.22 27.33;
+  --color-error-content: 0.98 0.005 27.33;
+  --radius-selector: 1rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
 `;
 }
 

@@ -21,11 +21,14 @@
       "name": "fields",
       "type": "list",
       "maxItems": 6,
-      "itemSchema": [
-        { "name": "name", "type": "text", "maxLength": 30 },
-        { "name": "label", "type": "text", "maxLength": 50 },
-        { "name": "type", "type": "text", "maxLength": 10 }
-      ]
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "name", "type": "text", "maxLength": 30 },
+          { "name": "label", "type": "text", "maxLength": 50 },
+          { "name": "type", "type": "text", "maxLength": 10 }
+        ]
+      }
     }
   ],
   "mobileBehavior": "stack",

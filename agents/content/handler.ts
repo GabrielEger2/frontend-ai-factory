@@ -145,13 +145,16 @@ async function generateContent(
   }
 
   const rawJson = textBlock.text.trim();
+  const jsonString = rawJson
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```\s*$/, "");
 
   let parsed: unknown;
   try {
-    parsed = JSON.parse(rawJson);
+    parsed = JSON.parse(jsonString);
   } catch {
     throw new Error(
-      `Failed to parse Claude response as JSON: ${rawJson.substring(0, 200)}...`,
+      `Failed to parse Claude response as JSON: ${jsonString.substring(0, 200)}...`,
     );
   }
 
