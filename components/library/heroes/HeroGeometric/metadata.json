@@ -24,7 +24,7 @@
     },
     { "name": "subheadline", "type": "text", "maxLength": 200 },
     { "name": "ctaText", "type": "text", "maxLength": 30 },
-    { "name": "ctaUrl", "type": "url" },
+    { "name": "ctaUrl", "type": "url", "optional": true },
     {
       "name": "ctaStyle",
       "type": "text",
@@ -56,7 +56,12 @@
       "optional": true,
       "enum": ["primary", "secondary", "accent", "neutral"]
     },
-    { "name": "image", "type": "image", "aspectRatio": "4:5" },
+    {
+      "name": "image",
+      "type": "image",
+      "aspectRatio": "4:5",
+      "optional": true
+    },
     { "name": "imageAlt", "type": "text", "maxLength": 120 },
     {
       "name": "socialProofAvatars",

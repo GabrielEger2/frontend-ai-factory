@@ -14,7 +14,12 @@
   "layout": "horizontal",
   "density": "low",
   "slots": [
-    { "name": "logo", "type": "image", "aspectRatio": "auto" },
+    {
+      "name": "logo",
+      "type": "image",
+      "aspectRatio": "auto",
+      "optional": true
+    },
     {
       "name": "links",
       "type": "list",
@@ -25,7 +30,7 @@
       }
     },
     { "name": "ctaText", "type": "text", "maxLength": 20 },
-    { "name": "ctaUrl", "type": "url" },
+    { "name": "ctaUrl", "type": "url", "optional": true },
     {
       "name": "ctaStyle",
       "type": "text",

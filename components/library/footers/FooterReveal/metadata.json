@@ -14,15 +14,20 @@
   "layout": "multi-column",
   "density": "medium",
   "slots": [
-    { "name": "logo", "type": "image", "aspectRatio": "auto" },
-    { "name": "whatsappUrl", "type": "url" },
+    {
+      "name": "logo",
+      "type": "image",
+      "aspectRatio": "auto",
+      "optional": true
+    },
+    { "name": "whatsappUrl", "type": "url", "optional": true },
     { "name": "whatsappText", "type": "text", "maxLength": 30 },
-    { "name": "phoneUrl", "type": "url" },
+    { "name": "phoneUrl", "type": "url", "optional": true },
     { "name": "phoneText", "type": "text", "maxLength": 30 },
-    { "name": "emailUrl", "type": "url" },
+    { "name": "emailUrl", "type": "url", "optional": true },
     { "name": "emailText", "type": "text", "maxLength": 60 },
     { "name": "addressText", "type": "text", "maxLength": 120 },
-    { "name": "addressMapsUrl", "type": "url" },
+    { "name": "addressMapsUrl", "type": "url", "optional": true },
     {
       "name": "navColumns",
       "type": "list",

@@ -30,7 +30,7 @@
     },
     { "name": "subheadline", "type": "text", "maxLength": 200 },
     { "name": "ctaText", "type": "text", "maxLength": 30 },
-    { "name": "ctaUrl", "type": "url" },
+    { "name": "ctaUrl", "type": "url", "optional": true },
     {
       "name": "ctaStyle",
       "type": "text",
@@ -69,7 +69,12 @@
       "optional": true,
       "maxLength": 40
     },
-    { "name": "image", "type": "image", "aspectRatio": "1:1" },
+    {
+      "name": "image",
+      "type": "image",
+      "aspectRatio": "1:1",
+      "optional": true
+    },
     { "name": "imageAlt", "type": "text", "maxLength": 120 },
     {
       "name": "badgeHeadline",

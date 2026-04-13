@@ -14,9 +14,19 @@
     "button": false
   },
   "slots": [
-    { "name": "bannerImage", "type": "image", "aspectRatio": "2:1" },
+    {
+      "name": "bannerImage",
+      "type": "image",
+      "aspectRatio": "2:1",
+      "optional": true
+    },
     { "name": "bannerImageAlt", "type": "text", "maxLength": 120 },
-    { "name": "authorImage", "type": "image", "aspectRatio": "1:1" },
+    {
+      "name": "authorImage",
+      "type": "image",
+      "aspectRatio": "1:1",
+      "optional": true
+    },
     { "name": "authorImageAlt", "type": "text", "maxLength": 120 },
     { "name": "authorName", "type": "text", "maxLength": 60 },
     { "name": "authorTagline", "type": "text", "maxLength": 200 },

@@ -22,7 +22,12 @@
       "maxLength": 80,
       "optional": true
     },
-    { "name": "image", "type": "image", "aspectRatio": "16:9" },
+    {
+      "name": "image",
+      "type": "image",
+      "aspectRatio": "16:9",
+      "optional": true
+    },
     { "name": "imageAlt", "type": "text", "maxLength": 120 },
     {
       "name": "accentImage",

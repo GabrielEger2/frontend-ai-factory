@@ -17,9 +17,14 @@
     { "name": "headline", "type": "text", "maxLength": 80 },
     { "name": "subheadline", "type": "text", "maxLength": 160 },
     { "name": "ctaText", "type": "text", "maxLength": 30 },
-    { "name": "ctaUrl", "type": "url" },
-    { "name": "secondaryCtaText", "type": "text", "maxLength": 30 },
-    { "name": "secondaryCtaUrl", "type": "url" }
+    { "name": "ctaUrl", "type": "url", "optional": true },
+    {
+      "name": "secondaryCtaText",
+      "type": "text",
+      "maxLength": 30,
+      "optional": true
+    },
+    { "name": "secondaryCtaUrl", "type": "url", "optional": true }
   ],
   "mobileBehavior": "stack",
   "pairsWell": [

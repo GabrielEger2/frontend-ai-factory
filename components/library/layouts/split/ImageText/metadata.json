@@ -18,7 +18,12 @@
     { "name": "description", "type": "text", "maxLength": 300 },
     { "name": "ctaText", "type": "text", "maxLength": 30, "optional": true },
     { "name": "ctaUrl", "type": "url", "optional": true },
-    { "name": "image", "type": "image", "aspectRatio": "16:9" },
+    {
+      "name": "image",
+      "type": "image",
+      "aspectRatio": "16:9",
+      "optional": true
+    },
     { "name": "imageAlt", "type": "text", "maxLength": 120 },
     { "name": "label", "type": "text", "maxLength": 60, "optional": true },
     {
