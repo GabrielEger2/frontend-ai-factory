@@ -1,104 +1,14 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb";
-import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
-import * as zlib from "zlib";
+import { S3Client } from "@aws-sdk/client-s3";
 import { QAInputSchema } from "./types";
 import type { QAInput } from "./types";
 import type { QAOutput, HumanizerOutput } from "../shared/types";
+import { fetchAssembledFiles } from "../shared/tar-utils";
 import { COMPONENT_METADATA } from "../assembler/component-sources.generated";
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 const s3 = new S3Client({});
-
-/* ------------------------------------------------------------------ */
-/*  Tar Extraction (mirrored from deploy handler)                      */
-/* ------------------------------------------------------------------ */
-
-interface TarEntry {
-  path: string;
-  content: Buffer;
-}
-
-/**
- * Parse a tar buffer into an array of file entries.
- *
- * Reads POSIX ustar headers: 100 bytes for name, size at offset 124
- * (12 bytes octal), type flag at offset 156. Skips non-regular files.
- */
-function extractTar(tarBuffer: Buffer): TarEntry[] {
-  const entries: TarEntry[] = [];
-  let offset = 0;
-
-  while (offset + 512 <= tarBuffer.length) {
-    const header = tarBuffer.subarray(offset, offset + 512);
-
-    // Check for end-of-archive (two zero blocks)
-    if (header.every((b) => b === 0)) {
-      break;
-    }
-
-    // Extract file name (first 100 bytes, null-terminated)
-    const nameEnd = header.indexOf(0, 0);
-    const name = header
-      .subarray(0, nameEnd > 0 && nameEnd < 100 ? nameEnd : 100)
-      .toString("utf-8");
-
-    // Extract size (offset 124, 12 bytes octal, null-terminated)
-    const sizeStr = header.subarray(124, 136).toString("utf-8").trim();
-    const size = parseInt(sizeStr, 8) || 0;
-
-    // Type flag at offset 156: '0' or '\0' = regular file
-    const typeFlag = header[156];
-    const isRegularFile = typeFlag === 0x30 || typeFlag === 0x00;
-
-    offset += 512; // Move past header
-
-    if (isRegularFile && size > 0 && name.length > 0) {
-      const content = Buffer.from(tarBuffer.subarray(offset, offset + size));
-      entries.push({ path: name, content });
-    }
-
-    // Advance past content (padded to 512-byte boundary)
-    offset += Math.ceil(size / 512) * 512;
-  }
-
-  return entries;
-}
-
-/* ------------------------------------------------------------------ */
-/*  S3 Fetch                                                           */
-/* ------------------------------------------------------------------ */
-
-/**
- * Download the assembled site archive from S3, decompress the tar.gz,
- * and return a map of file paths to their text content.
- */
-async function fetchAssembledFiles(
-  s3Key: string,
-  s3Bucket: string,
-): Promise<Record<string, string>> {
-  const s3Response = await s3.send(
-    new GetObjectCommand({
-      Bucket: s3Bucket,
-      Key: s3Key,
-    }),
-  );
-
-  if (!s3Response.Body) {
-    throw new Error(`S3 object ${s3Key} has no body`);
-  }
-
-  const gzBuffer = Buffer.from(await s3Response.Body.transformToByteArray());
-  const tarBuffer = zlib.gunzipSync(gzBuffer);
-  const entries = extractTar(tarBuffer);
-
-  const files: Record<string, string> = {};
-  for (const entry of entries) {
-    files[entry.path] = entry.content.toString("utf-8");
-  }
-
-  return files;
-}
 
 /* ------------------------------------------------------------------ */
 /*  Slot Metadata Types (for type-safe access to COMPONENT_METADATA)   */
@@ -494,6 +404,7 @@ export const handler = async (event: unknown): Promise<unknown> => {
 
   /* ---- Fetch assembled files from S3 ---- */
   const files = await fetchAssembledFiles(
+    s3,
     input.assemblerOutput.s3Key,
     input.assemblerOutput.s3Bucket,
   );

@@ -4,6 +4,7 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { AssemblerInputSchema } from "./types";
 import type { AssemblerResult } from "./types";
 import type { HumanizerOutput } from "../shared/types";
+import { buildTarBuffer } from "../shared/tar-utils";
 import {
   COMPONENT_SOURCES,
   COMPONENT_ID_TO_PATH,
@@ -455,81 +456,6 @@ export default function RootLayout({
   );
 }
 `;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Tar Archive Builder                                                */
-/* ------------------------------------------------------------------ */
-
-/**
- * Build a minimal tar archive from a map of file paths to contents.
- *
- * Uses the POSIX ustar format. Each file entry consists of a 512-byte
- * header followed by the file content padded to a 512-byte boundary.
- * The archive ends with two 512-byte zero blocks.
- */
-function buildTarBuffer(files: Record<string, string>): Buffer {
-  const blocks: Buffer[] = [];
-
-  for (const [filePath, content] of Object.entries(files)) {
-    const contentBuf = Buffer.from(content, "utf-8");
-    const size = contentBuf.length;
-
-    // Build 512-byte tar header
-    const header = Buffer.alloc(512, 0);
-
-    // File name (100 bytes)
-    header.write(filePath, 0, Math.min(filePath.length, 100), "utf-8");
-
-    // File mode (8 bytes) — 0644
-    header.write("0000644\0", 100, 8, "utf-8");
-
-    // Owner/group UID/GID (8+8 bytes)
-    header.write("0000000\0", 108, 8, "utf-8");
-    header.write("0000000\0", 116, 8, "utf-8");
-
-    // File size in octal (12 bytes)
-    header.write(size.toString(8).padStart(11, "0") + "\0", 124, 12, "utf-8");
-
-    // Modification time (12 bytes)
-    const mtime = Math.floor(Date.now() / 1000);
-    header.write(mtime.toString(8).padStart(11, "0") + "\0", 136, 12, "utf-8");
-
-    // Checksum placeholder (8 bytes of spaces)
-    header.write("        ", 148, 8, "utf-8");
-
-    // Type flag: '0' = regular file
-    header.write("0", 156, 1, "utf-8");
-
-    // USTAR indicator
-    header.write("ustar\0", 257, 6, "utf-8");
-    header.write("00", 263, 2, "utf-8");
-
-    // Compute checksum (sum of all bytes in header treated as unsigned)
-    let checksum = 0;
-    for (let i = 0; i < 512; i++) {
-      checksum += header[i];
-    }
-    header.write(
-      checksum.toString(8).padStart(6, "0") + "\0 ",
-      148,
-      8,
-      "utf-8",
-    );
-
-    blocks.push(header);
-
-    // File content padded to 512-byte boundary
-    const paddedSize = Math.ceil(size / 512) * 512;
-    const contentBlock = Buffer.alloc(paddedSize, 0);
-    contentBuf.copy(contentBlock);
-    blocks.push(contentBlock);
-  }
-
-  // Two 512-byte zero blocks to end the archive
-  blocks.push(Buffer.alloc(1024, 0));
-
-  return Buffer.concat(blocks);
 }
 
 /* ------------------------------------------------------------------ */
