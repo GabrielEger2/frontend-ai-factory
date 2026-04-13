@@ -103,6 +103,7 @@ function extractTar(tarBuffer: Buffer): TarEntry[] {
 interface VercelFile {
   file: string;
   data: string; // base64 encoded
+  encoding: "base64";
 }
 
 interface VercelDeployResponse {
@@ -216,6 +217,7 @@ export const handler = async (event: unknown): Promise<DeployResult> => {
   const vercelFiles: VercelFile[] = entries.map((entry) => ({
     file: entry.path,
     data: entry.content.toString("base64"),
+    encoding: "base64" as const,
   }));
 
   /* ---- Deploy to Vercel ---- */
