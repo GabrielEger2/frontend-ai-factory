@@ -182,7 +182,7 @@ export class PipelineStack extends Stack {
       maxAttempts: 2,
       backoffRate: 2,
       interval: Duration.seconds(5),
-      errors: ["States.TaskFailed"],
+      errors: ["States.ALL"],
     };
 
     const contentStep = new tasks.LambdaInvoke(this, "ContentStep", {
