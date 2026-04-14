@@ -36,6 +36,6 @@
     { "name": "ctaColorScheme", "type": "text", "optional": true }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["hero-split-01", "cta-banner-01", "testimonials-carousel-01"],
+  "pairsWell": ["cta-banner-01"],
   "pairsPoorly": ["faq-accordion-01", "faq-minimal-01"]
 }
