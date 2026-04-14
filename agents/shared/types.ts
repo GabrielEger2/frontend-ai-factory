@@ -9,6 +9,7 @@ export type ProjectStatus =
   | "researching"
   | "styling"
   | "awaiting_style_approval"
+  | "composing"
   | "content"
   | "humanizing"
   | "assembling"
@@ -23,6 +24,7 @@ export const PROJECT_STATUSES: readonly ProjectStatus[] = [
   "researching",
   "styling",
   "awaiting_style_approval",
+  "composing",
   "content",
   "humanizing",
   "assembling",
@@ -159,6 +161,25 @@ export type Palette = z.infer<typeof PaletteSchema>;
 export type Typography = z.infer<typeof TypographySchema>;
 
 /* ------------------------------------------------------------------ */
+/*  Composer Output                                                    */
+/* ------------------------------------------------------------------ */
+
+export const ComposerLayoutSchema = z.object({
+  components: z.array(z.string()),
+  score: z.number(),
+  rationale: z.string(),
+});
+
+export const ComposerOutputSchema = z.object({
+  layouts: z.array(ComposerLayoutSchema),
+  selectedLayout: z.number().int(),
+  source: z.enum(["graph", "fallback"]),
+});
+
+export type ComposerLayout = z.infer<typeof ComposerLayoutSchema>;
+export type ComposerOutput = z.infer<typeof ComposerOutputSchema>;
+
+/* ------------------------------------------------------------------ */
 /*  Pipeline State                                                     */
 /* ------------------------------------------------------------------ */
 
@@ -169,6 +190,7 @@ export const PipelineStateSchema = z.object({
     "researching",
     "styling",
     "awaiting_style_approval",
+    "composing",
     "content",
     "humanizing",
     "assembling",
@@ -184,6 +206,7 @@ export const PipelineStateSchema = z.object({
   researchOutput: ResearchOutputSchema.optional(),
   styleOutput: StyleOutputSchema.optional(),
   styleApprovalTaskToken: z.string().optional(),
+  composerOutput: ComposerOutputSchema.optional(),
   contentOutput: ContentOutputSchema.optional(),
   humanizerOutput: HumanizerOutputSchema.optional(),
   assemblerOutput: AssemblerOutputSchema.optional(),
@@ -208,6 +231,7 @@ export interface ProjectItem {
   researchOutput?: ResearchOutput;
   styleOutput?: StyleOutput;
   styleApprovalTaskToken?: string;
+  composerOutput?: ComposerOutput;
   contentOutput?: ContentOutput;
   humanizerOutput?: HumanizerOutput;
   assemblerOutput?: AssemblerOutput;
