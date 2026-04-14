@@ -211,6 +211,8 @@ export class PipelineStack extends Stack {
       environment: {
         PROJECTS_TABLE_NAME: props.projectsTableName,
         CLAUDE_API_KEY_SSM_PATH: claudeSsmPath,
+        NEO4J_URI_SSM_PATH: props.neo4jUriSsmPath,
+        NEO4J_PASSWORD_SSM_PATH: props.neo4jPasswordSsmPath,
       },
     });
 
@@ -218,7 +220,11 @@ export class PipelineStack extends Stack {
     styleFn.fn.addToRolePolicy(
       new iam.PolicyStatement({
         actions: ["ssm:GetParameter"],
-        resources: [claudeSsmArn],
+        resources: [
+          claudeSsmArn,
+          `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.neo4jUriSsmPath}`,
+          `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.neo4jPasswordSsmPath}`,
+        ],
       }),
     );
 

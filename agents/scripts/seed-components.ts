@@ -69,6 +69,14 @@ function findMetadataFiles(dir: string): string[] {
 /*  Build DynamoDB item from metadata                                  */
 /* ------------------------------------------------------------------ */
 
+interface ComponentVariantEntry {
+  id: string;
+  name: string;
+  density: string;
+  colorMode: string;
+  styleOverrides: string[];
+}
+
 interface MetadataJson {
   id: string;
   name: string;
@@ -83,6 +91,7 @@ interface MetadataJson {
   mobileBehavior: string;
   pairsWell: string[];
   pairsPoorly: string[];
+  variants?: ComponentVariantEntry[];
 }
 
 interface ComponentSeedItem {
@@ -102,6 +111,7 @@ interface ComponentSeedItem {
   mobileBehavior: string;
   pairsWell: string[];
   pairsPoorly: string[];
+  variants?: ComponentVariantEntry[];
 }
 
 function buildItem(
@@ -136,6 +146,7 @@ function buildItem(
     mobileBehavior: json.mobileBehavior ?? "stack",
     pairsWell: json.pairsWell ?? [],
     pairsPoorly: json.pairsPoorly ?? [],
+    variants: json.variants,
   };
 }
 

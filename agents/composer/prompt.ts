@@ -13,6 +13,12 @@ export interface CandidateComponent {
   moodHits: number;
   styleHits: number;
   avgPairScore: number;
+  variants?: Array<{
+    id: string;
+    name: string;
+    density: string;
+    colorMode: string;
+  }>;
 }
 
 export interface PairMatrixEntry {
@@ -99,7 +105,14 @@ Return EXACTLY 3 layouts ranked by overall score (highest first). Output ONLY va
 4. "source" will be provided to you — use exactly the value given.
 5. Component IDs in the output must exactly match the IDs from the candidate list.
 6. Never invent component IDs that are not in the candidate list.
-7. Return exactly 3 layouts.`;
+7. Return exactly 3 layouts.
+
+## Variant Selection
+
+Some components have variants listed in the candidate table.
+When a component has variants, optionally select the most appropriate one.
+Output variant selections in "variantSelections" as componentId -> variantId map.
+If no variant is better than default, omit from variantSelections.`;
 }
 
 /* ------------------------------------------------------------------ */
@@ -129,17 +142,22 @@ export function buildUserPrompt(
   ].join("\n");
 
   const candidateRows = candidates
-    .map(
-      (c) =>
-        `| ${c.id} | ${c.name} | ${c.category} | ${c.density} | ${c.layout} | ${c.moodHits} | ${c.styleHits} | ${c.avgPairScore.toFixed(2)} |`,
-    )
+    .map((c) => {
+      const variantCol =
+        c.variants && c.variants.length > 0
+          ? c.variants
+              .map((v) => `${v.id}(${v.colorMode}/${v.density})`)
+              .join(", ")
+          : "\u2014";
+      return `| ${c.id} | ${c.name} | ${c.category} | ${c.density} | ${c.layout} | ${c.moodHits} | ${c.styleHits} | ${c.avgPairScore.toFixed(2)} | ${variantCol} |`;
+    })
     .join("\n");
 
   const candidateSection = [
     "## Candidate Components",
     "",
-    "| ID | Name | Category | Density | Layout | MoodHits | StyleHits | AvgPairScore |",
-    "|---|---|---|---|---|---|---|---|",
+    "| ID | Name | Category | Density | Layout | MoodHits | StyleHits | AvgPairScore | Variants |",
+    "|---|---|---|---|---|---|---|---|---|",
     candidateRows,
   ].join("\n");
 
