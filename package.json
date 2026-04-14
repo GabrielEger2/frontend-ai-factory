@@ -11,8 +11,11 @@
   "scripts": {
     "synth": "cd infra && npx cdk synth --all",
     "deploy": "cd infra && npx cdk deploy --all",
+    "generate-sources": "npm run generate-sources --workspace=agents",
     "db:seed": "npm run seed:components --workspace=agents",
     "components:storybook": "npm run storybook --workspace=components",
+    "components:build-storybook": "npm run build-storybook --workspace=components",
+    "components:publish": "npm run build-storybook --workspace=components && npm run seed:components --workspace=agents",
     "predeploy": "npm run generate-sources --workspace=agents",
     "components:type-check": "npm run type-check --workspace=components"
   }
