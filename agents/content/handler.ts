@@ -27,6 +27,21 @@ import {
 } from "./prompt";
 
 /* ------------------------------------------------------------------ */
+/*  Safe fallback for segment presets                                  */
+/* ------------------------------------------------------------------ */
+
+function getPresetSafe(segment: string): string[] {
+  try {
+    return getPreset(segment);
+  } catch {
+    throw new Error(
+      `No composerOutput and segment "${segment}" not in SEGMENT_PRESETS. ` +
+        `New segments require the Composer Agent to run first.`,
+    );
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /*  Clients (reused across Lambda invocations)                         */
 /* ------------------------------------------------------------------ */
 
@@ -332,8 +347,11 @@ export const handler: Handler<PipelineState, PipelineState> = async (event) => {
   // 1. Validate input
   const input = ContentAgentInputSchema.parse(event);
 
-  // 2. Get component IDs from segment preset
-  const componentIds = getPreset(input.segment);
+  // 2. Get component IDs from composer output or segment preset fallback
+  const componentIds = input.composerOutput
+    ? input.composerOutput.layouts[input.composerOutput.selectedLayout]
+        .components
+    : getPresetSafe(input.segment);
 
   // 3. Fetch component metadata from DynamoDB
   const componentItems = await fetchComponentMetadata(componentIds);
