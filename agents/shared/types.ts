@@ -168,6 +168,7 @@ export const ComposerLayoutSchema = z.object({
   components: z.array(z.string()),
   score: z.number(),
   rationale: z.string(),
+  variantSelections: z.record(z.string(), z.string()).optional(),
 });
 
 export const ComposerOutputSchema = z.object({
