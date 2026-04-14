@@ -174,6 +174,8 @@ export const ComposerOutputSchema = z.object({
   layouts: z.array(ComposerLayoutSchema),
   selectedLayout: z.number().int(),
   source: z.enum(["graph", "fallback"]),
+  candidateCount: z.number().int().optional(),
+  avgScore: z.number().optional(),
 });
 
 export type ComposerLayout = z.infer<typeof ComposerLayoutSchema>;
