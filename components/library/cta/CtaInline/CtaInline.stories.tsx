@@ -7,6 +7,16 @@ const meta: Meta<typeof CtaInline> = {
   parameters: {
     layout: "fullscreen",
   },
+  argTypes: {
+    ctaStyle: {
+      control: "select",
+      options: ["default", "slide", "dotExpand", "drawOutline", "glow"],
+    },
+    ctaColorScheme: {
+      control: "select",
+      options: ["primary", "secondary", "accent", "neutral"],
+    },
+  },
 };
 export default meta;
 type Story = StoryObj<typeof CtaInline>;
@@ -22,6 +32,8 @@ export const NewsletterSignup: Story = {
     description: "Dicas de marketing digital direto no seu e-mail. Sem spam.",
     ctaText: "Inscrever-se",
     ctaUrl: "/newsletter",
+    ctaStyle: "default",
+    ctaColorScheme: "primary",
   },
 };
 
@@ -33,6 +45,8 @@ export const GymMembership: Story = {
       "Experimente todas as modalidades antes de escolher seu plano.",
     ctaText: "Agendar Aula",
     ctaUrl: "/agendar",
+    ctaStyle: "slide",
+    ctaColorScheme: "accent",
   },
 };
 
@@ -44,6 +58,8 @@ export const ConsultingCall: Story = {
       "30 minutos de consultoria gratuita com um dos nossos especialistas.",
     ctaText: "Agendar Horário",
     ctaUrl: "/agendar-consultoria",
+    ctaStyle: "drawOutline",
+    ctaColorScheme: "secondary",
   },
 };
 
@@ -53,5 +69,7 @@ export const RestaurantReservation: Story = {
     headline: "Reserve Sua Mesa",
     ctaText: "Fazer Reserva",
     ctaUrl: "/reserva",
+    ctaStyle: "glow",
+    ctaColorScheme: "neutral",
   },
 };

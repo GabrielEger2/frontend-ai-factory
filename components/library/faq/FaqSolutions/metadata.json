@@ -31,7 +31,9 @@
           { "name": "imageAlt", "type": "text", "maxLength": 120 }
         ]
       }
-    }
+    },
+    { "name": "ctaStyle", "type": "text", "optional": true },
+    { "name": "ctaColorScheme", "type": "text", "optional": true }
   ],
   "mobileBehavior": "stack",
   "pairsWell": ["hero-split-01", "cta-banner-01", "testimonials-carousel-01"],

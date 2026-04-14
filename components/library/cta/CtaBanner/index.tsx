@@ -1,6 +1,12 @@
 "use client";
 
 import { cn } from "@lib/utils";
+import {
+  CtaButton,
+  type CtaVariant,
+  type ColorScheme,
+  buttonStyles,
+} from "@ui/button";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -15,6 +21,10 @@ export interface CtaBannerProps {
   ctaText: string;
   /** Primary CTA button URL */
   ctaUrl: string;
+  /** CTA button style */
+  ctaStyle?: CtaVariant;
+  /** CTA color scheme */
+  ctaColorScheme?: ColorScheme;
   /** Secondary CTA button text */
   secondaryCtaText?: string;
   /** Secondary CTA button URL */
@@ -31,6 +41,8 @@ export default function CtaBanner({
   subheadline,
   ctaText,
   ctaUrl,
+  ctaStyle = "default",
+  ctaColorScheme = "primary",
   secondaryCtaText,
   secondaryCtaUrl,
   className,
@@ -50,16 +62,17 @@ export default function CtaBanner({
           <p className="mt-4 text-lg opacity-70">{subheadline}</p>
         )}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-          <a
+          <CtaButton
+            variant={ctaStyle}
+            colorScheme={ctaColorScheme}
             href={ctaUrl}
-            className="rounded-lg bg-primary px-6 py-3 font-semibold text-primary-content"
           >
             {ctaText}
-          </a>
+          </CtaButton>
           {secondaryCtaText && secondaryCtaUrl && (
             <a
               href={secondaryCtaUrl}
-              className="rounded-lg border px-6 py-3 font-semibold"
+              className={buttonStyles({ variant: "outline" })}
             >
               {secondaryCtaText}
             </a>

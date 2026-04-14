@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@lib/utils";
+import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -15,6 +16,10 @@ export interface CtaInlineProps {
   ctaText: string;
   /** CTA button URL */
   ctaUrl: string;
+  /** CTA button style */
+  ctaStyle?: CtaVariant;
+  /** CTA color scheme */
+  ctaColorScheme?: ColorScheme;
   className?: string;
 }
 
@@ -27,6 +32,8 @@ export default function CtaInline({
   description,
   ctaText,
   ctaUrl,
+  ctaStyle = "default",
+  ctaColorScheme = "primary",
   className,
 }: CtaInlineProps) {
   return (
@@ -45,12 +52,14 @@ export default function CtaInline({
             <p className="mt-2 text-base opacity-70">{description}</p>
           )}
         </div>
-        <a
+        <CtaButton
+          variant={ctaStyle}
+          colorScheme={ctaColorScheme}
           href={ctaUrl}
-          className="shrink-0 rounded-lg bg-primary px-6 py-3 font-semibold text-primary-content"
+          className="shrink-0"
         >
           {ctaText}
-        </a>
+        </CtaButton>
       </div>
     </section>
   );

@@ -12,6 +12,14 @@ const meta: Meta<typeof CtaFloating> = {
       control: "select",
       options: ["bottom-right", "bottom-center", "bottom-left"],
     },
+    ctaStyle: {
+      control: "select",
+      options: ["default", "slide", "dotExpand", "drawOutline", "glow"],
+    },
+    ctaColorScheme: {
+      control: "select",
+      options: ["primary", "secondary", "accent", "neutral"],
+    },
   },
   decorators: [
     (Story) => (
@@ -36,6 +44,8 @@ export const WhatsAppContact: Story = {
   args: {
     ctaText: "Fale Conosco",
     ctaUrl: "https://wa.me/5511999999999",
+    ctaStyle: "glow",
+    ctaColorScheme: "primary",
     position: "bottom-right",
   },
 };
@@ -45,6 +55,8 @@ export const PromoBanner: Story = {
   args: {
     ctaText: "Frete Grátis Hoje",
     ctaUrl: "/promocoes",
+    ctaStyle: "slide",
+    ctaColorScheme: "accent",
     position: "bottom-center",
   },
 };
@@ -54,6 +66,8 @@ export const BookAppointment: Story = {
   args: {
     ctaText: "Agendar Agora",
     ctaUrl: "/agendar",
+    ctaStyle: "dotExpand",
+    ctaColorScheme: "secondary",
     position: "bottom-left",
   },
 };

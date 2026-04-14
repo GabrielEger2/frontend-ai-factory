@@ -17,7 +17,9 @@
     { "name": "headline", "type": "text", "maxLength": 60 },
     { "name": "description", "type": "text", "maxLength": 120 },
     { "name": "ctaText", "type": "text", "maxLength": 30 },
-    { "name": "ctaUrl", "type": "url", "optional": true }
+    { "name": "ctaUrl", "type": "url", "optional": true },
+    { "name": "ctaStyle", "type": "text", "optional": true },
+    { "name": "ctaColorScheme", "type": "text", "optional": true }
   ],
   "mobileBehavior": "stack",
   "pairsWell": [

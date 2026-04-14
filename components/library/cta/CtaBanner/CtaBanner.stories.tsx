@@ -7,6 +7,16 @@ const meta: Meta<typeof CtaBanner> = {
   parameters: {
     layout: "fullscreen",
   },
+  argTypes: {
+    ctaStyle: {
+      control: "select",
+      options: ["default", "slide", "dotExpand", "drawOutline", "glow"],
+    },
+    ctaColorScheme: {
+      control: "select",
+      options: ["primary", "secondary", "accent", "neutral"],
+    },
+  },
 };
 export default meta;
 type Story = StoryObj<typeof CtaBanner>;
@@ -23,6 +33,8 @@ export const SeasonalSale: Story = {
       "Ofertas válidas até domingo. Frete grátis em compras acima de R$199.",
     ctaText: "Ver Ofertas",
     ctaUrl: "/black-friday",
+    ctaStyle: "slide",
+    ctaColorScheme: "accent",
     secondaryCtaText: "Lista de Desejos",
     secondaryCtaUrl: "/wishlist",
   },
@@ -36,6 +48,8 @@ export const FreeTrial: Story = {
       "Teste grátis por 14 dias. Sem cartão de crédito. Cancele quando quiser.",
     ctaText: "Começar Agora",
     ctaUrl: "/signup",
+    ctaStyle: "glow",
+    ctaColorScheme: "primary",
     secondaryCtaText: "Agendar Demo",
     secondaryCtaUrl: "/demo",
   },
@@ -49,6 +63,8 @@ export const RealEstateExclusive: Story = {
       "Apartamentos de alto padrão com vista para o mar. Condições especiais para os primeiros compradores.",
     ctaText: "Falar com Corretor",
     ctaUrl: "/contato",
+    ctaStyle: "drawOutline",
+    ctaColorScheme: "secondary",
   },
 };
 
@@ -60,6 +76,8 @@ export const EnrollmentDeadline: Story = {
       "Garanta a vaga do seu filho com 15% de desconto na primeira mensalidade. Vagas limitadas.",
     ctaText: "Matricular Agora",
     ctaUrl: "/matricula",
+    ctaStyle: "dotExpand",
+    ctaColorScheme: "neutral",
     secondaryCtaText: "Conhecer a Escola",
     secondaryCtaUrl: "/tour-virtual",
   },
