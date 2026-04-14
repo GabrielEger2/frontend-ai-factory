@@ -3,12 +3,18 @@ import { ExternalLink } from "lucide-react";
 import { getProject } from "@/lib/actions/get-project";
 import { StatusBadge } from "@/components/projects/StatusBadge";
 import { StatusPoller } from "@/components/projects/StatusPoller";
+import { StepPanel } from "@/components/pipeline/StepPanel";
+import { ContentSlotTable } from "@/components/pipeline/ContentSlotTable";
+import { QAIssuesList } from "@/components/pipeline/QAIssuesList";
+import { AssemblerFileTree } from "@/components/pipeline/AssemblerFileTree";
 import type { ProjectStatus } from "@/types/project";
 
 const PIPELINE_STEPS: { status: ProjectStatus; label: string }[] = [
   { status: "queued", label: "Queued" },
   { status: "content", label: "Generating Content" },
+  { status: "humanizing", label: "Humanizing" },
   { status: "assembling", label: "Assembling" },
+  { status: "qa", label: "Running QA" },
   { status: "deploying", label: "Deploying" },
   { status: "deployed", label: "Deployed" },
 ];
@@ -22,7 +28,7 @@ function getStepState(
     (s) => s.status === currentStatus,
   );
 
-  if (currentStatus === "failed") {
+  if (currentStatus === "failed" || currentStatus === "qa_failed") {
     return stepIndex <= currentIndex ? "completed" : "pending";
   }
 
@@ -54,7 +60,9 @@ export default async function ProjectDetailPage({
   }
 
   const isTerminal =
-    project.status === "deployed" || project.status === "failed";
+    project.status === "deployed" ||
+    project.status === "failed" ||
+    project.status === "qa_failed";
 
   return (
     <div>
@@ -113,6 +121,67 @@ export default async function ProjectDetailPage({
 
       {!isTerminal && (
         <StatusPoller projectId={id} initialStatus={project.status} />
+      )}
+
+      {/* Step Outputs */}
+      {(project.contentOutput ||
+        project.humanizerOutput ||
+        project.assemblerOutput ||
+        project.qaOutput) && (
+        <div className="mb-8">
+          <h2 className="text-sm font-medium text-slate-500 mb-4">
+            Step Outputs
+          </h2>
+          <div className="space-y-3">
+            {project.contentOutput && (
+              <StepPanel
+                title="Content Output"
+                stepName="content"
+                projectId={id}
+              >
+                <ContentSlotTable output={project.contentOutput} />
+              </StepPanel>
+            )}
+
+            {project.humanizerOutput && (
+              <StepPanel
+                title="Humanizer Output"
+                stepName="humanizer"
+                projectId={id}
+              >
+                <ContentSlotTable output={project.humanizerOutput} />
+              </StepPanel>
+            )}
+
+            {project.assemblerOutput && (
+              <StepPanel
+                title="Assembler Output"
+                stepName="assembler"
+                projectId={id}
+              >
+                <AssemblerFileTree projectId={id} />
+              </StepPanel>
+            )}
+
+            {project.qaOutput && (
+              <StepPanel title="QA Output" stepName="qa" projectId={id}>
+                <QAIssuesList output={project.qaOutput} />
+              </StepPanel>
+            )}
+          </div>
+        </div>
+      )}
+
+      {project.assemblerOutput && (
+        <div className="mb-8">
+          <Link
+            href={`/projects/${id}/editor`}
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+          >
+            Open Code Editor
+            <ExternalLink className="h-4 w-4" />
+          </Link>
+        </div>
       )}
 
       {project.status === "deployed" && project.previewUrl && (

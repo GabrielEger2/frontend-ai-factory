@@ -9112,7 +9112,7 @@ import {
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { useCursorPosition } from "@hooks/useCursorPosition";
+import { useCursorPosition } from "@/lib/hooks/useCursorPosition";
 
 export interface CursorFollowProps {
   /** Content to render inside the cursor-tracking area */
@@ -10327,6 +10327,34 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 `,
+  "src/lib/hooks/useCursorPosition.ts": `"use client";
+
+import { useEffect, useState } from "react";
+
+interface CursorPosition {
+  x: number;
+  y: number;
+}
+
+/**
+ * Tracks the current mouse cursor position on the page.
+ * Returns { x, y } coordinates updated on every mousemove event.
+ */
+export function useCursorPosition(): CursorPosition {
+  const [position, setPosition] = useState<CursorPosition>({ x: 0, y: 0 });
+
+  useEffect(() => {
+    function handleMouseMove(e: MouseEvent) {
+      setPosition({ x: e.clientX, y: e.clientY });
+    }
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  return position;
+}
+`,
 };
 
 /**
@@ -10373,8 +10401,8 @@ export const COMPONENT_ID_TO_PATH: Record<string, string> = {
 export const COMPONENT_METADATA: Record<string, { slots: unknown[] }> = {
   "carousel-cards-01": {"slots":[{"name":"headline","type":"text","maxLength":60},{"name":"cards","type":"list","maxItems":12,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"tag","type":"text","maxLength":30},{"name":"title","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":160}]}}]},
   "carousel-swipe-01": {"slots":[{"name":"items","type":"list","maxItems":10,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120}]}}]},
-  "contact-form-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"submitText","type":"text","maxLength":30},{"name":"fields","type":"list","maxItems":6,"itemSchema":{"type":"object","fields":[{"name":"name","type":"text","maxLength":30},{"name":"label","type":"text","maxLength":50},{"name":"type","type":"text","maxLength":10}]}}]},
-  "contact-map-info-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"address","type":"text","maxLength":200},{"name":"phone","type":"text","maxLength":20},{"name":"email","type":"text","maxLength":60},{"name":"hours","type":"text","maxLength":100},{"name":"mapEmbedUrl","type":"url","optional":true}]},
+  "contact-form-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"submit_text","type":"text","maxLength":30},{"name":"fields","type":"list","maxItems":6,"itemSchema":{"type":"object","fields":[{"name":"name","type":"text","maxLength":30},{"name":"label","type":"text","maxLength":50},{"name":"type","type":"text","maxLength":10}]}}]},
+  "contact-map-info-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"address","type":"text","maxLength":200},{"name":"phone","type":"text","maxLength":20},{"name":"email","type":"text","maxLength":60},{"name":"hours","type":"text","maxLength":100},{"name":"map_embed_url","type":"url","optional":true}]},
   "cta-banner-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"secondaryCtaText","type":"text","maxLength":30,"optional":true},{"name":"secondaryCtaUrl","type":"url","optional":true}]},
   "cta-floating-01": {"slots":[{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true}]},
   "cta-inline-01": {"slots":[{"name":"headline","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":120},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true}]},

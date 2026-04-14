@@ -4,6 +4,7 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { AssemblerInputSchema } from "./types";
 import type { AssemblerResult } from "./types";
 import type { HumanizerOutput } from "../shared/types";
+import { buildTarBuffer } from "../shared/tar-utils";
 import {
   COMPONENT_SOURCES,
   COMPONENT_ID_TO_PATH,
@@ -30,17 +31,30 @@ function toComponentName(componentId: string): string {
 }
 
 /**
+ * Slot metadata passed through recursive sanitization.
+ * Mirrors the structure of metadata.json slot definitions so enum
+ * constraints inside itemSchema are propagated to nested fields.
+ */
+interface SlotMeta {
+  enum?: unknown[];
+  itemSchema?: Record<string, SlotMeta>;
+}
+
+/**
  * Replace null/undefined values with safe defaults based on key name.
  *
  * The Content Agent returns null for "url" and "image" slot types.
  * When those nulls are nested inside arrays/objects (e.g. navbar links),
  * JSON.stringify preserves them, causing TypeScript build failures.
  * This function walks the value tree and replaces nulls with defaults.
+ *
+ * Also clamps enum values: if a slot (or nested itemSchema field) has an
+ * enum constraint and the value is not in it, clamp to the first allowed value.
  */
 function sanitizeSlotValue(
   value: unknown,
   key?: string,
-  slotMeta?: { enum?: unknown[] },
+  slotMeta?: SlotMeta,
 ): unknown {
   if (value === null || value === undefined) {
     if (key && /url|href|src/i.test(key)) return "#";
@@ -76,13 +90,20 @@ function sanitizeSlotValue(
           return obj.text;
         }
       }
-      return sanitizeSlotValue(item, key);
+      // Pass itemSchema so nested object fields get their enum constraints
+      return sanitizeSlotValue(
+        item,
+        key,
+        slotMeta?.itemSchema ? { itemSchema: slotMeta.itemSchema } : undefined,
+      );
     });
   }
   if (typeof value === "object") {
     const result: Record<string, unknown> = {};
     for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
-      const sanitized = sanitizeSlotValue(v, k);
+      // Look up field-specific metadata from itemSchema (e.g. network.enum)
+      const fieldMeta = slotMeta?.itemSchema?.[k] as SlotMeta | undefined;
+      const sanitized = sanitizeSlotValue(v, k, fieldMeta);
       if (sanitized !== undefined) {
         result[k] = sanitized;
       }
@@ -126,17 +147,21 @@ function generateComponentSection(
     return `      <${name} />`;
   }
 
-  // Look up component slot definitions for enum clamping
+  // Look up component slot definitions for enum clamping (including nested itemSchema)
   const componentMeta = COMPONENT_METADATA[componentId];
   const slotDefs = (componentMeta?.slots ?? []) as Array<{
     name?: string;
     enum?: unknown[];
+    itemSchema?: Record<string, SlotMeta>;
   }>;
 
   const propsStr = propsEntries
     .map(([key, value]) => {
       const slotDef = slotDefs.find((s) => s.name === key);
-      const slotMeta = slotDef?.enum ? { enum: slotDef.enum } : undefined;
+      const slotMeta: SlotMeta | undefined =
+        slotDef?.enum || slotDef?.itemSchema
+          ? { enum: slotDef.enum, itemSchema: slotDef.itemSchema }
+          : undefined;
       return `        ${key}=${serializeSlotValue(sanitizeSlotValue(value, key, slotMeta))}`;
     })
     .join("\n");
@@ -458,81 +483,6 @@ export default function RootLayout({
 }
 
 /* ------------------------------------------------------------------ */
-/*  Tar Archive Builder                                                */
-/* ------------------------------------------------------------------ */
-
-/**
- * Build a minimal tar archive from a map of file paths to contents.
- *
- * Uses the POSIX ustar format. Each file entry consists of a 512-byte
- * header followed by the file content padded to a 512-byte boundary.
- * The archive ends with two 512-byte zero blocks.
- */
-function buildTarBuffer(files: Record<string, string>): Buffer {
-  const blocks: Buffer[] = [];
-
-  for (const [filePath, content] of Object.entries(files)) {
-    const contentBuf = Buffer.from(content, "utf-8");
-    const size = contentBuf.length;
-
-    // Build 512-byte tar header
-    const header = Buffer.alloc(512, 0);
-
-    // File name (100 bytes)
-    header.write(filePath, 0, Math.min(filePath.length, 100), "utf-8");
-
-    // File mode (8 bytes) — 0644
-    header.write("0000644\0", 100, 8, "utf-8");
-
-    // Owner/group UID/GID (8+8 bytes)
-    header.write("0000000\0", 108, 8, "utf-8");
-    header.write("0000000\0", 116, 8, "utf-8");
-
-    // File size in octal (12 bytes)
-    header.write(size.toString(8).padStart(11, "0") + "\0", 124, 12, "utf-8");
-
-    // Modification time (12 bytes)
-    const mtime = Math.floor(Date.now() / 1000);
-    header.write(mtime.toString(8).padStart(11, "0") + "\0", 136, 12, "utf-8");
-
-    // Checksum placeholder (8 bytes of spaces)
-    header.write("        ", 148, 8, "utf-8");
-
-    // Type flag: '0' = regular file
-    header.write("0", 156, 1, "utf-8");
-
-    // USTAR indicator
-    header.write("ustar\0", 257, 6, "utf-8");
-    header.write("00", 263, 2, "utf-8");
-
-    // Compute checksum (sum of all bytes in header treated as unsigned)
-    let checksum = 0;
-    for (let i = 0; i < 512; i++) {
-      checksum += header[i];
-    }
-    header.write(
-      checksum.toString(8).padStart(6, "0") + "\0 ",
-      148,
-      8,
-      "utf-8",
-    );
-
-    blocks.push(header);
-
-    // File content padded to 512-byte boundary
-    const paddedSize = Math.ceil(size / 512) * 512;
-    const contentBlock = Buffer.alloc(paddedSize, 0);
-    contentBuf.copy(contentBlock);
-    blocks.push(contentBlock);
-  }
-
-  // Two 512-byte zero blocks to end the archive
-  blocks.push(Buffer.alloc(1024, 0));
-
-  return Buffer.concat(blocks);
-}
-
-/* ------------------------------------------------------------------ */
 /*  Handler                                                            */
 /* ------------------------------------------------------------------ */
 
@@ -585,9 +535,27 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
   files["src/app/layout.tsx"] = generateLayoutTsx();
   files["src/app/page.tsx"] = generatePageTsx(input.humanizerOutput);
 
-  // Real component library source files (bundled at build time)
+  // Only bundle component sources actually used in the page + shared libs.
+  // Component paths start with "src/components/", shared libs with "src/lib/".
+  const usedComponentDirs = new Set(
+    input.humanizerOutput.components
+      .map((c) => COMPONENT_ID_TO_PATH[c.componentId])
+      .filter(Boolean),
+  );
+
   for (const [filePath, content] of Object.entries(COMPONENT_SOURCES)) {
-    files[filePath] = content;
+    // Always include shared lib files (utilities, UI primitives, etc.)
+    if (filePath.startsWith("src/lib/")) {
+      files[filePath] = content;
+      continue;
+    }
+    // Only include component files for components used in the page
+    if (
+      filePath.startsWith("src/components/") &&
+      [...usedComponentDirs].some((dir) => filePath.startsWith(dir + "/"))
+    ) {
+      files[filePath] = content;
+    }
   }
 
   /* ---- Create tar.gz archive ---- */

@@ -24,6 +24,7 @@ const COMPONENTS_ROOT = path.resolve(__dirname, "../../components");
 const LIBRARY_DIR = path.join(COMPONENTS_ROOT, "library");
 const UI_DIR = path.join(COMPONENTS_ROOT, "ui");
 const LIB_DIR = path.join(COMPONENTS_ROOT, "lib");
+const HOOKS_DIR = path.join(COMPONENTS_ROOT, "hooks");
 
 const OUTPUT_FILE = path.resolve(__dirname, "component-sources.generated.ts");
 
@@ -82,6 +83,7 @@ function rewriteAliasImports(source: string): string {
   return source
     .replace(/(from\s+["'])@ui\//g, "$1@/lib/ui/")
     .replace(/(from\s+["'])@lib\//g, "$1@/lib/")
+    .replace(/(from\s+["'])@hooks\//g, "$1@/lib/hooks/")
     .replace(/(from\s+["'])@components\//g, "$1@/components/");
 }
 
@@ -147,6 +149,14 @@ function main() {
   const libFiles = walkDir(LIB_DIR);
   for (const filePath of libFiles) {
     const sitePath = toGeneratedSitePath(filePath, LIB_DIR, "src/lib/");
+    const content = fs.readFileSync(filePath, "utf-8");
+    sources[sitePath] = rewriteAliasImports(content);
+  }
+
+  // 3b. Walk components/hooks/
+  const hooksFiles = walkDir(HOOKS_DIR);
+  for (const filePath of hooksFiles) {
+    const sitePath = toGeneratedSitePath(filePath, HOOKS_DIR, "src/lib/hooks/");
     const content = fs.readFileSync(filePath, "utf-8");
     sources[sitePath] = rewriteAliasImports(content);
   }
