@@ -10,6 +10,11 @@ import { TypeWriter } from "@ui/text-decorations/TypeWriter";
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
+export type HeroSplitImageVariant =
+  | "default"
+  | "hero-split-image-01-compact"
+  | "hero-split-image-01-airy";
+
 export interface FeaturedItem {
   image: string;
   imageAlt: string;
@@ -56,6 +61,8 @@ export interface HeroSplitImageProps {
   featuredItemsLinkUrl?: string;
   /** Whether to apply a subtle grid background pattern to the section */
   gridBackground?: boolean;
+  /** Visual variant — adjusts density and background tone */
+  variant?: HeroSplitImageVariant;
   className?: string;
 }
 
@@ -214,6 +221,7 @@ export default function HeroSplitImage({
   featuredItemsLinkText,
   featuredItemsLinkUrl,
   gridBackground = false,
+  variant = "default",
   className,
 }: HeroSplitImageProps) {
   const shouldReduceMotion = useReducedMotion();
@@ -222,6 +230,7 @@ export default function HeroSplitImage({
     <section
       className={cn(
         "relative flex w-full items-center overflow-hidden bg-base-100 min-h-screen",
+        variant === "hero-split-image-01-compact" && "bg-base-300",
         gridBackground &&
           "bg-[length:60px_60px] bg-[image:linear-gradient(to_right,var(--tw-gradient-stops)),linear-gradient(to_bottom,var(--tw-gradient-stops))]",
         className,
@@ -239,7 +248,16 @@ export default function HeroSplitImage({
         />
       )}
 
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-8 px-4 py-12 md:grid-cols-2 md:gap-12 md:px-8 md:py-16 lg:px-12 lg:py-24">
+      <div
+        className={cn(
+          "relative z-10 mx-auto grid w-full max-w-7xl items-center gap-8 px-4 md:grid-cols-2 md:gap-12 md:px-8 lg:px-12",
+          variant === "hero-split-image-01-compact"
+            ? "py-12 md:py-12 lg:py-12"
+            : variant === "hero-split-image-01-airy"
+              ? "py-20 md:py-24 lg:py-32"
+              : "py-12 md:py-16 lg:py-24",
+        )}
+      >
         {/* -- Text column -- */}
         <motion.div
           className="relative z-10"

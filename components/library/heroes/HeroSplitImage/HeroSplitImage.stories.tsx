@@ -27,6 +27,14 @@ const meta: Meta<typeof HeroSplitImage> = {
     gridBackground: {
       control: "boolean",
     },
+    variant: {
+      control: "select",
+      options: [
+        "default",
+        "hero-split-image-01-compact",
+        "hero-split-image-01-airy",
+      ],
+    },
   },
 };
 export default meta;
