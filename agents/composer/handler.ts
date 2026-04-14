@@ -282,6 +282,14 @@ async function composeLayouts(
   }
 
   const validated = ComposerOutputSchema.parse(parsed);
+
+  validated.candidateCount = candidates.length;
+  validated.avgScore =
+    candidates.length > 0
+      ? candidates.reduce((sum, c) => sum + c.avgPairScore, 0) /
+        candidates.length
+      : 0;
+
   return validated;
 }
 
@@ -393,6 +401,8 @@ export const handler: Handler<PipelineState, PipelineState> = async (event) => {
       layoutCount: composerOutput.layouts.length,
       selectedLayout: composerOutput.selectedLayout,
       source: composerOutput.source,
+      candidateCount: composerOutput.candidateCount,
+      avgScore: composerOutput.avgScore,
     }),
   );
 
