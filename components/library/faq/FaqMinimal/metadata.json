@@ -30,6 +30,6 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["cta-banner-01", "contact-form-01", "footers-simple-01"],
+  "pairsWell": ["cta-banner-01", "contact-form-01"],
   "pairsPoorly": ["faq-accordion-01", "faq-solutions-01"]
 }

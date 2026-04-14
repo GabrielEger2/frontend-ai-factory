@@ -39,6 +39,6 @@
     }
   ],
   "mobileBehavior": "collapse",
-  "pairsWell": ["hero-full-width-01", "hero-gradient-01", "hero-split-01"],
+  "pairsWell": [],
   "pairsPoorly": []
 }

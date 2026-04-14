@@ -28,10 +28,6 @@
     }
   ],
   "mobileBehavior": "scroll",
-  "pairsWell": [
-    "hero-split-01",
-    "features-grid-01",
-    "testimonials-scrolling-01"
-  ],
-  "pairsPoorly": ["carousel-3d-01", "carousel-cards-01"]
+  "pairsWell": [],
+  "pairsPoorly": ["carousel-cards-01"]
 }

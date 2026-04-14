@@ -29,10 +29,6 @@
     { "name": "secondaryCtaUrl", "type": "url", "optional": true }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "features-cards-01",
-    "testimonials-scrolling-01",
-    "footer-reveal-01"
-  ],
+  "pairsWell": ["footer-reveal-01"],
   "pairsPoorly": ["cta-inline-01", "cta-floating-01"]
 }

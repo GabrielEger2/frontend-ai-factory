@@ -32,6 +32,6 @@
     }
   ],
   "mobileBehavior": "scroll",
-  "pairsWell": ["hero-split-01", "testimonials-scrolling-01", "cta-banner-01"],
-  "pairsPoorly": ["carousel-swipe-01", "carousel-3d-01"]
+  "pairsWell": ["cta-banner-01"],
+  "pairsPoorly": ["carousel-swipe-01"]
 }
