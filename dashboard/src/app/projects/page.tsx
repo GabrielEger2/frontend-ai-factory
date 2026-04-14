@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { listProjects } from "@/lib/actions/list-projects";
-import { ProjectCard } from "@/components/projects/ProjectCard";
+import { ProjectsTable } from "@/components/projects/ProjectsTable";
 
 export default async function ProjectsPage() {
   const projects = await listProjects();
@@ -18,11 +18,7 @@ export default async function ProjectsPage() {
       </div>
 
       {projects.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {projects.map((project) => (
-            <ProjectCard key={project.projectId} project={project} />
-          ))}
-        </div>
+        <ProjectsTable projects={projects} />
       ) : (
         <div className="flex flex-col items-center justify-center py-24 text-center">
           <p className="text-lg text-slate-500 mb-2">No projects yet</p>
