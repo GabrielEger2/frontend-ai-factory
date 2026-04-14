@@ -20,7 +20,7 @@
     { "name": "phone", "type": "text", "maxLength": 20 },
     { "name": "email", "type": "text", "maxLength": 60 },
     { "name": "hours", "type": "text", "maxLength": 100 },
-    { "name": "map_embed_url", "type": "url", "optional": true }
+    { "name": "mapEmbedUrl", "type": "url", "optional": true }
   ],
   "mobileBehavior": "stack",
   "pairsWell": ["cta-inline-01", "faq-minimal-01", "footer-reveal-01"],
