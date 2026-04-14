@@ -15,6 +15,12 @@ export interface CandidateComponent {
   avgPairScore: number;
 }
 
+export interface PairMatrixEntry {
+  a: string;
+  b: string;
+  score: number;
+}
+
 /* ------------------------------------------------------------------ */
 /*  System Prompt                                                      */
 /* ------------------------------------------------------------------ */
@@ -58,7 +64,7 @@ Creative/casual segments (pet-shop, restaurant, bakery, gym, clothing-store) can
 
 ## PAIRS_WITH Adjacency
 
-Adjacent components in the layout should have high pairwise compatibility. Use the avgPairScore from the candidate list as a guide. Prefer placing components next to others they pair well with.
+A pair compatibility matrix is provided in the user prompt when available. Use the explicit pair scores to evaluate adjacency when placing components next to each other. A score near 1.0 means excellent adjacency; near 0.0 means poor adjacency. When no pair score is listed for a pair, treat it as neutral (0.5). Prefer placing consecutive components with pair scores >= 0.6.
 
 ## Scoring
 
@@ -104,6 +110,7 @@ export function buildUserPrompt(
   input: ComposerAgentInput,
   candidates: CandidateComponent[],
   source: "graph" | "fallback",
+  pairMatrix: PairMatrixEntry[],
 ): string {
   const companySection = [
     "## Company",
@@ -136,6 +143,22 @@ export function buildUserPrompt(
     candidateRows,
   ].join("\n");
 
+  const pairMatrixSection =
+    pairMatrix.length > 0
+      ? [
+          "## Pair Compatibility Matrix",
+          "",
+          "Use these PAIRS_WITH scores when deciding which components to place adjacent.",
+          "Higher score = better adjacency.",
+          "",
+          "| Component A | Component B | Score |",
+          "|---|---|---|",
+          ...pairMatrix.map(
+            (p) => `| ${p.a} | ${p.b} | ${p.score.toFixed(2)} |`,
+          ),
+        ].join("\n")
+      : "";
+
   const sourceNote = `\n## Source\n\nSet "source" to "${source}" in your output.\n`;
 
   return [
@@ -145,7 +168,11 @@ export function buildUserPrompt(
     "",
     candidateSection,
     "",
+    pairMatrixSection,
+    "",
     sourceNote,
     "Compose 3 ranked page layouts from these candidates. Output valid JSON only.",
-  ].join("\n");
+  ]
+    .filter(Boolean)
+    .join("\n");
 }
