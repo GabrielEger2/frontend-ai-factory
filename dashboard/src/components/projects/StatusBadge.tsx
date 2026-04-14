@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import type { ProjectStatus } from "@/types/project";
 import type { BadgeProps } from "@/components/ui/badge";
 
-const STATUS_LABELS: Record<ProjectStatus, string> = {
+export const STATUS_LABELS: Record<ProjectStatus, string> = {
   queued: "Queued",
   researching: "Researching...",
   styling: "Generating Style...",
