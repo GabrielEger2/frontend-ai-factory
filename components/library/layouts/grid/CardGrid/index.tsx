@@ -3,13 +3,35 @@
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@lib/utils";
 import type { StyleKit, CardStyle } from "@lib/style-kit";
-import { buttonStyles } from "@ui/button";
+import { buttonStyles, type CtaVariant } from "@ui/button";
 import CardBase from "@ui/cards/CardBase";
 import { CardFlip } from "@ui/cards/CardFlip";
 import { CardRevealSlide } from "@ui/cards/CardRevealSlide";
 import { CardMagic } from "@ui/cards/CardMagic";
 import { CardProduct } from "@ui/cards/CardProduct";
 import { CardOutlineGrid } from "@ui/cards/CardOutline";
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+/** Map CtaVariant → buttonStyles Variant (best-effort downgrade). */
+function toButtonVariant(
+  v?: CtaVariant,
+): "primary" | "secondary" | "accent" | "outline" | "ghost" | "link" | "glow" {
+  switch (v) {
+    case "glow":
+      return "primary";
+    case "slide":
+      return "accent";
+    case "drawOutline":
+      return "outline";
+    case "dotExpand":
+      return "link";
+    default:
+      return "primary";
+  }
+}
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -101,7 +123,7 @@ const COLUMN_MAP = {
 
 function renderBaseCards(
   cards: FeatureCardItem[],
-  ctaVariant?: string,
+  ctaVariant?: CtaVariant,
   ctaColorScheme?: string,
 ) {
   return cards.map((card, i) => (
@@ -121,7 +143,7 @@ function renderBaseCards(
 function renderFlipCards(
   cards: FlipCardItem[],
   flipDirection: "horizontal" | "vertical",
-  ctaVariant?: string,
+  ctaVariant?: CtaVariant,
   ctaColorScheme?: string,
 ) {
   return cards.map((card, i) => (
@@ -166,7 +188,7 @@ function renderFlipCards(
             <a
               href={card.backCtaUrl}
               className={buttonStyles({
-                variant: "accent",
+                variant: toButtonVariant(ctaVariant),
                 size: "sm",
               })}
             >
@@ -196,7 +218,7 @@ function renderRevealCards(cards: FeatureCardItem[]) {
 function renderMagicCards(
   cards: FeatureCardItem[],
   mode: "gradient" | "orb",
-  ctaVariant?: string,
+  ctaVariant?: CtaVariant,
   ctaColorScheme?: string,
 ) {
   return cards.map((card, i) => (
@@ -218,6 +240,7 @@ function renderMagicCards(
           <a
             href={card.ctaUrl}
             className={buttonStyles({
+              variant: toButtonVariant(ctaVariant),
               size: "sm",
               className: "mt-1 self-start",
             })}
