@@ -448,6 +448,7 @@ export default function CarouselSwipe({
   "src/components/contact/ContactForm/index.tsx": `"use client";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/lib/ui/button";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -460,6 +461,10 @@ export interface ContactFormProps {
   subheadline?: string;
   /** Form submit button text */
   submitText?: string;
+  /** Submit button visual variant */
+  submitVariant?: "primary" | "secondary" | "accent" | "outline" | "ghost";
+  /** Submit button size */
+  submitSize?: "sm" | "md" | "lg";
   /** Fields to render — name, email, phone, message are standard */
   fields?: Array<{
     name: string;
@@ -485,6 +490,8 @@ export default function ContactForm({
   headline,
   subheadline,
   submitText = "Enviar",
+  submitVariant = "primary",
+  submitSize = "md",
   fields = defaultFields,
   className,
 }: ContactFormProps) {
@@ -532,12 +539,14 @@ export default function ContactForm({
               )}
             </div>
           ))}
-          <button
+          <Button
             type="submit"
-            className="w-full rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground"
+            variant={submitVariant}
+            size={submitSize}
+            className="w-full"
           >
             {submitText}
-          </button>
+          </Button>
         </form>
       </div>
     </section>
@@ -657,6 +666,12 @@ export default function ContactMapInfo({
   "src/components/cta/CtaBanner/index.tsx": `"use client";
 
 import { cn } from "@/lib/utils";
+import {
+  CtaButton,
+  type CtaVariant,
+  type ColorScheme,
+  buttonStyles,
+} from "@/lib/ui/button";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -671,6 +686,10 @@ export interface CtaBannerProps {
   ctaText: string;
   /** Primary CTA button URL */
   ctaUrl: string;
+  /** CTA button style */
+  ctaStyle?: CtaVariant;
+  /** CTA color scheme */
+  ctaColorScheme?: ColorScheme;
   /** Secondary CTA button text */
   secondaryCtaText?: string;
   /** Secondary CTA button URL */
@@ -687,6 +706,8 @@ export default function CtaBanner({
   subheadline,
   ctaText,
   ctaUrl,
+  ctaStyle = "default",
+  ctaColorScheme = "primary",
   secondaryCtaText,
   secondaryCtaUrl,
   className,
@@ -706,16 +727,17 @@ export default function CtaBanner({
           <p className="mt-4 text-lg opacity-70">{subheadline}</p>
         )}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-          <a
+          <CtaButton
+            variant={ctaStyle}
+            colorScheme={ctaColorScheme}
             href={ctaUrl}
-            className="rounded-lg bg-primary px-6 py-3 font-semibold text-primary-content"
           >
             {ctaText}
-          </a>
+          </CtaButton>
           {secondaryCtaText && secondaryCtaUrl && (
             <a
               href={secondaryCtaUrl}
-              className="rounded-lg border px-6 py-3 font-semibold"
+              className={buttonStyles({ variant: "outline" })}
             >
               {secondaryCtaText}
             </a>
@@ -729,6 +751,7 @@ export default function CtaBanner({
   "src/components/cta/CtaFloating/index.tsx": `"use client";
 
 import { cn } from "@/lib/utils";
+import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -739,6 +762,10 @@ export interface CtaFloatingProps {
   ctaText: string;
   /** CTA button URL */
   ctaUrl: string;
+  /** CTA button style */
+  ctaStyle?: CtaVariant;
+  /** CTA color scheme */
+  ctaColorScheme?: ColorScheme;
   /** Position on screen */
   position?: "bottom-right" | "bottom-center" | "bottom-left";
   className?: string;
@@ -757,17 +784,16 @@ const positionClasses = {
 export default function CtaFloating({
   ctaText,
   ctaUrl,
+  ctaStyle = "default",
+  ctaColorScheme = "primary",
   position = "bottom-right",
   className,
 }: CtaFloatingProps) {
   return (
     <div className={cn("fixed z-50", positionClasses[position], className)}>
-      <a
-        href={ctaUrl}
-        className="rounded-full bg-primary px-6 py-3 font-semibold text-primary-content shadow-lg"
-      >
+      <CtaButton variant={ctaStyle} colorScheme={ctaColorScheme} href={ctaUrl}>
         {ctaText}
-      </a>
+      </CtaButton>
     </div>
   );
 }
@@ -775,6 +801,7 @@ export default function CtaFloating({
   "src/components/cta/CtaInline/index.tsx": `"use client";
 
 import { cn } from "@/lib/utils";
+import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -789,6 +816,10 @@ export interface CtaInlineProps {
   ctaText: string;
   /** CTA button URL */
   ctaUrl: string;
+  /** CTA button style */
+  ctaStyle?: CtaVariant;
+  /** CTA color scheme */
+  ctaColorScheme?: ColorScheme;
   className?: string;
 }
 
@@ -801,6 +832,8 @@ export default function CtaInline({
   description,
   ctaText,
   ctaUrl,
+  ctaStyle = "default",
+  ctaColorScheme = "primary",
   className,
 }: CtaInlineProps) {
   return (
@@ -819,12 +852,14 @@ export default function CtaInline({
             <p className="mt-2 text-base opacity-70">{description}</p>
           )}
         </div>
-        <a
+        <CtaButton
+          variant={ctaStyle}
+          colorScheme={ctaColorScheme}
           href={ctaUrl}
-          className="shrink-0 rounded-lg bg-primary px-6 py-3 font-semibold text-primary-content"
+          className="shrink-0"
         >
           {ctaText}
-        </a>
+        </CtaButton>
       </div>
     </section>
   );
@@ -1174,10 +1209,32 @@ export default function FaqMinimal({
   "src/components/faq/FaqSolutions/index.tsx": `"use client";
 
 import { cn } from "@/lib/utils";
-import { buttonStyles } from "@/lib/ui/button";
+import { buttonStyles, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+/** Map CtaVariant → buttonStyles Variant (best-effort downgrade). */
+function toButtonVariant(
+  v?: CtaVariant,
+): "primary" | "secondary" | "accent" | "outline" | "ghost" | "link" | "glow" {
+  switch (v) {
+    case "glow":
+      return "primary";
+    case "slide":
+      return "accent";
+    case "drawOutline":
+      return "outline";
+    case "dotExpand":
+      return "link";
+    default:
+      return "primary";
+  }
+}
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -1201,6 +1258,10 @@ export interface FaqSolutionsProps {
   items: FaqSolutionsItem[];
   /** Index of the item to expand by default (default: 0) */
   defaultOpenIndex?: number;
+  /** CTA button style */
+  ctaStyle?: CtaVariant;
+  /** CTA color scheme */
+  ctaColorScheme?: ColorScheme;
   className?: string;
 }
 
@@ -1213,11 +1274,13 @@ function SolutionItem({
   index,
   isOpen,
   onSelect,
+  ctaStyle,
 }: {
   item: FaqSolutionsItem;
   index: number;
   isOpen: boolean;
   onSelect: () => void;
+  ctaStyle?: CtaVariant;
 }) {
   const shouldReduceMotion = useReducedMotion();
 
@@ -1278,7 +1341,7 @@ function SolutionItem({
           <a
             href={item.ctaUrl}
             className={cn(
-              buttonStyles({ variant: "primary", size: "md" }),
+              buttonStyles({ variant: toButtonVariant(ctaStyle), size: "md" }),
               "-mx-6 -mb-6 mt-4 flex items-center justify-center gap-1 rounded-t-none",
             )}
             onClick={(e) => e.stopPropagation()}
@@ -1314,6 +1377,8 @@ export default function FaqSolutions({
   subheadline,
   items,
   defaultOpenIndex = 0,
+  ctaStyle,
+  ctaColorScheme,
   className,
 }: FaqSolutionsProps) {
   const [openIndex, setOpenIndex] = useState(defaultOpenIndex);
@@ -1347,6 +1412,7 @@ export default function FaqSolutions({
                 index={index}
                 isOpen={openIndex === index}
                 onSelect={() => setOpenIndex(index)}
+                ctaStyle={ctaStyle}
               />
             ))}
           </div>
@@ -2870,13 +2936,35 @@ export default function HeroSplitImage({
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import type { StyleKit, CardStyle } from "@/lib/style-kit";
-import { buttonStyles } from "@/lib/ui/button";
+import { buttonStyles, type CtaVariant } from "@/lib/ui/button";
 import CardBase from "@/lib/ui/cards/CardBase";
 import { CardFlip } from "@/lib/ui/cards/CardFlip";
 import { CardRevealSlide } from "@/lib/ui/cards/CardRevealSlide";
 import { CardMagic } from "@/lib/ui/cards/CardMagic";
 import { CardProduct } from "@/lib/ui/cards/CardProduct";
 import { CardOutlineGrid } from "@/lib/ui/cards/CardOutline";
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+/** Map CtaVariant → buttonStyles Variant (best-effort downgrade). */
+function toButtonVariant(
+  v?: CtaVariant,
+): "primary" | "secondary" | "accent" | "outline" | "ghost" | "link" | "glow" {
+  switch (v) {
+    case "glow":
+      return "primary";
+    case "slide":
+      return "accent";
+    case "drawOutline":
+      return "outline";
+    case "dotExpand":
+      return "link";
+    default:
+      return "primary";
+  }
+}
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -2968,7 +3056,7 @@ const COLUMN_MAP = {
 
 function renderBaseCards(
   cards: FeatureCardItem[],
-  ctaVariant?: string,
+  ctaVariant?: CtaVariant,
   ctaColorScheme?: string,
 ) {
   return cards.map((card, i) => (
@@ -2988,7 +3076,7 @@ function renderBaseCards(
 function renderFlipCards(
   cards: FlipCardItem[],
   flipDirection: "horizontal" | "vertical",
-  ctaVariant?: string,
+  ctaVariant?: CtaVariant,
   ctaColorScheme?: string,
 ) {
   return cards.map((card, i) => (
@@ -3033,7 +3121,7 @@ function renderFlipCards(
             <a
               href={card.backCtaUrl}
               className={buttonStyles({
-                variant: "accent",
+                variant: toButtonVariant(ctaVariant),
                 size: "sm",
               })}
             >
@@ -3063,7 +3151,7 @@ function renderRevealCards(cards: FeatureCardItem[]) {
 function renderMagicCards(
   cards: FeatureCardItem[],
   mode: "gradient" | "orb",
-  ctaVariant?: string,
+  ctaVariant?: CtaVariant,
   ctaColorScheme?: string,
 ) {
   return cards.map((card, i) => (
@@ -3085,6 +3173,7 @@ function renderMagicCards(
           <a
             href={card.ctaUrl}
             className={buttonStyles({
+              variant: toButtonVariant(ctaVariant),
               size: "sm",
               className: "mt-1 self-start",
             })}
@@ -10401,20 +10490,20 @@ export const COMPONENT_ID_TO_PATH: Record<string, string> = {
 export const COMPONENT_METADATA: Record<string, { slots: unknown[] }> = {
   "carousel-cards-01": {"slots":[{"name":"headline","type":"text","maxLength":60},{"name":"cards","type":"list","maxItems":12,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"tag","type":"text","maxLength":30},{"name":"title","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":160}]}}]},
   "carousel-swipe-01": {"slots":[{"name":"items","type":"list","maxItems":10,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120}]}}]},
-  "contact-form-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"submitText","type":"text","maxLength":30},{"name":"fields","type":"list","maxItems":6,"itemSchema":{"type":"object","fields":[{"name":"name","type":"text","maxLength":30},{"name":"label","type":"text","maxLength":50},{"name":"type","type":"text","maxLength":10}]}}]},
+  "contact-form-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"submitText","type":"text","maxLength":30},{"name":"submitVariant","type":"text","optional":true},{"name":"submitSize","type":"text","optional":true},{"name":"fields","type":"list","maxItems":6,"itemSchema":{"type":"object","fields":[{"name":"name","type":"text","maxLength":30},{"name":"label","type":"text","maxLength":50},{"name":"type","type":"text","maxLength":10}]}}]},
   "contact-map-info-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"address","type":"text","maxLength":200},{"name":"phone","type":"text","maxLength":20},{"name":"email","type":"text","maxLength":60},{"name":"hours","type":"text","maxLength":100},{"name":"mapEmbedUrl","type":"url","optional":true}]},
-  "cta-banner-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"secondaryCtaText","type":"text","maxLength":30,"optional":true},{"name":"secondaryCtaUrl","type":"url","optional":true}]},
-  "cta-floating-01": {"slots":[{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true}]},
-  "cta-inline-01": {"slots":[{"name":"headline","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":120},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true}]},
+  "cta-banner-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true},{"name":"ctaColorScheme","type":"text","optional":true},{"name":"secondaryCtaText","type":"text","maxLength":30,"optional":true},{"name":"secondaryCtaUrl","type":"url","optional":true}]},
+  "cta-floating-01": {"slots":[{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true},{"name":"ctaColorScheme","type":"text","optional":true}]},
+  "cta-inline-01": {"slots":[{"name":"headline","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":120},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true},{"name":"ctaColorScheme","type":"text","optional":true}]},
   "faq-accordion-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":10,"itemSchema":{"type":"object","fields":[{"name":"question","type":"text","maxLength":120},{"name":"answer","type":"text","maxLength":500}]}}]},
   "faq-minimal-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"question","type":"text","maxLength":120},{"name":"answer","type":"text","maxLength":500}]}}]},
-  "faq-solutions-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"title","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":300},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"},{"name":"image","type":"image","aspectRatio":"4:3"},{"name":"imageAlt","type":"text","maxLength":120}]}}]},
+  "faq-solutions-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"title","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":300},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"},{"name":"image","type":"image","aspectRatio":"4:3"},{"name":"imageAlt","type":"text","maxLength":120}]}},{"name":"ctaStyle","type":"text","optional":true},{"name":"ctaColorScheme","type":"text","optional":true}]},
   "footer-reveal-01": {"slots":[{"name":"logo","type":"image","aspectRatio":"auto","optional":true},{"name":"whatsappUrl","type":"url","optional":true},{"name":"whatsappText","type":"text","maxLength":30},{"name":"phoneUrl","type":"url","optional":true},{"name":"phoneText","type":"text","maxLength":30},{"name":"emailUrl","type":"url","optional":true},{"name":"emailText","type":"text","maxLength":60},{"name":"addressText","type":"text","maxLength":120},{"name":"addressMapsUrl","type":"url","optional":true},{"name":"navColumns","type":"list","maxItems":4,"itemSchema":{"title":{"type":"text","maxLength":30},"links":{"type":"list","maxItems":6,"itemSchema":{"text":{"type":"text","maxLength":30},"href":{"type":"url"}}}}},{"name":"socialLinks","type":"list","maxItems":6,"itemSchema":{"network":{"type":"text","maxLength":20,"enum":["instagram","linkedin","facebook","whatsapp","twitter","youtube","tiktok","google","pinterest","telegram"]},"url":{"type":"url"},"label":{"type":"text","maxLength":60}}},{"name":"companyName","type":"text","maxLength":60},{"name":"ctaText","type":"text","maxLength":40,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"height","type":"number","optional":true,"enum":[350,400,450,500,550]}]},
   "hero-geometric-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"image","type":"image","aspectRatio":"4:5","optional":true},{"name":"imageAlt","type":"text","maxLength":120},{"name":"socialProofAvatars","type":"list","optional":true,"maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"1:1"},{"name":"imageAlt","type":"text","maxLength":60}]}},{"name":"socialProofLabel","type":"text","optional":true,"maxLength":60}]},
   "hero-parallax-images-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"centerImage","type":"image","aspectRatio":"16:9","optional":true},{"name":"centerImageAlt","type":"text","maxLength":120},{"name":"parallaxImages","type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"src","type":"image","aspectRatio":"16:9"},{"name":"alt","type":"text","maxLength":120},{"name":"start","type":"number","optional":true},{"name":"end","type":"number","optional":true},{"name":"widthClass","type":"text","optional":true,"maxLength":20},{"name":"alignClass","type":"text","optional":true,"maxLength":20}]}},{"name":"scrollHeight","type":"number","optional":true}]},
   "hero-shuffle-cards-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline"]},{"name":"emailPlaceholder","type":"text","optional":true,"maxLength":50},{"name":"cards","type":"list","maxItems":3,"itemSchema":{"image":{"type":"image","aspectRatio":"1:1"},"imageAlt":{"type":"text","maxLength":120},"quote":{"type":"text","maxLength":200},"author":{"type":"text","maxLength":60}}}]},
   "hero-split-image-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineAccent","type":"text","optional":true,"maxLength":40},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"whatsappUrl","type":"url","optional":true},{"name":"whatsappLabel","type":"text","optional":true,"maxLength":40},{"name":"image","type":"image","aspectRatio":"1:1","optional":true},{"name":"imageAlt","type":"text","maxLength":120},{"name":"badgeHeadline","type":"text","optional":true,"maxLength":40},{"name":"badgeDescription","type":"text","optional":true,"maxLength":100},{"name":"rotatingBadgeText","type":"text","optional":true,"maxLength":60},{"name":"featuredItems","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"4:3"},{"name":"imageAlt","type":"text","maxLength":80},{"name":"title","type":"text","maxLength":40},{"name":"price","type":"text","optional":true,"maxLength":20},{"name":"discountPrice","type":"text","optional":true,"maxLength":20}]}},{"name":"featuredItemsLabel","type":"text","optional":true,"maxLength":40},{"name":"featuredItemsLinkText","type":"text","optional":true,"maxLength":30},{"name":"featuredItemsLinkUrl","type":"url","optional":true},{"name":"gridBackground","type":"boolean","optional":true}]},
-  "layout-cardgrid-01": {"slots":[{"name":"headline","type":"text","maxLength":80,"optional":true},{"name":"subheadline","type":"text","maxLength":160,"optional":true},{"name":"columns","type":"number","enum":[2,3,4],"optional":true},{"name":"cards","type":"list","itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"title","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30,"optional":true},{"name":"ctaUrl","type":"url","optional":true}]}}]},
+  "layout-cardgrid-01": {"slots":[{"name":"headline","type":"text","maxLength":80,"optional":true},{"name":"subheadline","type":"text","maxLength":160,"optional":true},{"name":"columns","type":"number","enum":[2,3,4],"optional":true},{"name":"cards","type":"list","itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"title","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30,"optional":true},{"name":"ctaUrl","type":"url","optional":true}]}},{"name":"ctaStyle","type":"text","optional":true},{"name":"ctaColorScheme","type":"text","optional":true}]},
   "layout-simplegrid-01": {"slots":[{"name":"label","type":"text","maxLength":60,"optional":true},{"name":"headline","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":200,"optional":true},{"name":"features","type":"list","itemSchema":{"type":"object","fields":[{"name":"title","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30,"optional":true},{"name":"ctaUrl","type":"url","optional":true}]}},{"name":"ctaText","type":"text","maxLength":30,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"columns","type":"number","enum":[2,3,4],"optional":true}]},
   "layout-staggerfan-01": {"slots":[{"name":"testimonials","type":"list","maxItems":12,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"3:4"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"name","type":"text","maxLength":40},{"name":"title","type":"text","maxLength":60},{"name":"quote","type":"text","maxLength":200}]}},{"name":"sectionHeight","type":"number","optional":true}]},
   "layout-infinitescroll-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":200,"optional":true},{"name":"rows","type":"list","maxItems":3,"itemSchema":{"type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"1:1"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"name","type":"text","maxLength":40},{"name":"title","type":"text","maxLength":60},{"name":"quote","type":"text","maxLength":200}]}}}]},
