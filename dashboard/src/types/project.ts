@@ -153,6 +153,7 @@ export interface ComposerLayout {
   components: string[];
   score: number;
   rationale: string;
+  variantSelections?: Record<string, string>;
 }
 
 export interface ComposerOutput {
