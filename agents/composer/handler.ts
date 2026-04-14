@@ -251,7 +251,7 @@ async function composeLayouts(
   const client = new Anthropic({ apiKey });
 
   const systemPrompt = buildSystemPrompt();
-  const userPrompt = buildUserPrompt(input, candidates, source);
+  const userPrompt = buildUserPrompt(input, candidates, source, pairMatrix);
 
   const response = await client.messages.create({
     model: "claude-sonnet-4-20250514",
