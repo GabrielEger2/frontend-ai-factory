@@ -69,13 +69,19 @@ async function getGraphCandidates(
   try {
     const result = await session.run(
       `
-      MATCH (seg:Segment {id: $segmentId})
-        -[:NATURALLY_FEELS]->(m:Mood)
-        -[:EXPRESSED_AS]->(st:Style)
-        <-[:HAS_STYLE]-(c:Component)
-      WITH c,
-        count(DISTINCT m) AS moodHits,
-        count(DISTINCT st) AS styleHits
+      CALL {
+        MATCH (seg:Segment {id: $segmentId})
+          -[:NATURALLY_FEELS]->(m:Mood)
+          -[:EXPRESSED_AS]->(st:Style)
+          <-[:HAS_STYLE]-(c:Component)
+        RETURN c, count(DISTINCT m) AS moodHits, count(DISTINCT st) AS styleHits
+        UNION ALL
+        MATCH (seg:Segment {id: $segmentId})
+          -[:NATURALLY_FEELS]->(m:Mood)
+          <-[:HAS_MOOD]-(c:Component)
+        RETURN c, count(DISTINCT m) AS moodHits, 0 AS styleHits
+      }
+      WITH c, sum(moodHits) AS moodHits, max(styleHits) AS styleHits
       OPTIONAL MATCH (c)-[pw:PAIRS_WITH]->()
       WITH c, moodHits, styleHits,
         avg(pw.score) AS avgPairScore
