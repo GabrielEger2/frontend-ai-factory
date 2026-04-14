@@ -160,15 +160,9 @@
   └── Fallback to DynamoDB if Neo4j is down
 
   Component Library v2
-  ├── Expand to 50 components
   ├── PAIRS_WITH scores for every component pair
   └── Variant support (same component, different density/color mode)
 
-  Humanizer Agent
-  ├── Dedicated pt-BR localization agent
-  ├── Tone: formal (advocacia) vs casual (pet shop)
-  ├── Regional: SP vs RS vs NE expressions
-  └── Runs after Content Agent, before Assembler
 
   Milestone: "Pet Shop em Porto Alegre" and "Advocacia em SP"
   produce visually and tonally different sites automatically
