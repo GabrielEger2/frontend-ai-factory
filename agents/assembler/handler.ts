@@ -219,7 +219,7 @@ function generatePackageJson(projectId: string): string {
         start: "next start",
       },
       dependencies: {
-        next: "^14",
+        next: "^15",
         react: "^18",
         "react-dom": "^18",
         clsx: "^2.1.1",
