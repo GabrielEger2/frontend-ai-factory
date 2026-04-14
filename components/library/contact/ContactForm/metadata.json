@@ -17,6 +17,8 @@
     { "name": "headline", "type": "text", "maxLength": 80 },
     { "name": "subheadline", "type": "text", "maxLength": 160 },
     { "name": "submitText", "type": "text", "maxLength": 30 },
+    { "name": "submitVariant", "type": "text", "optional": true },
+    { "name": "submitSize", "type": "text", "optional": true },
     {
       "name": "fields",
       "type": "list",

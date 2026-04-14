@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@lib/utils";
+import { Button } from "@ui/button";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -13,6 +14,10 @@ export interface ContactFormProps {
   subheadline?: string;
   /** Form submit button text */
   submitText?: string;
+  /** Submit button visual variant */
+  submitVariant?: "primary" | "secondary" | "accent" | "outline" | "ghost";
+  /** Submit button size */
+  submitSize?: "sm" | "md" | "lg";
   /** Fields to render — name, email, phone, message are standard */
   fields?: Array<{
     name: string;
@@ -38,6 +43,8 @@ export default function ContactForm({
   headline,
   subheadline,
   submitText = "Enviar",
+  submitVariant = "primary",
+  submitSize = "md",
   fields = defaultFields,
   className,
 }: ContactFormProps) {
@@ -85,12 +92,14 @@ export default function ContactForm({
               )}
             </div>
           ))}
-          <button
+          <Button
             type="submit"
-            className="w-full rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground"
+            variant={submitVariant}
+            size={submitSize}
+            className="w-full"
           >
             {submitText}
-          </button>
+          </Button>
         </form>
       </div>
     </section>
