@@ -28,6 +28,8 @@ export interface PipelineStackProps extends StackProps {
   readonly pipelineBucketName: string;
   readonly pipelineBucketArn: string;
   readonly deployFunctionArn: string;
+  readonly neo4jUriSsmPath: string;
+  readonly neo4jPasswordSsmPath: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -37,8 +39,8 @@ export interface PipelineStackProps extends StackProps {
 /**
  * PipelineStack — SQS queue, Step Functions state machine, and agent Lambdas.
  *
- * Creates the 7-step pipeline:
- *   Research -> Style (WaitForTaskToken) -> Content -> Humanizer -> Assembler -> QA -> Deploy
+ * Creates the 8-step pipeline:
+ *   Research -> Style (WaitForTaskToken) -> Composer -> Content -> Humanizer -> Assembler -> QA -> Deploy
  *
  * Also creates the pipeline-starter Lambda that consumes SQS messages
  * and starts Step Function executions.
@@ -239,6 +241,38 @@ export class PipelineStack extends Stack {
     pipelineBucket.grantRead(qaFn.fn);
 
     /* -------------------------------------------------------------- */
+    /*  Composer Agent Lambda                                         */
+    /* -------------------------------------------------------------- */
+
+    const composerFn = new AgentLambda(this, "ComposerAgent", {
+      entry: path.join(__dirname, "../../agents/composer/handler.ts"),
+      agentName: "composer",
+      timeout: Duration.minutes(5),
+      memorySize: 512,
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        COMPONENTS_TABLE_NAME: props.componentsTableName,
+        CLAUDE_API_KEY_SSM_PATH: claudeSsmPath,
+        NEO4J_URI_SSM_PATH: props.neo4jUriSsmPath,
+        NEO4J_PASSWORD_SSM_PATH: props.neo4jPasswordSsmPath,
+      },
+    });
+
+    projectsTable.grantReadWriteData(composerFn.fn);
+    componentsTable.grantReadData(composerFn.fn);
+
+    composerFn.fn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["ssm:GetParameter"],
+        resources: [
+          claudeSsmArn,
+          `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.neo4jUriSsmPath}`,
+          `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.neo4jPasswordSsmPath}`,
+        ],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
     /*  Fail Handler Lambda                                           */
     /* -------------------------------------------------------------- */
 
@@ -298,11 +332,19 @@ export class PipelineStack extends Stack {
         "segment.$": "$.segment",
         "description.$": "$.description",
         "researchOutput.$": "$.researchOutput",
+        "styleOutput.$": "$.styleOutput",
         taskToken: sfn.JsonPath.taskToken,
       }),
     });
     styleStep.addRetry(retryConfig);
     styleStep.addCatch(failHandlerStep, { resultPath: "$.error" });
+
+    const composerStep = new tasks.LambdaInvoke(this, "ComposerStep", {
+      lambdaFunction: composerFn.fn,
+      outputPath: "$.Payload",
+    });
+    composerStep.addRetry(retryConfig);
+    composerStep.addCatch(failHandlerStep, { resultPath: "$.error" });
 
     const contentStep = new tasks.LambdaInvoke(this, "ContentStep", {
       lambdaFunction: contentFn.fn,
@@ -348,6 +390,7 @@ export class PipelineStack extends Stack {
 
     const definition = researchStep
       .next(styleStep)
+      .next(composerStep)
       .next(contentStep)
       .next(humanizerStep)
       .next(assemblerStep)

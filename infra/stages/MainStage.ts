@@ -1,6 +1,7 @@
 import { Construct } from "constructs";
 import { DatabaseStack } from "../stacks/DatabaseStack";
 import { SiteDeployStack } from "../stacks/SiteDeployStack";
+import { GraphStack } from "../stacks/GraphStack";
 import { PipelineStack } from "../stacks/PipelineStack";
 import { ApiStack } from "../stacks/ApiStack";
 
@@ -14,8 +15,9 @@ import { ApiStack } from "../stacks/ApiStack";
  * Instantiation order:
  *   1. DatabaseStack      — no upstream deps
  *   2. SiteDeployStack    — needs pipeline bucket + projects table
- *   3. PipelineStack      — needs both tables, bucket, and deploy fn ARN
- *   4. ApiStack           — needs projects table and pipeline queue
+ *   3. GraphStack         — no upstream deps (lightweight SSM paths)
+ *   4. PipelineStack      — needs both tables, bucket, deploy fn ARN, and Neo4j SSM paths
+ *   5. ApiStack           — needs projects table and pipeline queue
  *
  * All cross-stack communication uses string props (names, ARNs, URLs).
  * No construct objects cross stack boundaries.
@@ -42,7 +44,13 @@ export class MainStage extends Construct {
     });
 
     /* ---------------------------------------------------------------- */
-    /*  3. PipelineStack — SQS, Step Functions, agent Lambdas           */
+    /*  3. GraphStack — Neo4j Aura SSM parameter paths                  */
+    /* ---------------------------------------------------------------- */
+
+    const graph = new GraphStack(this, "GraphStack");
+
+    /* ---------------------------------------------------------------- */
+    /*  4. PipelineStack — SQS, Step Functions, agent Lambdas           */
     /* ---------------------------------------------------------------- */
 
     const pipeline = new PipelineStack(this, "PipelineStack", {
@@ -53,10 +61,12 @@ export class MainStage extends Construct {
       pipelineBucketName: database.pipelineBucketName,
       pipelineBucketArn: database.pipelineBucketArn,
       deployFunctionArn: siteDeploy.deployFn.fn.functionArn,
+      neo4jUriSsmPath: graph.neo4jUriSsmPath,
+      neo4jPasswordSsmPath: graph.neo4jPasswordSsmPath,
     });
 
     /* ---------------------------------------------------------------- */
-    /*  4. ApiStack — REST API with Lambda integrations                  */
+    /*  5. ApiStack — REST API with Lambda integrations                  */
     /* ---------------------------------------------------------------- */
 
     new ApiStack(this, "ApiStack", {
