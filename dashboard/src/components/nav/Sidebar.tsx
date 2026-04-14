@@ -1,15 +1,16 @@
 import Link from "next/link";
-import { LayoutList, Plus } from "lucide-react";
+import { LayoutList, Plus, Blocks } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/projects", label: "Projects", icon: LayoutList },
   { href: "/projects/new", label: "New Project", icon: Plus },
+  { href: "/components", label: "Components", icon: Blocks },
 ];
 
 export function Sidebar() {
   return (
-    <aside className="w-64 h-screen bg-slate-50 border-r border-slate-200 p-4 flex flex-col">
+    <aside className="w-64 h-full bg-slate-50 border-r border-slate-200 p-4 flex flex-col shrink-0">
       <div className="mb-8">
         <h1 className="text-xl font-bold text-slate-900">SiteGen</h1>
       </div>
