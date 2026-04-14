@@ -461,6 +461,7 @@ function generatePlaceholderSvg(): string {
  */
 function generateLayoutTsx(): string {
   return `import type { Metadata } from "next";
+import { ReactLenis } from "@/lib/ui/SmoothScroll";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -475,7 +476,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body>{children}</body>
+      <body>
+        <ReactLenis root>{children}</ReactLenis>
+      </body>
     </html>
   );
 }
