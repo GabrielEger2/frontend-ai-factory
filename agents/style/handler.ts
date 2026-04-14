@@ -7,6 +7,20 @@ import Anthropic from "@anthropic-ai/sdk";
 import { StyleOutput, StyleOutputSchema } from "../shared/types";
 import { StyleAgentInput, StyleAgentInputSchema } from "./types";
 import { buildStyleSystemPrompt, buildStyleUserPrompt } from "./prompt";
+import { getDriver } from "../shared/neo4j-client";
+
+/* ------------------------------------------------------------------ */
+/*  Palette suggestion from Neo4j graph                                */
+/* ------------------------------------------------------------------ */
+
+interface PaletteSuggestion {
+  moodId: string;
+  paletteId: string;
+  paletteName: string;
+  temperatureRange: string;
+  contrastLevel: string;
+  saturationRange: string;
+}
 
 /* ------------------------------------------------------------------ */
 /*  Clients (reused across Lambda invocations)                         */
@@ -42,6 +56,54 @@ async function getClaudeApiKey(): Promise<string> {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Neo4j graph query for palette suggestions                          */
+/* ------------------------------------------------------------------ */
+
+async function queryPaletteSuggestions(
+  segment: string,
+): Promise<PaletteSuggestion[]> {
+  try {
+    const driver = await getDriver();
+    const session = driver.session({ database: "neo4j" });
+
+    try {
+      const result = await session.run(
+        `
+        MATCH (seg:Segment {id: $segmentId})
+          -[:NATURALLY_FEELS]->(m:Mood)
+          -[:SUGGESTS_PALETTE]->(p:PaletteProfile)
+        RETURN m.id AS moodId, p.id AS paletteId, p.name AS paletteName,
+               p.temperatureRange AS temperatureRange, p.contrastLevel AS contrastLevel,
+               p.saturationRange AS saturationRange
+        ORDER BY m.id, p.id
+        `,
+        { segmentId: segment },
+      );
+
+      return result.records.map((record) => ({
+        moodId: record.get("moodId") as string,
+        paletteId: record.get("paletteId") as string,
+        paletteName: record.get("paletteName") as string,
+        temperatureRange: record.get("temperatureRange") as string,
+        contrastLevel: record.get("contrastLevel") as string,
+        saturationRange: record.get("saturationRange") as string,
+      }));
+    } finally {
+      await session.close();
+    }
+  } catch (err) {
+    console.warn(
+      JSON.stringify({
+        agent: "style",
+        warning: "Neo4j unavailable, skipping palette suggestions",
+        error: err instanceof Error ? err.message : String(err),
+      }),
+    );
+    return [];
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /*  Mark project as "styling" in DynamoDB                              */
 /* ------------------------------------------------------------------ */
 
@@ -71,7 +133,11 @@ async function markStylingStarted(projectId: string): Promise<void> {
 
 async function generateStyle(
   input: ReturnType<typeof StyleAgentInputSchema.parse>,
+  paletteSuggestions: PaletteSuggestion[],
 ): Promise<StyleOutput> {
+  // TODO(3.3): pass paletteSuggestions to buildStyleUserPrompt()
+  void paletteSuggestions;
+
   const apiKey = await getClaudeApiKey();
   const client = new Anthropic({ apiKey });
 
@@ -163,8 +229,19 @@ export const handler: Handler<StyleAgentInput, void> = async (event) => {
   // 2. Mark project as "styling" before calling Claude
   await markStylingStarted(input.projectId);
 
-  // 3. Generate style via Claude
-  const styleOutput = await generateStyle(input);
+  // 3. Query Neo4j for palette suggestions (graceful degradation — empty array on failure)
+  const paletteSuggestions = await queryPaletteSuggestions(input.segment);
+
+  console.log(
+    JSON.stringify({
+      agent: "style",
+      projectId: input.projectId,
+      paletteSuggestionsCount: paletteSuggestions.length,
+    }),
+  );
+
+  // 4. Generate style via Claude
+  const styleOutput = await generateStyle(input, paletteSuggestions);
 
   console.log(
     JSON.stringify({
@@ -176,7 +253,7 @@ export const handler: Handler<StyleAgentInput, void> = async (event) => {
     }),
   );
 
-  // 4. Save style output + task token to DynamoDB (status -> "awaiting_style_approval")
+  // 5. Save style output + task token to DynamoDB (status -> "awaiting_style_approval")
   // SFN will pause here until the seller approves via the approve-style API
   await saveStyleAndToken(input.projectId, styleOutput, input.taskToken);
 
