@@ -75,5 +75,97 @@
     { "mood": "energetic", "styles": ["bold", "modern"] },
     { "mood": "calm", "styles": ["minimal", "editorial"] },
     { "mood": "trustworthy", "styles": ["corporate", "classic", "modern"] }
+  ],
+  "paletteProfiles": [
+    {
+      "id": "warm-professional",
+      "name": "Warm Professional",
+      "temperatureRange": "warm",
+      "contrastLevel": "medium",
+      "saturationRange": "muted"
+    },
+    {
+      "id": "cool-minimal",
+      "name": "Cool Minimal",
+      "temperatureRange": "cool",
+      "contrastLevel": "low",
+      "saturationRange": "muted"
+    },
+    {
+      "id": "earthy-friendly",
+      "name": "Earthy Friendly",
+      "temperatureRange": "warm",
+      "contrastLevel": "medium",
+      "saturationRange": "neutral"
+    },
+    {
+      "id": "bold-energetic",
+      "name": "Bold Energetic",
+      "temperatureRange": "neutral",
+      "contrastLevel": "high",
+      "saturationRange": "vibrant"
+    },
+    {
+      "id": "soft-elegant",
+      "name": "Soft Elegant",
+      "temperatureRange": "cool",
+      "contrastLevel": "low",
+      "saturationRange": "muted"
+    },
+    {
+      "id": "calm-trustworthy",
+      "name": "Calm Trustworthy",
+      "temperatureRange": "cool",
+      "contrastLevel": "medium",
+      "saturationRange": "neutral"
+    },
+    {
+      "id": "playful-fun",
+      "name": "Playful Fun",
+      "temperatureRange": "warm",
+      "contrastLevel": "high",
+      "saturationRange": "vibrant"
+    },
+    {
+      "id": "serious-corporate",
+      "name": "Serious Corporate",
+      "temperatureRange": "neutral",
+      "contrastLevel": "medium",
+      "saturationRange": "muted"
+    }
+  ],
+  "suggestsPalette": [
+    {
+      "mood": "professional",
+      "palettes": ["warm-professional", "serious-corporate", "cool-minimal"]
+    },
+    {
+      "mood": "elegant",
+      "palettes": ["soft-elegant", "cool-minimal", "warm-professional"]
+    },
+    {
+      "mood": "fun",
+      "palettes": ["playful-fun", "bold-energetic", "earthy-friendly"]
+    },
+    {
+      "mood": "serious",
+      "palettes": ["serious-corporate", "calm-trustworthy", "cool-minimal"]
+    },
+    {
+      "mood": "friendly",
+      "palettes": ["earthy-friendly", "warm-professional", "playful-fun"]
+    },
+    {
+      "mood": "energetic",
+      "palettes": ["bold-energetic", "playful-fun", "warm-professional"]
+    },
+    {
+      "mood": "calm",
+      "palettes": ["calm-trustworthy", "soft-elegant", "cool-minimal"]
+    },
+    {
+      "mood": "trustworthy",
+      "palettes": ["calm-trustworthy", "serious-corporate", "warm-professional"]
+    }
   ]
 }
