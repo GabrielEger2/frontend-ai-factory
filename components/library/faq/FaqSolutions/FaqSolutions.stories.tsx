@@ -9,6 +9,14 @@ const meta: Meta<typeof FaqSolutions> = {
   },
   argTypes: {
     defaultOpenIndex: { control: "number" },
+    ctaStyle: {
+      control: "select",
+      options: ["default", "slide", "dotExpand", "drawOutline", "glow"],
+    },
+    ctaColorScheme: {
+      control: "select",
+      options: ["primary", "secondary", "accent", "neutral"],
+    },
   },
 };
 export default meta;
@@ -24,6 +32,8 @@ export const SoftwareSegments: Story = {
     headline: "Solutions",
     subheadline:
       "Purpose-built tools for every stage of your organization, from solo founder to global enterprise.",
+    ctaStyle: "slide",
+    ctaColorScheme: "primary",
     items: [
       {
         title: "For Individuals",
@@ -63,6 +73,8 @@ export const SoftwareSegments: Story = {
 export const MarketingServices: Story = {
   args: {
     headline: "How We Help You Grow",
+    ctaStyle: "drawOutline",
+    ctaColorScheme: "accent",
     items: [
       {
         title: "Brand Strategy",
@@ -114,6 +126,8 @@ export const CoworkingMemberships: Story = {
     headline: "Find Your Space",
     subheadline:
       "Flexible memberships designed around the way you work, whether you need a quiet desk or a full private office.",
+    ctaStyle: "glow",
+    ctaColorScheme: "secondary",
     defaultOpenIndex: 1,
     items: [
       {
