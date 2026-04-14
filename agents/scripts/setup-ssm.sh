@@ -9,6 +9,8 @@
 # Parameters created:
 #   /sitegen/<env>/claude-api-key   (SecureString)
 #   /sitegen/<env>/vercel-token     (SecureString)
+#   /sitegen/<env>/neo4j-uri        (SecureString)
+#   /sitegen/<env>/neo4j-password   (SecureString)
 
 set -euo pipefail
 
@@ -68,10 +70,28 @@ if [[ -z "${VERCEL_TOKEN}" ]]; then
   exit 1
 fi
 
+read -rsp "Enter Neo4j URI (bolt+s://...): " NEO4J_URI
+echo ""
+
+if [[ -z "${NEO4J_URI}" ]]; then
+  echo "Error: Neo4j URI cannot be empty."
+  exit 1
+fi
+
+read -rsp "Enter Neo4j password: " NEO4J_PASSWORD
+echo ""
+
+if [[ -z "${NEO4J_PASSWORD}" ]]; then
+  echo "Error: Neo4j password cannot be empty."
+  exit 1
+fi
+
 # ── Write to SSM ─────────────────────────────────────────────────────
 
 CLAUDE_PARAM="/sitegen/${ENV}/claude-api-key"
 VERCEL_PARAM="/sitegen/${ENV}/vercel-token"
+NEO4J_URI_PARAM="/sitegen/${ENV}/neo4j-uri"
+NEO4J_PASSWORD_PARAM="/sitegen/${ENV}/neo4j-password"
 
 echo ""
 echo "Writing parameters..."
@@ -98,5 +118,27 @@ aws ssm put-parameter \
 
 echo "  ${VERCEL_PARAM} ... OK"
 
+aws ssm put-parameter \
+  --region "${REGION}" \
+  --name "${NEO4J_URI_PARAM}" \
+  --type SecureString \
+  --value "${NEO4J_URI}" \
+  --overwrite \
+  --description "Neo4j Aura URI for SiteGen ${ENV}" \
+  > /dev/null
+
+echo "  ${NEO4J_URI_PARAM} ... OK"
+
+aws ssm put-parameter \
+  --region "${REGION}" \
+  --name "${NEO4J_PASSWORD_PARAM}" \
+  --type SecureString \
+  --value "${NEO4J_PASSWORD}" \
+  --overwrite \
+  --description "Neo4j Aura password for SiteGen ${ENV}" \
+  > /dev/null
+
+echo "  ${NEO4J_PASSWORD_PARAM} ... OK"
+
 echo ""
-echo "Done. Both parameters stored as SecureString in ${REGION}."
+echo "Done. All parameters stored as SecureString in ${REGION}."

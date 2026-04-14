@@ -1,0 +1,42 @@
+import { Stack, StackProps, CfnOutput } from "aws-cdk-lib";
+import { Construct } from "constructs";
+
+/* ------------------------------------------------------------------ */
+/*  Props                                                              */
+/* ------------------------------------------------------------------ */
+
+export interface GraphStackProps extends StackProps {}
+
+/* ------------------------------------------------------------------ */
+/*  Stack                                                              */
+/* ------------------------------------------------------------------ */
+
+/**
+ * GraphStack — Neo4j Aura connection parameters.
+ *
+ * Lightweight stack that exposes SSM parameter paths for Neo4j credentials.
+ * The actual Neo4j Aura instance is managed externally (SaaS).
+ * Agent Lambdas use these paths to retrieve credentials at runtime.
+ *
+ * No cross-stack imports. Other stacks receive SSM paths as string props
+ * through MainStage.
+ */
+export class GraphStack extends Stack {
+  /** SSM parameter path for the Neo4j connection URI. */
+  public readonly neo4jUriSsmPath: string;
+
+  /** SSM parameter path for the Neo4j password. */
+  public readonly neo4jPasswordSsmPath: string;
+
+  constructor(scope: Construct, id: string, props?: GraphStackProps) {
+    super(scope, id, props);
+
+    this.neo4jUriSsmPath = "/sitegen/dev/neo4j-uri";
+    this.neo4jPasswordSsmPath = "/sitegen/dev/neo4j-password";
+
+    new CfnOutput(this, "Neo4jUriSsmPath", { value: this.neo4jUriSsmPath });
+    new CfnOutput(this, "Neo4jPasswordSsmPath", {
+      value: this.neo4jPasswordSsmPath,
+    });
+  }
+}

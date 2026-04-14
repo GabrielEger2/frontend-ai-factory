@@ -17,6 +17,7 @@
     "@aws-sdk/client-ssm": "^3",
     "@aws-sdk/client-sfn": "^3",
     "@aws-sdk/client-sqs": "^3",
+    "neo4j-driver": "^5",
     "zod": "^3"
   },
   "devDependencies": {

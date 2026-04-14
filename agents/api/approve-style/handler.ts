@@ -123,7 +123,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       description: item.description,
       researchOutput: item.researchOutput,
       styleOutput,
-      status: "content",
+      status: "composing",
     };
 
     // Step 8: DDB update FIRST — persist edited style and advance status
@@ -140,7 +140,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         ExpressionAttributeNames: { "#s": "status" },
         ExpressionAttributeValues: {
           ":so": styleOutput,
-          ":status": "content",
+          ":status": "composing",
           ":now": new Date().toISOString(),
         },
       }),

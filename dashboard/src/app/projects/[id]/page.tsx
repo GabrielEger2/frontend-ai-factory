@@ -15,6 +15,7 @@ const PIPELINE_STEPS: { status: ProjectStatus; label: string }[] = [
   { status: "researching", label: "Researching" },
   { status: "styling", label: "Generating Style" },
   { status: "awaiting_style_approval", label: "Awaiting Style Approval" },
+  { status: "composing", label: "Composing Layout" },
   { status: "content", label: "Generating Content" },
   { status: "humanizing", label: "Humanizing" },
   { status: "assembling", label: "Assembling" },
@@ -138,6 +139,7 @@ export default async function ProjectDetailPage({
 
       {/* Step Outputs */}
       {(project.styleOutput ||
+        project.composerOutput ||
         project.contentOutput ||
         project.humanizerOutput ||
         project.assemblerOutput ||
@@ -155,6 +157,18 @@ export default async function ProjectDetailPage({
                   </pre>
                 </StepPanel>
               )}
+
+            {project.composerOutput && (
+              <StepPanel
+                title="Composer Output"
+                stepName="composer"
+                projectId={id}
+              >
+                <pre className="text-xs text-slate-600 overflow-auto">
+                  {JSON.stringify(project.composerOutput, null, 2)}
+                </pre>
+              </StepPanel>
+            )}
 
             {project.contentOutput && (
               <StepPanel

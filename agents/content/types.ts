@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ContentOutputSchema } from "../shared/types";
+import { ContentOutputSchema, ComposerOutputSchema } from "../shared/types";
 
 /* ------------------------------------------------------------------ */
 /*  Content Agent Input                                                */
@@ -11,6 +11,7 @@ export const ContentAgentInputSchema = z.object({
   companyName: z.string(),
   segment: z.string(),
   description: z.string(),
+  composerOutput: ComposerOutputSchema.optional(),
 });
 
 export type ContentAgentInput = z.infer<typeof ContentAgentInputSchema>;
