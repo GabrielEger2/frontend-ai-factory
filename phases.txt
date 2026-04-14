@@ -167,7 +167,40 @@
   Milestone: "Pet Shop em Porto Alegre" and "Advocacia em SP"
   produce visually and tonally different sites automatically
 
-  Phase 4 — Seller Experience (2-3 weeks)
+  
+  Phase 4 — Graph Intelligence (remaining work)
+
+  Neo4j Aura Provisioning
+  ├── Provision Neo4j Aura instance
+  ├── Populate SSM parameters (URI + password)
+  ├── Run seed-graph.ts against live instance
+  └── Verify Composer uses graph source in a real pipeline run
+
+  SUGGESTS_PALETTE Edges
+  ├── Add palette data to graph-seed.json
+  ├── Update seed-graph.ts to create Style → Palette edges
+  └── (Optional) Wire into Style Agent for palette recommendations
+
+  Composer Query Improvements
+  ├── Add HAS_MOOD path (UNION or combined match)
+  ├── Pairwise PAIRS_WITH scoring between candidate pairs
+  └── Return contextual pair scores, not just global avg
+
+  PAIRS_WITH Completeness
+  ├── Score all 406 component pairs (29×28/2)
+  ├── Use continuous 0-1 scale, not binary 0.85/0.15
+  └── Update seed-graph.ts + metadata.json with granular scores
+
+  Component Variants
+  ├── Define variant schema (metadata.json + Neo4j representation)
+  ├── Build 2-3 variants for Phase 1 heroes as proof of concept
+  └── Update Composer to consider variants as separate candidates
+
+  Observability
+  ├── Dashboard indicator: graph vs fallback per project
+  └── CloudWatch metric for Neo4j query latency + fallback rate
+
+  Phase 5 — Seller Experience (2-3 weeks)
 
   Seller Dashboard v2
   ├── Project list with status
@@ -191,7 +224,7 @@
 
   Milestone: generate → edit → share with client → deploy, one flow
 
-  Phase 5 — Learning Loop (2-3 weeks)
+  Phase 6 — Learning Loop (2-3 weeks)
 
   Graph Learning
   ├── Track which layouts get client approval
@@ -214,7 +247,7 @@
 
   Milestone: system recommends based on what converts, not just what looks good
 
-  Phase 6 — Production Scale (ongoing)
+  Phase 7 — Production Scale (ongoing)
 
   ├── Multi-tenant isolation per CRM client
   ├── Custom domain support (.com.br) + SSL provisioning
