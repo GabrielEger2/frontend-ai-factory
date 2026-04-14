@@ -23,6 +23,7 @@
     "pipeline-starter/**/*.ts",
     "research/**/*.ts",
     "style/**/*.ts",
+    "composer/**/*.ts",
     "scripts/**/*.ts"
   ],
   "exclude": ["node_modules", "dist"]
