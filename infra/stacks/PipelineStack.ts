@@ -37,8 +37,8 @@ export interface PipelineStackProps extends StackProps {
 /**
  * PipelineStack — SQS queue, Step Functions state machine, and agent Lambdas.
  *
- * Creates the 3-step pipeline:
- *   Content Agent -> Assembler -> Deploy
+ * Creates the 5-step pipeline:
+ *   Content -> Humanizer -> Assembler -> QA -> Deploy
  *
  * Also creates the pipeline-starter Lambda that consumes SQS messages
  * and starts Step Function executions.
@@ -149,6 +149,47 @@ export class PipelineStack extends Stack {
     pipelineBucket.grantWrite(assemblerFn.fn);
 
     /* -------------------------------------------------------------- */
+    /*  Humanizer Agent Lambda                                        */
+    /* -------------------------------------------------------------- */
+
+    const humanizerFn = new AgentLambda(this, "HumanizerAgent", {
+      entry: path.join(__dirname, "../../agents/humanizer/handler.ts"),
+      agentName: "humanizer",
+      timeout: Duration.minutes(5),
+      memorySize: 512,
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        CLAUDE_API_KEY_SSM_PATH: claudeSsmPath,
+      },
+    });
+
+    projectsTable.grantReadWriteData(humanizerFn.fn);
+    humanizerFn.fn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["ssm:GetParameter"],
+        resources: [claudeSsmArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  QA Agent Lambda                                               */
+    /* -------------------------------------------------------------- */
+
+    const qaFn = new AgentLambda(this, "QAAgent", {
+      entry: path.join(__dirname, "../../agents/qa/handler.ts"),
+      agentName: "qa",
+      timeout: Duration.minutes(5),
+      memorySize: 1024,
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        PIPELINE_BUCKET_NAME: props.pipelineBucketName,
+      },
+    });
+
+    projectsTable.grantReadWriteData(qaFn.fn);
+    pipelineBucket.grantRead(qaFn.fn);
+
+    /* -------------------------------------------------------------- */
     /*  Fail Handler Lambda                                           */
     /* -------------------------------------------------------------- */
 
@@ -173,6 +214,11 @@ export class PipelineStack extends Stack {
       error: "PipelineError",
     });
 
+    const qaTerminalFail = new sfn.Fail(this, "QAPipelineFailed", {
+      cause: "QA checks failed — site has structural issues",
+      error: "QAFailedError",
+    });
+
     const failHandlerStep = new tasks.LambdaInvoke(this, "FailHandlerStep", {
       lambdaFunction: failHandlerFn.fn,
       outputPath: "$.Payload",
@@ -192,12 +238,31 @@ export class PipelineStack extends Stack {
     contentStep.addRetry(retryConfig);
     contentStep.addCatch(failHandlerStep, { resultPath: "$.error" });
 
+    const humanizerStep = new tasks.LambdaInvoke(this, "HumanizerStep", {
+      lambdaFunction: humanizerFn.fn,
+      outputPath: "$.Payload",
+    });
+    humanizerStep.addRetry(retryConfig);
+    humanizerStep.addCatch(failHandlerStep, { resultPath: "$.error" });
+
     const assemblerStep = new tasks.LambdaInvoke(this, "AssemblerStep", {
       lambdaFunction: assemblerFn.fn,
       outputPath: "$.Payload",
     });
     assemblerStep.addRetry(retryConfig);
     assemblerStep.addCatch(failHandlerStep, { resultPath: "$.error" });
+
+    const qaStep = new tasks.LambdaInvoke(this, "QAStep", {
+      lambdaFunction: qaFn.fn,
+      outputPath: "$.Payload",
+    });
+    qaStep.addRetry({
+      maxAttempts: 1,
+      backoffRate: 1,
+      interval: Duration.seconds(2),
+      errors: ["States.ALL"],
+    });
+    qaStep.addCatch(qaTerminalFail, { resultPath: "$.error" });
 
     const deployStep = new tasks.LambdaInvoke(this, "DeployStep", {
       lambdaFunction: deployFn,
@@ -209,7 +274,9 @@ export class PipelineStack extends Stack {
     const succeedState = new sfn.Succeed(this, "PipelineSucceeded");
 
     const definition = contentStep
+      .next(humanizerStep)
       .next(assemblerStep)
+      .next(qaStep)
       .next(deployStep)
       .next(succeedState);
 

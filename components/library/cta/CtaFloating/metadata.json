@@ -15,7 +15,7 @@
   "density": "low",
   "slots": [
     { "name": "ctaText", "type": "text", "maxLength": 30 },
-    { "name": "ctaUrl", "type": "url" }
+    { "name": "ctaUrl", "type": "url", "optional": true }
   ],
   "mobileBehavior": "preserve",
   "pairsWell": ["hero-geometric-01", "hero-split-image-01"],

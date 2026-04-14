@@ -7,18 +7,24 @@ import { z } from "zod";
 export type ProjectStatus =
   | "queued"
   | "content"
+  | "humanizing"
   | "assembling"
+  | "qa"
   | "deploying"
   | "deployed"
-  | "failed";
+  | "failed"
+  | "qa_failed";
 
 export const PROJECT_STATUSES: readonly ProjectStatus[] = [
   "queued",
   "content",
+  "humanizing",
   "assembling",
+  "qa",
   "deploying",
   "deployed",
   "failed",
+  "qa_failed",
 ] as const;
 
 /* ------------------------------------------------------------------ */
@@ -35,6 +41,38 @@ export const ContentOutputSchema = z.object({
 });
 
 export type ContentOutput = z.infer<typeof ContentOutputSchema>;
+
+/* ------------------------------------------------------------------ */
+/*  Humanizer Output                                                   */
+/* ------------------------------------------------------------------ */
+
+export const HumanizerOutputSchema = z.object({
+  components: z.array(
+    z.object({
+      componentId: z.string(),
+      slots: z.record(z.string(), z.unknown()),
+    }),
+  ),
+});
+
+export type HumanizerOutput = z.infer<typeof HumanizerOutputSchema>;
+
+/* ------------------------------------------------------------------ */
+/*  QA Output                                                          */
+/* ------------------------------------------------------------------ */
+
+export const QAOutputSchema = z.object({
+  passed: z.boolean(),
+  issues: z.array(
+    z.object({
+      componentId: z.string(),
+      slot: z.string(),
+      message: z.string(),
+    }),
+  ),
+});
+
+export type QAOutput = z.infer<typeof QAOutputSchema>;
 
 /* ------------------------------------------------------------------ */
 /*  Assembler Output                                                   */
@@ -56,16 +94,21 @@ export const PipelineStateSchema = z.object({
   status: z.enum([
     "queued",
     "content",
+    "humanizing",
     "assembling",
+    "qa",
     "deploying",
     "deployed",
     "failed",
+    "qa_failed",
   ]),
   companyName: z.string(),
   segment: z.string(),
   description: z.string(),
   contentOutput: ContentOutputSchema.optional(),
+  humanizerOutput: HumanizerOutputSchema.optional(),
   assemblerOutput: AssemblerOutputSchema.optional(),
+  qaOutput: QAOutputSchema.optional(),
   previewUrl: z.string().optional(),
 });
 
@@ -84,7 +127,10 @@ export interface ProjectItem {
   segment: string;
   description: string;
   contentOutput?: ContentOutput;
+  humanizerOutput?: HumanizerOutput;
   assemblerOutput?: AssemblerOutput;
+  qaOutput?: QAOutput;
+  qaIssues?: QAOutput["issues"];
   previewUrl?: string;
   createdAt: string;
   updatedAt: string;

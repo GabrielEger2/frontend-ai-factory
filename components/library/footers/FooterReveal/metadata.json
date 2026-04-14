@@ -14,15 +14,20 @@
   "layout": "multi-column",
   "density": "medium",
   "slots": [
-    { "name": "logo", "type": "image", "aspectRatio": "auto" },
-    { "name": "whatsappUrl", "type": "url" },
+    {
+      "name": "logo",
+      "type": "image",
+      "aspectRatio": "auto",
+      "optional": true
+    },
+    { "name": "whatsappUrl", "type": "url", "optional": true },
     { "name": "whatsappText", "type": "text", "maxLength": 30 },
-    { "name": "phoneUrl", "type": "url" },
+    { "name": "phoneUrl", "type": "url", "optional": true },
     { "name": "phoneText", "type": "text", "maxLength": 30 },
-    { "name": "emailUrl", "type": "url" },
+    { "name": "emailUrl", "type": "url", "optional": true },
     { "name": "emailText", "type": "text", "maxLength": 60 },
     { "name": "addressText", "type": "text", "maxLength": 120 },
-    { "name": "addressMapsUrl", "type": "url" },
+    { "name": "addressMapsUrl", "type": "url", "optional": true },
     {
       "name": "navColumns",
       "type": "list",
@@ -42,14 +47,43 @@
     {
       "name": "socialLinks",
       "type": "list",
-      "maxItems": 4,
+      "maxItems": 6,
       "itemSchema": {
-        "network": { "type": "text", "maxLength": 20 },
+        "network": {
+          "type": "text",
+          "maxLength": 20,
+          "enum": [
+            "instagram",
+            "linkedin",
+            "facebook",
+            "whatsapp",
+            "twitter",
+            "youtube",
+            "tiktok",
+            "google",
+            "pinterest",
+            "telegram"
+          ]
+        },
         "url": { "type": "url" },
         "label": { "type": "text", "maxLength": 60 }
       }
     },
-    { "name": "companyName", "type": "text", "maxLength": 60 }
+    { "name": "companyName", "type": "text", "maxLength": 60 },
+    { "name": "ctaText", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "ctaUrl", "type": "url", "optional": true },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "optional": true,
+      "enum": [350, 400, 450, 500, 550]
+    }
   ],
   "mobileBehavior": "stack",
   "pairsWell": ["cta-banner-01", "faq-accordion-01", "contact-form-01"],

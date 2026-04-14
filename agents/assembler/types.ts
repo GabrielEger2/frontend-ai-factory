@@ -1,7 +1,7 @@
 import { z } from "zod";
 import {
   PipelineStateSchema,
-  ContentOutputSchema,
+  HumanizerOutputSchema,
   AssemblerOutputSchema,
 } from "../shared/types";
 import type { PipelineState } from "../shared/types";
@@ -11,11 +11,11 @@ import type { PipelineState } from "../shared/types";
 /* ------------------------------------------------------------------ */
 
 /**
- * The assembler requires contentOutput from the upstream Content Agent.
+ * The assembler requires humanizerOutput from the upstream Humanizer Agent.
  * All other PipelineState fields are carried forward.
  */
 export const AssemblerInputSchema = PipelineStateSchema.extend({
-  contentOutput: ContentOutputSchema,
+  humanizerOutput: HumanizerOutputSchema,
 });
 
 export type AssemblerInput = z.infer<typeof AssemblerInputSchema>;

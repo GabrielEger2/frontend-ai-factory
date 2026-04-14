@@ -121,6 +121,7 @@ function escapeForTemplateLiteral(str: string): string {
 function main() {
   const sources: Record<string, string> = {};
   const idToPath: Record<string, string> = {};
+  const metadataMap: Record<string, { slots: unknown[] }> = {};
 
   // 1. Walk components/library/
   const libraryFiles = walkDir(LIBRARY_DIR);
@@ -171,6 +172,7 @@ function main() {
       // Strip the /index.tsx suffix for the import path
       const importDir = sitePath.replace(/\/index\.tsx$/, "");
       idToPath[meta.id] = importDir;
+      metadataMap[meta.id] = { slots: meta.slots ?? [] };
     }
   }
 
@@ -210,6 +212,24 @@ function main() {
 
   lines.push("};");
   lines.push("");
+  lines.push("/**");
+  lines.push(
+    " * Map of component metadata IDs to their parsed slot definitions.",
+  );
+  lines.push(
+    " * Used by the Assembler for enum clamping and by the QA Agent for structural validation.",
+  );
+  lines.push(" */");
+  lines.push(
+    "export const COMPONENT_METADATA: Record<string, { slots: unknown[] }> = {",
+  );
+
+  for (const [id, meta] of Object.entries(metadataMap)) {
+    lines.push(`  ${JSON.stringify(id)}: ${JSON.stringify(meta)},`);
+  }
+
+  lines.push("};");
+  lines.push("");
 
   fs.writeFileSync(OUTPUT_FILE, lines.join("\n"), "utf-8");
 
@@ -217,6 +237,7 @@ function main() {
   console.log(`Generated ${OUTPUT_FILE}`);
   console.log(`  Sources: ${Object.keys(sources).length} files`);
   console.log(`  Component IDs: ${Object.keys(idToPath).length} mappings`);
+  console.log(`  Metadata entries: ${Object.keys(metadataMap).length}`);
 }
 
 main();
