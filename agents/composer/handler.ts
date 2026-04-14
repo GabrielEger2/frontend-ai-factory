@@ -24,6 +24,16 @@ import {
 } from "./prompt";
 
 /* ------------------------------------------------------------------ */
+/*  Pair matrix entry (pair compatibility between candidate components) */
+/* ------------------------------------------------------------------ */
+
+export interface PairMatrixEntry {
+  a: string;
+  b: string;
+  score: number;
+}
+
+/* ------------------------------------------------------------------ */
 /*  Clients (reused across Lambda invocations)                         */
 /* ------------------------------------------------------------------ */
 
@@ -60,9 +70,10 @@ async function getClaudeApiKey(): Promise<string> {
 /*  Neo4j graph query for candidate components                         */
 /* ------------------------------------------------------------------ */
 
-async function getGraphCandidates(
-  segment: string,
-): Promise<CandidateComponent[]> {
+async function getGraphCandidates(segment: string): Promise<{
+  candidates: CandidateComponent[];
+  pairMatrix: PairMatrixEntry[];
+}> {
   const driver = await getDriver();
   const session = driver.session({ database: "neo4j" });
 
@@ -95,7 +106,7 @@ async function getGraphCandidates(
       { segmentId: segment },
     );
 
-    return result.records.map((record) => ({
+    const candidates: CandidateComponent[] = result.records.map((record) => ({
       id: record.get("id") as string,
       name: record.get("name") as string,
       category: record.get("category") as string,
@@ -114,6 +125,30 @@ async function getGraphCandidates(
           ? (record.get("avgPairScore") as { toNumber(): number }).toNumber()
           : (record.get("avgPairScore") as number),
     }));
+
+    const candidateIds = candidates.map((c) => c.id);
+
+    const pairResult = await session.run(
+      `
+      MATCH (a:Component)-[pw:PAIRS_WITH]->(b:Component)
+      WHERE a.id IN $candidateIds AND b.id IN $candidateIds
+        AND a.id < b.id
+      RETURN a.id AS a, b.id AS b, pw.score AS score
+      ORDER BY pw.score DESC
+      `,
+      { candidateIds },
+    );
+
+    const pairMatrix: PairMatrixEntry[] = pairResult.records.map((record) => ({
+      a: record.get("a") as string,
+      b: record.get("b") as string,
+      score:
+        typeof record.get("score") === "object"
+          ? (record.get("score") as { toNumber(): number }).toNumber()
+          : (record.get("score") as number),
+    }));
+
+    return { candidates, pairMatrix };
   } finally {
     await session.close();
   }
@@ -210,6 +245,7 @@ async function composeLayouts(
   input: ReturnType<typeof ComposerAgentInputSchema.parse>,
   candidates: CandidateComponent[],
   source: "graph" | "fallback",
+  pairMatrix: PairMatrixEntry[],
 ): Promise<ComposerOutput> {
   const apiKey = await getClaudeApiKey();
   const client = new Anthropic({ apiKey });
@@ -300,9 +336,12 @@ export const handler: Handler<PipelineState, PipelineState> = async (event) => {
   // 3. Get candidate components — try graph first, fallback to DynamoDB
   let candidates: CandidateComponent[];
   let source: "graph" | "fallback";
+  let pairMatrix: PairMatrixEntry[] = [];
 
   try {
-    candidates = await getGraphCandidates(input.segment);
+    const graphResult = await getGraphCandidates(input.segment);
+    candidates = graphResult.candidates;
+    pairMatrix = graphResult.pairMatrix;
     source = "graph";
     console.log(
       JSON.stringify({
@@ -340,7 +379,12 @@ export const handler: Handler<PipelineState, PipelineState> = async (event) => {
   }
 
   // 4. Call Claude to compose layouts from candidates
-  const composerOutput = await composeLayouts(input, candidates, source);
+  const composerOutput = await composeLayouts(
+    input,
+    candidates,
+    source,
+    pairMatrix,
+  );
 
   console.log(
     JSON.stringify({
