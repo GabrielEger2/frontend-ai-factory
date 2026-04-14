@@ -15,8 +15,16 @@ import {
   ComponentItem,
 } from "../shared/types";
 import { getPreset } from "../shared/segment-presets";
-import { ContentAgentInputSchema, ComponentSlotDescriptor } from "./types";
-import { buildSystemPrompt, buildUserPrompt } from "./prompt";
+import {
+  ContentAgentInputSchema,
+  ComponentSlotDescriptor,
+  ComponentSlot,
+} from "./types";
+import {
+  buildSystemPrompt,
+  buildUserPrompt,
+  buildRetryUserPrompt,
+} from "./prompt";
 
 /* ------------------------------------------------------------------ */
 /*  Clients (reused across Lambda invocations)                         */
@@ -124,12 +132,14 @@ function buildSlotDescriptors(
 async function generateContent(
   input: { companyName: string; segment: string; description: string },
   componentSlots: ComponentSlotDescriptor[],
+  userPromptOverride?: string,
 ): Promise<ContentOutput> {
   const apiKey = await getClaudeApiKey();
   const client = new Anthropic({ apiKey });
 
   const systemPrompt = buildSystemPrompt();
-  const userPrompt = buildUserPrompt(input, componentSlots);
+  const userPrompt =
+    userPromptOverride ?? buildUserPrompt(input, componentSlots);
 
   const response = await client.messages.create({
     model: "claude-sonnet-4-20250514",
@@ -160,6 +170,97 @@ async function generateContent(
 
   const validated = ContentOutputSchema.parse(parsed);
   return validated;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Validate enum fields in content output                             */
+/* ------------------------------------------------------------------ */
+
+interface EnumValidationError {
+  componentId: string;
+  slot: string;
+  message: string;
+}
+
+function validateEnums(
+  contentOutput: ContentOutput,
+  slotDescriptors: ComponentSlotDescriptor[],
+): EnumValidationError[] {
+  const errors: EnumValidationError[] = [];
+
+  const descriptorMap = new Map<string, ComponentSlotDescriptor>();
+  for (const desc of slotDescriptors) {
+    descriptorMap.set(desc.componentId, desc);
+  }
+
+  for (const component of contentOutput.components) {
+    const descriptor = descriptorMap.get(component.componentId);
+    if (!descriptor) continue;
+
+    for (const slotDef of descriptor.slots) {
+      const value = component.slots[slotDef.name];
+
+      // Check root-level enum
+      if (slotDef.enum && value != null) {
+        if (
+          typeof value === "string" ||
+          typeof value === "number" ||
+          typeof value === "boolean"
+        ) {
+          const allowed = slotDef.enum as unknown[];
+          if (!allowed.includes(value)) {
+            errors.push({
+              componentId: component.componentId,
+              slot: slotDef.name,
+              message: `valor "${String(value)}" nao e valido. Opcoes: ${JSON.stringify(allowed)}`,
+            });
+          }
+        }
+      }
+
+      // Check enum fields within list-type slots with itemSchema
+      if (
+        slotDef.type === "list" &&
+        slotDef.itemSchema &&
+        Array.isArray(value)
+      ) {
+        const itemSchema = slotDef.itemSchema as Record<string, ComponentSlot>;
+        // itemSchema may be an object with named fields (object-type items)
+        for (let idx = 0; idx < value.length; idx++) {
+          const item = value[idx];
+          if (
+            item != null &&
+            typeof item === "object" &&
+            !Array.isArray(item)
+          ) {
+            const itemObj = item as Record<string, unknown>;
+            for (const [fieldName, fieldDef] of Object.entries(itemSchema)) {
+              if (
+                fieldDef &&
+                typeof fieldDef === "object" &&
+                "enum" in fieldDef &&
+                Array.isArray(fieldDef.enum)
+              ) {
+                const fieldValue = itemObj[fieldName];
+                if (fieldValue != null) {
+                  const allowed = fieldDef.enum as unknown[];
+                  if (!allowed.includes(fieldValue)) {
+                    errors.push({
+                      componentId: component.componentId,
+                      slot: `${slotDef.name}[${idx}].${fieldName}`,
+                      message: `valor "${String(fieldValue)}" nao e valido. Opcoes: ${JSON.stringify(allowed)}`,
+                    });
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return errors;
 }
 
 /* ------------------------------------------------------------------ */
@@ -208,7 +309,7 @@ async function updateProject(
       ExpressionAttributeNames: { "#s": "status" },
       ExpressionAttributeValues: {
         ":co": contentOutput,
-        ":status": "assembling",
+        ":status": "humanizing",
         ":now": new Date().toISOString(),
       },
     }),
@@ -250,14 +351,45 @@ export const handler: Handler<PipelineState, PipelineState> = async (event) => {
   await markContentStarted(input.projectId);
 
   // 6. Generate content via Claude
-  const contentOutput = await generateContent(
-    {
-      companyName: input.companyName,
-      segment: input.segment,
-      description: input.description,
-    },
-    slotDescriptors,
-  );
+  const inputBrief = {
+    companyName: input.companyName,
+    segment: input.segment,
+    description: input.description,
+  };
+
+  let contentOutput = await generateContent(inputBrief, slotDescriptors);
+
+  // 6b. Validate enum fields post-generation
+  let enumErrors = validateEnums(contentOutput, slotDescriptors);
+
+  if (enumErrors.length > 0) {
+    console.log(
+      JSON.stringify({
+        agent: "content",
+        projectId: input.projectId,
+        enumErrors: enumErrors.length,
+        action: "retrying",
+      }),
+    );
+
+    const retryPrompt = buildRetryUserPrompt(
+      inputBrief,
+      slotDescriptors,
+      enumErrors,
+    );
+    contentOutput = await generateContent(
+      inputBrief,
+      slotDescriptors,
+      retryPrompt,
+    );
+
+    enumErrors = validateEnums(contentOutput, slotDescriptors);
+    if (enumErrors.length > 0) {
+      throw new Error(
+        `Content enum validation failed after retry: ${JSON.stringify(enumErrors)}`,
+      );
+    }
+  }
 
   console.log(
     JSON.stringify({
@@ -267,13 +399,13 @@ export const handler: Handler<PipelineState, PipelineState> = async (event) => {
     }),
   );
 
-  // 7. Persist to DynamoDB (status -> "assembling")
+  // 7. Persist to DynamoDB (status -> "humanizing")
   await updateProject(input.projectId, contentOutput);
 
   // 8. Return accumulated pipeline state
   const result: PipelineState = {
     ...event,
-    status: "assembling",
+    status: "humanizing",
     contentOutput,
   };
 

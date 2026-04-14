@@ -15,12 +15,14 @@ Sua tarefa: gerar conteudo para cada slot de cada componente de um website.
 2. Respeite os limites de maxLength para cada slot de texto. Nunca exceda o limite.
 3. Para slots do tipo "image", retorne null. Imagens sao fornecidas separadamente.
 4. Para slots do tipo "url" no nivel raiz (nao dentro de listas), retorne null. URLs externos sao fornecidos separadamente.
-5. Para slots do tipo "list", retorne um array de objetos seguindo o itemSchema descrito.
+5. Para slots do tipo "list":
+   - Se o itemSchema tem type "text" ou "number", retorne um array SIMPLES de valores (ex: ["valor1", "valor2"]). NAO retorne objetos.
+   - Se o itemSchema tem type "object" com fields, retorne um array de objetos contendo APENAS os campos definidos em fields. NAO inclua campos do itemSchema como "type" ou "maxLength" nos objetos.
    - Dentro de listas, slots do tipo "image" tambem devem ser null.
    - Dentro de listas, slots do tipo "url" devem ser preenchidos com ancoras internas relevantes (ex: "#servicos", "#sobre", "#contato", "#pacotes"). Esses sao links de navegacao, nao URLs externos.
 6. Para slots do tipo "boolean", retorne true ou false conforme faca sentido para o negocio.
 7. Para slots do tipo "number", retorne um numero apropriado dentre as opcoes do enum, se houver.
-8. Para slots com "enum", escolha o valor mais adequado ao contexto do negocio.
+8. Para slots com "enum" (no nivel raiz OU dentro de campos no itemSchema), use EXATAMENTE um dos valores listados. Respeite a caixa (maiuscula/minuscula) — ex: se o enum diz "facebook", NAO escreva "Facebook".
 9. Slots marcados como "optional": true podem ser incluidos ou omitidos conforme relevancia.
    - Inclua slots opcionais quando agregarem valor ao contexto do negocio.
    - Omita-os (nao inclua a chave) quando nao fizerem sentido.
@@ -105,5 +107,36 @@ export function buildUserPrompt(
     "Gere conteudo para cada slot dos componentes abaixo:",
     "",
     componentsSection,
+  ].join("\n");
+}
+
+/* ------------------------------------------------------------------ */
+/*  Retry User Prompt (appends validation errors)                      */
+/* ------------------------------------------------------------------ */
+
+export function buildRetryUserPrompt(
+  input: { companyName: string; segment: string; description: string },
+  componentSlots: ComponentSlotDescriptor[],
+  validationErrors: Array<{
+    componentId: string;
+    slot: string;
+    message: string;
+  }>,
+): string {
+  const basePrompt = buildUserPrompt(input, componentSlots);
+
+  const errorLines = validationErrors.map(
+    (err) =>
+      `- Componente ${err.componentId}, slot ${err.slot}: ${err.message}`,
+  );
+
+  return [
+    basePrompt,
+    "",
+    "## Correcoes necessarias",
+    "",
+    ...errorLines,
+    "",
+    "Retorne o JSON completo novamente com as correcoes aplicadas.",
   ].join("\n");
 }

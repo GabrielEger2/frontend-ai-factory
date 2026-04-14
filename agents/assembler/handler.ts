@@ -3,10 +3,11 @@ import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { AssemblerInputSchema } from "./types";
 import type { AssemblerResult } from "./types";
-import type { ContentOutput } from "../shared/types";
+import type { HumanizerOutput } from "../shared/types";
 import {
   COMPONENT_SOURCES,
   COMPONENT_ID_TO_PATH,
+  COMPONENT_METADATA,
 } from "./component-sources.generated";
 import * as zlib from "zlib";
 
@@ -36,7 +37,11 @@ function toComponentName(componentId: string): string {
  * JSON.stringify preserves them, causing TypeScript build failures.
  * This function walks the value tree and replaces nulls with defaults.
  */
-function sanitizeSlotValue(value: unknown, key?: string): unknown {
+function sanitizeSlotValue(
+  value: unknown,
+  key?: string,
+  slotMeta?: { enum?: unknown[] },
+): unknown {
   if (value === null || value === undefined) {
     if (key && /url|href|src/i.test(key)) return "#";
     if (key && /image|img|banner|photo|avatar|logo|icon/i.test(key))
@@ -44,8 +49,35 @@ function sanitizeSlotValue(value: unknown, key?: string): unknown {
     if (key && /alt/i.test(key)) return "";
     return undefined;
   }
+
+  // Enum clamping: if slot has an enum constraint and the value is not in it,
+  // clamp to the first allowed value (defense-in-depth after Content Agent validation)
+  if (
+    slotMeta?.enum &&
+    slotMeta.enum.length > 0 &&
+    typeof value === "string" &&
+    !slotMeta.enum.includes(value)
+  ) {
+    const clamped = String(slotMeta.enum[0]);
+    console.warn("[assembler] enum clamped:", {
+      slot: key,
+      from: value,
+      to: clamped,
+    });
+    return clamped;
+  }
+
   if (Array.isArray(value)) {
-    return value.map((item) => sanitizeSlotValue(item, key));
+    return value.map((item) => {
+      // Unwrap metadata-shaped objects: {type:"text", maxLength:40, text:"cão"} → "cão"
+      if (typeof item === "object" && item !== null && !Array.isArray(item)) {
+        const obj = item as Record<string, unknown>;
+        if (typeof obj.text === "string" && obj.type === "text") {
+          return obj.text;
+        }
+      }
+      return sanitizeSlotValue(item, key);
+    });
   }
   if (typeof value === "object") {
     const result: Record<string, unknown> = {};
@@ -80,6 +112,8 @@ function serializeSlotValue(value: unknown): string {
 
 /**
  * Generate a JSX section for a single component with its slot props.
+ * Looks up COMPONENT_METADATA to pass slot-level enum constraints
+ * to sanitizeSlotValue for defense-in-depth clamping.
  */
 function generateComponentSection(
   componentId: string,
@@ -92,11 +126,19 @@ function generateComponentSection(
     return `      <${name} />`;
   }
 
+  // Look up component slot definitions for enum clamping
+  const componentMeta = COMPONENT_METADATA[componentId];
+  const slotDefs = (componentMeta?.slots ?? []) as Array<{
+    name?: string;
+    enum?: unknown[];
+  }>;
+
   const propsStr = propsEntries
-    .map(
-      ([key, value]) =>
-        `        ${key}=${serializeSlotValue(sanitizeSlotValue(value, key))}`,
-    )
+    .map(([key, value]) => {
+      const slotDef = slotDefs.find((s) => s.name === key);
+      const slotMeta = slotDef?.enum ? { enum: slotDef.enum } : undefined;
+      return `        ${key}=${serializeSlotValue(sanitizeSlotValue(value, key, slotMeta))}`;
+    })
     .join("\n");
 
   return `      <${name}\n${propsStr}\n      />`;
@@ -105,8 +147,8 @@ function generateComponentSection(
 /**
  * Generate the full page.tsx file that imports and renders all components.
  */
-function generatePageTsx(contentOutput: ContentOutput): string {
-  const imports = contentOutput.components
+function generatePageTsx(humanizerOutput: HumanizerOutput): string {
+  const imports = humanizerOutput.components
     .map((c) => {
       const name = toComponentName(c.componentId);
       // Use COMPONENT_ID_TO_PATH for real component directory paths.
@@ -121,7 +163,7 @@ function generatePageTsx(contentOutput: ContentOutput): string {
     })
     .join("\n");
 
-  const sections = contentOutput.components
+  const sections = humanizerOutput.components
     .map((c) => generateComponentSection(c.componentId, c.slots))
     .join("\n");
 
@@ -521,7 +563,7 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
     JSON.stringify({
       message: "Assembler started",
       projectId: input.projectId,
-      componentCount: input.contentOutput.components.length,
+      componentCount: input.humanizerOutput.components.length,
     }),
   );
 
@@ -541,7 +583,7 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
   // App source files
   files["src/app/globals.css"] = generateGlobalsCss();
   files["src/app/layout.tsx"] = generateLayoutTsx();
-  files["src/app/page.tsx"] = generatePageTsx(input.contentOutput);
+  files["src/app/page.tsx"] = generatePageTsx(input.humanizerOutput);
 
   // Real component library source files (bundled at build time)
   for (const [filePath, content] of Object.entries(COMPONENT_SOURCES)) {
@@ -590,7 +632,7 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
       ExpressionAttributeNames: { "#st": "status" },
       ExpressionAttributeValues: {
         ":ao": { s3Key, s3Bucket: bucketName },
-        ":status": "deploying",
+        ":status": "qa",
         ":now": now,
       },
     }),
@@ -599,11 +641,11 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
   /* ---- Return pipeline state ---- */
   return {
     projectId: input.projectId,
-    status: "deploying",
+    status: "qa",
     companyName: input.companyName,
     segment: input.segment,
     description: input.description,
-    contentOutput: input.contentOutput,
+    humanizerOutput: input.humanizerOutput,
     assemblerOutput: { s3Key, s3Bucket: bucketName },
   };
 };

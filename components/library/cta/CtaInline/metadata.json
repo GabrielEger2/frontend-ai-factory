@@ -17,7 +17,7 @@
     { "name": "headline", "type": "text", "maxLength": 60 },
     { "name": "description", "type": "text", "maxLength": 120 },
     { "name": "ctaText", "type": "text", "maxLength": 30 },
-    { "name": "ctaUrl", "type": "url" }
+    { "name": "ctaUrl", "type": "url", "optional": true }
   ],
   "mobileBehavior": "stack",
   "pairsWell": [
