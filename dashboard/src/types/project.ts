@@ -159,6 +159,8 @@ export interface ComposerOutput {
   layouts: ComposerLayout[];
   selectedLayout: number;
   source: "graph" | "fallback";
+  candidateCount?: number;
+  avgScore?: number;
 }
 
 /* ------------------------------------------------------------------ */
