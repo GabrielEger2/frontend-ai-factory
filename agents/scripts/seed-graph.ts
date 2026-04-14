@@ -34,15 +34,38 @@ interface ExpressedAsEntry {
   styles: string[];
 }
 
+interface PaletteProfileEntry {
+  id: string;
+  name: string;
+  temperatureRange: string;
+  contrastLevel: string;
+  saturationRange: string;
+}
+
+interface SuggestsPaletteEntry {
+  mood: string;
+  palettes: string[];
+}
+
 interface GraphSeedData {
   segments: SegmentEntry[];
   naturallyFeels: NaturallyFeelsEntry[];
   expressedAs: ExpressedAsEntry[];
+  paletteProfiles: PaletteProfileEntry[];
+  suggestsPalette: SuggestsPaletteEntry[];
 }
 
 /* ------------------------------------------------------------------ */
 /*  Component metadata types (from seed-components.ts)                 */
 /* ------------------------------------------------------------------ */
+
+interface ComponentVariantEntry {
+  id: string;
+  name: string;
+  density: string;
+  colorMode: string;
+  styleOverrides: string[];
+}
 
 interface MetadataJson {
   id: string;
@@ -58,6 +81,7 @@ interface MetadataJson {
   mobileBehavior: string;
   pairsWell: string[];
   pairsPoorly: string[];
+  variants?: ComponentVariantEntry[];
 }
 
 /* ------------------------------------------------------------------ */
@@ -73,6 +97,11 @@ const LIBRARY_ROOT = path.resolve(
 );
 
 const SEED_DATA_PATH = path.resolve(__dirname, "seed-data", "graph-seed.json");
+const PAIRS_SCORES_PATH = path.resolve(
+  __dirname,
+  "seed-data",
+  "pairs-scores.json",
+);
 
 /* ------------------------------------------------------------------ */
 /*  Walk directory tree and collect metadata.json paths                */
@@ -129,6 +158,12 @@ async function createConstraints(session: Session): Promise<void> {
   );
   await session.run(
     "CREATE CONSTRAINT IF NOT EXISTS FOR (n:Component) REQUIRE n.id IS UNIQUE",
+  );
+  await session.run(
+    "CREATE CONSTRAINT IF NOT EXISTS FOR (n:PaletteProfile) REQUIRE n.id IS UNIQUE",
+  );
+  await session.run(
+    "CREATE CONSTRAINT IF NOT EXISTS FOR (n:Variant) REQUIRE n.id IS UNIQUE",
   );
 
   console.log("  Constraints created.");
@@ -235,6 +270,36 @@ async function seedComponents(
 }
 
 /* ------------------------------------------------------------------ */
+/*  Seed PaletteProfile nodes                                          */
+/* ------------------------------------------------------------------ */
+
+async function seedPaletteProfiles(
+  session: Session,
+  profiles: PaletteProfileEntry[],
+): Promise<void> {
+  console.log(`Seeding ${profiles.length} PaletteProfile nodes...`);
+
+  for (const p of profiles) {
+    await session.run(
+      `MERGE (pp:PaletteProfile {id: $id})
+       SET pp.name = $name,
+           pp.temperatureRange = $temperatureRange,
+           pp.contrastLevel = $contrastLevel,
+           pp.saturationRange = $saturationRange`,
+      {
+        id: p.id,
+        name: p.name,
+        temperatureRange: p.temperatureRange,
+        contrastLevel: p.contrastLevel,
+        saturationRange: p.saturationRange,
+      },
+    );
+  }
+
+  console.log("  PaletteProfile nodes seeded.");
+}
+
+/* ------------------------------------------------------------------ */
 /*  Seed NATURALLY_FEELS relationships (Segment -> Mood)               */
 /* ------------------------------------------------------------------ */
 
@@ -280,6 +345,30 @@ async function seedExpressedAs(
   }
 
   console.log("  EXPRESSED_AS relationships seeded.");
+}
+
+/* ------------------------------------------------------------------ */
+/*  Seed SUGGESTS_PALETTE relationships (Mood -> PaletteProfile)       */
+/* ------------------------------------------------------------------ */
+
+async function seedSuggestsPalette(
+  session: Session,
+  suggestsPalette: SuggestsPaletteEntry[],
+): Promise<void> {
+  console.log("Seeding SUGGESTS_PALETTE relationships...");
+
+  for (const entry of suggestsPalette) {
+    for (const paletteId of entry.palettes) {
+      await session.run(
+        `MATCH (m:Mood {id: $moodId})
+         MATCH (pp:PaletteProfile {id: $paletteId})
+         MERGE (m)-[:SUGGESTS_PALETTE]->(pp)`,
+        { moodId: entry.mood, paletteId },
+      );
+    }
+  }
+
+  console.log("  SUGGESTS_PALETTE relationships seeded.");
 }
 
 /* ------------------------------------------------------------------ */
@@ -331,54 +420,86 @@ async function seedHasMood(
 }
 
 /* ------------------------------------------------------------------ */
+/*  Seed Variant nodes + VARIANT_OF relationships                      */
+/* ------------------------------------------------------------------ */
+
+async function seedVariants(
+  session: Session,
+  components: MetadataJson[],
+): Promise<void> {
+  console.log("Seeding Variant nodes and VARIANT_OF relationships...");
+
+  let variantCount = 0;
+
+  for (const comp of components) {
+    for (const v of comp.variants ?? []) {
+      await session.run(
+        `MERGE (var:Variant {id: $id})
+         SET var.name = $name,
+             var.density = $density,
+             var.colorMode = $colorMode,
+             var.styleOverrides = $styleOverrides
+         WITH var
+         MATCH (c:Component {id: $compId})
+         MERGE (var)-[:VARIANT_OF]->(c)`,
+        {
+          id: v.id,
+          name: v.name,
+          density: v.density,
+          colorMode: v.colorMode,
+          styleOverrides: v.styleOverrides,
+          compId: comp.id,
+        },
+      );
+      variantCount++;
+    }
+  }
+
+  console.log(
+    `  ${variantCount} Variant nodes and VARIANT_OF relationships seeded.`,
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Seed PAIRS_WITH relationships (Component <-> Component)            */
 /* ------------------------------------------------------------------ */
 
 async function seedPairsWith(
   session: Session,
-  components: MetadataJson[],
+  pairsScores: { a: string; b: string; score: number }[],
+  knownIds: Set<string>,
 ): Promise<void> {
-  console.log("Seeding PAIRS_WITH relationships...");
+  console.log(
+    `Seeding PAIRS_WITH relationships from ${pairsScores.length} pair scores...`,
+  );
 
-  const knownIds = new Set(components.map((c) => c.id));
+  let seeded = 0;
+  let skipped = 0;
 
-  for (const comp of components) {
-    // pairsWell -> score 0.85 (bidirectional)
-    for (const targetId of comp.pairsWell ?? []) {
-      if (!knownIds.has(targetId)) {
-        console.warn(`  Skipping unknown component: ${targetId}`);
-        continue;
-      }
-      await session.run(
-        `MATCH (a:Component {id: $fromId})
-         MATCH (b:Component {id: $toId})
-         MERGE (a)-[r:PAIRS_WITH]->(b)
-         SET r.score = $score
-         MERGE (b)-[r2:PAIRS_WITH]->(a)
-         SET r2.score = $score`,
-        { fromId: comp.id, toId: targetId, score: 0.85 },
+  for (const pair of pairsScores) {
+    if (!knownIds.has(pair.a) || !knownIds.has(pair.b)) {
+      console.warn(
+        `  Skipping unknown component in pair: ${pair.a} <-> ${pair.b}`,
       );
+      skipped++;
+      continue;
     }
 
-    // pairsPoorly -> score 0.15 (bidirectional)
-    for (const targetId of comp.pairsPoorly ?? []) {
-      if (!knownIds.has(targetId)) {
-        console.warn(`  Skipping unknown component: ${targetId}`);
-        continue;
-      }
-      await session.run(
-        `MATCH (a:Component {id: $fromId})
-         MATCH (b:Component {id: $toId})
-         MERGE (a)-[r:PAIRS_WITH]->(b)
-         SET r.score = $score
-         MERGE (b)-[r2:PAIRS_WITH]->(a)
-         SET r2.score = $score`,
-        { fromId: comp.id, toId: targetId, score: 0.15 },
-      );
-    }
+    await session.run(
+      `MATCH (a:Component {id: $aId})
+       MATCH (b:Component {id: $bId})
+       MERGE (a)-[r:PAIRS_WITH]->(b)
+       SET r.score = $score
+       MERGE (b)-[r2:PAIRS_WITH]->(a)
+       SET r2.score = $score`,
+      { aId: pair.a, bId: pair.b, score: pair.score },
+    );
+    seeded++;
   }
 
-  console.log("  PAIRS_WITH relationships seeded.");
+  console.log(
+    `  PAIRS_WITH relationships seeded (${seeded} pairs, ${skipped} skipped).`,
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -422,6 +543,28 @@ async function verify(session: Session): Promise<void> {
   const moods = spotCheckResult.records.map((r) => r.get("mood") as string);
   console.log(`  Moods: ${moods.join(", ")}`);
   console.log();
+
+  // PaletteProfile count
+  console.log("PaletteProfile count:");
+  const ppCountResult = await session.run(
+    "MATCH (pp:PaletteProfile) RETURN count(pp) AS count",
+  );
+  const ppCount = ppCountResult.records[0]?.get("count");
+  console.log(`  PaletteProfile: ${ppCount}`);
+  console.log();
+
+  // Spot-check: professional -> SUGGESTS_PALETTE -> PaletteProfile
+  console.log(
+    "Spot-check: professional -> SUGGESTS_PALETTE -> PaletteProfile:",
+  );
+  const paletteSpotCheck = await session.run(
+    "MATCH (m:Mood {id: 'professional'})-[:SUGGESTS_PALETTE]->(pp:PaletteProfile) RETURN pp.id AS palette",
+  );
+  const palettes = paletteSpotCheck.records.map(
+    (r) => r.get("palette") as string,
+  );
+  console.log(`  Palettes: ${palettes.join(", ")}`);
+  console.log();
 }
 
 /* ------------------------------------------------------------------ */
@@ -437,10 +580,23 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
+  if (!fs.existsSync(PAIRS_SCORES_PATH)) {
+    console.error(
+      `Error: ${PAIRS_SCORES_PATH} not found. Run generate-pair-scores.ts first.`,
+    );
+    process.exit(1);
+  }
+
   // Load seed data
   console.log(`Seed data: ${SEED_DATA_PATH}`);
   const seedRaw = fs.readFileSync(SEED_DATA_PATH, "utf-8");
   const seedData: GraphSeedData = JSON.parse(seedRaw);
+
+  // Load pairs-scores.json (generated by generate-pair-scores.ts — do not hand-edit)
+  console.log(`Pair scores: ${PAIRS_SCORES_PATH}`);
+  const pairsRaw = fs.readFileSync(PAIRS_SCORES_PATH, "utf-8");
+  const pairsData: { pairs: { a: string; b: string; score: number }[] } =
+    JSON.parse(pairsRaw);
 
   // Load component metadata
   console.log(`Library root: ${LIBRARY_ROOT}`);
@@ -452,6 +608,7 @@ async function main(): Promise<void> {
   }
 
   console.log(`Found ${components.length} components.`);
+  console.log(`Found ${pairsData.pairs.length} pair scores.`);
   console.log();
 
   // Connect to Neo4j
@@ -468,14 +625,19 @@ async function main(): Promise<void> {
     await seedMoods(session);
     await seedStyles(session);
     await seedComponents(session, components);
+    await seedPaletteProfiles(session, seedData.paletteProfiles);
     console.log();
 
     // Seed relationships
     await seedNaturallyFeels(session, seedData.naturallyFeels);
     await seedExpressedAs(session, seedData.expressedAs);
+    await seedSuggestsPalette(session, seedData.suggestsPalette);
     await seedHasStyle(session, components);
     await seedHasMood(session, components);
-    await seedPairsWith(session, components);
+    await seedVariants(session, components);
+
+    const knownIds = new Set(components.map((c) => c.id));
+    await seedPairsWith(session, pairsData.pairs, knownIds);
 
     // Verification
     await verify(session);
