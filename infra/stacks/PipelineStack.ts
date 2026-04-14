@@ -37,8 +37,8 @@ export interface PipelineStackProps extends StackProps {
 /**
  * PipelineStack — SQS queue, Step Functions state machine, and agent Lambdas.
  *
- * Creates the 5-step pipeline:
- *   Content -> Humanizer -> Assembler -> QA -> Deploy
+ * Creates the 7-step pipeline:
+ *   Research -> Style (WaitForTaskToken) -> Content -> Humanizer -> Assembler -> QA -> Deploy
  *
  * Also creates the pipeline-starter Lambda that consumes SQS messages
  * and starts Step Function executions.
@@ -46,6 +46,9 @@ export interface PipelineStackProps extends StackProps {
 export class PipelineStack extends Stack {
   /** The pipeline ingestion queue — exposed for ApiStack to send messages. */
   public readonly queue: sqs.Queue;
+
+  /** The state machine ARN — exposed for ApiStack to send task tokens. */
+  public readonly stateMachineArn: string;
 
   constructor(scope: Construct, id: string, props: PipelineStackProps) {
     super(scope, id, props);
@@ -172,6 +175,52 @@ export class PipelineStack extends Stack {
     );
 
     /* -------------------------------------------------------------- */
+    /*  Research Agent Lambda                                         */
+    /* -------------------------------------------------------------- */
+
+    const researchFn = new AgentLambda(this, "ResearchAgent", {
+      entry: path.join(__dirname, "../../agents/research/handler.ts"),
+      agentName: "research",
+      timeout: Duration.minutes(5),
+      memorySize: 512,
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        CLAUDE_API_KEY_SSM_PATH: claudeSsmPath,
+      },
+    });
+
+    projectsTable.grantReadWriteData(researchFn.fn);
+    researchFn.fn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["ssm:GetParameter"],
+        resources: [claudeSsmArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  Style Agent Lambda                                            */
+    /* -------------------------------------------------------------- */
+
+    const styleFn = new AgentLambda(this, "StyleAgent", {
+      entry: path.join(__dirname, "../../agents/style/handler.ts"),
+      agentName: "style",
+      timeout: Duration.minutes(5),
+      memorySize: 512,
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        CLAUDE_API_KEY_SSM_PATH: claudeSsmPath,
+      },
+    });
+
+    projectsTable.grantReadWriteData(styleFn.fn);
+    styleFn.fn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["ssm:GetParameter"],
+        resources: [claudeSsmArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
     /*  QA Agent Lambda                                               */
     /* -------------------------------------------------------------- */
 
@@ -231,6 +280,30 @@ export class PipelineStack extends Stack {
       errors: ["States.ALL"],
     };
 
+    const researchStep = new tasks.LambdaInvoke(this, "ResearchStep", {
+      lambdaFunction: researchFn.fn,
+      outputPath: "$.Payload",
+    });
+    researchStep.addRetry(retryConfig);
+    researchStep.addCatch(failHandlerStep, { resultPath: "$.error" });
+
+    const styleStep = new tasks.LambdaInvoke(this, "StyleStep", {
+      lambdaFunction: styleFn.fn,
+      integrationPattern: sfn.IntegrationPattern.WAIT_FOR_TASK_TOKEN,
+      // IMPORTANT: Add new upstream fields here if PipelineState expands
+      payload: sfn.TaskInput.fromObject({
+        "projectId.$": "$.projectId",
+        "status.$": "$.status",
+        "companyName.$": "$.companyName",
+        "segment.$": "$.segment",
+        "description.$": "$.description",
+        "researchOutput.$": "$.researchOutput",
+        taskToken: sfn.JsonPath.taskToken,
+      }),
+    });
+    styleStep.addRetry(retryConfig);
+    styleStep.addCatch(failHandlerStep, { resultPath: "$.error" });
+
     const contentStep = new tasks.LambdaInvoke(this, "ContentStep", {
       lambdaFunction: contentFn.fn,
       outputPath: "$.Payload",
@@ -273,7 +346,9 @@ export class PipelineStack extends Stack {
 
     const succeedState = new sfn.Succeed(this, "PipelineSucceeded");
 
-    const definition = contentStep
+    const definition = researchStep
+      .next(styleStep)
+      .next(contentStep)
       .next(humanizerStep)
       .next(assemblerStep)
       .next(qaStep)
@@ -284,8 +359,10 @@ export class PipelineStack extends Stack {
       stateMachineName: "sitegen-pipeline",
       definitionBody: sfn.DefinitionBody.fromChainable(definition),
       stateMachineType: sfn.StateMachineType.STANDARD,
-      timeout: Duration.minutes(30),
+      timeout: Duration.days(365),
     });
+
+    this.stateMachineArn = stateMachine.stateMachineArn;
 
     /* -------------------------------------------------------------- */
     /*  Pipeline Starter Lambda (SQS consumer)                        */
