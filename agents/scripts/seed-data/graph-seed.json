@@ -1,0 +1,79 @@
+{
+  "segments": [
+    { "id": "pet-shop", "name": "Pet Shop" },
+    { "id": "law-firm", "name": "Law Firm" },
+    { "id": "restaurant", "name": "Restaurant" },
+    { "id": "saas", "name": "SaaS" },
+    { "id": "ecommerce", "name": "E-commerce" },
+    { "id": "bakery", "name": "Bakery" },
+    { "id": "dental-clinic", "name": "Dental Clinic" },
+    { "id": "gym", "name": "Gym" },
+    { "id": "beauty-salon", "name": "Beauty Salon" },
+    { "id": "real-estate", "name": "Real Estate" },
+    { "id": "accounting", "name": "Accounting" },
+    { "id": "auto-repair", "name": "Auto Repair" },
+    { "id": "construction", "name": "Construction" },
+    { "id": "photography", "name": "Photography" },
+    { "id": "consulting", "name": "Consulting" },
+    { "id": "education", "name": "Education" },
+    { "id": "clothing-store", "name": "Clothing Store" },
+    { "id": "health-clinic", "name": "Health Clinic" }
+  ],
+  "naturallyFeels": [
+    { "segment": "pet-shop", "moods": ["friendly", "energetic", "fun"] },
+    {
+      "segment": "law-firm",
+      "moods": ["professional", "trustworthy", "serious"]
+    },
+    { "segment": "restaurant", "moods": ["friendly", "energetic", "fun"] },
+    {
+      "segment": "saas",
+      "moods": ["professional", "energetic", "trustworthy"]
+    },
+    { "segment": "ecommerce", "moods": ["energetic", "friendly", "fun"] },
+    { "segment": "bakery", "moods": ["friendly", "calm", "fun"] },
+    {
+      "segment": "dental-clinic",
+      "moods": ["professional", "trustworthy", "calm"]
+    },
+    { "segment": "gym", "moods": ["energetic", "fun", "friendly"] },
+    { "segment": "beauty-salon", "moods": ["elegant", "friendly", "calm"] },
+    {
+      "segment": "real-estate",
+      "moods": ["professional", "trustworthy", "elegant"]
+    },
+    {
+      "segment": "accounting",
+      "moods": ["professional", "serious", "trustworthy"]
+    },
+    {
+      "segment": "auto-repair",
+      "moods": ["trustworthy", "professional", "friendly"]
+    },
+    {
+      "segment": "construction",
+      "moods": ["professional", "trustworthy", "energetic"]
+    },
+    { "segment": "photography", "moods": ["elegant", "calm", "professional"] },
+    {
+      "segment": "consulting",
+      "moods": ["professional", "serious", "trustworthy"]
+    },
+    { "segment": "education", "moods": ["friendly", "trustworthy", "calm"] },
+    { "segment": "clothing-store", "moods": ["elegant", "energetic", "fun"] },
+    {
+      "segment": "health-clinic",
+      "moods": ["calm", "trustworthy", "professional"]
+    }
+  ],
+  "expressedAs": [
+    { "mood": "professional", "styles": ["corporate", "modern", "minimal"] },
+    { "mood": "elegant", "styles": ["editorial", "luxury", "minimal"] },
+    { "mood": "fun", "styles": ["playful", "bold"] },
+    { "mood": "serious", "styles": ["corporate", "classic"] },
+    { "mood": "friendly", "styles": ["modern", "playful", "minimal"] },
+    { "mood": "energetic", "styles": ["bold", "modern"] },
+    { "mood": "calm", "styles": ["minimal", "editorial"] },
+    { "mood": "trustworthy", "styles": ["corporate", "classic", "modern"] }
+  ]
+}
