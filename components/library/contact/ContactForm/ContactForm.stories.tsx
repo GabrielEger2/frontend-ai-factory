@@ -7,6 +7,16 @@ const meta: Meta<typeof ContactForm> = {
   parameters: {
     layout: "fullscreen",
   },
+  argTypes: {
+    submitVariant: {
+      control: "select",
+      options: ["primary", "secondary", "accent", "outline", "ghost"],
+    },
+    submitSize: {
+      control: "select",
+      options: ["sm", "md", "lg"],
+    },
+  },
 };
 export default meta;
 type Story = StoryObj<typeof ContactForm>;
@@ -22,6 +32,7 @@ export const LawFirm: Story = {
     subheadline:
       "Preencha o formulário e um de nossos advogados retornará em até 24 horas úteis.",
     submitText: "Enviar Mensagem",
+    submitVariant: "primary",
   },
 };
 
@@ -31,6 +42,7 @@ export const DentalClinic: Story = {
     headline: "Agende Sua Consulta",
     subheadline: "Primeira avaliação gratuita. Atendemos todos os convênios.",
     submitText: "Solicitar Agendamento",
+    submitVariant: "accent",
     fields: [
       {
         name: "name",
@@ -60,6 +72,7 @@ export const FreelancerPortfolio: Story = {
   args: {
     headline: "Vamos Trabalhar Juntos?",
     submitText: "Enviar",
+    submitVariant: "ghost",
     fields: [
       {
         name: "name",
@@ -90,6 +103,7 @@ export const EventVenue: Story = {
     subheadline:
       "Casamentos, formaturas, eventos corporativos. Capacidade para até 500 convidados.",
     submitText: "Solicitar Orçamento",
+    submitVariant: "secondary",
     fields: [
       { name: "name", label: "Nome", type: "text" as const, required: true },
       {
