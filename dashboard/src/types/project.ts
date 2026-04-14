@@ -5,6 +5,19 @@ export const SUPPORTED_SEGMENTS = [
   "restaurant",
   "saas",
   "ecommerce",
+  "bakery",
+  "dental-clinic",
+  "gym",
+  "beauty-salon",
+  "real-estate",
+  "accounting",
+  "auto-repair",
+  "construction",
+  "photography",
+  "consulting",
+  "education",
+  "clothing-store",
+  "health-clinic",
 ] as const;
 
 export const SEGMENT_LABELS: Record<string, string> = {
@@ -13,6 +26,19 @@ export const SEGMENT_LABELS: Record<string, string> = {
   restaurant: "Restaurant",
   saas: "SaaS",
   ecommerce: "E-commerce",
+  bakery: "Bakery",
+  "dental-clinic": "Dental Clinic",
+  gym: "Gym",
+  "beauty-salon": "Beauty Salon",
+  "real-estate": "Real Estate",
+  accounting: "Accounting",
+  "auto-repair": "Auto Repair",
+  construction: "Construction",
+  photography: "Photography",
+  consulting: "Consulting",
+  education: "Education",
+  "clothing-store": "Clothing Store",
+  "health-clinic": "Health Clinic",
 };
 
 export type ProjectStatus =
@@ -20,6 +46,7 @@ export type ProjectStatus =
   | "researching"
   | "styling"
   | "awaiting_style_approval"
+  | "composing"
   | "content"
   | "humanizing"
   | "assembling"
@@ -119,6 +146,22 @@ export interface StyleOutput {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Composer Output (mirrors agents/shared/types.ts — keep in sync)    */
+/* ------------------------------------------------------------------ */
+
+export interface ComposerLayout {
+  components: string[];
+  score: number;
+  rationale: string;
+}
+
+export interface ComposerOutput {
+  layouts: ComposerLayout[];
+  selectedLayout: number;
+  source: "graph" | "fallback";
+}
+
+/* ------------------------------------------------------------------ */
 /*  Project Detail                                                     */
 /* ------------------------------------------------------------------ */
 
@@ -130,6 +173,7 @@ export interface ProjectDetail {
   updatedAt: string;
   researchOutput: ResearchOutput | null;
   styleOutput: StyleOutput | null;
+  composerOutput: ComposerOutput | null;
   contentOutput: ContentOutput | null;
   humanizerOutput: HumanizerOutput | null;
   assemblerOutput: AssemblerOutput | null;
