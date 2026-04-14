@@ -1,6 +1,19 @@
 import { StyleAgentInput } from "./types";
 
 /* ------------------------------------------------------------------ */
+/*  Palette suggestion hint (from Neo4j graph)                         */
+/* ------------------------------------------------------------------ */
+
+export interface PaletteSuggestionHint {
+  moodId: string;
+  paletteId: string;
+  paletteName: string;
+  temperatureRange: string;
+  contrastLevel: string;
+  saturationRange: string;
+}
+
+/* ------------------------------------------------------------------ */
 /*  System Prompt                                                      */
 /* ------------------------------------------------------------------ */
 
@@ -79,7 +92,10 @@ Use these as guidelines, not rigid rules. The research output (tone keywords, au
 /*  User Prompt                                                        */
 /* ------------------------------------------------------------------ */
 
-export function buildStyleUserPrompt(input: StyleAgentInput): string {
+export function buildStyleUserPrompt(
+  input: StyleAgentInput,
+  paletteSuggestions: PaletteSuggestionHint[] = [],
+): string {
   const companySection = [
     "## Company Brief",
     "",
@@ -99,11 +115,32 @@ export function buildStyleUserPrompt(input: StyleAgentInput): string {
     `- **Differentiators:** ${input.researchOutput.differentiators}`,
   ].join("\n");
 
+  const paletteSection =
+    paletteSuggestions.length > 0
+      ? [
+          "## Graph-Suggested Palette Profiles",
+          "",
+          "The graph recommends these palette profiles for this segment's natural moods.",
+          "Use them as directional guidance — they suggest tone and contrast, not specific hex values.",
+          "",
+          "| Mood | Profile | Temperature | Contrast | Saturation |",
+          "|---|---|---|---|---|",
+          ...paletteSuggestions.map(
+            (p) =>
+              `| ${p.moodId} | ${p.paletteName} | ${p.temperatureRange} | ${p.contrastLevel} | ${p.saturationRange} |`,
+          ),
+        ].join("\n")
+      : "";
+
   return [
     companySection,
     "",
     researchSection,
     "",
+    paletteSection,
+    "",
     "Based on the company brief and research output above, define the complete visual identity JSON.",
-  ].join("\n");
+  ]
+    .filter(Boolean)
+    .join("\n");
 }

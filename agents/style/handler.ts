@@ -135,14 +135,11 @@ async function generateStyle(
   input: ReturnType<typeof StyleAgentInputSchema.parse>,
   paletteSuggestions: PaletteSuggestion[],
 ): Promise<StyleOutput> {
-  // TODO(3.3): pass paletteSuggestions to buildStyleUserPrompt()
-  void paletteSuggestions;
-
   const apiKey = await getClaudeApiKey();
   const client = new Anthropic({ apiKey });
 
   const systemPrompt = buildStyleSystemPrompt();
-  const userPrompt = buildStyleUserPrompt(input);
+  const userPrompt = buildStyleUserPrompt(input, paletteSuggestions);
 
   const response = await client.messages.create({
     model: "claude-sonnet-4-20250514",
