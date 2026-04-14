@@ -21,6 +21,8 @@
     "deploy/**/*.ts",
     "fail-handler/**/*.ts",
     "pipeline-starter/**/*.ts",
+    "research/**/*.ts",
+    "style/**/*.ts",
     "scripts/**/*.ts"
   ],
   "exclude": ["node_modules", "dist"]
