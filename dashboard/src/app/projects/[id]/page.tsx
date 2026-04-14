@@ -4,6 +4,7 @@ import { getProject } from "@/lib/actions/get-project";
 import { StatusBadge } from "@/components/projects/StatusBadge";
 import { StatusPoller } from "@/components/projects/StatusPoller";
 import { StepPanel } from "@/components/pipeline/StepPanel";
+import { StyleApprovalPanel } from "@/components/pipeline/StyleApprovalPanel";
 import { ContentSlotTable } from "@/components/pipeline/ContentSlotTable";
 import { QAIssuesList } from "@/components/pipeline/QAIssuesList";
 import { AssemblerFileTree } from "@/components/pipeline/AssemblerFileTree";
@@ -11,6 +12,9 @@ import type { ProjectStatus } from "@/types/project";
 
 const PIPELINE_STEPS: { status: ProjectStatus; label: string }[] = [
   { status: "queued", label: "Queued" },
+  { status: "researching", label: "Researching" },
+  { status: "styling", label: "Generating Style" },
+  { status: "awaiting_style_approval", label: "Awaiting Style Approval" },
   { status: "content", label: "Generating Content" },
   { status: "humanizing", label: "Humanizing" },
   { status: "assembling", label: "Assembling" },
@@ -123,8 +127,18 @@ export default async function ProjectDetailPage({
         <StatusPoller projectId={id} initialStatus={project.status} />
       )}
 
+      {project.status === "awaiting_style_approval" && project.styleOutput && (
+        <div className="mb-8">
+          <StyleApprovalPanel
+            projectId={id}
+            initialStyle={project.styleOutput}
+          />
+        </div>
+      )}
+
       {/* Step Outputs */}
-      {(project.contentOutput ||
+      {(project.styleOutput ||
+        project.contentOutput ||
         project.humanizerOutput ||
         project.assemblerOutput ||
         project.qaOutput) && (
@@ -133,6 +147,15 @@ export default async function ProjectDetailPage({
             Step Outputs
           </h2>
           <div className="space-y-3">
+            {project.styleOutput &&
+              project.status !== "awaiting_style_approval" && (
+                <StepPanel title="Style Output" stepName="style" projectId={id}>
+                  <pre className="text-xs text-slate-600 overflow-auto">
+                    {JSON.stringify(project.styleOutput, null, 2)}
+                  </pre>
+                </StepPanel>
+              )}
+
             {project.contentOutput && (
               <StepPanel
                 title="Content Output"

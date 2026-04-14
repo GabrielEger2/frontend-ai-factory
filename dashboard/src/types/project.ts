@@ -17,6 +17,9 @@ export const SEGMENT_LABELS: Record<string, string> = {
 
 export type ProjectStatus =
   | "queued"
+  | "researching"
+  | "styling"
+  | "awaiting_style_approval"
   | "content"
   | "humanizing"
   | "assembling"
@@ -63,6 +66,59 @@ export interface QAOutput {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Research & Style Output (mirrors agents/shared/types.ts)           */
+/* ------------------------------------------------------------------ */
+
+export interface ResearchOutput {
+  companySummary: string;
+  segment: string;
+  targetAudience: string;
+  toneKeywords: string[];
+  competitorInsights: string;
+  differentiators: string;
+}
+
+export interface Palette {
+  primary: string;
+  secondary: string;
+  accent: string;
+  neutral: string;
+  primaryLight: string;
+  primaryDark: string;
+}
+
+export interface Typography {
+  heading: string;
+  body: string;
+}
+
+export interface StyleOutput {
+  palette: Palette;
+  typography: Typography;
+  mood: Array<
+    | "professional"
+    | "elegant"
+    | "fun"
+    | "serious"
+    | "friendly"
+    | "energetic"
+    | "calm"
+    | "trustworthy"
+  >;
+  style: Array<
+    | "modern"
+    | "classic"
+    | "editorial"
+    | "luxury"
+    | "playful"
+    | "minimal"
+    | "bold"
+    | "corporate"
+  >;
+  density: "low" | "medium" | "high";
+}
+
+/* ------------------------------------------------------------------ */
 /*  Project Detail                                                     */
 /* ------------------------------------------------------------------ */
 
@@ -72,6 +128,8 @@ export interface ProjectDetail {
   previewUrl: string | null;
   createdAt: string;
   updatedAt: string;
+  researchOutput: ResearchOutput | null;
+  styleOutput: StyleOutput | null;
   contentOutput: ContentOutput | null;
   humanizerOutput: HumanizerOutput | null;
   assemblerOutput: AssemblerOutput | null;

@@ -66,6 +66,7 @@ export class MainStage extends Construct {
       pipelineQueueArn: pipeline.queue.queueArn,
       pipelineBucketName: database.pipelineBucketName,
       pipelineBucketArn: database.pipelineBucketArn,
+      stateMachineArn: pipeline.stateMachineArn,
     });
   }
 }

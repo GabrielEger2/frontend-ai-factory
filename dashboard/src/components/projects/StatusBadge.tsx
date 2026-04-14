@@ -3,6 +3,9 @@ import type { ProjectStatus } from "@/types/project";
 
 const STATUS_STYLES: Record<ProjectStatus, string> = {
   queued: "bg-slate-100 text-slate-700",
+  researching: "bg-blue-100 text-blue-700 animate-pulse",
+  styling: "bg-purple-100 text-purple-700 animate-pulse",
+  awaiting_style_approval: "bg-amber-100 text-amber-700",
   content: "bg-blue-100 text-blue-700 animate-pulse",
   humanizing: "bg-blue-100 text-blue-700 animate-pulse",
   assembling: "bg-blue-100 text-blue-700 animate-pulse",
@@ -15,6 +18,9 @@ const STATUS_STYLES: Record<ProjectStatus, string> = {
 
 const STATUS_LABELS: Record<ProjectStatus, string> = {
   queued: "Queued",
+  researching: "Researching...",
+  styling: "Generating Style...",
+  awaiting_style_approval: "Awaiting Style Approval",
   content: "Generating Content...",
   humanizing: "Humanizing...",
   assembling: "Assembling...",

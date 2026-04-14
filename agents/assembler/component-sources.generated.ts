@@ -1440,7 +1440,9 @@ export default function FaqSolutions({
   );
 }
 `,
-  "src/components/footers/FooterReveal/index.tsx": `import React from "react";
+  "src/components/footers/FooterReveal/index.tsx": `"use client";
+
+import React from "react";
 import {
   FaWhatsapp,
   FaPhoneAlt,
@@ -7480,7 +7482,9 @@ export function StripedPattern({
   );
 }
 `,
-  "src/lib/ui/button.tsx": `import * as React from "react";
+  "src/lib/ui/button.tsx": `"use client";
+
+import * as React from "react";
 import { cn } from "@/lib/utils";
 
 /* ------------------------------------------------------------------ */

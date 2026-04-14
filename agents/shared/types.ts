@@ -6,6 +6,9 @@ import { z } from "zod";
 
 export type ProjectStatus =
   | "queued"
+  | "researching"
+  | "styling"
+  | "awaiting_style_approval"
   | "content"
   | "humanizing"
   | "assembling"
@@ -17,6 +20,9 @@ export type ProjectStatus =
 
 export const PROJECT_STATUSES: readonly ProjectStatus[] = [
   "queued",
+  "researching",
+  "styling",
+  "awaiting_style_approval",
   "content",
   "humanizing",
   "assembling",
@@ -86,6 +92,73 @@ export const AssemblerOutputSchema = z.object({
 export type AssemblerOutput = z.infer<typeof AssemblerOutputSchema>;
 
 /* ------------------------------------------------------------------ */
+/*  Research Output                                                    */
+/* ------------------------------------------------------------------ */
+
+export const ResearchOutputSchema = z.object({
+  companySummary: z.string(),
+  segment: z.string(),
+  targetAudience: z.string(),
+  toneKeywords: z.array(z.string()),
+  competitorInsights: z.string(),
+  differentiators: z.string(),
+});
+
+export type ResearchOutput = z.infer<typeof ResearchOutputSchema>;
+
+/* ------------------------------------------------------------------ */
+/*  Style Output                                                       */
+/* ------------------------------------------------------------------ */
+
+export const PaletteSchema = z.object({
+  primary: z.string(),
+  secondary: z.string(),
+  accent: z.string(),
+  neutral: z.string(),
+  primaryLight: z.string(),
+  primaryDark: z.string(),
+});
+
+export const TypographySchema = z.object({
+  heading: z.string(),
+  body: z.string(),
+});
+
+export const StyleOutputSchema = z.object({
+  palette: PaletteSchema,
+  typography: TypographySchema,
+  mood: z.array(
+    z.enum([
+      "professional",
+      "elegant",
+      "fun",
+      "serious",
+      "friendly",
+      "energetic",
+      "calm",
+      "trustworthy",
+    ]),
+  ),
+  style: z.array(
+    z.enum([
+      "modern",
+      "classic",
+      "editorial",
+      "luxury",
+      "playful",
+      "minimal",
+      "bold",
+      "corporate",
+    ]),
+  ),
+  density: z.enum(["low", "medium", "high"]),
+});
+
+export type StyleOutput = z.infer<typeof StyleOutputSchema>;
+export type Palette = z.infer<typeof PaletteSchema>;
+export type Typography = z.infer<typeof TypographySchema>;
+
+/* ------------------------------------------------------------------ */
 /*  Pipeline State                                                     */
 /* ------------------------------------------------------------------ */
 
@@ -93,6 +166,9 @@ export const PipelineStateSchema = z.object({
   projectId: z.string(),
   status: z.enum([
     "queued",
+    "researching",
+    "styling",
+    "awaiting_style_approval",
     "content",
     "humanizing",
     "assembling",
@@ -105,6 +181,9 @@ export const PipelineStateSchema = z.object({
   companyName: z.string(),
   segment: z.string(),
   description: z.string(),
+  researchOutput: ResearchOutputSchema.optional(),
+  styleOutput: StyleOutputSchema.optional(),
+  styleApprovalTaskToken: z.string().optional(),
   contentOutput: ContentOutputSchema.optional(),
   humanizerOutput: HumanizerOutputSchema.optional(),
   assemblerOutput: AssemblerOutputSchema.optional(),
@@ -126,6 +205,9 @@ export interface ProjectItem {
   companyName: string;
   segment: string;
   description: string;
+  researchOutput?: ResearchOutput;
+  styleOutput?: StyleOutput;
+  styleApprovalTaskToken?: string;
   contentOutput?: ContentOutput;
   humanizerOutput?: HumanizerOutput;
   assemblerOutput?: AssemblerOutput;

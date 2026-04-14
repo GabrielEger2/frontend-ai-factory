@@ -172,7 +172,13 @@ function generateComponentSection(
 /**
  * Generate the full page.tsx file that imports and renders all components.
  */
-function generatePageTsx(humanizerOutput: HumanizerOutput): string {
+/**
+ * Generate PageClient.tsx — a Client Component that imports all section
+ * components and renders them with slot data baked in. This keeps all
+ * interactive rendering inside the client boundary, matching the
+ * compre-pronto pattern: page.tsx (Server) → PageClient (Client) → sections.
+ */
+function generatePageClientTsx(humanizerOutput: HumanizerOutput): string {
   const imports = humanizerOutput.components
     .map((c) => {
       const name = toComponentName(c.componentId);
@@ -192,14 +198,30 @@ function generatePageTsx(humanizerOutput: HumanizerOutput): string {
     .map((c) => generateComponentSection(c.componentId, c.slots))
     .join("\n");
 
-  return `${imports}
+  return `"use client";
 
-export default function Home() {
+${imports}
+
+export default function PageClient() {
   return (
     <main>
 ${sections}
     </main>
   );
+}
+`;
+}
+
+/**
+ * Generate page.tsx — a thin Server Component shell that renders
+ * PageClient. Stays a Server Component so it can export metadata
+ * and participate in static generation without RSC serialization issues.
+ */
+function generatePageTsx(): string {
+  return `import PageClient from "./PageClient";
+
+export default function Home() {
+  return <PageClient />;
 }
 `;
 }
@@ -219,7 +241,7 @@ function generatePackageJson(projectId: string): string {
         start: "next start",
       },
       dependencies: {
-        next: "^14",
+        next: "^15",
         react: "^18",
         "react-dom": "^18",
         clsx: "^2.1.1",
@@ -536,7 +558,10 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
   // App source files
   files["src/app/globals.css"] = generateGlobalsCss();
   files["src/app/layout.tsx"] = generateLayoutTsx();
-  files["src/app/page.tsx"] = generatePageTsx(input.humanizerOutput);
+  files["src/app/page.tsx"] = generatePageTsx();
+  files["src/app/PageClient.tsx"] = generatePageClientTsx(
+    input.humanizerOutput,
+  );
 
   // Only bundle component sources actually used in the page + shared libs.
   // Component paths start with "src/components/", shared libs with "src/lib/".

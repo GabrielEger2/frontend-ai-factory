@@ -26,6 +26,7 @@ export interface ApiStackProps extends StackProps {
   readonly pipelineQueueArn: string;
   readonly pipelineBucketName: string;
   readonly pipelineBucketArn: string;
+  readonly stateMachineArn: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -39,6 +40,7 @@ export interface ApiStackProps extends StackProps {
  *   POST /projects  — create project, enqueue to pipeline
  *   GET  /projects  — list project summaries
  *   GET  /projects/{id} — read project status
+ *   POST /projects/{id}/approve-style — approve style and resume pipeline
  */
 export class ApiStack extends Stack {
   /** The REST API — exposed for cross-stack wiring (e.g. dashboard config). */
@@ -277,6 +279,41 @@ export class ApiStack extends Stack {
     );
 
     /* -------------------------------------------------------------- */
+    /*  POST /projects/{id}/approve-style Lambda                       */
+    /* -------------------------------------------------------------- */
+
+    const approveStyleFn = new NodejsFunction(this, "ApproveStyleFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(__dirname, "../../agents/api/approve-style/handler.ts"),
+      handler: "handler",
+      functionName: "sitegen-approve-style",
+      description: "SiteGen POST /projects/{id}/approve-style",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        STATE_MACHINE_ARN: props.stateMachineArn,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    // DynamoDB read+write access on projects table
+    approveStyleFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem", "dynamodb:UpdateItem"],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    // Step Functions task token operations
+    approveStyleFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["states:SendTaskSuccess", "states:SendTaskFailure"],
+        resources: [props.stateMachineArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
     /*  Routes                                                         */
     /* -------------------------------------------------------------- */
 
@@ -292,6 +329,14 @@ export class ApiStack extends Stack {
     projectById.addMethod("GET", new LambdaIntegration(getProjectFn), {
       apiKeyRequired: true,
     });
+
+    // POST /projects/{id}/approve-style
+    const approveStyleResource = projectById.addResource("approve-style");
+    approveStyleResource.addMethod(
+      "POST",
+      new LambdaIntegration(approveStyleFn),
+      { apiKeyRequired: true },
+    );
 
     // POST /projects/{id}/steps/{stepName}/retry
     const steps = projectById.addResource("steps");
