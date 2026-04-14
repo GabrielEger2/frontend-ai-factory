@@ -10,7 +10,7 @@
     "test:watch": "vitest"
   },
   "peerDependencies": {
-    "next": "^14",
+    "next": "^14 || ^15",
     "react": "^18",
     "react-dom": "^18"
   },
@@ -23,7 +23,7 @@
     "@types/react": "^18.3",
     "@types/react-dom": "^18.3",
     "autoprefixer": "^10.4",
-    "next": "^14.2",
+    "next": "^15",
     "postcss": "^8.4",
     "postcss-loader": "^8.2",
     "react": "^18.3",
