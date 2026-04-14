@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@lib/utils";
+import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -11,6 +12,10 @@ export interface CtaFloatingProps {
   ctaText: string;
   /** CTA button URL */
   ctaUrl: string;
+  /** CTA button style */
+  ctaStyle?: CtaVariant;
+  /** CTA color scheme */
+  ctaColorScheme?: ColorScheme;
   /** Position on screen */
   position?: "bottom-right" | "bottom-center" | "bottom-left";
   className?: string;
@@ -29,17 +34,16 @@ const positionClasses = {
 export default function CtaFloating({
   ctaText,
   ctaUrl,
+  ctaStyle = "default",
+  ctaColorScheme = "primary",
   position = "bottom-right",
   className,
 }: CtaFloatingProps) {
   return (
     <div className={cn("fixed z-50", positionClasses[position], className)}>
-      <a
-        href={ctaUrl}
-        className="rounded-full bg-primary px-6 py-3 font-semibold text-primary-content shadow-lg"
-      >
+      <CtaButton variant={ctaStyle} colorScheme={ctaColorScheme} href={ctaUrl}>
         {ctaText}
-      </a>
+      </CtaButton>
     </div>
   );
 }
