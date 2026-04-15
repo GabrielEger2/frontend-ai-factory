@@ -18,8 +18,8 @@ export async function createProject(
     }
 
     if (res.status === 400) {
-      const data = (await res.json()) as { message?: string };
-      return { error: data.message ?? "Invalid request" };
+      const data = (await res.json()) as { error?: string };
+      return { error: data.error ?? "Invalid request" };
     }
 
     return { error: `Unexpected response: ${res.status}` };
