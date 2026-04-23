@@ -4,22 +4,7 @@ import { z } from "zod";
 /*  Project Status                                                     */
 /* ------------------------------------------------------------------ */
 
-export type ProjectStatus =
-  | "queued"
-  | "researching"
-  | "styling"
-  | "awaiting_style_approval"
-  | "composing"
-  | "content"
-  | "humanizing"
-  | "assembling"
-  | "qa"
-  | "deploying"
-  | "deployed"
-  | "failed"
-  | "qa_failed";
-
-export const PROJECT_STATUSES: readonly ProjectStatus[] = [
+export const PROJECT_STATUSES = [
   "queued",
   "researching",
   "styling",
@@ -215,35 +200,27 @@ export const PipelineStateSchema = z.object({
   assemblerOutput: AssemblerOutputSchema.optional(),
   qaOutput: QAOutputSchema.optional(),
   previewUrl: z.string().optional(),
+  sellerId: z.string(),
+  failureReason: z.string().optional(),
 });
 
 export type PipelineState = z.infer<typeof PipelineStateSchema>;
+
+export type ProjectStatus = PipelineState["status"];
 
 /* ------------------------------------------------------------------ */
 /*  Project Item (DynamoDB document)                                   */
 /* ------------------------------------------------------------------ */
 
-export interface ProjectItem {
-  pk: string; // PROJECT#<id>
-  sk: string; // PROJECT#<id>
-  projectId: string;
-  status: ProjectStatus;
-  companyName: string;
-  segment: string;
-  description: string;
-  researchOutput?: ResearchOutput;
-  styleOutput?: StyleOutput;
-  styleApprovalTaskToken?: string;
-  composerOutput?: ComposerOutput;
-  contentOutput?: ContentOutput;
-  humanizerOutput?: HumanizerOutput;
-  assemblerOutput?: AssemblerOutput;
-  qaOutput?: QAOutput;
-  qaIssues?: QAOutput["issues"];
-  previewUrl?: string;
-  createdAt: string;
-  updatedAt: string;
-}
+export const ProjectItemSchema = PipelineStateSchema.extend({
+  pk: z.string(),
+  sk: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  qaIssues: QAOutputSchema.shape.issues.optional(),
+});
+
+export type ProjectItem = z.infer<typeof ProjectItemSchema>;
 
 /* ------------------------------------------------------------------ */
 /*  Component Item (DynamoDB document)                                 */

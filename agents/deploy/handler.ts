@@ -354,6 +354,7 @@ export const handler = async (event: unknown): Promise<DeployResult> => {
     companyName: input.companyName,
     segment: input.segment,
     description: input.description,
+    sellerId: input.sellerId,
     contentOutput: input.contentOutput,
     assemblerOutput: input.assemblerOutput,
     previewUrl,
