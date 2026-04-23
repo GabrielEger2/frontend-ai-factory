@@ -4,6 +4,7 @@ import { SiteDeployStack } from "../stacks/SiteDeployStack";
 import { GraphStack } from "../stacks/GraphStack";
 import { PipelineStack } from "../stacks/PipelineStack";
 import { ApiStack } from "../stacks/ApiStack";
+import { DashboardStack } from "../stacks/DashboardStack";
 
 /* ------------------------------------------------------------------ */
 /*  Stage                                                              */
@@ -18,6 +19,7 @@ import { ApiStack } from "../stacks/ApiStack";
  *   3. GraphStack         — no upstream deps (lightweight SSM paths)
  *   4. PipelineStack      — needs both tables, bucket, deploy fn ARN, and Neo4j SSM paths
  *   5. ApiStack           — needs projects table and pipeline queue
+ *   6. DashboardStack     — needs ApiStack's apiUrl for runtime configuration
  *
  * All cross-stack communication uses string props (names, ARNs, URLs).
  * No construct objects cross stack boundaries.
@@ -69,7 +71,7 @@ export class MainStage extends Construct {
     /*  5. ApiStack — REST API with Lambda integrations                  */
     /* ---------------------------------------------------------------- */
 
-    new ApiStack(this, "ApiStack", {
+    const api = new ApiStack(this, "ApiStack", {
       projectsTableName: database.projectsTableName,
       projectsTableArn: database.projectsTableArn,
       projectsSellerIndexName: database.projectsSellerIndexName,
@@ -80,6 +82,14 @@ export class MainStage extends Construct {
       pipelineBucketName: database.pipelineBucketName,
       pipelineBucketArn: database.pipelineBucketArn,
       stateMachineArn: pipeline.stateMachineArn,
+    });
+
+    /* ---------------------------------------------------------------- */
+    /*  6. DashboardStack — seller dashboard (OpenNext, stub)            */
+    /* ---------------------------------------------------------------- */
+
+    new DashboardStack(this, "DashboardStack", {
+      apiUrl: api.apiUrl,
     });
   }
 }
