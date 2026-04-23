@@ -303,11 +303,6 @@ export class PipelineStack extends Stack {
       error: "PipelineError",
     });
 
-    const qaTerminalFail = new sfn.Fail(this, "QAPipelineFailed", {
-      cause: "QA checks failed — site has structural issues",
-      error: "QAFailedError",
-    });
-
     const failHandlerStep = new tasks.LambdaInvoke(this, "FailHandlerStep", {
       lambdaFunction: failHandlerFn.fn,
       outputPath: "$.Payload",
@@ -338,7 +333,6 @@ export class PipelineStack extends Stack {
         "segment.$": "$.segment",
         "description.$": "$.description",
         "researchOutput.$": "$.researchOutput",
-        "styleOutput.$": "$.styleOutput",
         taskToken: sfn.JsonPath.taskToken,
       }),
     });
@@ -383,7 +377,7 @@ export class PipelineStack extends Stack {
       interval: Duration.seconds(2),
       errors: ["States.ALL"],
     });
-    qaStep.addCatch(qaTerminalFail, { resultPath: "$.error" });
+    qaStep.addCatch(failHandlerStep, { resultPath: "$.error" });
 
     const deployStep = new tasks.LambdaInvoke(this, "DeployStep", {
       lambdaFunction: deployFn,
