@@ -4,7 +4,6 @@ import {
   AnimatedSvgBackground,
   GEOMETRIC_SHAPES,
 } from "./AnimatedSvgBackground";
-import { RetroGrid } from "./RetroGrid";
 import { InteractiveGridPattern } from "./InteractiveGridPattern";
 import { DotPattern } from "./DotPattern";
 import { StripedPattern } from "./StripedPattern";
@@ -233,33 +232,6 @@ export const LenisSmoothScroll: Story = {
         </section>
       </div>
     </ReactLenis>
-  ),
-};
-
-/* ------------------------------------------------------------------ */
-/*  RetroGrid  */
-/* ------------------------------------------------------------------ */
-
-export const RetroGridDefault: Story = {
-  render: () => (
-    <div className="relative min-h-screen overflow-hidden">
-      <div className="w-full h-full flex flex-col items-center justify-center gap-6 px-8 py-16 text-center translate-y-40">
-        <h1 className="text-4xl font-bold text-base-content md:text-6xl">
-          Shallow & Wide
-        </h1>
-        <p className="mt-4 text-lg text-base-content/60">
-          A gentler angle with larger cells creates a subtle, expansive grid.
-          Lower opacity keeps it as a soft background texture.
-        </p>
-      </div>
-      <RetroGrid
-        angle={30}
-        cellSize={120}
-        opacity={0.4}
-        lightLineColor="oklch(0.5 0.0 0)"
-        darkLineColor="oklch(0.7 0.0 0)"
-      />
-    </div>
   ),
 };
 
