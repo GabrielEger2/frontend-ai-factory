@@ -4,6 +4,7 @@ import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
 
 import type { PipelineState, ProjectItem } from "../../shared/types";
+import { requireSellerId } from "../shared/seller-guard";
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 const lambda = new LambdaClient({});
@@ -38,6 +39,10 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       body: JSON.stringify({ error: "Server configuration error" }),
     };
   }
+
+  const sellerIdOrErr = requireSellerId(event);
+  if (typeof sellerIdOrErr !== "string") return sellerIdOrErr;
+  const sellerId = sellerIdOrErr;
 
   const projectId = event.pathParameters?.id;
   const stepName = event.pathParameters?.stepName;
@@ -82,6 +87,14 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     }
 
     const item = result.Item as ProjectItem;
+
+    if (item.sellerId !== sellerId) {
+      return {
+        statusCode: 404,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ error: "Project not found" }),
+      };
+    }
 
     if (ACTIVE_STATUSES.includes(item.status)) {
       return {
