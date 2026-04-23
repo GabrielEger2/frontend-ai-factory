@@ -29,7 +29,7 @@ export type CtaStyle = CtaVariant;
 
 export interface NavbarStickyProps {
   /** Logo rendered at the start of the bar (accepts any ReactNode, typically an SVG or image) */
-  logo: React.ReactNode;
+  logo?: React.ReactNode;
   /** Alternate logo for dark-on-light contexts (scrolled state / mobile menu) */
   logoDark?: React.ReactNode;
   /** Navigation links */
@@ -240,7 +240,7 @@ function MobileMenu({
   onClose,
 }: {
   links: NavbarLink[];
-  logo: React.ReactNode;
+  logo?: React.ReactNode;
   onClose: () => void;
 }) {
   return (

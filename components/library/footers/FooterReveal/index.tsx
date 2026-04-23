@@ -54,7 +54,7 @@ export interface FooterSocialLink {
 
 export interface FooterRevealProps {
   /** Logo element (ReactNode — SVG, image, or text) */
-  logo: React.ReactNode;
+  logo?: React.ReactNode;
   /** WhatsApp link (full wa.me URL with message) */
   whatsappUrl?: string;
   /** WhatsApp display text (e.g. "+55 11 99999-9999") */

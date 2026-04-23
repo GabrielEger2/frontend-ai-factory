@@ -36,7 +36,7 @@ export interface HeroParallaxImagesProps {
   headlineRotatingWords?: string[];
   subheadline: string;
   ctaText: string;
-  ctaUrl: string;
+  ctaUrl?: string;
   /** CTA button style */
   ctaStyle?: CtaVariant;
   /** CTA color scheme */
@@ -47,7 +47,7 @@ export interface HeroParallaxImagesProps {
   secondaryCtaStyle?: CtaVariant;
   secondaryCtaColorScheme?: ColorScheme;
   /** The large center background image that expands on scroll */
-  centerImage: string;
+  centerImage?: string;
   centerImageAlt: string;
   /** Floating parallax images scattered around the center image */
   parallaxImages: ParallaxImage[];
@@ -234,12 +234,14 @@ export default function HeroParallaxImages({
         style={{ height: `calc(${scrollHeight}px + 100vh)` }}
         className="relative w-full"
       >
-        <CenterImage
-          src={centerImage}
-          alt={centerImageAlt}
-          scrollHeight={scrollHeight}
-          shouldReduceMotion={shouldReduceMotion}
-        />
+        {centerImage && (
+          <CenterImage
+            src={centerImage}
+            alt={centerImageAlt}
+            scrollHeight={scrollHeight}
+            shouldReduceMotion={shouldReduceMotion}
+          />
+        )}
 
         {/* Floating parallax images */}
         <div className="mx-auto max-w-5xl px-4 pt-[200px]">

@@ -24,7 +24,7 @@ export interface HeroGeometricProps {
   headlineRotatingWords?: string[];
   subheadline: string;
   ctaText: string;
-  ctaUrl: string;
+  ctaUrl?: string;
   /** CTA button style */
   ctaStyle?: CtaVariant;
   /** CTA color scheme */
@@ -35,7 +35,7 @@ export interface HeroGeometricProps {
   secondaryCtaStyle?: CtaVariant;
   secondaryCtaColorScheme?: ColorScheme;
   /** Main hero image displayed on the right side */
-  image: string;
+  image?: string;
   imageAlt: string;
   /** Social proof badge — when provided, renders an avatar stack with label above the headline */
   socialProofAvatars?: SocialProofAvatar[];

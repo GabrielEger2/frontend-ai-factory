@@ -46,9 +46,7 @@
           { "name": "ctaUrl", "type": "url", "optional": true }
         ]
       }
-    },
-    { "name": "ctaStyle", "type": "text", "optional": true },
-    { "name": "ctaColorScheme", "type": "text", "optional": true }
+    }
   ],
   "mobileBehavior": "stack",
   "pairsWell": [

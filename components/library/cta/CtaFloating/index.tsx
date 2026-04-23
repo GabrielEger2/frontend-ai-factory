@@ -11,7 +11,7 @@ export interface CtaFloatingProps {
   /** CTA button text */
   ctaText: string;
   /** CTA button URL */
-  ctaUrl: string;
+  ctaUrl?: string;
   /** CTA button style */
   ctaStyle?: CtaVariant;
   /** CTA color scheme */

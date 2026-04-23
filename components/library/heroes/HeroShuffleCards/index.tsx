@@ -16,7 +16,7 @@ export interface HeroShuffleCardsProps {
   headlineRotatingWords?: string[];
   subheadline: string;
   ctaText: string;
-  ctaUrl: string;
+  ctaUrl?: string;
   /** CTA button style — "default" uses the standard filled button, others use animated variants */
   ctaStyle?: CtaVariant;
   /** When provided, shows an email capture form instead of a plain CTA link */

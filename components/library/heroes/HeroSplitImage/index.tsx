@@ -33,7 +33,7 @@ export interface HeroSplitImageProps {
   headlineRotatingWords?: string[];
   subheadline: string;
   ctaText: string;
-  ctaUrl: string;
+  ctaUrl?: string;
   /** CTA button style */
   ctaStyle?: CtaVariant;
   /** CTA color scheme */
@@ -47,7 +47,7 @@ export interface HeroSplitImageProps {
   whatsappUrl?: string;
   whatsappLabel?: string;
   /** Main image */
-  image: string;
+  image?: string;
   imageAlt: string;
   /** Floating badge — when provided, renders a small overlay card on the image */
   badgeHeadline?: string;

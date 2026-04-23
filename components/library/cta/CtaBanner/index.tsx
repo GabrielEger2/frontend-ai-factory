@@ -20,7 +20,7 @@ export interface CtaBannerProps {
   /** Primary CTA button text */
   ctaText: string;
   /** Primary CTA button URL */
-  ctaUrl: string;
+  ctaUrl?: string;
   /** CTA button style */
   ctaStyle?: CtaVariant;
   /** CTA color scheme */
