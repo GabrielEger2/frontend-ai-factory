@@ -3,7 +3,7 @@ import { listProjects } from "@/lib/actions/list-projects";
 import { ProjectsTable } from "@/components/projects/ProjectsTable";
 
 export default async function ProjectsPage() {
-  const projects = await listProjects();
+  const { projects } = await listProjects();
 
   return (
     <div>
