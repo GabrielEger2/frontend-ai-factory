@@ -1,5 +1,10 @@
 import { RemovalPolicy, Stack, StackProps, Duration } from "aws-cdk-lib";
-import { AttributeType, BillingMode, Table } from "aws-cdk-lib/aws-dynamodb";
+import {
+  AttributeType,
+  BillingMode,
+  ProjectionType,
+  Table,
+} from "aws-cdk-lib/aws-dynamodb";
 import {
   BlockPublicAccess,
   Bucket,
@@ -57,6 +62,13 @@ export class DatabaseStack extends Stack {
       removalPolicy: RemovalPolicy.RETAIN,
     });
 
+    this.projectsTable.addGlobalSecondaryIndex({
+      indexName: "sellerId-createdAt-index",
+      partitionKey: { name: "sellerId", type: AttributeType.STRING },
+      sortKey: { name: "createdAt", type: AttributeType.STRING },
+      projectionType: ProjectionType.ALL,
+    });
+
     /* -------------------------------------------------------------- */
     /*  ComponentsTable                                                */
     /* -------------------------------------------------------------- */
@@ -98,6 +110,16 @@ export class DatabaseStack extends Stack {
   /** ProjectsTable ARN. */
   get projectsTableArn(): string {
     return this.projectsTable.tableArn;
+  }
+
+  /** ProjectsTable sellerId-createdAt GSI name. */
+  get projectsSellerIndexName(): string {
+    return "sellerId-createdAt-index";
+  }
+
+  /** ProjectsTable sellerId-createdAt GSI ARN. */
+  get projectsSellerIndexArn(): string {
+    return `${this.projectsTable.tableArn}/index/sellerId-createdAt-index`;
   }
 
   /** ComponentsTable name. */

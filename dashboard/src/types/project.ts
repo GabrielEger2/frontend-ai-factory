@@ -62,6 +62,7 @@ export interface ProjectSummary {
   segment: string;
   status: ProjectStatus;
   createdAt: string;
+  sellerId: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -170,10 +171,14 @@ export interface ComposerOutput {
 
 export interface ProjectDetail {
   projectId: string;
+  companyName: string;
+  description: string;
   status: ProjectStatus;
   previewUrl: string | null;
   createdAt: string;
   updatedAt: string;
+  failureReason: string | null;
+  sellerId: string;
   researchOutput: ResearchOutput | null;
   styleOutput: StyleOutput | null;
   composerOutput: ComposerOutput | null;

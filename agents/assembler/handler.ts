@@ -643,6 +643,7 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
     companyName: input.companyName,
     segment: input.segment,
     description: input.description,
+    sellerId: input.sellerId,
     humanizerOutput: input.humanizerOutput,
     assemblerOutput: { s3Key, s3Bucket: bucketName },
   };

@@ -22,6 +22,9 @@ import {
 export interface ApiStackProps extends StackProps {
   readonly projectsTableName: string;
   readonly projectsTableArn: string;
+  readonly projectsSellerIndexName: string;
+  readonly projectsSellerIndexArn: string;
+  readonly allowedSellerIds: string;
   readonly pipelineQueueUrl: string;
   readonly pipelineQueueArn: string;
   readonly pipelineBucketName: string;
@@ -46,6 +49,9 @@ export class ApiStack extends Stack {
   /** The REST API — exposed for cross-stack wiring (e.g. dashboard config). */
   public readonly restApi: RestApi;
 
+  /** The REST API base URL — exposed for cross-stack wiring (e.g. DashboardStack). */
+  public readonly apiUrl: string;
+
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
 
@@ -61,6 +67,8 @@ export class ApiStack extends Stack {
         allowMethods: ["GET", "POST", "PUT", "OPTIONS"],
       },
     });
+
+    this.apiUrl = this.restApi.url;
 
     /* -------------------------------------------------------------- */
     /*  API Key + Usage Plan                                           */
@@ -95,6 +103,7 @@ export class ApiStack extends Stack {
       environment: {
         PROJECTS_TABLE_NAME: props.projectsTableName,
         PIPELINE_QUEUE_URL: props.pipelineQueueUrl,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
       },
       bundling: {
         ...ESBUILD_DEFAULTS,
@@ -129,6 +138,7 @@ export class ApiStack extends Stack {
       description: "SiteGen GET /projects/{id} — read project status",
       environment: {
         PROJECTS_TABLE_NAME: props.projectsTableName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
       },
       bundling: {
         ...ESBUILD_DEFAULTS,
@@ -155,17 +165,19 @@ export class ApiStack extends Stack {
       description: "SiteGen GET /projects — list project summaries",
       environment: {
         PROJECTS_TABLE_NAME: props.projectsTableName,
+        PROJECTS_SELLER_INDEX_NAME: props.projectsSellerIndexName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
       },
       bundling: {
         ...ESBUILD_DEFAULTS,
       },
     });
 
-    // DynamoDB scan access on projects table
+    // DynamoDB query access on sellerId-createdAt GSI
     listProjectsFn.addToRolePolicy(
       new iam.PolicyStatement({
-        actions: ["dynamodb:Scan"],
-        resources: [props.projectsTableArn],
+        actions: ["dynamodb:Query"],
+        resources: [props.projectsSellerIndexArn],
       }),
     );
 
@@ -182,6 +194,7 @@ export class ApiStack extends Stack {
         "SiteGen POST /projects/{id}/steps/{stepName}/retry — retry a pipeline step",
       environment: {
         PROJECTS_TABLE_NAME: props.projectsTableName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
       },
       bundling: {
         ...ESBUILD_DEFAULTS,
@@ -220,6 +233,7 @@ export class ApiStack extends Stack {
       environment: {
         PROJECTS_TABLE_NAME: props.projectsTableName,
         PIPELINE_BUCKET_NAME: props.pipelineBucketName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
       },
       bundling: {
         ...ESBUILD_DEFAULTS,
@@ -256,6 +270,7 @@ export class ApiStack extends Stack {
       environment: {
         PROJECTS_TABLE_NAME: props.projectsTableName,
         PIPELINE_BUCKET_NAME: props.pipelineBucketName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
       },
       bundling: {
         ...ESBUILD_DEFAULTS,
@@ -291,6 +306,7 @@ export class ApiStack extends Stack {
       environment: {
         PROJECTS_TABLE_NAME: props.projectsTableName,
         STATE_MACHINE_ARN: props.stateMachineArn,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
       },
       bundling: {
         ...ESBUILD_DEFAULTS,

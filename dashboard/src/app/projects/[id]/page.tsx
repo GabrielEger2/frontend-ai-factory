@@ -88,7 +88,9 @@ export default async function ProjectDetailPage({
       </Link>
 
       <div className="flex items-center gap-3 mb-8">
-        <h1 className="text-2xl font-bold text-slate-900">Project {id}</h1>
+        <h1 className="text-2xl font-bold text-slate-900">
+          {project.companyName ?? `Project ${id}`}
+        </h1>
         <StatusBadge status={project.status} />
       </div>
 
@@ -194,6 +196,11 @@ export default async function ProjectDetailPage({
           <p className="text-sm text-red-700 mb-2">
             Generation failed. Please try again.
           </p>
+          {project.failureReason && (
+            <p className="text-sm text-red-700 mt-2 font-mono text-xs">
+              {project.failureReason}
+            </p>
+          )}
           <Link
             href="/projects/new"
             className="text-sm text-red-600 hover:text-red-800 underline"

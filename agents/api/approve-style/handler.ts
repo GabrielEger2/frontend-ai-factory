@@ -9,6 +9,7 @@ import { SFNClient, SendTaskSuccessCommand } from "@aws-sdk/client-sfn";
 
 import type { PipelineState, ProjectItem } from "../../shared/types";
 import { StyleOutputSchema } from "../../shared/types";
+import { requireSellerId } from "../shared/seller-guard";
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 const sfn = new SFNClient({});
@@ -34,6 +35,10 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       body: JSON.stringify({ error: "Server configuration error" }),
     };
   }
+
+  const sellerIdOrErr = requireSellerId(event);
+  if (typeof sellerIdOrErr !== "string") return sellerIdOrErr;
+  const sellerId = sellerIdOrErr;
 
   const projectId = event.pathParameters?.id;
 
@@ -91,6 +96,14 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     const item = result.Item as ProjectItem;
 
+    if (item.sellerId !== sellerId) {
+      return {
+        statusCode: 404,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ error: "Project not found" }),
+      };
+    }
+
     // Guard: project must be awaiting style approval
     if (item.status !== "awaiting_style_approval") {
       return {
@@ -121,6 +134,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       companyName: item.companyName,
       segment: item.segment,
       description: item.description,
+      sellerId: item.sellerId,
       researchOutput: item.researchOutput,
       styleOutput,
       status: "composing",

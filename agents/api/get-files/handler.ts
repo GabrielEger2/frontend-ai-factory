@@ -3,6 +3,7 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { S3Client } from "@aws-sdk/client-s3";
 import { fetchAssembledFiles } from "../../shared/tar-utils";
+import { requireSellerId } from "../shared/seller-guard";
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 const s3 = new S3Client({});
@@ -17,6 +18,10 @@ const s3 = new S3Client({});
  * Response 404: project not found or no assembled files
  */
 export const handler: APIGatewayProxyHandler = async (event) => {
+  const sellerIdOrErr = requireSellerId(event);
+  if (typeof sellerIdOrErr !== "string") return sellerIdOrErr;
+  const sellerId = sellerIdOrErr;
+
   const tableName = process.env.PROJECTS_TABLE_NAME;
   const bucketName = process.env.PIPELINE_BUCKET_NAME;
 
@@ -58,6 +63,14 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     }
 
     const item = result.Item;
+
+    if (item.sellerId !== sellerId) {
+      return {
+        statusCode: 404,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ error: "Project not found" }),
+      };
+    }
 
     if (!item.assemblerOutput) {
       return {

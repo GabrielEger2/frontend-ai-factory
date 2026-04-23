@@ -1,9 +1,13 @@
 import type { APIGatewayProxyHandler } from "aws-lambda";
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import {
+  ConditionalCheckFailedException,
+  DynamoDBClient,
+} from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
 import { z, ZodError } from "zod";
 import { SUPPORTED_SEGMENTS } from "../../shared/segment-presets";
+import { requireSellerId } from "../shared/seller-guard";
 import crypto from "crypto";
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
@@ -34,6 +38,10 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     };
   }
 
+  const sellerIdOrErr = requireSellerId(event);
+  if (typeof sellerIdOrErr !== "string") return sellerIdOrErr;
+  const sellerId = sellerIdOrErr;
+
   try {
     const body = JSON.parse(event.body || "{}");
     const input = CreateProjectSchema.parse(body);
@@ -48,6 +56,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
           pk: `PROJECT#${projectId}`,
           sk: `PROJECT#${projectId}`,
           projectId,
+          sellerId,
           companyName: input.companyName,
           segment: input.segment,
           description: input.description,
@@ -55,6 +64,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
           createdAt: now,
           updatedAt: now,
         },
+        ConditionExpression: "attribute_not_exists(pk)",
       }),
     );
 
@@ -63,6 +73,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         QueueUrl: queueUrl,
         MessageBody: JSON.stringify({
           projectId,
+          sellerId,
           companyName: input.companyName,
           segment: input.segment,
           description: input.description,
@@ -92,6 +103,14 @@ export const handler: APIGatewayProxyHandler = async (event) => {
           error: "Invalid request body",
           details: err.errors,
         }),
+      };
+    }
+
+    if (err instanceof ConditionalCheckFailedException) {
+      return {
+        statusCode: 409,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ error: "Project already exists" }),
       };
     }
 
