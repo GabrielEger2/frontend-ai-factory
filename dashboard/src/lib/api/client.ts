@@ -19,6 +19,11 @@ export async function apiFetch(
     throw new Error("Missing API_KEY environment variable");
   }
 
+  const sellerId = process.env.SELLER_ID;
+  if (!sellerId) {
+    throw new Error("Missing SELLER_ID environment variable");
+  }
+
   const url = `${baseUrl}${path}`;
 
   return fetch(url, {
@@ -26,6 +31,7 @@ export async function apiFetch(
     headers: {
       "x-api-key": apiKey,
       "Content-Type": "application/json",
+      "X-Seller-Id": sellerId,
       ...options?.headers,
     },
   });
