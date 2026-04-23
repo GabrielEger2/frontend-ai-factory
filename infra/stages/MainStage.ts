@@ -72,6 +72,9 @@ export class MainStage extends Construct {
     new ApiStack(this, "ApiStack", {
       projectsTableName: database.projectsTableName,
       projectsTableArn: database.projectsTableArn,
+      projectsSellerIndexName: database.projectsSellerIndexName,
+      projectsSellerIndexArn: database.projectsSellerIndexArn,
+      allowedSellerIds: this.node.tryGetContext("allowedSellerIds") ?? "",
       pipelineQueueUrl: pipeline.queue.queueUrl,
       pipelineQueueArn: pipeline.queue.queueArn,
       pipelineBucketName: database.pipelineBucketName,
