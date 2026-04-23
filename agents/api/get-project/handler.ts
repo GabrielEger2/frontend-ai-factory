@@ -1,6 +1,7 @@
 import type { APIGatewayProxyHandler } from "aws-lambda";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
+import { requireSellerId } from "../shared/seller-guard";
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
@@ -22,6 +23,10 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       body: JSON.stringify({ error: "Server configuration error" }),
     };
   }
+
+  const sellerIdOrErr = requireSellerId(event);
+  if (typeof sellerIdOrErr !== "string") return sellerIdOrErr;
+  const sellerId = sellerIdOrErr;
 
   const projectId = event.pathParameters?.id;
 
@@ -54,23 +59,20 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     const item = result.Item;
 
+    if (item.sellerId !== sellerId) {
+      return {
+        statusCode: 404,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ error: "Project not found" }),
+      };
+    }
+
+    const { pk, sk, ...rest } = item;
+
     return {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        projectId: item.projectId,
-        status: item.status,
-        previewUrl: item.previewUrl ?? null,
-        createdAt: item.createdAt,
-        updatedAt: item.updatedAt,
-        researchOutput: item.researchOutput ?? null,
-        styleOutput: item.styleOutput ?? null,
-        contentOutput: item.contentOutput ?? null,
-        humanizerOutput: item.humanizerOutput ?? null,
-        assemblerOutput: item.assemblerOutput ?? null,
-        qaOutput: item.qaOutput ?? null,
-        qaIssues: item.qaIssues ?? null,
-      }),
+      body: JSON.stringify(rest),
     };
   } catch (err) {
     console.error(
