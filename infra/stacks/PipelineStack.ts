@@ -332,6 +332,7 @@ export class PipelineStack extends Stack {
         "companyName.$": "$.companyName",
         "segment.$": "$.segment",
         "description.$": "$.description",
+        "sellerId.$": "$.sellerId",
         "researchOutput.$": "$.researchOutput",
         taskToken: sfn.JsonPath.taskToken,
       }),
