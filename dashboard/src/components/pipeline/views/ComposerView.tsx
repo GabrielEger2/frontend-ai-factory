@@ -29,7 +29,7 @@ export function ComposerView({ output }: ComposerViewProps) {
         {output.candidateCount !== undefined && (
           <Badge variant="outline">{output.candidateCount} candidates</Badge>
         )}
-        {output.avgScore !== undefined && (
+        {output.avgScore != null && (
           <Badge variant="outline">avg pair {output.avgScore.toFixed(2)}</Badge>
         )}
         <span className="text-xs text-muted-foreground">

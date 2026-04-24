@@ -17,6 +17,20 @@ Ops reference for setting up the Neo4j Aura graph database and seeding it with c
 4. Save the generated **password** immediately -- it is shown only once.
 5. Wait for the instance status to show **Running** before proceeding.
 
+> **⚠️ Important — CDK provisions the URI placeholder only**
+>
+> `cdk deploy` creates `/sitegen/dev/neo4j-uri` in SSM with the placeholder value `REPLACE_AFTER_AURA_PROVISION` (`DeletionPolicy: Retain` so redeploys do not wipe your real value).
+>
+> The password parameter (`/sitegen/dev/neo4j-password`) is **NOT** created by CDK because CloudFormation does not support creating `SecureString` SSM parameters (only `String` and `StringList`). You must create it manually via AWS CLI after provisioning Aura — see Step 2b below.
+>
+> **If you previously created the URI parameter manually**, CloudFormation will fail on first deploy with `ResourceAlreadyExistsException`. To resolve:
+>
+> ```bash
+> aws ssm delete-parameter --name "/sitegen/dev/neo4j-uri"
+> ```
+>
+> Then run `npm run deploy` again. Alternatively, use `aws cloudformation import-existing-resources` to bring the existing parameter under CloudFormation management.
+
 ## Step 2: Register SSM Parameters
 
 The `setup-ssm.sh` script handles all SSM parameter creation interactively. It stores Neo4j credentials alongside other SiteGen secrets:
@@ -55,6 +69,36 @@ aws ssm put-parameter \
   --type SecureString \
   --value "your-password" \
   --overwrite
+```
+
+## Step 2b: Set Real Credential Values
+
+After `cdk deploy` succeeds, the URI parameter exists with a placeholder value. The password parameter does not exist yet — create it, and overwrite the URI placeholder with your real Aura credentials:
+
+```bash
+# Overwrite URI placeholder (created by CDK as type=String)
+aws ssm put-parameter \
+  --name "/sitegen/dev/neo4j-uri" \
+  --type String \
+  --value "neo4j+s://xxxxxxxx.databases.neo4j.io" \
+  --overwrite
+
+# Create password parameter (CDK cannot create SecureString — this is the first time)
+aws ssm put-parameter \
+  --name "/sitegen/dev/neo4j-password" \
+  --type SecureString \
+  --value "your-password-here"
+```
+
+On subsequent rotations, add `--overwrite` to the password command.
+
+## Step 2c: Export Credentials from SSM
+
+Before running `npm run seed:graph` or `npm run verify:graph`, export credentials into your shell:
+
+```bash
+export NEO4J_URI=$(aws ssm get-parameter --name /sitegen/dev/neo4j-uri --query Parameter.Value --output text)
+export NEO4J_PASSWORD=$(aws ssm get-parameter --name /sitegen/dev/neo4j-password --with-decryption --query Parameter.Value --output text)
 ```
 
 ## Step 3: Generate Pair Scores
@@ -98,6 +142,17 @@ npx ts-node scripts/verify-graph.ts
 ```
 
 Exit code `0` = all assertions pass. Exit code `1` = one or more assertions failed (details printed to stderr).
+
+## Step 6: Confirm Graph Source End-to-End
+
+After seeding, trigger a pipeline run via the dashboard:
+
+1. Open the SiteGen dashboard and create a new project.
+2. After the pipeline completes, open the project detail page.
+3. **StyleView** should display a `graph palette` badge (not `fallback palette`).
+4. **ComposerView** should display a `graph` source badge and a numeric `avg pair X.XX` badge.
+
+If either badge shows "fallback", check CloudWatch Logs for the `SiteGen/Neo4j` namespace `QueryError` metric — Neo4j connectivity or seeding may have failed.
 
 ## Maintenance Notes
 

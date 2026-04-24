@@ -6,6 +6,9 @@
     "build": "tsc",
     "type-check": "tsc --noEmit",
     "seed:components": "ts-node scripts/seed-components.ts sitegen-components",
+    "generate:pairs": "ts-node scripts/generate-pair-scores.ts",
+    "seed:graph": "ts-node scripts/seed-graph.ts",
+    "verify:graph": "ts-node scripts/verify-graph.ts",
     "generate-sources": "ts-node assembler/generate-sources.ts"
   },
   "dependencies": {

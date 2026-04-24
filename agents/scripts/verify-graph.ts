@@ -87,8 +87,13 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const driver: Driver = neo4j.driver(uri, neo4j.auth.basic("neo4j", password));
-  const session: Session = driver.session();
+  const username = process.env.NEO4J_USERNAME ?? "neo4j";
+  const database = process.env.NEO4J_DATABASE ?? "neo4j";
+  const driver: Driver = neo4j.driver(
+    uri,
+    neo4j.auth.basic(username, password),
+  );
+  const session: Session = driver.session({ database });
 
   try {
     console.log("=== Neo4j Graph Verification ===");

@@ -30,6 +30,8 @@ export interface PipelineStackProps extends StackProps {
   readonly deployFunctionArn: string;
   readonly neo4jUriSsmPath: string;
   readonly neo4jPasswordSsmPath: string;
+  readonly neo4jUsernameSsmPath: string;
+  readonly neo4jDatabaseSsmPath: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -213,6 +215,8 @@ export class PipelineStack extends Stack {
         CLAUDE_API_KEY_SSM_PATH: claudeSsmPath,
         NEO4J_URI_SSM_PATH: props.neo4jUriSsmPath,
         NEO4J_PASSWORD_SSM_PATH: props.neo4jPasswordSsmPath,
+        NEO4J_USERNAME_SSM_PATH: props.neo4jUsernameSsmPath,
+        NEO4J_DATABASE_SSM_PATH: props.neo4jDatabaseSsmPath,
       },
     });
 
@@ -224,6 +228,8 @@ export class PipelineStack extends Stack {
           claudeSsmArn,
           `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.neo4jUriSsmPath}`,
           `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.neo4jPasswordSsmPath}`,
+          `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.neo4jUsernameSsmPath}`,
+          `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.neo4jDatabaseSsmPath}`,
         ],
       }),
     );
@@ -261,6 +267,8 @@ export class PipelineStack extends Stack {
         CLAUDE_API_KEY_SSM_PATH: claudeSsmPath,
         NEO4J_URI_SSM_PATH: props.neo4jUriSsmPath,
         NEO4J_PASSWORD_SSM_PATH: props.neo4jPasswordSsmPath,
+        NEO4J_USERNAME_SSM_PATH: props.neo4jUsernameSsmPath,
+        NEO4J_DATABASE_SSM_PATH: props.neo4jDatabaseSsmPath,
       },
     });
 
@@ -274,6 +282,8 @@ export class PipelineStack extends Stack {
           claudeSsmArn,
           `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.neo4jUriSsmPath}`,
           `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.neo4jPasswordSsmPath}`,
+          `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.neo4jUsernameSsmPath}`,
+          `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.neo4jDatabaseSsmPath}`,
         ],
       }),
     );

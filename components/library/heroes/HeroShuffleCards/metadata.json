@@ -55,5 +55,21 @@
     "cta-banner-01",
     "layout-infinitescroll-01"
   ],
-  "pairsPoorly": []
+  "pairsPoorly": [],
+  "variants": [
+    {
+      "id": "hero-shuffle-cards-01-dense",
+      "name": "Dense Dark",
+      "density": "high",
+      "colorMode": "dark",
+      "styleOverrides": ["bold", "modern"]
+    },
+    {
+      "id": "hero-shuffle-cards-01-airy",
+      "name": "Airy Light",
+      "density": "low",
+      "colorMode": "light",
+      "styleOverrides": ["modern", "minimal"]
+    }
+  ]
 }

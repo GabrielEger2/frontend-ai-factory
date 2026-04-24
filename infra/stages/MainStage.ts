@@ -65,6 +65,8 @@ export class MainStage extends Construct {
       deployFunctionArn: siteDeploy.deployFn.fn.functionArn,
       neo4jUriSsmPath: graph.neo4jUriSsmPath,
       neo4jPasswordSsmPath: graph.neo4jPasswordSsmPath,
+      neo4jUsernameSsmPath: graph.neo4jUsernameSsmPath,
+      neo4jDatabaseSsmPath: graph.neo4jDatabaseSsmPath,
     });
 
     /* ---------------------------------------------------------------- */

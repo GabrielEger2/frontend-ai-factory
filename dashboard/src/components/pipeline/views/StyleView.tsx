@@ -31,6 +31,19 @@ export function StyleView({ output }: StyleViewProps) {
 
   return (
     <div className="space-y-5">
+      {/* Palette Source */}
+      {output.paletteSource !== undefined && (
+        <div className="flex items-center gap-3">
+          <Badge
+            variant={output.paletteSource === "graph" ? "default" : "secondary"}
+          >
+            {output.paletteSource === "graph"
+              ? "graph palette"
+              : "fallback palette"}
+          </Badge>
+        </div>
+      )}
+
       {/* Palette */}
       <div className="space-y-2">
         <p className="text-xs font-medium text-muted-foreground">Palette</p>
