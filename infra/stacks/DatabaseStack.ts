@@ -42,6 +42,9 @@ export class DatabaseStack extends Stack {
   /** Components table — stores component metadata seeded from library. */
   public readonly componentsTable: Table;
 
+  /** Share tokens table — token→project mapping for public share links. DDB TTL on expiresAt. */
+  public readonly shareTokensTable: Table;
+
   /* ---- S3 Bucket ---- */
 
   /** Pipeline bucket — temporary storage for assembled site archives. */
@@ -78,6 +81,18 @@ export class DatabaseStack extends Stack {
       partitionKey: { name: "pk", type: AttributeType.STRING },
       billingMode: BillingMode.PAY_PER_REQUEST,
       removalPolicy: RemovalPolicy.RETAIN,
+    });
+
+    /* -------------------------------------------------------------- */
+    /*  ShareTokensTable                                               */
+    /* -------------------------------------------------------------- */
+
+    this.shareTokensTable = new Table(this, "ShareTokensTable", {
+      tableName: "sitegen-share-tokens",
+      partitionKey: { name: "pk", type: AttributeType.STRING },
+      billingMode: BillingMode.PAY_PER_REQUEST,
+      removalPolicy: RemovalPolicy.RETAIN,
+      timeToLiveAttribute: "expiresAt",
     });
 
     /* -------------------------------------------------------------- */
@@ -130,6 +145,16 @@ export class DatabaseStack extends Stack {
   /** ComponentsTable ARN. */
   get componentsTableArn(): string {
     return this.componentsTable.tableArn;
+  }
+
+  /** ShareTokensTable name. */
+  get shareTokensTableName(): string {
+    return this.shareTokensTable.tableName;
+  }
+
+  /** ShareTokensTable ARN. */
+  get shareTokensTableArn(): string {
+    return this.shareTokensTable.tableArn;
   }
 
   /** PipelineBucket name. */
