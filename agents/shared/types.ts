@@ -140,6 +140,7 @@ export const StyleOutputSchema = z.object({
   ),
   density: z.enum(["low", "medium", "high"]),
   paletteSource: z.enum(["graph", "fallback"]).optional(),
+  paletteSuggestions: z.array(PaletteSchema).optional(),
 });
 
 export type StyleOutput = z.infer<typeof StyleOutputSchema>;
@@ -167,6 +168,77 @@ export const ComposerOutputSchema = z.object({
 
 export type ComposerLayout = z.infer<typeof ComposerLayoutSchema>;
 export type ComposerOutput = z.infer<typeof ComposerOutputSchema>;
+
+/* ------------------------------------------------------------------ */
+/*  Working Draft (Phase 5 Visual Editor)                              */
+/* ------------------------------------------------------------------ */
+
+export const WorkingDraftSchema = z.object({
+  blueprint: ComposerLayoutSchema,
+  contentSlots: HumanizerOutputSchema,
+  palette: PaletteSchema,
+  typography: TypographySchema,
+  density: z.enum(["low", "medium", "high"]),
+  updatedAt: z.string(),
+});
+
+export type WorkingDraft = z.infer<typeof WorkingDraftSchema>;
+
+/* ------------------------------------------------------------------ */
+/*  Project Version (Phase 5 Version History)                          */
+/* ------------------------------------------------------------------ */
+
+export const ProjectVersionSchema = z.object({
+  pk: z.string(),
+  sk: z.string(),
+  versionNumber: z.number().int(),
+  createdAt: z.string(),
+  deployedAt: z.string(),
+  blueprint: ComposerOutputSchema,
+  contentSlots: HumanizerOutputSchema,
+  palette: PaletteSchema,
+  typography: TypographySchema,
+  density: z.string(),
+  assembledTarGzKey: z.string(),
+  vercelDeploymentId: z.string().optional(),
+  note: z.string().optional(),
+});
+
+export type ProjectVersion = z.infer<typeof ProjectVersionSchema>;
+
+/* ------------------------------------------------------------------ */
+/*  Share Token (Phase 5 Client Preview)                               */
+/* ------------------------------------------------------------------ */
+
+// expiresAt is an epoch integer (seconds) — required for DDB TTL attribute
+export const ShareTokenSchema = z.object({
+  pk: z.string(),
+  sk: z.string(),
+  token: z.string(),
+  projectId: z.string(),
+  sellerId: z.string(),
+  createdAt: z.string(),
+  expiresAt: z.number().int(),
+  revoked: z.boolean(),
+});
+
+export type ShareToken = z.infer<typeof ShareTokenSchema>;
+
+/* ------------------------------------------------------------------ */
+/*  Feedback Item (Phase 5 Client Preview)                             */
+/* ------------------------------------------------------------------ */
+
+export const FeedbackItemSchema = z.object({
+  pk: z.string(),
+  sk: z.string(),
+  message: z.string(),
+  clientName: z.string().optional(),
+  clientEmail: z.string().optional(),
+  submittedAt: z.string(),
+  shareTokenId: z.string(),
+});
+
+export type FeedbackItem = z.infer<typeof FeedbackItemSchema>;
 
 /* ------------------------------------------------------------------ */
 /*  Pipeline State                                                     */
@@ -219,6 +291,8 @@ export const ProjectItemSchema = PipelineStateSchema.extend({
   createdAt: z.string(),
   updatedAt: z.string(),
   qaIssues: QAOutputSchema.shape.issues.optional(),
+  workingDraft: WorkingDraftSchema.optional().nullable(),
+  currentVersionNumber: z.number().int().optional(),
 });
 
 export type ProjectItem = z.infer<typeof ProjectItemSchema>;
