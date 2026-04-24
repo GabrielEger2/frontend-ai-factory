@@ -55,7 +55,7 @@ export function PaletteSwitcher({
     "text-[11px] font-semibold uppercase tracking-wider text-slate-500";
 
   return (
-    <div className="flex flex-col gap-5 rounded-lg border border-slate-200 bg-white p-4">
+    <div className="flex flex-col gap-5">
       <section className={sectionClass}>
         <h3 className={headingClass}>Presets</h3>
         <div className="grid grid-cols-3 gap-2">
