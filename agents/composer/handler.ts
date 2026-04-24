@@ -16,6 +16,7 @@ import {
   StyleOutput,
 } from "../shared/types";
 import { getDriver } from "../shared/neo4j-client";
+import { emitNeo4jQueryError } from "../shared/metrics";
 import { ComposerAgentInputSchema } from "./types";
 import {
   buildSystemPrompt,
@@ -284,11 +285,26 @@ async function composeLayouts(
   const validated = ComposerOutputSchema.parse(parsed);
 
   validated.candidateCount = candidates.length;
-  validated.avgScore =
-    candidates.length > 0
-      ? candidates.reduce((sum, c) => sum + c.avgPairScore, 0) /
-        candidates.length
-      : 0;
+  const selectedComponents =
+    validated.layouts[validated.selectedLayout].components;
+  const pairLookup = new Map<string, number>();
+  for (const entry of pairMatrix) {
+    const key = [entry.a, entry.b].sort().join("|");
+    pairLookup.set(key, entry.score);
+  }
+  let scoreSum = 0;
+  let scoreCount = 0;
+  for (let i = 0; i < selectedComponents.length - 1; i++) {
+    const key = [selectedComponents[i], selectedComponents[i + 1]]
+      .sort()
+      .join("|");
+    const score = pairLookup.get(key);
+    if (score !== undefined) {
+      scoreSum += score;
+      scoreCount++;
+    }
+  }
+  validated.avgScore = scoreCount > 0 ? scoreSum / scoreCount : null;
 
   return validated;
 }
@@ -368,6 +384,7 @@ export const handler: Handler<PipelineState, PipelineState> = async (event) => {
         error: err instanceof Error ? err.message : String(err),
       }),
     );
+    emitNeo4jQueryError("composer");
     candidates = await getDynamoFallbackCandidates(input.styleOutput);
     source = "fallback";
     console.log(
