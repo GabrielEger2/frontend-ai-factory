@@ -611,9 +611,15 @@ async function main(): Promise<void> {
   console.log(`Found ${pairsData.pairs.length} pair scores.`);
   console.log();
 
-  // Connect to Neo4j
-  const driver: Driver = neo4j.driver(uri, neo4j.auth.basic("neo4j", password));
-  const session: Session = driver.session();
+  // Connect to Neo4j. Aura Free assigns instance-id as username/database;
+  // older Aura and self-hosted default to "neo4j".
+  const username = process.env.NEO4J_USERNAME ?? "neo4j";
+  const database = process.env.NEO4J_DATABASE ?? "neo4j";
+  const driver: Driver = neo4j.driver(
+    uri,
+    neo4j.auth.basic(username, password),
+  );
+  const session: Session = driver.session({ database });
 
   try {
     // Create constraints
