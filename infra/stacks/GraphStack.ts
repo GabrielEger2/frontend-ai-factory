@@ -1,4 +1,11 @@
-import { Stack, StackProps, CfnOutput } from "aws-cdk-lib";
+import {
+  Stack,
+  StackProps,
+  CfnOutput,
+  RemovalPolicy,
+  CfnDeletionPolicy,
+} from "aws-cdk-lib";
+import * as ssm from "aws-cdk-lib/aws-ssm";
 import { Construct } from "constructs";
 
 /* ------------------------------------------------------------------ */
@@ -33,6 +40,23 @@ export class GraphStack extends Stack {
 
     this.neo4jUriSsmPath = "/sitegen/dev/neo4j-uri";
     this.neo4jPasswordSsmPath = "/sitegen/dev/neo4j-password";
+
+    const uriParam = new ssm.StringParameter(this, "Neo4jUriParam", {
+      parameterName: this.neo4jUriSsmPath,
+      stringValue: "REPLACE_AFTER_AURA_PROVISION",
+      description:
+        "Neo4j Aura connection URI — set manually after provisioning",
+    });
+    uriParam.applyRemovalPolicy(RemovalPolicy.RETAIN);
+
+    const passwordParam = new ssm.CfnParameter(this, "Neo4jPasswordParam", {
+      name: this.neo4jPasswordSsmPath,
+      type: "SecureString",
+      value: "REPLACE_AFTER_AURA_PROVISION",
+      description: "Neo4j Aura password — set manually after provisioning",
+    });
+    passwordParam.cfnOptions.deletionPolicy = CfnDeletionPolicy.RETAIN;
+    passwordParam.cfnOptions.updateReplacePolicy = CfnDeletionPolicy.RETAIN;
 
     new CfnOutput(this, "Neo4jUriSsmPath", { value: this.neo4jUriSsmPath });
     new CfnOutput(this, "Neo4jPasswordSsmPath", {
