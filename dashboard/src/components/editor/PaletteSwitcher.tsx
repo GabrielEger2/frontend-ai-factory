@@ -49,62 +49,79 @@ export function PaletteSwitcher({
       : FALLBACK_PALETTES
   ).slice(0, 3);
 
+  const sectionClass =
+    "flex flex-col gap-3 border-t border-slate-100 pt-5 first:border-t-0 first:pt-0";
+  const headingClass =
+    "text-[11px] font-semibold uppercase tracking-wider text-slate-500";
+
   return (
-    <div className="flex flex-col gap-6 rounded-lg border border-slate-200 bg-white p-4">
-      <section className="flex flex-col gap-2">
-        <h3 className="text-sm font-semibold text-slate-800">Presets</h3>
-        <div className="flex gap-2">
-          {presets.map((preset, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => onChange({ palette: preset })}
-              className="group flex flex-col items-stretch gap-1 rounded border border-slate-200 p-2 hover:border-slate-900"
-              aria-label={`Apply preset ${i + 1}`}
-            >
-              <div className="flex h-6 w-24 overflow-hidden rounded">
-                <span
-                  className="flex-1"
-                  style={{ backgroundColor: preset.primary }}
-                />
-                <span
-                  className="flex-1"
-                  style={{ backgroundColor: preset.secondary }}
-                />
-                <span
-                  className="flex-1"
-                  style={{ backgroundColor: preset.accent }}
-                />
-                <span
-                  className="flex-1"
-                  style={{ backgroundColor: preset.neutral }}
-                />
-              </div>
-              <span className="text-[10px] uppercase tracking-wide text-slate-500 group-hover:text-slate-900">
-                Preset {i + 1}
-              </span>
-            </button>
-          ))}
+    <div className="flex flex-col gap-5 rounded-lg border border-slate-200 bg-white p-4">
+      <section className={sectionClass}>
+        <h3 className={headingClass}>Presets</h3>
+        <div className="grid grid-cols-3 gap-2">
+          {presets.map((preset, i) => {
+            const isActive =
+              preset.primary === palette.primary &&
+              preset.secondary === palette.secondary &&
+              preset.accent === palette.accent;
+            return (
+              <button
+                key={i}
+                type="button"
+                onClick={() => onChange({ palette: preset })}
+                className={`group flex flex-col items-stretch gap-1.5 rounded-md border p-1.5 transition-colors ${
+                  isActive
+                    ? "border-slate-900 ring-1 ring-slate-900"
+                    : "border-slate-200 hover:border-slate-400"
+                }`}
+                aria-label={`Apply preset ${i + 1}`}
+                aria-pressed={isActive}
+              >
+                <div className="flex h-7 w-full overflow-hidden rounded">
+                  <span
+                    className="flex-1"
+                    style={{ backgroundColor: preset.primary }}
+                  />
+                  <span
+                    className="flex-1"
+                    style={{ backgroundColor: preset.secondary }}
+                  />
+                  <span
+                    className="flex-1"
+                    style={{ backgroundColor: preset.accent }}
+                  />
+                  <span
+                    className="flex-1"
+                    style={{ backgroundColor: preset.neutral }}
+                  />
+                </div>
+                <span className="text-[10px] font-medium text-slate-500 group-hover:text-slate-900">
+                  Preset {i + 1}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </section>
 
-      <section className="flex flex-col gap-2">
-        <h3 className="text-sm font-semibold text-slate-800">Custom Palette</h3>
+      <section className={sectionClass}>
+        <h3 className={headingClass}>Custom Palette</h3>
         <PalettePicker
           palette={palette}
+          compact
           onChange={(key, value) =>
             onChange({ palette: { ...palette, [key]: value } })
           }
         />
       </section>
 
-      <section className="flex flex-col gap-2">
-        <h3 className="text-sm font-semibold text-slate-800">Typography</h3>
+      <section className={sectionClass}>
+        <h3 className={headingClass}>Typography</h3>
         <div className="grid grid-cols-1 gap-3">
           {(["heading", "body"] as const).map((field) => (
             <div key={field} className="flex flex-col gap-1">
-              <label className="text-xs font-medium text-slate-700">
-                {field === "heading" ? "Heading Font" : "Body Font"}
+              <label className="text-xs font-medium text-slate-600">
+                {field === "heading" ? "Heading" : "Body"}
               </label>
               <input
                 type="text"
@@ -115,7 +132,7 @@ export function PaletteSwitcher({
                     typography: { ...typography, [field]: e.target.value },
                   })
                 }
-                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+                className="w-full rounded-md border border-slate-300 px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
                 placeholder="Select or type a font..."
               />
               <datalist id={`ps-font-options-${field}`}>
@@ -128,25 +145,32 @@ export function PaletteSwitcher({
         </div>
       </section>
 
-      <section className="flex flex-col gap-2">
-        <h3 className="text-sm font-semibold text-slate-800">Density</h3>
-        <div className="flex gap-4">
-          {(["low", "medium", "high"] as const).map((level) => (
-            <label
-              key={level}
-              className="flex items-center gap-2 text-sm text-slate-700"
-            >
-              <input
-                type="radio"
-                name="ps-density"
-                value={level}
-                checked={density === level}
-                onChange={() => onChange({ density: level })}
-                className="accent-slate-900"
-              />
-              {level.charAt(0).toUpperCase() + level.slice(1)}
-            </label>
-          ))}
+      <section className={sectionClass}>
+        <h3 className={headingClass}>Density</h3>
+        <div
+          role="radiogroup"
+          aria-label="Density"
+          className="grid grid-cols-3 gap-1 rounded-md border border-slate-200 bg-slate-50 p-1"
+        >
+          {(["low", "medium", "high"] as const).map((level) => {
+            const checked = density === level;
+            return (
+              <button
+                key={level}
+                type="button"
+                role="radio"
+                aria-checked={checked}
+                onClick={() => onChange({ density: level })}
+                className={`rounded px-2 py-1.5 text-xs font-medium transition-colors ${
+                  checked
+                    ? "bg-white text-slate-900 shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                {level.charAt(0).toUpperCase() + level.slice(1)}
+              </button>
+            );
+          })}
         </div>
       </section>
     </div>
