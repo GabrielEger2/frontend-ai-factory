@@ -31,7 +31,9 @@ export function AssemblerView({ output, projectId }: AssemblerViewProps) {
       </div>
 
       <Button variant="outline" size="sm" asChild>
-        <Link href={`/projects/${projectId}/editor`}>Open Code Editor</Link>
+        <Link href={`/projects/${projectId}/code-editor`}>
+          Open Code Editor
+        </Link>
       </Button>
 
       <div>
