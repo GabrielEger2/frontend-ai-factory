@@ -2,6 +2,7 @@
 
 import { cn } from "@lib/utils";
 import { buttonStyles, type CtaVariant, type ColorScheme } from "@ui/button";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
@@ -177,6 +178,12 @@ export default function FaqSolutions({
 
   const activeImage = items[openIndex]?.image;
   const activeImageAlt = items[openIndex]?.imageAlt ?? "";
+  const safeImg = useSafeImageSrc(
+    activeImage,
+    `faq-solutions-01-item-image-${openIndex ?? 0}`,
+    600,
+    450,
+  );
 
   return (
     <section
@@ -221,7 +228,8 @@ export default function FaqSolutions({
             className="hidden aspect-[4/3] overflow-hidden rounded-2xl bg-base-200 lg:block lg:aspect-auto"
           >
             <img
-              src={activeImage}
+              src={safeImg.src}
+              onError={safeImg.onError}
               alt={activeImageAlt}
               className="h-full w-full object-cover"
             />

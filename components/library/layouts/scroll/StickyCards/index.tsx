@@ -11,6 +11,7 @@ import {
 import { cn } from "@lib/utils";
 import type { StyleKit } from "@lib/style-kit";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -64,6 +65,7 @@ interface StickyCardProps {
   ctaStyle: CtaVariant;
   ctaColorScheme: ColorScheme;
   shouldReduceMotion: boolean | null;
+  index: number;
 }
 
 function StickyCard({
@@ -76,10 +78,17 @@ function StickyCard({
   ctaStyle,
   ctaColorScheme,
   shouldReduceMotion,
+  index,
 }: StickyCardProps) {
   const isLast = position === totalCards;
   const scaleFromPct = (position - 1) / totalCards;
   const y = useTransform(scrollYProgress, [scaleFromPct, 1], [0, -cardHeight]);
+  const safeImg = useSafeImageSrc(
+    card.image,
+    `layout-stickycards-01-card-image-${index}`,
+    400,
+    320,
+  );
 
   return (
     <motion.div
@@ -100,17 +109,16 @@ function StickyCard({
           card.image && "md:flex-row md:gap-12",
         )}
       >
-        {/* Image column — only when image is provided */}
-        {card.image && (
-          <div className="flex w-full shrink-0 justify-center md:w-2/5">
-            <img
-              src={card.image}
-              alt={card.imageAlt ?? ""}
-              className="max-h-64 w-auto rounded-lg object-cover md:max-h-80"
-              loading="lazy"
-            />
-          </div>
-        )}
+        {/* Image column */}
+        <div className="flex w-full shrink-0 justify-center md:w-2/5">
+          <img
+            src={safeImg.src}
+            onError={safeImg.onError}
+            alt={card.imageAlt ?? ""}
+            className="max-h-64 w-auto rounded-lg object-cover md:max-h-80"
+            loading="lazy"
+          />
+        </div>
 
         {/* Content column */}
         <div
@@ -235,6 +243,7 @@ export default function StickyCards({
             ctaStyle={ctaStyle}
             ctaColorScheme={ctaColorScheme}
             shouldReduceMotion={shouldReduceMotion}
+            index={idx}
           />
         ))}
       </div>

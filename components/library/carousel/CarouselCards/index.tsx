@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@lib/utils";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -83,11 +84,19 @@ function Card({
   item,
   cardWidth,
   cardGap,
+  index,
 }: {
   item: CarouselCardItem;
   cardWidth: number;
   cardGap: number;
+  index: number;
 }) {
+  const safeImg = useSafeImageSrc(
+    item.image,
+    `carousel-cards-01-card-image-${index}`,
+    600,
+    200,
+  );
   return (
     <div
       className="relative shrink-0 cursor-pointer transition-transform hover:-translate-y-1"
@@ -97,7 +106,8 @@ function Card({
       }}
     >
       <img
-        src={item.image}
+        src={safeImg.src}
+        onError={safeImg.onError}
         alt={item.imageAlt}
         className="mb-3 h-[200px] w-full rounded-lg bg-base-300 object-cover"
         loading="lazy"
@@ -230,6 +240,7 @@ export default function CarouselCards({
                 item={card}
                 cardWidth={cardWidth}
                 cardGap={cardGap}
+                index={idx}
               />
             ))}
           </motion.div>
