@@ -139,6 +139,7 @@ export const StyleOutputSchema = z.object({
     ]),
   ),
   density: z.enum(["low", "medium", "high"]),
+  paletteSource: z.enum(["graph", "fallback"]).optional(),
 });
 
 export type StyleOutput = z.infer<typeof StyleOutputSchema>;
@@ -161,7 +162,7 @@ export const ComposerOutputSchema = z.object({
   selectedLayout: z.number().int(),
   source: z.enum(["graph", "fallback"]),
   candidateCount: z.number().int().optional(),
-  avgScore: z.number().optional(),
+  avgScore: z.number().nullable().optional(),
 });
 
 export type ComposerLayout = z.infer<typeof ComposerLayoutSchema>;
