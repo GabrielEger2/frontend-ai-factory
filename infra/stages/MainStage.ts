@@ -24,6 +24,17 @@ import { DashboardStack } from "../stacks/DashboardStack";
  * All cross-stack communication uses string props (names, ARNs, URLs).
  * No construct objects cross stack boundaries.
  */
+/* ------------------------------------------------------------------ */
+/*  Constants                                                          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * SSM path holding the Vercel API token. Shared between SiteDeployStack
+ * (pipeline deploy Lambda) and ApiStack (deploy-draft Lambda). Kept as a
+ * module-level constant so both consumers reference the exact same path.
+ */
+const VERCEL_TOKEN_SSM_PATH = "/sitegen/dev/vercel-api-token";
+
 export class MainStage extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
@@ -84,6 +95,9 @@ export class MainStage extends Construct {
       pipelineBucketName: database.pipelineBucketName,
       pipelineBucketArn: database.pipelineBucketArn,
       stateMachineArn: pipeline.stateMachineArn,
+      shareTokensTableName: database.shareTokensTableName,
+      shareTokensTableArn: database.shareTokensTableArn,
+      vercelTokenSsmPath: VERCEL_TOKEN_SSM_PATH,
     });
 
     /* ---------------------------------------------------------------- */
