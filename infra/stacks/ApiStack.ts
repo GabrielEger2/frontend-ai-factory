@@ -405,8 +405,8 @@ export class ApiStack extends Stack {
     /* -------------------------------------------------------------- */
 
     // NOTE: deploy-draft does in-Lambda assembly + tar/gzip + Vercel deploy +
-    // polling + DDB writes. Matches the AgentLambda shape in SiteDeployStack
-    // (10 min timeout, 1024 MB memory). Do NOT spread LAMBDA_DEFAULTS.
+    // polling + DDB writes. Needs 10 min timeout + 1024 MB memory — Vercel
+    // polling alone can take up to 7.5 min. Do NOT spread LAMBDA_DEFAULTS.
     const deployDraftFn = new NodejsFunction(this, "DeployDraftFn", {
       runtime: Runtime.NODEJS_20_X,
       architecture: Architecture.ARM_64,

@@ -3,7 +3,7 @@ import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { AssemblerInputSchema } from "./types";
 import type { AssemblerResult } from "./types";
-import type { Palette, Typography } from "../shared/types";
+import type { Palette, Typography, WorkingDraft } from "../shared/types";
 import { buildTarBuffer } from "../shared/tar-utils";
 import { generateSiteFiles } from "./core";
 import * as zlib from "zlib";
@@ -107,9 +107,29 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
     }),
   );
 
-  /* ---- Update DynamoDB ---- */
+  /* ---- Build workingDraft from frozen pipeline outputs ---- */
+  // The assembler is the single source of the first workingDraft. Populating
+  // it here is what lets the pipeline terminate at "ready_for_review" after QA
+  // and hand control to the seller's visual editor / Deploy button.
+  if (!input.composerOutput) {
+    throw new Error(
+      `composerOutput missing for project ${input.projectId} — pipeline state is broken`,
+    );
+  }
+
   const now = new Date().toISOString();
 
+  const workingDraft: WorkingDraft = {
+    blueprint:
+      input.composerOutput.layouts[input.composerOutput.selectedLayout],
+    contentSlots: input.humanizerOutput,
+    palette,
+    typography,
+    density: input.styleOutput?.density ?? "medium",
+    updatedAt: now,
+  };
+
+  /* ---- Update DynamoDB ---- */
   await ddb.send(
     new UpdateCommand({
       TableName: tableName,
@@ -118,10 +138,11 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
         sk: `PROJECT#${input.projectId}`,
       },
       UpdateExpression:
-        "SET assemblerOutput = :ao, #st = :status, updatedAt = :now",
+        "SET assemblerOutput = :ao, workingDraft = :wd, #st = :status, updatedAt = :now",
       ExpressionAttributeNames: { "#st": "status" },
       ExpressionAttributeValues: {
         ":ao": { s3Key, s3Bucket: bucketName },
+        ":wd": workingDraft,
         ":status": "qa",
         ":now": now,
       },

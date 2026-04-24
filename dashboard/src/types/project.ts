@@ -51,6 +51,7 @@ export type ProjectStatus =
   | "humanizing"
   | "assembling"
   | "qa"
+  | "ready_for_review"
   | "deploying"
   | "deployed"
   | "failed"

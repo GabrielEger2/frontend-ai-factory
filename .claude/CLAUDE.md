@@ -57,11 +57,10 @@ SQS → Step Function:
 
 | Stack | Purpose |
 |---|---|
-| `ApiStack` | API Gateway + CRM JWT/API key validation |
-| `PipelineStack` | Step Functions + SQS + agent Lambdas |
-| `DatabaseStack` | Database tables — projects, components (DB choice TBD) |
+| `ApiStack` | API Gateway + CRM JWT/API key validation + deploy-draft Lambda (Vercel) |
+| `PipelineStack` | Step Functions + SQS + agent Lambdas (terminates at ready_for_review after QA) |
+| `DatabaseStack` | Database tables — projects, components, share tokens (DDB) |
 | `GraphStack` | Neo4j Aura connection (Phase 3) |
-| `SiteDeployStack` | Vercel deployment Lambda |
 | `DashboardStack` | Seller dashboard (OpenNext pattern) |
 
 ## Immutable Rules

@@ -15,6 +15,7 @@ import { HumanizerView } from "@/components/pipeline/views/HumanizerView";
 import { SeoView } from "@/components/pipeline/views/SeoView";
 import { AssemblerView } from "@/components/pipeline/views/AssemblerView";
 import { QAView } from "@/components/pipeline/views/QAView";
+import { DeployDraftButton } from "@/components/projects/DeployDraftButton";
 import { SharePanel } from "@/components/share/SharePanel";
 import type { FeedbackItem, ProjectStatus } from "@/types/project";
 
@@ -33,6 +34,7 @@ const PIPELINE_STEPS: {
   { status: "humanizing", label: "Humanizing" },
   { status: "assembling", label: "Assembling" },
   { status: "qa", label: "Running QA" },
+  { status: "ready_for_review", label: "Ready for Review" },
   { status: "deploying", label: "Deploying" },
   { status: "deployed", label: "Deployed" },
 ];
@@ -77,11 +79,14 @@ export default async function ProjectDetailPage({
   }
 
   const isTerminal =
+    project.status === "ready_for_review" ||
     project.status === "deployed" ||
     project.status === "failed" ||
     project.status === "qa_failed";
 
+  const isReadyForReview = project.status === "ready_for_review";
   const isDeployed = project.status === "deployed";
+  const hasEditableDraft = isReadyForReview || isDeployed;
   const hasVersions =
     project.currentVersionNumber != null && project.currentVersionNumber > 0;
 
@@ -201,7 +206,28 @@ export default async function ProjectDetailPage({
         })}
       </div>
 
-      {(isDeployed || hasVersions) && (
+      {isReadyForReview && (
+        <div className="mb-8 rounded-lg border border-amber-200 bg-amber-50 p-5">
+          <h2 className="mb-1 text-sm font-semibold text-amber-900">
+            Draft ready for your review
+          </h2>
+          <p className="mb-4 text-sm text-amber-800">
+            The pipeline has assembled a draft site. Edit sections, copy, or
+            palette in the visual editor, then deploy when ready.
+          </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <DeployDraftButton projectId={id} />
+            <Link
+              href={`/projects/${id}/edit`}
+              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+            >
+              Open Visual Editor
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {(hasEditableDraft || hasVersions) && !isReadyForReview && (
         <div className="mb-8 flex flex-wrap items-center gap-3">
           {isDeployed && (
             <Link

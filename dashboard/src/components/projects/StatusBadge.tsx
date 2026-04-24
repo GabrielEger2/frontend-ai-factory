@@ -13,6 +13,7 @@ export const STATUS_LABELS: Record<ProjectStatus, string> = {
   humanizing: "Humanizing...",
   assembling: "Assembling...",
   qa: "Running QA...",
+  ready_for_review: "Ready for Review",
   deploying: "Deploying...",
   deployed: "Deployed",
   failed: "Failed",
@@ -65,6 +66,11 @@ const STATUS_BADGE_MAP: Record<ProjectStatus, BadgeMapping> = {
     variant: "default",
     className:
       "border-transparent bg-purple-100 text-purple-700 animate-pulse hover:bg-purple-100",
+  },
+  ready_for_review: {
+    variant: "default",
+    className:
+      "border-transparent bg-amber-100 text-amber-700 hover:bg-amber-100",
   },
   deploying: {
     variant: "default",
