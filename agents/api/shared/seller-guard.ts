@@ -1,9 +1,20 @@
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
+function getHeader(
+  event: APIGatewayProxyEvent,
+  name: string,
+): string | undefined {
+  const target = name.toLowerCase();
+  for (const [key, value] of Object.entries(event.headers ?? {})) {
+    if (key.toLowerCase() === target && value != null) return value;
+  }
+  return undefined;
+}
+
 export function requireSellerId(
   event: APIGatewayProxyEvent,
 ): string | APIGatewayProxyResult {
-  const sellerId = event.headers["x-seller-id"];
+  const sellerId = getHeader(event, "x-seller-id");
   if (!sellerId) {
     return {
       statusCode: 400,
