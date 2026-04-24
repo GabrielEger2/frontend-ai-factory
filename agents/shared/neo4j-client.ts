@@ -14,6 +14,8 @@ const ssmClient = new SSMClient({});
 let cachedDriver: Driver | undefined;
 let cachedUri: string | undefined;
 let cachedPassword: string | undefined;
+let cachedUsername: string | undefined;
+let cachedDatabase: string | undefined;
 
 /* ------------------------------------------------------------------ */
 /*  SSM-cached Neo4j URI                                               */
@@ -64,6 +66,56 @@ async function getNeo4jPassword(): Promise<string> {
 }
 
 /* ------------------------------------------------------------------ */
+/*  SSM-cached Neo4j username                                          */
+/* ------------------------------------------------------------------ */
+
+async function getNeo4jUsername(): Promise<string> {
+  if (cachedUsername) return cachedUsername;
+
+  const ssmPath = process.env.NEO4J_USERNAME_SSM_PATH;
+  if (!ssmPath) {
+    cachedUsername = "neo4j";
+    return cachedUsername;
+  }
+
+  const result = await ssmClient.send(
+    new GetParameterCommand({ Name: ssmPath, WithDecryption: true }),
+  );
+
+  if (!result.Parameter?.Value) {
+    throw new Error(`SSM parameter ${ssmPath} not found or has no value`);
+  }
+
+  cachedUsername = result.Parameter.Value;
+  return cachedUsername;
+}
+
+/* ------------------------------------------------------------------ */
+/*  SSM-cached Neo4j database name                                     */
+/* ------------------------------------------------------------------ */
+
+export async function getNeo4jDatabase(): Promise<string> {
+  if (cachedDatabase) return cachedDatabase;
+
+  const ssmPath = process.env.NEO4J_DATABASE_SSM_PATH;
+  if (!ssmPath) {
+    cachedDatabase = "neo4j";
+    return cachedDatabase;
+  }
+
+  const result = await ssmClient.send(
+    new GetParameterCommand({ Name: ssmPath, WithDecryption: true }),
+  );
+
+  if (!result.Parameter?.Value) {
+    throw new Error(`SSM parameter ${ssmPath} not found or has no value`);
+  }
+
+  cachedDatabase = result.Parameter.Value;
+  return cachedDatabase;
+}
+
+/* ------------------------------------------------------------------ */
 /*  Lazy-init Neo4j driver                                             */
 /* ------------------------------------------------------------------ */
 
@@ -71,9 +123,10 @@ export async function getDriver(): Promise<Driver> {
   if (cachedDriver) return cachedDriver;
 
   const uri = await getNeo4jUri();
+  const username = await getNeo4jUsername();
   const password = await getNeo4jPassword();
 
-  cachedDriver = neo4j.driver(uri, neo4j.auth.basic("neo4j", password));
+  cachedDriver = neo4j.driver(uri, neo4j.auth.basic(username, password));
   await cachedDriver.verifyConnectivity();
 
   return cachedDriver;

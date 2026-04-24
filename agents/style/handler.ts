@@ -7,7 +7,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { StyleOutput, StyleOutputSchema } from "../shared/types";
 import { StyleAgentInput, StyleAgentInputSchema } from "./types";
 import { buildStyleSystemPrompt, buildStyleUserPrompt } from "./prompt";
-import { getDriver } from "../shared/neo4j-client";
+import { getDriver, getNeo4jDatabase } from "../shared/neo4j-client";
 import { emitNeo4jQueryError } from "../shared/metrics";
 
 /* ------------------------------------------------------------------ */
@@ -65,7 +65,8 @@ async function queryPaletteSuggestions(
 ): Promise<{ suggestions: PaletteSuggestion[]; source: "graph" | "fallback" }> {
   try {
     const driver = await getDriver();
-    const session = driver.session({ database: "neo4j" });
+    const database = await getNeo4jDatabase();
+    const session = driver.session({ database });
 
     try {
       const result = await session.run(

@@ -33,11 +33,19 @@ export class GraphStack extends Stack {
   /** SSM parameter path for the Neo4j password (created manually via CLI). */
   public readonly neo4jPasswordSsmPath: string;
 
+  /** SSM parameter path for the Neo4j username (created manually via CLI). */
+  public readonly neo4jUsernameSsmPath: string;
+
+  /** SSM parameter path for the Neo4j database name (created manually via CLI). */
+  public readonly neo4jDatabaseSsmPath: string;
+
   constructor(scope: Construct, id: string, props?: GraphStackProps) {
     super(scope, id, props);
 
     this.neo4jUriSsmPath = "/sitegen/dev/neo4j-uri";
     this.neo4jPasswordSsmPath = "/sitegen/dev/neo4j-password";
+    this.neo4jUsernameSsmPath = "/sitegen/dev/neo4j-username";
+    this.neo4jDatabaseSsmPath = "/sitegen/dev/neo4j-database";
 
     const uriParam = new ssm.StringParameter(this, "Neo4jUriParam", {
       parameterName: this.neo4jUriSsmPath,
@@ -50,6 +58,12 @@ export class GraphStack extends Stack {
     new CfnOutput(this, "Neo4jUriSsmPath", { value: this.neo4jUriSsmPath });
     new CfnOutput(this, "Neo4jPasswordSsmPath", {
       value: this.neo4jPasswordSsmPath,
+    });
+    new CfnOutput(this, "Neo4jUsernameSsmPath", {
+      value: this.neo4jUsernameSsmPath,
+    });
+    new CfnOutput(this, "Neo4jDatabaseSsmPath", {
+      value: this.neo4jDatabaseSsmPath,
     });
   }
 }

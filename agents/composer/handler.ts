@@ -15,7 +15,7 @@ import {
   ComponentItem,
   StyleOutput,
 } from "../shared/types";
-import { getDriver } from "../shared/neo4j-client";
+import { getDriver, getNeo4jDatabase } from "../shared/neo4j-client";
 import { emitNeo4jQueryError } from "../shared/metrics";
 import { ComposerAgentInputSchema } from "./types";
 import {
@@ -76,7 +76,8 @@ async function getGraphCandidates(segment: string): Promise<{
   pairMatrix: PairMatrixEntry[];
 }> {
   const driver = await getDriver();
-  const session = driver.session({ database: "neo4j" });
+  const database = await getNeo4jDatabase();
+  const session = driver.session({ database });
 
   try {
     const result = await session.run(
