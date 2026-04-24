@@ -144,6 +144,7 @@ export interface StyleOutput {
     | "corporate"
   >;
   density: "low" | "medium" | "high";
+  paletteSource?: "graph" | "fallback";
 }
 
 /* ------------------------------------------------------------------ */
@@ -162,7 +163,7 @@ export interface ComposerOutput {
   selectedLayout: number;
   source: "graph" | "fallback";
   candidateCount?: number;
-  avgScore?: number;
+  avgScore?: number | null;
 }
 
 /* ------------------------------------------------------------------ */
