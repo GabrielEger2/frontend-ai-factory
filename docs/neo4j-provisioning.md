@@ -17,18 +17,19 @@ Ops reference for setting up the Neo4j Aura graph database and seeding it with c
 4. Save the generated **password** immediately -- it is shown only once.
 5. Wait for the instance status to show **Running** before proceeding.
 
-> **⚠️ Important — CDK now provisions placeholder parameters**
+> **⚠️ Important — CDK provisions the URI placeholder only**
 >
-> As of PR "Phase 4 graph close," `cdk deploy` creates both `/sitegen/dev/neo4j-uri` and `/sitegen/dev/neo4j-password` in SSM with the placeholder value `REPLACE_AFTER_AURA_PROVISION`. Both use `DeletionPolicy: Retain` so redeploys do not wipe your real values.
+> `cdk deploy` creates `/sitegen/dev/neo4j-uri` in SSM with the placeholder value `REPLACE_AFTER_AURA_PROVISION` (`DeletionPolicy: Retain` so redeploys do not wipe your real value).
 >
-> **If you previously created these parameters manually**, CloudFormation will fail on first deploy with `ResourceAlreadyExistsException`. To resolve:
+> The password parameter (`/sitegen/dev/neo4j-password`) is **NOT** created by CDK because CloudFormation does not support creating `SecureString` SSM parameters (only `String` and `StringList`). You must create it manually via AWS CLI after provisioning Aura — see Step 2b below.
+>
+> **If you previously created the URI parameter manually**, CloudFormation will fail on first deploy with `ResourceAlreadyExistsException`. To resolve:
 >
 > ```bash
 > aws ssm delete-parameter --name "/sitegen/dev/neo4j-uri"
-> aws ssm delete-parameter --name "/sitegen/dev/neo4j-password"
 > ```
 >
-> Then run `npm run deploy` again. Alternatively, use `aws cloudformation import-existing-resources` to bring existing parameters under CloudFormation management.
+> Then run `npm run deploy` again. Alternatively, use `aws cloudformation import-existing-resources` to bring the existing parameter under CloudFormation management.
 
 ## Step 2: Register SSM Parameters
 
@@ -70,23 +71,26 @@ aws ssm put-parameter \
   --overwrite
 ```
 
-## Step 2b: Overwrite Placeholder Values
+## Step 2b: Set Real Credential Values
 
-After `cdk deploy` succeeds, both SSM parameters exist with placeholder values. Overwrite them with your real Aura credentials:
+After `cdk deploy` succeeds, the URI parameter exists with a placeholder value. The password parameter does not exist yet — create it, and overwrite the URI placeholder with your real Aura credentials:
 
 ```bash
+# Overwrite URI placeholder (created by CDK as type=String)
 aws ssm put-parameter \
   --name "/sitegen/dev/neo4j-uri" \
   --type String \
   --value "neo4j+s://xxxxxxxx.databases.neo4j.io" \
   --overwrite
 
+# Create password parameter (CDK cannot create SecureString — this is the first time)
 aws ssm put-parameter \
   --name "/sitegen/dev/neo4j-password" \
   --type SecureString \
-  --value "your-password-here" \
-  --overwrite
+  --value "your-password-here"
 ```
+
+On subsequent rotations, add `--overwrite` to the password command.
 
 ## Step 2c: Export Credentials from SSM
 

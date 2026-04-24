@@ -1,10 +1,4 @@
-import {
-  Stack,
-  StackProps,
-  CfnOutput,
-  RemovalPolicy,
-  CfnDeletionPolicy,
-} from "aws-cdk-lib";
+import { Stack, StackProps, CfnOutput, RemovalPolicy } from "aws-cdk-lib";
 import * as ssm from "aws-cdk-lib/aws-ssm";
 import { Construct } from "constructs";
 
@@ -21,18 +15,22 @@ export interface GraphStackProps extends StackProps {}
 /**
  * GraphStack — Neo4j Aura connection parameters.
  *
- * Lightweight stack that exposes SSM parameter paths for Neo4j credentials.
- * The actual Neo4j Aura instance is managed externally (SaaS).
- * Agent Lambdas use these paths to retrieve credentials at runtime.
+ * Exposes SSM parameter paths for Neo4j credentials. The actual Aura instance
+ * is managed externally (SaaS). Agent Lambdas read from these paths at runtime.
+ *
+ * Only the URI placeholder is CDK-managed. The password parameter must be
+ * created out-of-band via `aws ssm put-parameter --type SecureString` —
+ * CloudFormation does not support creating SecureString SSM parameters
+ * (only String and StringList). See docs/neo4j-provisioning.md.
  *
  * No cross-stack imports. Other stacks receive SSM paths as string props
  * through MainStage.
  */
 export class GraphStack extends Stack {
-  /** SSM parameter path for the Neo4j connection URI. */
+  /** SSM parameter path for the Neo4j connection URI (CDK-managed placeholder). */
   public readonly neo4jUriSsmPath: string;
 
-  /** SSM parameter path for the Neo4j password. */
+  /** SSM parameter path for the Neo4j password (created manually via CLI). */
   public readonly neo4jPasswordSsmPath: string;
 
   constructor(scope: Construct, id: string, props?: GraphStackProps) {
@@ -48,15 +46,6 @@ export class GraphStack extends Stack {
         "Neo4j Aura connection URI — set manually after provisioning",
     });
     uriParam.applyRemovalPolicy(RemovalPolicy.RETAIN);
-
-    const passwordParam = new ssm.CfnParameter(this, "Neo4jPasswordParam", {
-      name: this.neo4jPasswordSsmPath,
-      type: "SecureString",
-      value: "REPLACE_AFTER_AURA_PROVISION",
-      description: "Neo4j Aura password — set manually after provisioning",
-    });
-    passwordParam.cfnOptions.deletionPolicy = CfnDeletionPolicy.RETAIN;
-    passwordParam.cfnOptions.updateReplacePolicy = CfnDeletionPolicy.RETAIN;
 
     new CfnOutput(this, "Neo4jUriSsmPath", { value: this.neo4jUriSsmPath });
     new CfnOutput(this, "Neo4jPasswordSsmPath", {
