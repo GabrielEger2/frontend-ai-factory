@@ -119,12 +119,14 @@ export function VisualEditorShell({
     const nextSelections = { ...(draft.blueprint.variantSelections ?? {}) };
     delete nextSelections[activePicker];
 
-    // Carry slot content across by component id: the new component may
-    // use different slot names so we clone the old entry under the new id
-    // and let the Humanizer output re-populate on the next pipeline run.
+    // Slot schemas differ across components, so carrying the old slots over
+    // would feed wrong/undefined props into the new component (e.g. a Hero's
+    // headline keys into a testimonial layout) and crash the preview. Reset
+    // to an empty slot entry; the seller can edit inline or wait for the
+    // next Humanizer rerun to repopulate.
     const nextContentComponents = draft.contentSlots.components.map((entry) =>
       entry.componentId === activePicker
-        ? { componentId: newComponentId, slots: entry.slots }
+        ? { componentId: newComponentId, slots: {} }
         : entry,
     );
 

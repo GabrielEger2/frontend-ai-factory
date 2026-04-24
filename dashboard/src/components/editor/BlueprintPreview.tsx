@@ -1,5 +1,6 @@
 "use client";
 
+import { Component as ReactComponent, type ReactNode } from "react";
 import { componentsById } from "@components/library";
 import { paletteToCssVars } from "@/lib/palette-to-css";
 import type { WorkingDraft } from "@/types/project";
@@ -23,6 +24,49 @@ interface BlueprintPreviewProps {
 }
 
 /**
+ * Per-section error boundary so that a render-time crash in one library
+ * component (e.g. a swapped section whose required slots haven't been
+ * written by the Humanizer yet) doesn't take down the whole preview.
+ */
+class SectionErrorBoundary extends ReactComponent<
+  { componentId: string; children: ReactNode },
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: unknown) {
+    if (typeof console !== "undefined") {
+      console.warn(
+        `[BlueprintPreview] section "${this.props.componentId}" failed to render`,
+        error,
+      );
+    }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="border-b border-amber-200 bg-amber-50 p-6 text-sm text-amber-900">
+          <p className="font-medium">
+            Section can't render with current content.
+          </p>
+          <p className="mt-1 text-amber-800/80">
+            <code>{this.props.componentId}</code> — try editing its copy in the
+            right panel, or rerun the pipeline so the Humanizer can fill in the
+            required content.
+          </p>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+/**
  * Live in-dashboard renderer for a seller's working draft. Renders each
  * component in `draft.blueprint.components` in order, passing the matching
  * content slots from `draft.contentSlots` as props.
@@ -35,6 +79,9 @@ interface BlueprintPreviewProps {
  *
  * If a component ID is present in the blueprint but not registered in
  * `componentsById`, we render a warning placeholder instead of crashing.
+ * If a registered component throws while rendering (e.g. missing required
+ * slot data), `SectionErrorBoundary` catches it and shows a placeholder
+ * for that section only — the rest of the preview keeps rendering.
  */
 export function BlueprintPreview({
   draft,
@@ -74,11 +121,12 @@ export function BlueprintPreview({
         const variant = draft.blueprint.variantSelections?.[componentId];
 
         return (
-          <Component
+          <SectionErrorBoundary
             key={`${componentId}-${index}`}
-            {...slots}
-            {...(variant ? { variant } : {})}
-          />
+            componentId={componentId}
+          >
+            <Component {...slots} {...(variant ? { variant } : {})} />
+          </SectionErrorBoundary>
         );
       })}
     </div>
