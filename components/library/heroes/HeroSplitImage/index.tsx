@@ -5,6 +5,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { cn } from "@lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
 import { TypeWriter } from "@ui/text-decorations/TypeWriter";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -160,13 +161,21 @@ function RotatingBadge({ text, shouldReduceMotion }: RotatingBadgeProps) {
 
 interface FeaturedItemCardProps {
   item: FeaturedItem;
+  index: number;
 }
 
-function FeaturedItemCard({ item }: FeaturedItemCardProps) {
+function FeaturedItemCard({ item, index }: FeaturedItemCardProps) {
+  const safeImg = useSafeImageSrc(
+    item.image,
+    `hero-split-image-01-featured-image-${index}`,
+    64,
+    48,
+  );
   return (
     <div className="flex items-center gap-3">
       <img
-        src={item.image}
+        src={safeImg.src}
+        onError={safeImg.onError}
         alt={item.imageAlt}
         className="h-12 w-16 shrink-0 rounded-md bg-base-200 object-cover shadow-sm"
         loading="lazy"
@@ -225,6 +234,12 @@ export default function HeroSplitImage({
   className,
 }: HeroSplitImageProps) {
   const shouldReduceMotion = useReducedMotion();
+  const safeMainImg = useSafeImageSrc(
+    image,
+    "hero-split-image-01-image",
+    800,
+    800,
+  );
 
   return (
     <section
@@ -373,7 +388,7 @@ export default function HeroSplitImage({
               )}
               <div className="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2">
                 {featuredItems.map((item, i) => (
-                  <FeaturedItemCard key={i} item={item} />
+                  <FeaturedItemCard key={i} item={item} index={i} />
                 ))}
               </div>
             </motion.div>
@@ -397,7 +412,8 @@ export default function HeroSplitImage({
             className="aspect-square overflow-hidden rounded-2xl shadow-xl rotate-2"
           >
             <img
-              src={image}
+              src={safeMainImg.src}
+              onError={safeMainImg.onError}
               alt={imageAlt}
               className="h-full w-full object-cover"
               loading="eager"

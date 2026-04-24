@@ -11,6 +11,7 @@ import {
 import { cn } from "@lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
 import { TypeWriter } from "@ui/text-decorations/TypeWriter";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -137,6 +138,7 @@ interface ParallaxImgProps {
   end: number;
   className?: string;
   shouldReduceMotion: boolean | null;
+  index: number;
 }
 
 function ParallaxImg({
@@ -146,8 +148,15 @@ function ParallaxImg({
   end,
   className,
   shouldReduceMotion,
+  index,
 }: ParallaxImgProps) {
   const ref = useRef<HTMLImageElement>(null);
+  const safeImg = useSafeImageSrc(
+    src,
+    `hero-parallax-images-01-image-${index}`,
+    400,
+    600,
+  );
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -162,7 +171,8 @@ function ParallaxImg({
   if (shouldReduceMotion) {
     return (
       <img
-        src={src}
+        src={safeImg.src}
+        onError={safeImg.onError}
         alt={alt}
         className={cn("rounded-lg object-cover", className)}
         ref={ref}
@@ -173,7 +183,8 @@ function ParallaxImg({
 
   return (
     <motion.img
-      src={src}
+      src={safeImg.src}
+      onError={safeImg.onError}
       alt={alt}
       className={cn("rounded-lg object-cover", className)}
       ref={ref}
@@ -254,6 +265,7 @@ export default function HeroParallaxImages({
               end={img.end ?? (i % 2 === 0 ? 200 : -250)}
               className={cn(img.widthClass ?? "w-1/3", img.alignClass)}
               shouldReduceMotion={shouldReduceMotion}
+              index={i}
             />
           ))}
         </div>

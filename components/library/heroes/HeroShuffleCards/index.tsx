@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { cn } from "@lib/utils";
 import { Button, CtaButton, type CtaVariant } from "@ui/button";
 import { TypeWriter } from "@ui/text-decorations/TypeWriter";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -45,6 +46,7 @@ interface CardProps {
   author: string;
   position: CardPosition;
   onShuffle: () => void;
+  index: number;
 }
 
 function Card({
@@ -54,8 +56,15 @@ function Card({
   author,
   position,
   onShuffle,
+  index,
 }: CardProps) {
   const mousePosRef = useRef(0);
+  const safeImg = useSafeImageSrc(
+    image,
+    `hero-shuffle-cards-01-card-image-${index}`,
+    128,
+    128,
+  );
 
   const onDragStart = (e: MouseEvent | TouchEvent | PointerEvent) => {
     if ("clientX" in e) {
@@ -97,7 +106,8 @@ function Card({
       )}
     >
       <img
-        src={image}
+        src={safeImg.src}
+        onError={safeImg.onError}
         alt={imageAlt}
         className="pointer-events-none mx-auto h-32 w-32 rounded-full border-2 border-base-300 bg-base-200 object-cover"
       />
@@ -213,6 +223,7 @@ export default function HeroShuffleCards({
               author={card.author}
               position={order[i]}
               onShuffle={handleShuffle}
+              index={i}
             />
           ))}
         </div>
