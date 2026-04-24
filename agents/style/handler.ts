@@ -8,6 +8,7 @@ import { StyleOutput, StyleOutputSchema } from "../shared/types";
 import { StyleAgentInput, StyleAgentInputSchema } from "./types";
 import { buildStyleSystemPrompt, buildStyleUserPrompt } from "./prompt";
 import { getDriver } from "../shared/neo4j-client";
+import { emitNeo4jQueryError } from "../shared/metrics";
 
 /* ------------------------------------------------------------------ */
 /*  Palette suggestion from Neo4j graph                                */
@@ -61,7 +62,7 @@ async function getClaudeApiKey(): Promise<string> {
 
 async function queryPaletteSuggestions(
   segment: string,
-): Promise<PaletteSuggestion[]> {
+): Promise<{ suggestions: PaletteSuggestion[]; source: "graph" | "fallback" }> {
   try {
     const driver = await getDriver();
     const session = driver.session({ database: "neo4j" });
@@ -80,18 +81,22 @@ async function queryPaletteSuggestions(
         { segmentId: segment },
       );
 
-      return result.records.map((record) => ({
-        moodId: record.get("moodId") as string,
-        paletteId: record.get("paletteId") as string,
-        paletteName: record.get("paletteName") as string,
-        temperatureRange: record.get("temperatureRange") as string,
-        contrastLevel: record.get("contrastLevel") as string,
-        saturationRange: record.get("saturationRange") as string,
-      }));
+      return {
+        suggestions: result.records.map((record) => ({
+          moodId: record.get("moodId") as string,
+          paletteId: record.get("paletteId") as string,
+          paletteName: record.get("paletteName") as string,
+          temperatureRange: record.get("temperatureRange") as string,
+          contrastLevel: record.get("contrastLevel") as string,
+          saturationRange: record.get("saturationRange") as string,
+        })),
+        source: "graph" as const,
+      };
     } finally {
       await session.close();
     }
   } catch (err) {
+    emitNeo4jQueryError("style");
     console.warn(
       JSON.stringify({
         agent: "style",
@@ -99,7 +104,7 @@ async function queryPaletteSuggestions(
         error: err instanceof Error ? err.message : String(err),
       }),
     );
-    return [];
+    return { suggestions: [], source: "fallback" as const };
   }
 }
 
@@ -227,7 +232,8 @@ export const handler: Handler<StyleAgentInput, void> = async (event) => {
   await markStylingStarted(input.projectId);
 
   // 3. Query Neo4j for palette suggestions (graceful degradation — empty array on failure)
-  const paletteSuggestions = await queryPaletteSuggestions(input.segment);
+  const { suggestions: paletteSuggestions, source: paletteSource } =
+    await queryPaletteSuggestions(input.segment);
 
   console.log(
     JSON.stringify({
@@ -239,6 +245,7 @@ export const handler: Handler<StyleAgentInput, void> = async (event) => {
 
   // 4. Generate style via Claude
   const styleOutput = await generateStyle(input, paletteSuggestions);
+  styleOutput.paletteSource = paletteSource;
 
   console.log(
     JSON.stringify({
