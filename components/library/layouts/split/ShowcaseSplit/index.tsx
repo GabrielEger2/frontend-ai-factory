@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { cn } from "@lib/utils";
 import type { StyleKit } from "@lib/style-kit";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -134,6 +135,12 @@ export default function ShowcaseSplit({
   );
 
   const current = testimonials[activeIndex];
+  const safeImg = useSafeImageSrc(
+    current.image,
+    `layout-showcasesplit-01-image-${activeIndex}`,
+    416,
+    576,
+  );
 
   return (
     <section
@@ -165,7 +172,8 @@ export default function ShowcaseSplit({
             <AnimatePresence mode="wait" custom={direction}>
               <motion.img
                 key={`image-${activeIndex}`}
-                src={current.image}
+                src={safeImg.src}
+                onError={safeImg.onError}
                 alt={current.imageAlt}
                 className="h-24 w-24 rounded-full object-cover shadow-md md:mx-6 md:h-[32rem] md:w-80 md:rounded-2xl lg:h-[36rem] lg:w-[26rem]"
                 loading="lazy"

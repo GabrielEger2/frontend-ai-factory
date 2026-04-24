@@ -5,6 +5,7 @@ import { cn } from "@lib/utils";
 import { CtaButton } from "@ui/button";
 import { containerVariants, fadeUp, imageReveal } from "@lib/motion-variants";
 import type { StyleKit } from "@lib/style-kit";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -54,6 +55,7 @@ export default function ImageText({
   className,
 }: ImageTextProps) {
   const shouldReduceMotion = useReducedMotion();
+  const safeImg = useSafeImageSrc(image, "layout-imagetext-01-image", 600, 400);
 
   const isDark = colorScheme === "dark";
   const isReversed = imagePosition === "right";
@@ -84,7 +86,8 @@ export default function ImageText({
           viewport={{ once: true, margin: "-100px" }}
         >
           <img
-            src={image}
+            src={safeImg.src}
+            onError={safeImg.onError}
             alt={imageAlt}
             className="h-auto w-full object-cover"
             loading="lazy"

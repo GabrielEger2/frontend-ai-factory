@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@lib/utils";
 import { containerVariants, fadeUp, imageReveal } from "@lib/motion-variants";
 import type { StyleKit } from "@lib/style-kit";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -78,6 +79,18 @@ export default function AuthorSplit({
   className,
 }: AuthorSplitProps) {
   const shouldReduceMotion = useReducedMotion();
+  const safeBannerImg = useSafeImageSrc(
+    bannerImage,
+    "layout-authorsplit-01-banner-image",
+    800,
+    256,
+  );
+  const safeAuthorImg = useSafeImageSrc(
+    authorImage,
+    "layout-authorsplit-01-author-image",
+    80,
+    80,
+  );
 
   return (
     <section
@@ -94,7 +107,8 @@ export default function AuthorSplit({
           viewport={{ once: true, margin: "-100px" }}
         >
           <img
-            src={bannerImage}
+            src={safeBannerImg.src}
+            onError={safeBannerImg.onError}
             alt={bannerImageAlt}
             className="h-full w-full object-cover object-center"
             loading="lazy"
@@ -116,7 +130,8 @@ export default function AuthorSplit({
           >
             <div className="inline-flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-base-200">
               <img
-                src={authorImage}
+                src={safeAuthorImg.src}
+                onError={safeAuthorImg.onError}
                 alt={authorImageAlt}
                 className="h-full w-full object-cover"
                 loading="lazy"

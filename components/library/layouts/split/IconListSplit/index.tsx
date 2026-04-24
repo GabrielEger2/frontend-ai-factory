@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@lib/utils";
 import { containerVariants, fadeUp, imageReveal } from "@lib/motion-variants";
 import type { StyleKit } from "@lib/style-kit";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -56,6 +57,33 @@ function AccentUnderline() {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Logo image (private, calls hook per item)                          */
+/* ------------------------------------------------------------------ */
+
+interface LogoImageProps {
+  logo: LogoItem;
+  index: number;
+}
+
+function LogoImage({ logo, index }: LogoImageProps) {
+  const safeImg = useSafeImageSrc(
+    logo.image,
+    `layout-iconlistsplit-01-logo-image-${index}`,
+    140,
+    32,
+  );
+  return (
+    <img
+      src={safeImg.src}
+      onError={safeImg.onError}
+      alt={logo.imageAlt}
+      className="h-8 max-w-[140px] object-contain opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0"
+      loading="lazy"
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -76,6 +104,12 @@ export default function IconListSplit({
   className,
 }: IconListSplitProps) {
   const shouldReduceMotion = useReducedMotion();
+  const safeMainImg = useSafeImageSrc(
+    image,
+    "layout-iconlistsplit-01-image",
+    600,
+    544,
+  );
 
   return (
     <section
@@ -133,7 +167,8 @@ export default function IconListSplit({
               viewport={{ once: true, margin: "-100px" }}
             >
               <img
-                src={image}
+                src={safeMainImg.src}
+                onError={safeMainImg.onError}
                 alt={imageAlt ?? ""}
                 className="h-[28rem] w-[28rem] rounded-full object-cover xl:h-[34rem] xl:w-[34rem]"
                 loading="lazy"
@@ -159,12 +194,7 @@ export default function IconListSplit({
                   variants={fadeUp}
                   className="flex items-center justify-center"
                 >
-                  <img
-                    src={logo.image}
-                    alt={logo.imageAlt}
-                    className="h-8 max-w-[140px] object-contain opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0"
-                    loading="lazy"
-                  />
+                  <LogoImage logo={logo} index={i} />
                 </motion.div>
               ))}
             </motion.div>
