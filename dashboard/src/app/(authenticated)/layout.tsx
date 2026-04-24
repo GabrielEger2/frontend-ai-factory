@@ -1,4 +1,4 @@
-import { Sidebar } from "@/components/nav/Sidebar";
+import { SidebarSwitcher } from "@/components/nav/SidebarSwitcher";
 
 export default function AuthenticatedLayout({
   children,
@@ -7,7 +7,7 @@ export default function AuthenticatedLayout({
 }) {
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar />
+      <SidebarSwitcher />
       <main className="flex-1 overflow-y-auto p-6 bg-white">{children}</main>
     </div>
   );
