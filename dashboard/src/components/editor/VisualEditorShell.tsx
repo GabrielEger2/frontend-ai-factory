@@ -23,10 +23,9 @@ interface VisualEditorShellProps {
 const PATCH_DEBOUNCE_MS = 400;
 
 /**
- * Three-panel visual editor shell:
- *   - Left:   SectionList + Deploy button
+ * Two-panel visual editor shell:
+ *   - Left:   tabbed panel — Sections (list + deploy) | Style | Content
  *   - Center: viewport toggle + BlueprintPreview
- *   - Right:  PaletteSwitcher (+ InlineCopyEditor when a section is selected)
  *
  * Edits mutate a local `draft` copy and schedule a debounced patchDraft
  * call. Non-typing edits (reorder, swap, palette preset, variant change,
@@ -44,6 +43,9 @@ export function VisualEditorShell({
   const [viewport, setViewport] = useState<Viewport>(1280);
   const [activePicker, setActivePicker] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"sections" | "style" | "content">(
+    "sections",
+  );
   const [status, setStatus] = useState<
     | { type: "idle" }
     | { type: "saving" }
@@ -211,29 +213,102 @@ export function VisualEditorShell({
 
   return (
     <div className="flex h-full min-h-[80vh] gap-4">
-      {/* Left panel */}
-      <aside className="flex w-72 shrink-0 flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-slate-800">Sections</h2>
-          <StatusLabel status={status} />
+      {/* Left panel — tabbed */}
+      <aside className="flex w-80 shrink-0 flex-col gap-0 overflow-hidden rounded-lg border border-slate-200 bg-white">
+        {/* Tab buttons */}
+        <div className="flex shrink-0 border-b border-slate-200">
+          <button
+            type="button"
+            onClick={() => setActiveTab("sections")}
+            className={
+              "flex-1 py-2 text-xs font-medium transition-colors " +
+              (activeTab === "sections"
+                ? "bg-slate-900 text-white"
+                : "text-slate-600 hover:bg-slate-50")
+            }
+          >
+            Sections
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("style")}
+            className={
+              "flex-1 py-2 text-xs font-medium transition-colors " +
+              (activeTab === "style"
+                ? "bg-slate-900 text-white"
+                : "text-slate-600 hover:bg-slate-50")
+            }
+          >
+            Style
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (selectedId) setActiveTab("content");
+            }}
+            className={
+              "flex-1 py-2 text-xs font-medium transition-colors " +
+              (activeTab === "content"
+                ? "bg-slate-900 text-white"
+                : "text-slate-600 hover:bg-slate-50") +
+              (selectedId === null
+                ? " opacity-50 cursor-not-allowed pointer-events-none"
+                : "")
+            }
+          >
+            Content
+          </button>
         </div>
-        <SectionList
-          components={draft.blueprint.components}
-          variantSelections={draft.blueprint.variantSelections ?? {}}
-          onReorder={handleReorder}
-          onSwapRequest={(id) => setActivePicker(id)}
-          onVariantChange={handleVariantChange}
-          onSelect={(id) => setSelectedId(id)}
-          selectedId={selectedId}
-        />
-        <button
-          type="button"
-          onClick={handleDeploy}
-          disabled={isDeploying}
-          className="mt-2 rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {isDeploying ? "Deploying..." : "Deploy"}
-        </button>
+
+        {/* Tab body — overflow-y-auto so dnd-kit drag ghosts don't clip */}
+        <div className="flex-1 overflow-y-auto p-3">
+          {activeTab === "sections" && (
+            <>
+              <div className="mb-2 flex items-center justify-between">
+                <h2 className="text-sm font-semibold text-slate-800">
+                  Sections
+                </h2>
+                <StatusLabel status={status} />
+              </div>
+              <SectionList
+                components={draft.blueprint.components}
+                variantSelections={draft.blueprint.variantSelections ?? {}}
+                onReorder={handleReorder}
+                onSwapRequest={(id) => setActivePicker(id)}
+                onVariantChange={handleVariantChange}
+                onSelect={(id) => {
+                  setSelectedId(id);
+                  setActiveTab("content");
+                }}
+                selectedId={selectedId}
+              />
+              <button
+                type="button"
+                onClick={handleDeploy}
+                disabled={isDeploying}
+                className="mt-3 w-full rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {isDeploying ? "Deploying..." : "Deploy"}
+              </button>
+            </>
+          )}
+          {activeTab === "style" && (
+            <PaletteSwitcher
+              palette={draft.palette}
+              typography={draft.typography}
+              density={draft.density}
+              paletteSuggestions={paletteSuggestions}
+              onChange={handleStyleChange}
+            />
+          )}
+          {activeTab === "content" && selectedId && selectedSlots && (
+            <InlineCopyEditor
+              componentId={selectedId}
+              slots={selectedSlots}
+              onSlotsChange={handleSlotsChange}
+            />
+          )}
+        </div>
       </aside>
 
       {/* Center panel */}
@@ -259,24 +334,6 @@ export function VisualEditorShell({
           <BlueprintPreview draft={draft} viewportWidth={viewport} />
         </div>
       </section>
-
-      {/* Right panel */}
-      <aside className="flex w-80 shrink-0 flex-col gap-4">
-        <PaletteSwitcher
-          palette={draft.palette}
-          typography={draft.typography}
-          density={draft.density}
-          paletteSuggestions={paletteSuggestions}
-          onChange={handleStyleChange}
-        />
-        {selectedId && selectedSlots && (
-          <InlineCopyEditor
-            componentId={selectedId}
-            slots={selectedSlots}
-            onSlotsChange={handleSlotsChange}
-          />
-        )}
-      </aside>
 
       {activePicker && (
         <ComponentPicker
