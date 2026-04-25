@@ -50,6 +50,7 @@ export const handler: SQSHandler = async (event) => {
             segment: brief.segment,
             companyName: brief.companyName,
             description: brief.description,
+            brandColor: brief.brandColor,
             status: "queued",
           }),
         }),
