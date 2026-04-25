@@ -13,6 +13,7 @@ interface StepCardProps {
   stepName: string;
   projectId: string;
   state: "completed" | "current" | "pending";
+  retriable?: boolean;
   children?: React.ReactNode;
 }
 
@@ -22,6 +23,7 @@ export function StepCard({
   stepName,
   projectId,
   state,
+  retriable = false,
   children,
 }: StepCardProps) {
   const [isPending, startTransition] = useTransition();
@@ -88,7 +90,7 @@ export function StepCard({
         )}
 
         {/* Right-aligned section: retry message + retry button */}
-        {state === "completed" && (
+        {state === "completed" && retriable && (
           <div className="ml-auto flex items-center gap-2">
             {retryMessage && (
               <span

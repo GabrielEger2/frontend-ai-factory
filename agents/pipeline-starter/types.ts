@@ -23,6 +23,11 @@ export const ProjectBriefSchema = z.object({
   socialLinks: z
     .array(z.object({ platform: z.string(), url: z.string() }))
     .optional(),
+  // Optional override for the SFN execution name. Used by restart-pipeline
+  // to start a fresh execution on a previously-failed project (the original
+  // execution name is the projectId, which would collide). When omitted,
+  // pipeline-starter defaults to projectId.
+  executionName: z.string().optional(),
 });
 
 export type ProjectBrief = z.infer<typeof ProjectBriefSchema>;

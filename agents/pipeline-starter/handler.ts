@@ -43,7 +43,7 @@ export const handler: SQSHandler = async (event) => {
       await sfn.send(
         new StartExecutionCommand({
           stateMachineArn,
-          name: brief.projectId,
+          name: brief.executionName ?? brief.projectId,
           // IMPORTANT: every field referenced by a JsonPath in the SFN payload
           // blocks (e.g. styleStep, composerStep) MUST exist in this input
           // object — `?? null` defaults guarantee no JsonPath runtime error

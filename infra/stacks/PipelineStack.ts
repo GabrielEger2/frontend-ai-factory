@@ -370,7 +370,6 @@ export class PipelineStack extends Stack {
         "researchOutput.$": "$.researchOutput",
         "styleOutput.$": "$.styleOutput",
         "desiredSections.$": "$.desiredSections",
-        "excludedSections.$": "$.excludedSections",
         "brandToneKeywords.$": "$.brandToneKeywords",
         "objectives.$": "$.objectives",
         taskToken: sfn.JsonPath.taskToken,
