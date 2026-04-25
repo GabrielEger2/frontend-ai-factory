@@ -115,6 +115,12 @@ export interface Palette {
   primaryDark: string;
 }
 
+export interface PaletteModes {
+  single: Palette;
+  dual: Palette;
+  monochromatic: Palette;
+}
+
 export interface Typography {
   heading: string;
   body: string;
@@ -122,6 +128,8 @@ export interface Typography {
 
 export interface StyleOutput {
   palette: Palette;
+  paletteMode: "single" | "dual" | "monochromatic";
+  paletteModes: PaletteModes;
   typography: Typography;
   mood: Array<
     | "professional"
@@ -194,4 +202,5 @@ export interface CreateProjectInput {
   companyName: string;
   segment: string;
   description: string;
+  brandColor?: string;
 }
