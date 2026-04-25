@@ -48,6 +48,9 @@ export interface ApiStackProps extends StackProps {
  *   GET  /projects  — list project summaries
  *   GET  /projects/{id} — read project status
  *   POST /projects/{id}/approve-style — approve style and resume pipeline
+ *   POST /projects/{id}/approve-layout — approve layout and resume pipeline
+ *   POST /projects/{id}/regenerate-layout — re-run Composer at layout gate
+ *   POST /projects/{id}/swap-component — swap one component in selected layout
  */
 export class ApiStack extends Stack {
   /** The REST API — exposed for cross-stack wiring (e.g. dashboard config). */
@@ -340,6 +343,106 @@ export class ApiStack extends Stack {
       new iam.PolicyStatement({
         actions: ["states:SendTaskSuccess", "states:SendTaskFailure"],
         resources: [props.stateMachineArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  POST /projects/{id}/approve-layout Lambda                      */
+    /* -------------------------------------------------------------- */
+
+    const approveLayoutFn = new NodejsFunction(this, "ApproveLayoutFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(__dirname, "../../agents/api/approve-layout/handler.ts"),
+      handler: "handler",
+      functionName: "sitegen-approve-layout",
+      description: "SiteGen POST /projects/{id}/approve-layout",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        STATE_MACHINE_ARN: props.stateMachineArn,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    approveLayoutFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem", "dynamodb:UpdateItem"],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    approveLayoutFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["states:SendTaskSuccess", "states:SendTaskFailure"],
+        resources: [props.stateMachineArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  POST /projects/{id}/regenerate-layout Lambda                   */
+    /* -------------------------------------------------------------- */
+
+    const regenerateLayoutFn = new NodejsFunction(this, "RegenerateLayoutFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(
+        __dirname,
+        "../../agents/api/regenerate-layout/handler.ts",
+      ),
+      handler: "handler",
+      functionName: "sitegen-regenerate-layout",
+      description: "SiteGen POST /projects/{id}/regenerate-layout",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    regenerateLayoutFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem"],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    // Tighter than retry-step's `sitegen-*` wildcard: this handler only ever
+    // re-invokes the Composer Lambda, so scope is the exact function ARN.
+    regenerateLayoutFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["lambda:InvokeFunction"],
+        resources: [
+          `arn:aws:lambda:${Stack.of(this).region}:${Stack.of(this).account}:function:sitegen-composer`,
+        ],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  POST /projects/{id}/swap-component Lambda                      */
+    /* -------------------------------------------------------------- */
+
+    const swapComponentFn = new NodejsFunction(this, "SwapComponentFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(__dirname, "../../agents/api/swap-component/handler.ts"),
+      handler: "handler",
+      functionName: "sitegen-swap-component",
+      description: "SiteGen POST /projects/{id}/swap-component",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    swapComponentFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem", "dynamodb:UpdateItem"],
+        resources: [props.projectsTableArn],
       }),
     );
 
@@ -738,6 +841,31 @@ export class ApiStack extends Stack {
     approveStyleResource.addMethod(
       "POST",
       new LambdaIntegration(approveStyleFn),
+      { apiKeyRequired: true },
+    );
+
+    // POST /projects/{id}/approve-layout
+    const approveLayoutResource = projectById.addResource("approve-layout");
+    approveLayoutResource.addMethod(
+      "POST",
+      new LambdaIntegration(approveLayoutFn),
+      { apiKeyRequired: true },
+    );
+
+    // POST /projects/{id}/regenerate-layout
+    const regenerateLayoutResource =
+      projectById.addResource("regenerate-layout");
+    regenerateLayoutResource.addMethod(
+      "POST",
+      new LambdaIntegration(regenerateLayoutFn),
+      { apiKeyRequired: true },
+    );
+
+    // POST /projects/{id}/swap-component
+    const swapComponentResource = projectById.addResource("swap-component");
+    swapComponentResource.addMethod(
+      "POST",
+      new LambdaIntegration(swapComponentFn),
       { apiKeyRequired: true },
     );
 
