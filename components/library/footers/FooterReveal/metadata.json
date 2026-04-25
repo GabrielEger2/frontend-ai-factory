@@ -28,6 +28,7 @@
     { "name": "emailText", "type": "text", "maxLength": 60 },
     { "name": "addressText", "type": "text", "maxLength": 120 },
     { "name": "addressMapsUrl", "type": "url", "optional": true },
+    { "name": "hoursText", "type": "text", "maxLength": 60, "optional": true },
     {
       "name": "navColumns",
       "type": "list",
