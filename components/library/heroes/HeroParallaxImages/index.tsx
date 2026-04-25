@@ -51,11 +51,36 @@ export interface HeroParallaxImagesProps {
   centerImage?: string;
   centerImageAlt: string;
   /** Floating parallax images scattered around the center image */
-  parallaxImages: ParallaxImage[];
+  parallaxImages?: ParallaxImage[];
   /** Height of the scroll section in px — controls how long the parallax effect lasts. Defaults to 1500 */
   scrollHeight?: number;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_PARALLAX_IMAGES: ParallaxImage[] = [
+  {
+    src: "https://picsum.photos/seed/heroparallax-img-0/360/480",
+    alt: "Designer reviewing wireframes on a tablet",
+    widthClass: "w-1/3",
+    alignClass: "ml-auto",
+  },
+  {
+    src: "https://picsum.photos/seed/heroparallax-img-1/280/360",
+    alt: "Developer pair-programming on a laptop",
+    widthClass: "w-1/4",
+    alignClass: "mr-auto",
+  },
+  {
+    src: "https://picsum.photos/seed/heroparallax-img-2/440/520",
+    alt: "Team collaborating in a sunlit studio",
+    widthClass: "w-2/5",
+    alignClass: "ml-16",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -232,7 +257,7 @@ export default function HeroParallaxImages({
   secondaryCtaColorScheme = "primary",
   centerImage,
   centerImageAlt,
-  parallaxImages,
+  parallaxImages = DEFAULT_PARALLAX_IMAGES,
   scrollHeight = DEFAULT_SCROLL_HEIGHT,
   className,
 }: HeroParallaxImagesProps) {

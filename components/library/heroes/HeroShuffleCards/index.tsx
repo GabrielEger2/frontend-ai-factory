@@ -24,7 +24,7 @@ export interface HeroShuffleCardsProps {
   emailPlaceholder?: string;
   /** Callback when the email form is submitted */
   onEmailSubmit?: (email: string) => void;
-  cards: Array<{
+  cards?: Array<{
     image: string;
     imageAlt: string;
     quote: string;
@@ -34,6 +34,35 @@ export interface HeroShuffleCardsProps {
 }
 
 type CardPosition = "front" | "middle" | "back";
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_HERO_SHUFFLE_CARDS: NonNullable<HeroShuffleCardsProps["cards"]> =
+  [
+    {
+      image: "https://picsum.photos/seed/heroshufflecards-card-0/350/450",
+      imageAlt: "Sarah Chen",
+      quote:
+        "Felt like the team had been with us for years. Three weeks in and the redesign was already paying for itself.",
+      author: "Sarah Chen — Head of Growth at Acme",
+    },
+    {
+      image: "https://picsum.photos/seed/heroshufflecards-card-1/350/450",
+      imageAlt: "Marcus Rivera",
+      quote:
+        "Genuinely the smoothest engagement we've run. Clear deliverables and results that held up under load.",
+      author: "Marcus Rivera — Founder at BuildFast",
+    },
+    {
+      image: "https://picsum.photos/seed/heroshufflecards-card-2/350/450",
+      imageAlt: "Priya Natarajan",
+      quote:
+        "We doubled the pipeline in a quarter. I've recommended them to four other founders since.",
+      author: "Priya Natarajan — VP Product at Lumen",
+    },
+  ];
 
 /* ------------------------------------------------------------------ */
 /*  Card sub-component                                                 */
@@ -134,7 +163,7 @@ export default function HeroShuffleCards({
   ctaStyle = "default",
   emailPlaceholder,
   onEmailSubmit,
-  cards,
+  cards = DEFAULT_HERO_SHUFFLE_CARDS,
   className,
 }: HeroShuffleCardsProps) {
   const [order, setOrder] = useState<CardPosition[]>([
