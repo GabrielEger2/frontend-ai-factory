@@ -19,6 +19,7 @@ export const STATUS_LABELS: Record<ProjectStatus, string> = {
   deployed: "Deployed",
   failed: "Failed",
   qa_failed: "QA Failed",
+  deploy_failed: "Deploy Failed",
 };
 
 type BadgeMapping = {
@@ -90,6 +91,7 @@ const STATUS_BADGE_MAP: Record<ProjectStatus, BadgeMapping> = {
   },
   failed: { variant: "destructive" },
   qa_failed: { variant: "destructive" },
+  deploy_failed: { variant: "destructive" },
 };
 
 interface StatusBadgeProps {
