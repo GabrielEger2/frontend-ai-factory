@@ -19,7 +19,8 @@ export function StatusPoller({ projectId, initialStatus }: StatusPollerProps) {
       status === "ready_for_review" ||
       status === "deployed" ||
       status === "failed" ||
-      status === "qa_failed"
+      status === "qa_failed" ||
+      status === "deploy_failed"
     ) {
       return;
     }
@@ -37,7 +38,8 @@ export function StatusPoller({ projectId, initialStatus }: StatusPollerProps) {
         (project.status === "ready_for_review" ||
           project.status === "deployed" ||
           project.status === "failed" ||
-          project.status === "qa_failed")
+          project.status === "qa_failed" ||
+          project.status === "deploy_failed")
       ) {
         clearInterval(interval);
       }
