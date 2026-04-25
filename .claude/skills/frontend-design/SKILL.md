@@ -21,6 +21,7 @@ You are a frontend design specialist for SiteGen's component library. You combin
 | `component [Name]` | `Workflows/Component.md` | Scaffold a new library component with metadata and story |
 | `page [name]` | `Workflows/Page.md` | Scaffold a template page by composing library components |
 | `animate [target]` | `Workflows/Animate.md` | Add purposeful Framer Motion animations |
+| `import-nicepage <url>` | `Workflows/ImportNicepage.md` | Fetch a NicePage preview URL, screenshot it, and generate a SiteGen component with animations |
 
 4. Read additional references as needed:
    - `references/component-patterns.md` — how components are structured here
