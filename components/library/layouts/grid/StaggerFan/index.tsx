@@ -17,7 +17,7 @@ type InternalTestimonial = TestimonialItem & { _key: number };
 
 export interface StaggerFanProps {
   /** List of testimonials — displayed as a fan of overlapping cards */
-  testimonials: TestimonialItem[];
+  testimonials?: TestimonialItem[];
   /** Height of the section in pixels. Defaults to 600 */
   sectionHeight?: number;
   /** Card size on large screens in pixels. Defaults to 365 */
@@ -30,6 +30,53 @@ export interface StaggerFanProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_STAGGER_TESTIMONIALS: TestimonialItem[] = [
+  {
+    image: "https://picsum.photos/seed/staggerfan-testimonial-0/80/80",
+    imageAlt: "Sarah Chen",
+    name: "Sarah Chen",
+    title: "Head of Growth at Acme",
+    quote:
+      "We doubled our pipeline in the first quarter. The team was responsive, sharp, and frankly a delight to work with.",
+  },
+  {
+    image: "https://picsum.photos/seed/staggerfan-testimonial-1/80/80",
+    imageAlt: "Marcus Rivera",
+    name: "Marcus Rivera",
+    title: "Founder at BuildFast",
+    quote:
+      "I've worked with a dozen agencies. None of them shipped this quickly without dropping quality. Genuinely impressed.",
+  },
+  {
+    image: "https://picsum.photos/seed/staggerfan-testimonial-2/80/80",
+    imageAlt: "Priya Natarajan",
+    name: "Priya Natarajan",
+    title: "VP Product at Lumen",
+    quote:
+      "The clarity of communication alone was worth the price. We knew where things stood every single week.",
+  },
+  {
+    image: "https://picsum.photos/seed/staggerfan-testimonial-3/80/80",
+    imageAlt: "David Okafor",
+    name: "David Okafor",
+    title: "CTO at Northwind Labs",
+    quote:
+      "Our conversion rate jumped 38% within six weeks. The redesign paid for itself before the next billing cycle.",
+  },
+  {
+    image: "https://picsum.photos/seed/staggerfan-testimonial-4/80/80",
+    imageAlt: "Elena Martinez",
+    name: "Elena Martinez",
+    title: "Marketing Director at Pixelworks",
+    quote:
+      "They didn't just build us a website — they gave us a system we can keep iterating on for years.",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -160,7 +207,7 @@ function ArrowIcon({ direction }: { direction: "left" | "right" }) {
  * Navigate with left/right arrow buttons or click any card to center it.
  */
 export default function StaggerFan({
-  testimonials: testimonialsProp,
+  testimonials: testimonialsProp = DEFAULT_STAGGER_TESTIMONIALS,
   sectionHeight = 600,
   cardSizeLg = 365,
   cardSizeSm = 290,

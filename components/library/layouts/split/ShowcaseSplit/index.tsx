@@ -28,13 +28,44 @@ export interface ShowcaseSplitProps {
   /** Section headline */
   headline: string;
   /** List of showcase items */
-  testimonials: ShowcaseItem[];
+  testimonials?: ShowcaseItem[];
   /** Site-wide style configuration -- accepted for API consistency */
   styleKit?: StyleKit;
   /** Informational purpose tag for the section */
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_SHOWCASE_ITEMS: ShowcaseItem[] = [
+  {
+    image: "https://picsum.photos/seed/showcasesplit-item-0/416/576",
+    imageAlt: "Sarah Chen",
+    name: "Sarah Chen",
+    title: "Head of Growth at Acme",
+    quote:
+      "We doubled our pipeline in the first quarter. The team was responsive, sharp, and frankly a delight to work with.",
+  },
+  {
+    image: "https://picsum.photos/seed/showcasesplit-item-1/416/576",
+    imageAlt: "Marcus Rivera",
+    name: "Marcus Rivera",
+    title: "Founder at BuildFast",
+    quote:
+      "I've worked with a dozen agencies. None shipped this quickly without dropping quality. Genuinely impressed.",
+  },
+  {
+    image: "https://picsum.photos/seed/showcasesplit-item-2/416/576",
+    imageAlt: "Priya Natarajan",
+    name: "Priya Natarajan",
+    title: "VP Product at Lumen",
+    quote:
+      "The clarity of communication alone was worth the price. We knew where things stood every single week.",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Animation variants                                                 */
@@ -115,7 +146,7 @@ function NavArrow({
 export default function ShowcaseSplit({
   label,
   headline,
-  testimonials,
+  testimonials = DEFAULT_SHOWCASE_ITEMS,
   styleKit,
   purpose,
   className,
@@ -133,6 +164,8 @@ export default function ShowcaseSplit({
     },
     [testimonials.length],
   );
+
+  if (!testimonials.length) return null;
 
   const current = testimonials[activeIndex];
   const safeImg = useSafeImageSrc(
