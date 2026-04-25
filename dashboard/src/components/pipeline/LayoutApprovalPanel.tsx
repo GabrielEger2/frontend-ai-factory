@@ -7,8 +7,10 @@ import { ComponentPicker } from "@/components/editor/ComponentPicker";
 import { approveLayout } from "@/lib/actions/approve-layout";
 import { regenerateLayout } from "@/lib/actions/regenerate-layout";
 import { swapComponent } from "@/lib/actions/swap-component";
+import { computeContentGaps } from "@/lib/gap-detection";
 import type {
   ComposerOutput,
+  ProjectDetail,
   StyleOutput,
   WorkingDraft,
 } from "@/types/project";
@@ -29,12 +31,17 @@ interface LayoutApprovalPanelProps {
   projectId: string;
   initialComposerOutput: ComposerOutput;
   styleOutput: StyleOutput;
+  buyerFields: Pick<
+    ProjectDetail,
+    "phone" | "email" | "address" | "businessHours" | "socialLinks"
+  >;
 }
 
 export function LayoutApprovalPanel({
   projectId,
   initialComposerOutput,
   styleOutput,
+  buyerFields,
 }: LayoutApprovalPanelProps) {
   const [composerOutput, setComposerOutput] = useState<ComposerOutput>(
     initialComposerOutput,
@@ -65,6 +72,11 @@ export function LayoutApprovalPanel({
   );
 
   const sectionIds = draft.blueprint?.components ?? [];
+
+  const contentGaps = useMemo(
+    () => computeContentGaps(sectionIds, buyerFields),
+    [sectionIds, buyerFields],
+  );
 
   function getNeighbors(targetId: string): string[] {
     const idx = sectionIds.indexOf(targetId);
@@ -191,6 +203,29 @@ export function LayoutApprovalPanel({
           <BlueprintPreview draft={draft} interactive={false} />
         </div>
       </div>
+
+      {contentGaps.length > 0 && (
+        <div className="rounded-md border border-amber-200 bg-amber-50 p-4">
+          <p className="text-sm font-medium text-amber-900 mb-2">
+            Missing contact info — slots will use AI-generated defaults
+          </p>
+          <ul className="flex flex-col gap-1">
+            {contentGaps.map((gap, i) => (
+              <li key={i} className="text-xs text-amber-800">
+                <span className="font-mono">{gap.componentId}</span>
+                {" · "}
+                <span className="font-mono">{gap.slotName}</span>
+                {" — fill "}
+                <span className="font-medium">{gap.missingField}</span>
+                {" in project settings to populate this slot"}
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs text-amber-700 mt-2">
+            Informational only — you can approve the layout as-is.
+          </p>
+        </div>
+      )}
 
       {/* Feedback + action buttons */}
       <div className="flex flex-col gap-3">
