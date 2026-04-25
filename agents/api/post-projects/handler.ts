@@ -17,6 +17,10 @@ const CreateProjectSchema = z.object({
   companyName: z.string().min(1),
   segment: z.enum(SUPPORTED_SEGMENTS as [string, ...string[]]),
   description: z.string().min(1),
+  brandColor: z
+    .string()
+    .regex(/^#[0-9a-fA-F]{6}$/)
+    .optional(),
 });
 
 /**
@@ -60,6 +64,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
           companyName: input.companyName,
           segment: input.segment,
           description: input.description,
+          brandColor: input.brandColor,
           status: "queued",
           createdAt: now,
           updatedAt: now,
@@ -77,6 +82,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
           companyName: input.companyName,
           segment: input.segment,
           description: input.description,
+          brandColor: input.brandColor,
         }),
       }),
     );
