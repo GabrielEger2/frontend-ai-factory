@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { createProject } from "@/lib/actions/create-project";
 import { SUPPORTED_SEGMENTS, SEGMENT_LABELS } from "@/types/project";
 
+const HEX_RE = /^#?[0-9a-fA-F]{6}$/;
+
 export default function NewProjectPage() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -12,13 +14,37 @@ export default function NewProjectPage() {
   const [segment, setSegment] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [hasBrandColor, setHasBrandColor] = useState(false);
+  const [brandColor, setBrandColor] = useState("#000000");
+  const [brandColorHexInput, setBrandColorHexInput] = useState("#000000");
+  const [brandColorError, setBrandColorError] = useState<string | null>(null);
+
+  function handleHexInput(raw: string) {
+    setBrandColorHexInput(raw);
+    if (HEX_RE.test(raw)) {
+      const normalized = (raw.startsWith("#") ? raw : `#${raw}`).toUpperCase();
+      setBrandColor(normalized);
+      setBrandColorError(null);
+    } else {
+      setBrandColorError("Enter a 6-digit hex color (e.g. #1A2B3C).");
+    }
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
 
+    if (hasBrandColor && brandColorError) {
+      return;
+    }
+
     startTransition(async () => {
-      const result = await createProject({ companyName, segment, description });
+      const result = await createProject({
+        companyName,
+        segment,
+        description,
+        brandColor: hasBrandColor ? brandColor : undefined,
+      });
 
       if ("projectId" in result) {
         router.push(`/projects/${result.projectId}`);
@@ -94,6 +120,73 @@ export default function NewProjectPage() {
             placeholder="Describe the company, its services, target audience..."
             className={inputClasses}
           />
+        </div>
+
+        <div>
+          <fieldset className="flex flex-col gap-2">
+            <legend className="block text-sm font-medium text-slate-700 mb-1">
+              Does the company have a brand color?
+            </legend>
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                <input
+                  type="radio"
+                  name="hasBrandColor"
+                  value="no"
+                  checked={!hasBrandColor}
+                  onChange={() => {
+                    setHasBrandColor(false);
+                    setBrandColorError(null);
+                  }}
+                  className="accent-slate-900"
+                />
+                No
+              </label>
+              <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                <input
+                  type="radio"
+                  name="hasBrandColor"
+                  value="yes"
+                  checked={hasBrandColor}
+                  onChange={() => setHasBrandColor(true)}
+                  className="accent-slate-900"
+                />
+                Yes
+              </label>
+            </div>
+          </fieldset>
+
+          {hasBrandColor && (
+            <div className="mt-3 flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <input
+                  type="color"
+                  aria-label="Brand color picker"
+                  value={brandColor}
+                  onChange={(e) => {
+                    const value = e.target.value.toUpperCase();
+                    setBrandColor(value);
+                    setBrandColorHexInput(value);
+                    setBrandColorError(null);
+                  }}
+                  className="h-9 w-12 cursor-pointer rounded border border-slate-300"
+                />
+                <input
+                  type="text"
+                  aria-label="Brand color hex value"
+                  value={brandColorHexInput}
+                  onChange={(e) => handleHexInput(e.target.value)}
+                  placeholder="#000000"
+                  className={inputClasses}
+                />
+              </div>
+              {brandColorError && (
+                <p className="text-xs text-red-600" role="alert">
+                  {brandColorError}
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         {error && (
