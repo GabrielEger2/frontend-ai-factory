@@ -254,7 +254,6 @@ export interface ProjectDetail {
   currentVersionNumber: number | null;
   layoutApprovalTaskToken?: string;
   desiredSections?: string[];
-  excludedSections?: string[];
   brandToneKeywords?: string[];
   objectives?: string[];
   businessHours?: string;
@@ -270,7 +269,6 @@ export interface CreateProjectInput {
   description: string;
   brandColor?: string;
   desiredSections?: string[];
-  excludedSections?: string[];
   brandToneKeywords?: string[];
   objectives?: string[];
   businessHours?: string;

@@ -278,7 +278,6 @@ export default function NewProjectPage() {
 
   // Site sections
   const [desiredSections, setDesiredSections] = useState<string[]>([]);
-  const [excludedSections, setExcludedSections] = useState<string[]>([]);
   const [sectionsError, setSectionsError] = useState<string | null>(null);
 
   // Contact info — structured
@@ -329,15 +328,6 @@ export default function NewProjectPage() {
     );
   }
 
-  function toggleExcluded(category: string) {
-    setSectionsError(null);
-    setExcludedSections((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category],
-    );
-  }
-
   function updateAddress<K extends keyof AddressInput>(key: K, value: string) {
     setAddress((prev) => ({ ...prev, [key]: value }));
     if (key === "zip") setZipError(null);
@@ -382,15 +372,6 @@ export default function NewProjectPage() {
     setSectionsError(null);
 
     if (hasBrandColor && brandColorError) return;
-
-    // Validate that no category appears in both include & exclude lists.
-    const overlap = desiredSections.filter((c) => excludedSections.includes(c));
-    if (overlap.length > 0) {
-      setSectionsError(
-        `A section can't be included and excluded at the same time: ${overlap.join(", ")}`,
-      );
-      return;
-    }
 
     // Phone validation
     let phoneErr: string | null = null;
@@ -459,8 +440,6 @@ export default function NewProjectPage() {
         objectives: objectives.length > 0 ? objectives : undefined,
         desiredSections:
           desiredSections.length > 0 ? desiredSections : undefined,
-        excludedSections:
-          excludedSections.length > 0 ? excludedSections : undefined,
         businessHours: hoursString,
         address: addressString,
         phone: phoneTrim || undefined,
@@ -718,28 +697,6 @@ export default function NewProjectPage() {
                       type="button"
                       aria-pressed={selected}
                       onClick={() => toggleDesired(category)}
-                      className={pillClasses(selected)}
-                    >
-                      {formatCategoryLabel(category)}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div>
-              <p className="block text-sm font-medium text-slate-700 mb-2">
-                Sections to exclude
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {categories.map((category) => {
-                  const selected = excludedSections.includes(category);
-                  return (
-                    <button
-                      key={`excl-${category}`}
-                      type="button"
-                      aria-pressed={selected}
-                      onClick={() => toggleExcluded(category)}
                       className={pillClasses(selected)}
                     >
                       {formatCategoryLabel(category)}
