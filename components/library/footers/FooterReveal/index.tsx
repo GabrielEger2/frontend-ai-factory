@@ -72,11 +72,11 @@ export interface FooterRevealProps {
   /** Google Maps link for the address */
   addressMapsUrl?: string;
   /** Navigation columns (max 4) */
-  navColumns: FooterNavColumn[];
+  navColumns?: FooterNavColumn[];
   /** Social media links shown in the bottom bar */
-  socialLinks: FooterSocialLink[];
+  socialLinks?: FooterSocialLink[];
   /** Company name for copyright */
-  companyName: string;
+  companyName?: string;
   /** Optional CTA button label */
   ctaText?: string;
   /** CTA destination URL */
@@ -88,6 +88,37 @@ export interface FooterRevealProps {
   /** Extra classes on the root element */
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_NAV_COLUMNS: FooterNavColumn[] = [
+  {
+    title: "Product",
+    links: [
+      { text: "Features", href: "/features" },
+      { text: "Pricing", href: "/pricing" },
+      { text: "Integrations", href: "/integrations" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { text: "About", href: "/about" },
+      { text: "Careers", href: "/careers" },
+      { text: "Contact", href: "/contact" },
+    ],
+  },
+];
+
+const DEFAULT_SOCIAL_LINKS: FooterSocialLink[] = [
+  {
+    network: "instagram",
+    url: "https://instagram.com",
+    label: "Instagram",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -123,9 +154,9 @@ export default function FooterReveal({
   emailText,
   addressText,
   addressMapsUrl,
-  navColumns,
-  socialLinks,
-  companyName,
+  navColumns = DEFAULT_NAV_COLUMNS,
+  socialLinks = DEFAULT_SOCIAL_LINKS,
+  companyName = "Your Company",
   ctaText,
   ctaUrl,
   ctaStyle = "default",

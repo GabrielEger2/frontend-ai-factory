@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { approveStyle } from "@/lib/actions/approve-style";
+import { PalettePicker } from "@/components/ui/PalettePicker";
 import type { StyleOutput, Palette } from "@/types/project";
 
 const STYLE_TAGS = [
@@ -35,15 +36,6 @@ const FONT_OPTIONS = [
   "Montserrat",
   "Roboto",
   "Raleway",
-];
-
-const PALETTE_KEYS: { key: keyof Palette; label: string }[] = [
-  { key: "primary", label: "Primary" },
-  { key: "secondary", label: "Secondary" },
-  { key: "accent", label: "Accent" },
-  { key: "neutral", label: "Neutral" },
-  { key: "primaryLight", label: "Primary Light" },
-  { key: "primaryDark", label: "Primary Dark" },
 ];
 
 interface StyleApprovalPanelProps {
@@ -127,28 +119,10 @@ export function StyleApprovalPanel({
       {/* Palette Section */}
       <section className={sectionClasses}>
         <h3 className="text-sm font-semibold text-slate-800">Palette</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {PALETTE_KEYS.map(({ key, label }) => (
-            <div key={key} className="flex flex-col gap-1">
-              <label className={labelClasses}>{label}</label>
-              <div className="flex items-center gap-2">
-                <input
-                  type="color"
-                  value={style.palette[key]}
-                  onChange={(e) => updatePaletteColor(key, e.target.value)}
-                  className="h-9 w-12 cursor-pointer rounded border border-slate-300"
-                />
-                <input
-                  type="text"
-                  value={style.palette[key]}
-                  onChange={(e) => updatePaletteColor(key, e.target.value)}
-                  className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
-                  placeholder="#000000"
-                />
-              </div>
-            </div>
-          ))}
-        </div>
+        <PalettePicker
+          palette={style.palette}
+          onChange={(key, val) => updatePaletteColor(key, val)}
+        />
       </section>
 
       {/* Typography Section */}

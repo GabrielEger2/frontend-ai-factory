@@ -11,6 +11,7 @@ import {
 import { cn } from "@lib/utils";
 import type { StyleKit } from "@lib/style-kit";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -34,7 +35,7 @@ export interface StickyCardsProps {
   /** Optional section sub-headline for context */
   subheadline?: string;
   /** Feature cards — each becomes a full-viewport sticky section */
-  cards: FeatureCard[];
+  cards?: FeatureCard[];
   /** Site-wide style kit threaded by the Assembler */
   styleKit?: StyleKit;
   /** Height of each card section in px — controls scroll pacing. Defaults to 600 */
@@ -43,6 +44,34 @@ export interface StickyCardsProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_STICKY_CARDS: FeatureCard[] = [
+  {
+    title: "Define the problem worth solving",
+    description:
+      "Most teams skip this step and pay for it later. We start with a sharp written brief everyone in the room agrees with.",
+    ctaText: "Read the framework",
+    ctaUrl: "#",
+  },
+  {
+    title: "Prototype before you commit",
+    description:
+      "A clickable prototype, in front of real users, in under two weeks. The feedback rewrites the roadmap — every time.",
+    ctaText: "See an example",
+    ctaUrl: "#",
+  },
+  {
+    title: "Ship, measure, then ship again",
+    description:
+      "We instrument the launch from day one and meet weekly to decide what stays, what goes, and what gets doubled down on.",
+    ctaText: "Book a working session",
+    ctaUrl: "#",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -64,6 +93,7 @@ interface StickyCardProps {
   ctaStyle: CtaVariant;
   ctaColorScheme: ColorScheme;
   shouldReduceMotion: boolean | null;
+  index: number;
 }
 
 function StickyCard({
@@ -76,10 +106,17 @@ function StickyCard({
   ctaStyle,
   ctaColorScheme,
   shouldReduceMotion,
+  index,
 }: StickyCardProps) {
   const isLast = position === totalCards;
   const scaleFromPct = (position - 1) / totalCards;
   const y = useTransform(scrollYProgress, [scaleFromPct, 1], [0, -cardHeight]);
+  const safeImg = useSafeImageSrc(
+    card.image,
+    `layout-stickycards-01-card-image-${index}`,
+    400,
+    320,
+  );
 
   return (
     <motion.div
@@ -100,17 +137,16 @@ function StickyCard({
           card.image && "md:flex-row md:gap-12",
         )}
       >
-        {/* Image column — only when image is provided */}
-        {card.image && (
-          <div className="flex w-full shrink-0 justify-center md:w-2/5">
-            <img
-              src={card.image}
-              alt={card.imageAlt ?? ""}
-              className="max-h-64 w-auto rounded-lg object-cover md:max-h-80"
-              loading="lazy"
-            />
-          </div>
-        )}
+        {/* Image column */}
+        <div className="flex w-full shrink-0 justify-center md:w-2/5">
+          <img
+            src={safeImg.src}
+            onError={safeImg.onError}
+            alt={card.imageAlt ?? ""}
+            className="max-h-64 w-auto rounded-lg object-cover md:max-h-80"
+            loading="lazy"
+          />
+        </div>
 
         {/* Content column */}
         <div
@@ -195,7 +231,7 @@ function SectionHeader({
 export default function StickyCards({
   headline,
   subheadline,
-  cards,
+  cards = DEFAULT_STICKY_CARDS,
   styleKit,
   cardHeight = DEFAULT_CARD_HEIGHT,
   purpose,
@@ -235,6 +271,7 @@ export default function StickyCards({
             ctaStyle={ctaStyle}
             ctaColorScheme={ctaColorScheme}
             shouldReduceMotion={shouldReduceMotion}
+            index={idx}
           />
         ))}
       </div>

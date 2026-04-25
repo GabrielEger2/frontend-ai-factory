@@ -1,5 +1,5 @@
 import * as path from "path";
-import { Stack, StackProps } from "aws-cdk-lib";
+import { Duration, Stack, StackProps } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import {
   RestApi,
@@ -8,6 +8,7 @@ import {
   UsagePlan,
   LambdaIntegration,
 } from "aws-cdk-lib/aws-apigateway";
+import { Architecture, Runtime } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import * as iam from "aws-cdk-lib/aws-iam";
 import {
@@ -30,6 +31,9 @@ export interface ApiStackProps extends StackProps {
   readonly pipelineBucketName: string;
   readonly pipelineBucketArn: string;
   readonly stateMachineArn: string;
+  readonly shareTokensTableName: string;
+  readonly shareTokensTableArn: string;
+  readonly vercelTokenSsmPath: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -61,10 +65,20 @@ export class ApiStack extends Stack {
 
     this.restApi = new RestApi(this, "SitegenApi", {
       restApiName: "sitegen-api",
-      deployOptions: { stageName: "v1" },
+      deployOptions: {
+        stageName: "v1",
+        methodOptions: {
+          // Per-route throttle on the public feedback endpoint — mitigates
+          // abuse of the unauthenticated (token-validated) POST.
+          "/share/{token}/feedback/POST": {
+            throttlingRateLimit: 2,
+            throttlingBurstLimit: 5,
+          },
+        },
+      },
       defaultCorsPreflightOptions: {
         allowOrigins: Cors.ALL_ORIGINS,
-        allowMethods: ["GET", "POST", "PUT", "OPTIONS"],
+        allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
       },
     });
 
@@ -330,6 +344,379 @@ export class ApiStack extends Stack {
     );
 
     /* -------------------------------------------------------------- */
+    /*  PATCH /projects/{id}/draft Lambda                              */
+    /* -------------------------------------------------------------- */
+
+    const patchDraftFn = new NodejsFunction(this, "PatchDraftFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(__dirname, "../../agents/api/patch-draft/handler.ts"),
+      handler: "handler",
+      functionName: "sitegen-patch-draft",
+      description:
+        "SiteGen PATCH /projects/{id}/draft — patch workingDraft on project",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    patchDraftFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem", "dynamodb:UpdateItem"],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  POST /projects/{id}/init-draft Lambda                          */
+    /* -------------------------------------------------------------- */
+
+    const initializeDraftFn = new NodejsFunction(this, "InitializeDraftFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(
+        __dirname,
+        "../../agents/api/initialize-draft/handler.ts",
+      ),
+      handler: "handler",
+      functionName: "sitegen-initialize-draft",
+      description:
+        "SiteGen POST /projects/{id}/init-draft — bootstrap workingDraft from frozen outputs",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    initializeDraftFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem", "dynamodb:UpdateItem"],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  POST /projects/{id}/deploy Lambda                              */
+    /* -------------------------------------------------------------- */
+
+    // NOTE: deploy-draft does in-Lambda assembly + tar/gzip + Vercel deploy +
+    // polling + DDB writes. Needs 10 min timeout + 1024 MB memory — Vercel
+    // polling alone can take up to 7.5 min. Do NOT spread LAMBDA_DEFAULTS.
+    const deployDraftFn = new NodejsFunction(this, "DeployDraftFn", {
+      runtime: Runtime.NODEJS_20_X,
+      architecture: Architecture.ARM_64,
+      timeout: Duration.minutes(10),
+      memorySize: 1024,
+      entry: path.join(__dirname, "../../agents/api/deploy-draft/handler.ts"),
+      handler: "handler",
+      functionName: "sitegen-deploy-draft",
+      description:
+        "SiteGen POST /projects/{id}/deploy — assemble, upload, Vercel deploy, VERSION# snapshot",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        PIPELINE_BUCKET_NAME: props.pipelineBucketName,
+        VERCEL_TOKEN_SSM_PATH: props.vercelTokenSsmPath,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    deployDraftFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+        ],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    deployDraftFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["s3:GetObject", "s3:PutObject"],
+        resources: [`${props.pipelineBucketArn}/*`],
+      }),
+    );
+
+    deployDraftFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["ssm:GetParameter"],
+        resources: [
+          `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.vercelTokenSsmPath}`,
+        ],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  GET /projects/{id}/versions Lambda                             */
+    /* -------------------------------------------------------------- */
+
+    const listVersionsFn = new NodejsFunction(this, "ListVersionsFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(__dirname, "../../agents/api/list-versions/handler.ts"),
+      handler: "handler",
+      functionName: "sitegen-list-versions",
+      description:
+        "SiteGen GET /projects/{id}/versions — list version snapshots",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    listVersionsFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem", "dynamodb:Query"],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  GET /projects/{id}/versions/{v} Lambda                         */
+    /* -------------------------------------------------------------- */
+
+    const getVersionFn = new NodejsFunction(this, "GetVersionFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(__dirname, "../../agents/api/get-version/handler.ts"),
+      handler: "handler",
+      functionName: "sitegen-get-version",
+      description:
+        "SiteGen GET /projects/{id}/versions/{v} — fetch version snapshot",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    getVersionFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem"],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  POST /projects/{id}/versions/{v}/revert Lambda                 */
+    /* -------------------------------------------------------------- */
+
+    const revertVersionFn = new NodejsFunction(this, "RevertVersionFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(__dirname, "../../agents/api/revert-version/handler.ts"),
+      handler: "handler",
+      functionName: "sitegen-revert-version",
+      description:
+        "SiteGen POST /projects/{id}/versions/{v}/revert — load snapshot into workingDraft",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    revertVersionFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem", "dynamodb:UpdateItem"],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  POST /projects/{id}/share Lambda                               */
+    /* -------------------------------------------------------------- */
+
+    const createShareTokenFn = new NodejsFunction(this, "CreateShareTokenFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(
+        __dirname,
+        "../../agents/api/create-share-token/handler.ts",
+      ),
+      handler: "handler",
+      functionName: "sitegen-create-share-token",
+      description:
+        "SiteGen POST /projects/{id}/share — create a public share token",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        SHARE_TOKENS_TABLE_NAME: props.shareTokensTableName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    createShareTokenFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem", "dynamodb:PutItem"],
+        resources: [props.projectsTableArn, props.shareTokensTableArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  GET /projects/{id}/shares Lambda                               */
+    /* -------------------------------------------------------------- */
+
+    const listShareTokensFn = new NodejsFunction(this, "ListShareTokensFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(
+        __dirname,
+        "../../agents/api/list-share-tokens/handler.ts",
+      ),
+      handler: "handler",
+      functionName: "sitegen-list-share-tokens",
+      description:
+        "SiteGen GET /projects/{id}/shares — list share tokens for a project",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    listShareTokensFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem", "dynamodb:Query"],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  DELETE /projects/{id}/share/{tokenId} Lambda                   */
+    /* -------------------------------------------------------------- */
+
+    const revokeShareTokenFn = new NodejsFunction(this, "RevokeShareTokenFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(
+        __dirname,
+        "../../agents/api/revoke-share-token/handler.ts",
+      ),
+      handler: "handler",
+      functionName: "sitegen-revoke-share-token",
+      description:
+        "SiteGen DELETE /projects/{id}/share/{tokenId} — revoke share token",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        SHARE_TOKENS_TABLE_NAME: props.shareTokensTableName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    revokeShareTokenFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem", "dynamodb:UpdateItem"],
+        resources: [props.projectsTableArn, props.shareTokensTableArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  GET /projects/{id}/feedback Lambda                             */
+    /* -------------------------------------------------------------- */
+
+    const listFeedbackFn = new NodejsFunction(this, "ListFeedbackFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(__dirname, "../../agents/api/list-feedback/handler.ts"),
+      handler: "handler",
+      functionName: "sitegen-list-feedback",
+      description:
+        "SiteGen GET /projects/{id}/feedback — list client feedback items",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    listFeedbackFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem", "dynamodb:Query"],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  GET /share/{token} Lambda (PUBLIC — no ALLOWED_SELLER_IDS)     */
+    /* -------------------------------------------------------------- */
+
+    const getShareFn = new NodejsFunction(this, "GetShareFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(__dirname, "../../agents/api/get-share/handler.ts"),
+      handler: "handler",
+      functionName: "sitegen-get-share",
+      description:
+        "SiteGen GET /share/{token} — public share-link read (token + TTL validated)",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        SHARE_TOKENS_TABLE_NAME: props.shareTokensTableName,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    getShareFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem"],
+        resources: [props.projectsTableArn, props.shareTokensTableArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  POST /share/{token}/feedback Lambda (PUBLIC)                   */
+    /* -------------------------------------------------------------- */
+
+    const postFeedbackFn = new NodejsFunction(this, "PostFeedbackFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(__dirname, "../../agents/api/post-feedback/handler.ts"),
+      handler: "handler",
+      functionName: "sitegen-post-feedback",
+      description:
+        "SiteGen POST /share/{token}/feedback — public feedback submission",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        SHARE_TOKENS_TABLE_NAME: props.shareTokensTableName,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    postFeedbackFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:PutItem"],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    postFeedbackFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem"],
+        resources: [props.shareTokensTableArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
     /*  Routes                                                         */
     /* -------------------------------------------------------------- */
 
@@ -368,6 +755,78 @@ export class ApiStack extends Stack {
       apiKeyRequired: true,
     });
     filesResource.addMethod("PUT", new LambdaIntegration(putFilesFn), {
+      apiKeyRequired: true,
+    });
+
+    // PATCH /projects/{id}/draft
+    const draftResource = projectById.addResource("draft");
+    draftResource.addMethod("PATCH", new LambdaIntegration(patchDraftFn), {
+      apiKeyRequired: true,
+    });
+
+    // POST /projects/{id}/init-draft
+    const initDraftResource = projectById.addResource("init-draft");
+    initDraftResource.addMethod(
+      "POST",
+      new LambdaIntegration(initializeDraftFn),
+      { apiKeyRequired: true },
+    );
+
+    // POST /projects/{id}/deploy
+    const deployResource = projectById.addResource("deploy");
+    deployResource.addMethod("POST", new LambdaIntegration(deployDraftFn), {
+      apiKeyRequired: true,
+    });
+
+    // GET /projects/{id}/versions  and  GET /projects/{id}/versions/{v}
+    const versionsResource = projectById.addResource("versions");
+    versionsResource.addMethod("GET", new LambdaIntegration(listVersionsFn), {
+      apiKeyRequired: true,
+    });
+    const versionById = versionsResource.addResource("{v}");
+    versionById.addMethod("GET", new LambdaIntegration(getVersionFn), {
+      apiKeyRequired: true,
+    });
+
+    // POST /projects/{id}/versions/{v}/revert
+    const revertResource = versionById.addResource("revert");
+    revertResource.addMethod("POST", new LambdaIntegration(revertVersionFn), {
+      apiKeyRequired: true,
+    });
+
+    // POST /projects/{id}/share  and  DELETE /projects/{id}/share/{tokenId}
+    const shareMutResource = projectById.addResource("share");
+    shareMutResource.addMethod(
+      "POST",
+      new LambdaIntegration(createShareTokenFn),
+      { apiKeyRequired: true },
+    );
+    const shareById = shareMutResource.addResource("{tokenId}");
+    shareById.addMethod("DELETE", new LambdaIntegration(revokeShareTokenFn), {
+      apiKeyRequired: true,
+    });
+
+    // GET /projects/{id}/shares
+    const sharesResource = projectById.addResource("shares");
+    sharesResource.addMethod("GET", new LambdaIntegration(listShareTokensFn), {
+      apiKeyRequired: true,
+    });
+
+    // GET /projects/{id}/feedback
+    const feedbackResource = projectById.addResource("feedback");
+    feedbackResource.addMethod("GET", new LambdaIntegration(listFeedbackFn), {
+      apiKeyRequired: true,
+    });
+
+    // Public share routes — token-validated, no X-Seller-Id required.
+    // apiKeyRequired still true so random internet traffic is blocked.
+    const shareResource = this.restApi.root.addResource("share");
+    const shareByToken = shareResource.addResource("{token}");
+    shareByToken.addMethod("GET", new LambdaIntegration(getShareFn), {
+      apiKeyRequired: true,
+    });
+    const shareFeedback = shareByToken.addResource("feedback");
+    shareFeedback.addMethod("POST", new LambdaIntegration(postFeedbackFn), {
       apiKeyRequired: true,
     });
   }

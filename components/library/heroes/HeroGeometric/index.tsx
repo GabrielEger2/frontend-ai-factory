@@ -8,6 +8,7 @@ import {
   AnimatedSvgBackground,
   GEOMETRIC_SHAPES,
 } from "@ui/backgrounds/AnimatedSvgBackground";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -81,21 +82,38 @@ interface SocialProofBadgeProps {
   label: string;
 }
 
+interface AvatarImageProps {
+  avatar: SocialProofAvatar;
+  index: number;
+}
+
+function AvatarImage({ avatar, index }: AvatarImageProps) {
+  const safeImg = useSafeImageSrc(
+    avatar.image,
+    `hero-geometric-01-avatar-image-${index}`,
+    28,
+    28,
+  );
+  return (
+    <img
+      className={cn(
+        "h-7 w-7 rounded-full border-[3px] border-base-100 bg-base-200 object-cover",
+        index > 0 && "-ml-2",
+      )}
+      src={safeImg.src}
+      onError={safeImg.onError}
+      alt={avatar.imageAlt}
+      loading="lazy"
+    />
+  );
+}
+
 function SocialProofBadge({ avatars, label }: SocialProofBadgeProps) {
   return (
     <div className="flex flex-wrap items-center justify-center gap-1 rounded-full border border-base-300 p-1.5 text-xs text-base-content/60 md:justify-start">
       <div className="flex items-center">
         {avatars.map((avatar, i) => (
-          <img
-            key={i}
-            className={cn(
-              "h-7 w-7 rounded-full border-[3px] border-base-100 bg-base-200 object-cover",
-              i > 0 && "-ml-2",
-            )}
-            src={avatar.image}
-            alt={avatar.imageAlt}
-            loading="lazy"
-          />
+          <AvatarImage key={i} avatar={avatar} index={i} />
         ))}
       </div>
       <p className={avatars.length > 0 ? "-ml-1" : ""}>{label}</p>
@@ -126,6 +144,12 @@ export default function HeroGeometric({
   className,
 }: HeroGeometricProps) {
   const shouldReduceMotion = useReducedMotion();
+  const safeMainImg = useSafeImageSrc(
+    image,
+    "hero-geometric-01-image",
+    320,
+    320,
+  );
 
   return (
     <section
@@ -217,7 +241,8 @@ export default function HeroGeometric({
           className="flex justify-center md:justify-end"
         >
           <img
-            src={image}
+            src={safeMainImg.src}
+            onError={safeMainImg.onError}
             alt={imageAlt}
             className="max-w-xs rounded-lg transition-all duration-300 sm:max-w-sm lg:max-w-md"
             loading="eager"

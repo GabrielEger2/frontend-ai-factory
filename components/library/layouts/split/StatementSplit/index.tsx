@@ -9,6 +9,7 @@ import {
   accentReveal,
 } from "@lib/motion-variants";
 import type { StyleKit } from "@lib/style-kit";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -57,6 +58,18 @@ export default function StatementSplit({
   className,
 }: StatementSplitProps) {
   const shouldReduceMotion = useReducedMotion();
+  const safeImg = useSafeImageSrc(
+    image,
+    "layout-statementsplit-01-image",
+    800,
+    520,
+  );
+  const safeAccentImg = useSafeImageSrc(
+    accentImage,
+    "layout-statementsplit-01-accent-image",
+    224,
+    224,
+  );
 
   const isDark = colorScheme === "dark";
   const isReversed = headlinePosition === "right";
@@ -110,7 +123,8 @@ export default function StatementSplit({
               className="h-[260px] w-full overflow-hidden md:h-[380px] lg:h-[520px]"
             >
               <img
-                src={image}
+                src={safeImg.src}
+                onError={safeImg.onError}
                 alt={imageAlt}
                 className="h-full w-full max-w-none object-cover"
                 loading="lazy"
@@ -124,7 +138,8 @@ export default function StatementSplit({
                 className="absolute -left-10 -bottom-10 hidden h-40 w-40 overflow-hidden md:block lg:h-56 lg:w-56"
               >
                 <img
-                  src={accentImage}
+                  src={safeAccentImg.src}
+                  onError={safeAccentImg.onError}
                   alt={accentImageAlt ?? ""}
                   className="h-full w-full object-cover"
                   loading="lazy"

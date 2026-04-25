@@ -20,7 +20,11 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@shared/*": ["../agents/shared/*"]
+      "@shared/*": ["../agents/shared/*"],
+      "@components/*": ["../components/*"],
+      "@ui/*": ["../components/ui/*"],
+      "@lib/*": ["../components/lib/*"],
+      "@hooks/*": ["../components/hooks/*"]
     }
   },
   "include": [
@@ -28,7 +32,9 @@
     "**/*.tsx",
     "next-env.d.ts",
     ".next/types/**/*.ts",
-    "../agents/**/*.ts"
+    "../agents/**/*.ts",
+    "../components/**/*.ts",
+    "../components/**/*.tsx"
   ],
   "exclude": ["node_modules"]
 }

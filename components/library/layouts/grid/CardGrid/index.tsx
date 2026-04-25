@@ -10,6 +10,7 @@ import { CardRevealSlide } from "@ui/cards/CardRevealSlide";
 import { CardMagic } from "@ui/cards/CardMagic";
 import { CardProduct } from "@ui/cards/CardProduct";
 import { CardOutlineGrid } from "@ui/cards/CardOutline";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -93,7 +94,7 @@ export interface CardGridProps {
    * - `product` -> `ProductCardItem[]`
    * - `outline` -> `OutlineCardItem[]`
    */
-  cards:
+  cards?:
     | FeatureCardItem[]
     | FlipCardItem[]
     | ProductCardItem[]
@@ -106,6 +107,40 @@ export interface CardGridProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_CARD_GRID_CARDS: FeatureCardItem[] = [
+  {
+    image: "https://picsum.photos/seed/cardgrid-card-0/640/400",
+    imageAlt: "Team mapping ideas on sticky notes",
+    title: "Discover what's working",
+    description:
+      "Run a focused audit of your funnel and surface the three or four levers that are actually moving the numbers.",
+    ctaText: "Learn more",
+    ctaUrl: "#",
+  },
+  {
+    image: "https://picsum.photos/seed/cardgrid-card-1/640/400",
+    imageAlt: "Designer iterating on UI mockups",
+    title: "Design the next version",
+    description:
+      "Translate insights into a roadmap of testable bets — each one shipped on a two-week cadence with measurable outcomes.",
+    ctaText: "Learn more",
+    ctaUrl: "#",
+  },
+  {
+    image: "https://picsum.photos/seed/cardgrid-card-2/640/400",
+    imageAlt: "Engineer reviewing code on a laptop",
+    title: "Ship and iterate",
+    description:
+      "Keep the loop tight: ship, measure, learn, repeat. We'll embed with your team until the new motion is sticking.",
+    ctaText: "Learn more",
+    ctaUrl: "#",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Grid column map                                                    */
@@ -140,6 +175,39 @@ function renderBaseCards(
   ));
 }
 
+function FlipCardFront({ card, index }: { card: FlipCardItem; index: number }) {
+  const safeImg = useSafeImageSrc(
+    card.image,
+    `layout-cardgrid-01-card-image-flip-${index}`,
+    400,
+    160,
+  );
+  return (
+    <div className="flex h-full flex-col">
+      <div className="relative h-1/2 overflow-hidden bg-base-300">
+        <img
+          src={safeImg.src}
+          onError={safeImg.onError}
+          alt={card.imageAlt}
+          className="h-full w-full object-cover"
+          loading="lazy"
+        />
+        {card.badge && (
+          <span className="absolute left-3 top-3 rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-content">
+            {card.badge}
+          </span>
+        )}
+      </div>
+      <div className="flex flex-1 flex-col justify-center p-4">
+        <h3 className="text-lg font-semibold text-base-content">
+          {card.title}
+        </h3>
+        <p className="mt-1 text-sm text-base-content/60">{card.description}</p>
+      </div>
+    </div>
+  );
+}
+
 function renderFlipCards(
   cards: FlipCardItem[],
   flipDirection: "horizontal" | "vertical",
@@ -151,31 +219,7 @@ function renderFlipCards(
       key={i}
       flipDirection={flipDirection}
       className="h-80 w-full"
-      front={
-        <div className="flex h-full flex-col">
-          <div className="relative h-1/2 overflow-hidden bg-base-300">
-            <img
-              src={card.image}
-              alt={card.imageAlt}
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-            {card.badge && (
-              <span className="absolute left-3 top-3 rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-content">
-                {card.badge}
-              </span>
-            )}
-          </div>
-          <div className="flex flex-1 flex-col justify-center p-4">
-            <h3 className="text-lg font-semibold text-base-content">
-              {card.title}
-            </h3>
-            <p className="mt-1 text-sm text-base-content/60">
-              {card.description}
-            </p>
-          </div>
-        </div>
-      }
+      front={<FlipCardFront card={card} index={i} />}
       back={
         <div className="flex h-full flex-col items-center justify-center bg-neutral p-6 text-center">
           <h3 className="mb-2 text-lg font-semibold text-neutral-content">
@@ -215,6 +259,50 @@ function renderRevealCards(cards: FeatureCardItem[]) {
   ));
 }
 
+function MagicCardBody({
+  card,
+  index,
+  ctaVariant,
+}: {
+  card: FeatureCardItem;
+  index: number;
+  ctaVariant?: CtaVariant;
+}) {
+  const safeImg = useSafeImageSrc(
+    card.image,
+    `layout-cardgrid-01-card-image-magic-${index}`,
+    400,
+    225,
+  );
+  return (
+    <div className="flex flex-col gap-3 p-5">
+      <div className="aspect-video overflow-hidden rounded-md bg-base-300">
+        <img
+          src={safeImg.src}
+          onError={safeImg.onError}
+          alt={card.imageAlt}
+          className="h-full w-full object-cover"
+          loading="lazy"
+        />
+      </div>
+      <h3 className="text-lg font-semibold text-base-content">{card.title}</h3>
+      <p className="text-sm text-base-content/60">{card.description}</p>
+      {card.ctaText && card.ctaUrl && (
+        <a
+          href={card.ctaUrl}
+          className={buttonStyles({
+            variant: toButtonVariant(ctaVariant),
+            size: "sm",
+            className: "mt-1 self-start",
+          })}
+        >
+          {card.ctaText}
+        </a>
+      )}
+    </div>
+  );
+}
+
 function renderMagicCards(
   cards: FeatureCardItem[],
   mode: "gradient" | "orb",
@@ -223,32 +311,7 @@ function renderMagicCards(
 ) {
   return cards.map((card, i) => (
     <CardMagic key={i} mode={mode}>
-      <div className="flex flex-col gap-3 p-5">
-        <div className="aspect-video overflow-hidden rounded-md bg-base-300">
-          <img
-            src={card.image}
-            alt={card.imageAlt}
-            className="h-full w-full object-cover"
-            loading="lazy"
-          />
-        </div>
-        <h3 className="text-lg font-semibold text-base-content">
-          {card.title}
-        </h3>
-        <p className="text-sm text-base-content/60">{card.description}</p>
-        {card.ctaText && card.ctaUrl && (
-          <a
-            href={card.ctaUrl}
-            className={buttonStyles({
-              variant: toButtonVariant(ctaVariant),
-              size: "sm",
-              className: "mt-1 self-start",
-            })}
-          >
-            {card.ctaText}
-          </a>
-        )}
-      </div>
+      <MagicCardBody card={card} index={i} ctaVariant={ctaVariant} />
     </CardMagic>
   ));
 }
@@ -290,7 +353,7 @@ export default function CardGrid({
   headline,
   subheadline,
   styleKit,
-  cards,
+  cards = DEFAULT_CARD_GRID_CARDS,
   columns = 3,
   flipDirection = "horizontal",
   purpose,

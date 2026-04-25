@@ -51,6 +51,7 @@ export type ProjectStatus =
   | "humanizing"
   | "assembling"
   | "qa"
+  | "ready_for_review"
   | "deploying"
   | "deployed"
   | "failed"
@@ -145,6 +146,7 @@ export interface StyleOutput {
   >;
   density: "low" | "medium" | "high";
   paletteSource?: "graph" | "fallback";
+  paletteSuggestions?: Palette[];
 }
 
 /* ------------------------------------------------------------------ */
@@ -164,6 +166,57 @@ export interface ComposerOutput {
   source: "graph" | "fallback";
   candidateCount?: number;
   avgScore?: number | null;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Working Draft / Version / Share / Feedback                         */
+/*  (mirrors agents/shared/types.ts — keep in sync)                    */
+/* ------------------------------------------------------------------ */
+
+export interface WorkingDraft {
+  blueprint: ComposerLayout;
+  contentSlots: HumanizerOutput;
+  palette: Palette;
+  typography: Typography;
+  density: "low" | "medium" | "high";
+  updatedAt: string;
+}
+
+export interface ProjectVersion {
+  pk: string;
+  sk: string;
+  versionNumber: number;
+  createdAt: string;
+  deployedAt: string;
+  blueprint: ComposerOutput;
+  contentSlots: HumanizerOutput;
+  palette: Palette;
+  typography: Typography;
+  density: string;
+  assembledTarGzKey: string;
+  vercelDeploymentId?: string;
+  note?: string;
+}
+
+export interface ShareToken {
+  pk: string;
+  sk: string;
+  token: string;
+  projectId: string;
+  sellerId: string;
+  createdAt: string;
+  expiresAt: number;
+  revoked: boolean;
+}
+
+export interface FeedbackItem {
+  pk: string;
+  sk: string;
+  message: string;
+  clientName?: string;
+  clientEmail?: string;
+  submittedAt: string;
+  shareTokenId: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -188,6 +241,8 @@ export interface ProjectDetail {
   assemblerOutput: AssemblerOutput | null;
   qaOutput: QAOutput | null;
   qaIssues: QAIssue[] | null;
+  workingDraft: WorkingDraft | null;
+  currentVersionNumber: number | null;
 }
 
 export interface CreateProjectInput {

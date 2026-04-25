@@ -16,6 +16,7 @@ export function StatusPoller({ projectId, initialStatus }: StatusPollerProps) {
 
   useEffect(() => {
     if (
+      status === "ready_for_review" ||
       status === "deployed" ||
       status === "failed" ||
       status === "qa_failed"
@@ -33,7 +34,8 @@ export function StatusPoller({ projectId, initialStatus }: StatusPollerProps) {
 
       if (
         project &&
-        (project.status === "deployed" ||
+        (project.status === "ready_for_review" ||
+          project.status === "deployed" ||
           project.status === "failed" ||
           project.status === "qa_failed")
       ) {

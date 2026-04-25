@@ -2,6 +2,7 @@
 
 import { cn } from "@lib/utils";
 import { buttonStyles, type CtaVariant, type ColorScheme } from "@ui/button";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
@@ -47,7 +48,7 @@ export interface FaqSolutionsProps {
   /** Optional supporting text below the headline */
   subheadline?: string;
   /** Array of solution items with title, description, CTA, and image */
-  items: FaqSolutionsItem[];
+  items?: FaqSolutionsItem[];
   /** Index of the item to expand by default (default: 0) */
   defaultOpenIndex?: number;
   /** CTA button style */
@@ -56,6 +57,40 @@ export interface FaqSolutionsProps {
   ctaColorScheme?: ColorScheme;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_FAQ_SOLUTIONS_ITEMS: FaqSolutionsItem[] = [
+  {
+    title: "Move from spreadsheets to a real system",
+    description:
+      "Stop chasing data across tabs. We migrate your existing workflow into a single source of truth — usually in under a week.",
+    ctaText: "See migration guide",
+    ctaUrl: "#",
+    image: "https://picsum.photos/seed/faqsolutions-item-0/640/400",
+    imageAlt: "Clean dashboard replacing a cluttered spreadsheet",
+  },
+  {
+    title: "Run a tighter weekly review",
+    description:
+      "Pre-built templates for the meetings that actually move the business — quarterly planning, weekly retros, and monthly business reviews.",
+    ctaText: "Browse templates",
+    ctaUrl: "#",
+    image: "https://picsum.photos/seed/faqsolutions-item-1/640/400",
+    imageAlt: "Team gathered around a planning board",
+  },
+  {
+    title: "Onboard new hires in their first week",
+    description:
+      "Shareable checklists, role-based access, and built-in document signing — so day one feels organized instead of overwhelming.",
+    ctaText: "See an onboarding flow",
+    ctaUrl: "#",
+    image: "https://picsum.photos/seed/faqsolutions-item-2/640/400",
+    imageAlt: "New employee reviewing onboarding tasks on a laptop",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Sub-component — individual solution panel                          */
@@ -167,7 +202,7 @@ function SolutionItem({
 export default function FaqSolutions({
   headline,
   subheadline,
-  items,
+  items = DEFAULT_FAQ_SOLUTIONS_ITEMS,
   defaultOpenIndex = 0,
   ctaStyle,
   ctaColorScheme,
@@ -177,6 +212,12 @@ export default function FaqSolutions({
 
   const activeImage = items[openIndex]?.image;
   const activeImageAlt = items[openIndex]?.imageAlt ?? "";
+  const safeImg = useSafeImageSrc(
+    activeImage,
+    `faq-solutions-01-item-image-${openIndex ?? 0}`,
+    600,
+    450,
+  );
 
   return (
     <section
@@ -221,7 +262,8 @@ export default function FaqSolutions({
             className="hidden aspect-[4/3] overflow-hidden rounded-2xl bg-base-200 lg:block lg:aspect-auto"
           >
             <img
-              src={activeImage}
+              src={safeImg.src}
+              onError={safeImg.onError}
               alt={activeImageAlt}
               className="h-full w-full object-cover"
             />

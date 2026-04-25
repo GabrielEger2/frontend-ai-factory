@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { cn } from "@lib/utils";
 import { Button, CtaButton, type CtaVariant } from "@ui/button";
 import { TypeWriter } from "@ui/text-decorations/TypeWriter";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -23,7 +24,7 @@ export interface HeroShuffleCardsProps {
   emailPlaceholder?: string;
   /** Callback when the email form is submitted */
   onEmailSubmit?: (email: string) => void;
-  cards: Array<{
+  cards?: Array<{
     image: string;
     imageAlt: string;
     quote: string;
@@ -33,6 +34,35 @@ export interface HeroShuffleCardsProps {
 }
 
 type CardPosition = "front" | "middle" | "back";
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_HERO_SHUFFLE_CARDS: NonNullable<HeroShuffleCardsProps["cards"]> =
+  [
+    {
+      image: "https://picsum.photos/seed/heroshufflecards-card-0/350/450",
+      imageAlt: "Sarah Chen",
+      quote:
+        "Felt like the team had been with us for years. Three weeks in and the redesign was already paying for itself.",
+      author: "Sarah Chen — Head of Growth at Acme",
+    },
+    {
+      image: "https://picsum.photos/seed/heroshufflecards-card-1/350/450",
+      imageAlt: "Marcus Rivera",
+      quote:
+        "Genuinely the smoothest engagement we've run. Clear deliverables and results that held up under load.",
+      author: "Marcus Rivera — Founder at BuildFast",
+    },
+    {
+      image: "https://picsum.photos/seed/heroshufflecards-card-2/350/450",
+      imageAlt: "Priya Natarajan",
+      quote:
+        "We doubled the pipeline in a quarter. I've recommended them to four other founders since.",
+      author: "Priya Natarajan — VP Product at Lumen",
+    },
+  ];
 
 /* ------------------------------------------------------------------ */
 /*  Card sub-component                                                 */
@@ -45,6 +75,7 @@ interface CardProps {
   author: string;
   position: CardPosition;
   onShuffle: () => void;
+  index: number;
 }
 
 function Card({
@@ -54,8 +85,15 @@ function Card({
   author,
   position,
   onShuffle,
+  index,
 }: CardProps) {
   const mousePosRef = useRef(0);
+  const safeImg = useSafeImageSrc(
+    image,
+    `hero-shuffle-cards-01-card-image-${index}`,
+    128,
+    128,
+  );
 
   const onDragStart = (e: MouseEvent | TouchEvent | PointerEvent) => {
     if ("clientX" in e) {
@@ -97,7 +135,8 @@ function Card({
       )}
     >
       <img
-        src={image}
+        src={safeImg.src}
+        onError={safeImg.onError}
         alt={imageAlt}
         className="pointer-events-none mx-auto h-32 w-32 rounded-full border-2 border-base-300 bg-base-200 object-cover"
       />
@@ -124,7 +163,7 @@ export default function HeroShuffleCards({
   ctaStyle = "default",
   emailPlaceholder,
   onEmailSubmit,
-  cards,
+  cards = DEFAULT_HERO_SHUFFLE_CARDS,
   className,
 }: HeroShuffleCardsProps) {
   const [order, setOrder] = useState<CardPosition[]>([
@@ -213,6 +252,7 @@ export default function HeroShuffleCards({
               author={card.author}
               position={order[i]}
               onShuffle={handleShuffle}
+              index={i}
             />
           ))}
         </div>

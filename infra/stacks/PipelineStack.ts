@@ -5,7 +5,6 @@ import * as sqs from "aws-cdk-lib/aws-sqs";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
-import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as sfn from "aws-cdk-lib/aws-stepfunctions";
 import * as tasks from "aws-cdk-lib/aws-stepfunctions-tasks";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
@@ -27,7 +26,6 @@ export interface PipelineStackProps extends StackProps {
   readonly componentsTableArn: string;
   readonly pipelineBucketName: string;
   readonly pipelineBucketArn: string;
-  readonly deployFunctionArn: string;
   readonly neo4jUriSsmPath: string;
   readonly neo4jPasswordSsmPath: string;
   readonly neo4jUsernameSsmPath: string;
@@ -41,8 +39,12 @@ export interface PipelineStackProps extends StackProps {
 /**
  * PipelineStack — SQS queue, Step Functions state machine, and agent Lambdas.
  *
- * Creates the 8-step pipeline:
- *   Research -> Style (WaitForTaskToken) -> Composer -> Content -> Humanizer -> Assembler -> QA -> Deploy
+ * Creates the 7-step pipeline:
+ *   Research -> Style (WaitForTaskToken) -> Composer -> Content -> Humanizer -> Assembler -> QA
+ *
+ * On QA pass the state machine terminates with status="ready_for_review".
+ * Deploy is seller-triggered via the deploy-draft API endpoint, not part of
+ * this state machine.
  *
  * Also creates the pipeline-starter Lambda that consumes SQS messages
  * and starts Step Function executions.
@@ -95,12 +97,6 @@ export class PipelineStack extends Stack {
       this,
       "PipelineBucket",
       props.pipelineBucketArn,
-    );
-
-    const deployFn = lambda.Function.fromFunctionArn(
-      this,
-      "DeployFn",
-      props.deployFunctionArn,
     );
 
     /* -------------------------------------------------------------- */
@@ -390,13 +386,6 @@ export class PipelineStack extends Stack {
     });
     qaStep.addCatch(failHandlerStep, { resultPath: "$.error" });
 
-    const deployStep = new tasks.LambdaInvoke(this, "DeployStep", {
-      lambdaFunction: deployFn,
-      outputPath: "$.Payload",
-    });
-    deployStep.addRetry(retryConfig);
-    deployStep.addCatch(failHandlerStep, { resultPath: "$.error" });
-
     const succeedState = new sfn.Succeed(this, "PipelineSucceeded");
 
     const definition = researchStep
@@ -406,7 +395,6 @@ export class PipelineStack extends Stack {
       .next(humanizerStep)
       .next(assemblerStep)
       .next(qaStep)
-      .next(deployStep)
       .next(succeedState);
 
     const stateMachine = new sfn.StateMachine(this, "PipelineStateMachine", {

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { getProject } from "@/lib/actions/get-project";
+import { listShareTokens } from "@/lib/actions/list-share-tokens";
+import { listFeedback } from "@/lib/actions/list-feedback";
 import { StatusBadge } from "@/components/projects/StatusBadge";
 import { StatusPoller } from "@/components/projects/StatusPoller";
 import { StepCard } from "@/components/pipeline/StepCard";
@@ -13,7 +15,9 @@ import { HumanizerView } from "@/components/pipeline/views/HumanizerView";
 import { SeoView } from "@/components/pipeline/views/SeoView";
 import { AssemblerView } from "@/components/pipeline/views/AssemblerView";
 import { QAView } from "@/components/pipeline/views/QAView";
-import type { ProjectStatus } from "@/types/project";
+import { DeployDraftButton } from "@/components/projects/DeployDraftButton";
+import { SharePanel } from "@/components/share/SharePanel";
+import type { FeedbackItem, ProjectStatus } from "@/types/project";
 
 const PIPELINE_STEPS: {
   status: ProjectStatus;
@@ -30,6 +34,7 @@ const PIPELINE_STEPS: {
   { status: "humanizing", label: "Humanizing" },
   { status: "assembling", label: "Assembling" },
   { status: "qa", label: "Running QA" },
+  { status: "ready_for_review", label: "Ready for Review" },
   { status: "deploying", label: "Deploying" },
   { status: "deployed", label: "Deployed" },
 ];
@@ -74,9 +79,31 @@ export default async function ProjectDetailPage({
   }
 
   const isTerminal =
+    project.status === "ready_for_review" ||
     project.status === "deployed" ||
     project.status === "failed" ||
     project.status === "qa_failed";
+
+  const isReadyForReview = project.status === "ready_for_review";
+  const isDeployed = project.status === "deployed";
+  const hasEditableDraft = isReadyForReview || isDeployed;
+  const hasVersions =
+    project.currentVersionNumber != null && project.currentVersionNumber > 0;
+
+  // Share tokens + feedback are only meaningful post-deploy. Fetch them
+  // in parallel here so the server component renders a complete page.
+  const [shareTokensResult, feedbackResult] = isDeployed
+    ? await Promise.all([listShareTokens(id), listFeedback(id)])
+    : [null, null];
+
+  const shareTokens =
+    shareTokensResult && "tokens" in shareTokensResult
+      ? shareTokensResult.tokens
+      : [];
+  const feedbackItems: FeedbackItem[] =
+    feedbackResult && "feedback" in feedbackResult
+      ? feedbackResult.feedback
+      : [];
 
   return (
     <div>
@@ -179,6 +206,93 @@ export default async function ProjectDetailPage({
         })}
       </div>
 
+      {isReadyForReview && (
+        <div className="mb-8 rounded-lg border border-amber-200 bg-amber-50 p-5">
+          <h2 className="mb-1 text-sm font-semibold text-amber-900">
+            Draft ready for your review
+          </h2>
+          <p className="mb-4 text-sm text-amber-800">
+            The pipeline has assembled a draft site. Edit sections, copy, or
+            palette in the visual editor, then deploy when ready.
+          </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <DeployDraftButton projectId={id} />
+            <Link
+              href={`/projects/${id}/edit`}
+              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+            >
+              Open Visual Editor
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {(hasEditableDraft || hasVersions) && !isReadyForReview && (
+        <div className="mb-8 flex flex-wrap items-center gap-3">
+          {isDeployed && (
+            <Link
+              href={`/projects/${id}/edit`}
+              className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-slate-800"
+            >
+              Open Visual Editor
+            </Link>
+          )}
+          {hasVersions && (
+            <Link
+              href={`/projects/${id}/versions`}
+              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+            >
+              View Versions
+              {project.currentVersionNumber != null && (
+                <span className="text-xs text-slate-500">
+                  (v{project.currentVersionNumber})
+                </span>
+              )}
+            </Link>
+          )}
+        </div>
+      )}
+
+      {isDeployed && (
+        <section className="mb-8">
+          <SharePanel projectId={id} initialTokens={shareTokens} />
+        </section>
+      )}
+
+      {isDeployed && (
+        <section className="mb-8">
+          <h2 className="mb-3 text-sm font-semibold text-slate-900">
+            Client Feedback
+          </h2>
+          {feedbackItems.length === 0 ? (
+            <div className="rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-500">
+              No feedback submitted yet.
+            </div>
+          ) : (
+            <ul className="flex flex-col gap-2">
+              {feedbackItems.map((item) => (
+                <li
+                  key={item.sk}
+                  className="rounded-lg border border-slate-200 bg-white p-4"
+                >
+                  <div className="mb-2 flex items-center justify-between gap-2 text-xs text-slate-500">
+                    <span>
+                      {item.clientName ? item.clientName : "Anonymous"}
+                    </span>
+                    <time dateTime={item.submittedAt}>
+                      {formatFeedbackDate(item.submittedAt)}
+                    </time>
+                  </div>
+                  <p className="whitespace-pre-wrap text-sm text-slate-800">
+                    {item.message}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      )}
+
       {project.status === "deployed" && project.previewUrl && (
         <a
           href={project.previewUrl}
@@ -211,4 +325,14 @@ export default async function ProjectDetailPage({
       )}
     </div>
   );
+}
+
+function formatFeedbackDate(iso: string): string {
+  try {
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return iso;
+    return d.toLocaleString();
+  } catch {
+    return iso;
+  }
 }

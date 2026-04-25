@@ -27,11 +27,22 @@ export interface StatsCountUpProps {
   /** Optional highlighted word/phrase within the headline */
   headlineHighlight?: string;
   /** Array of stats to display — each animates independently on scroll */
-  stats: StatItem[];
+  stats?: StatItem[];
   /** Animation duration in seconds. Defaults to 2.5 */
   duration?: number;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_STATS: StatItem[] = [
+  { value: 200, suffix: "%", label: "Growth in 12 months" },
+  { value: 12000, suffix: "+", label: "Active users" },
+  { value: 98, suffix: "%", label: "Customer satisfaction" },
+  { value: 4.9, decimals: 1, label: "Average rating" },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -95,7 +106,7 @@ function Divider() {
 export default function StatsCountUp({
   headline,
   headlineHighlight,
-  stats,
+  stats = DEFAULT_STATS,
   duration = DEFAULT_DURATION,
   className,
 }: StatsCountUpProps) {

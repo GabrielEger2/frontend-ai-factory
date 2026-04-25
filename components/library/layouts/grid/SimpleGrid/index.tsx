@@ -29,7 +29,7 @@ export interface SimpleGridProps {
   /** Supporting paragraph below the headline */
   description?: string;
   /** List of feature items */
-  features: FeatureItem[];
+  features?: FeatureItem[];
   /** CTA button text below the features list */
   ctaText?: string;
   /** CTA destination URL */
@@ -42,6 +42,33 @@ export interface SimpleGridProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_SIMPLE_GRID_FEATURES: FeatureItem[] = [
+  {
+    title: "Faster onboarding",
+    description:
+      "Get new teammates productive in days instead of weeks with guided setup flows and pre-built templates.",
+  },
+  {
+    title: "Real-time collaboration",
+    description:
+      "Edit, review, and ship together — no more sending stale screenshots back and forth in chat.",
+  },
+  {
+    title: "Built-in analytics",
+    description:
+      "Track usage, conversion, and retention out of the box. No extra tools to wire up or maintain.",
+  },
+  {
+    title: "Enterprise-grade security",
+    description:
+      "SOC 2, SSO, and granular access controls included on every plan — not gated behind a sales call.",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Column map                                                         */
@@ -87,7 +114,7 @@ export default function SimpleGrid({
   label,
   headline,
   description,
-  features,
+  features = DEFAULT_SIMPLE_GRID_FEATURES,
   ctaText,
   ctaUrl,
   styleKit,

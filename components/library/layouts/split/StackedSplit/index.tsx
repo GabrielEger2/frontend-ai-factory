@@ -18,7 +18,7 @@ export interface StackedSplitProps {
   /** Supporting text below the headline */
   subheadline?: string;
   /** List of testimonials rendered as stacked cards */
-  testimonials: TestimonialItem[];
+  testimonials?: TestimonialItem[];
   /** Auto-advance duration in seconds per card. Defaults to 5 */
   autoAdvanceDuration?: number;
   /** Site-wide style configuration — accepted for API consistency */
@@ -27,6 +27,45 @@ export interface StackedSplitProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_STACKED_TESTIMONIALS: TestimonialItem[] = [
+  {
+    image: "https://picsum.photos/seed/stackedsplit-testimonial-0/80/80",
+    imageAlt: "Jordan Patel",
+    name: "Jordan Patel",
+    title: "Director of Engineering at Helix",
+    quote:
+      "The pace of execution was unreal. Two weeks in and we already had a launch-ready prototype the team could test against.",
+  },
+  {
+    image: "https://picsum.photos/seed/stackedsplit-testimonial-1/80/80",
+    imageAlt: "Amina Hassan",
+    name: "Amina Hassan",
+    title: "Head of Design at Northwave",
+    quote:
+      "I've never seen a vendor get our brand voice this quickly. Felt like extending our own team rather than handing things off.",
+  },
+  {
+    image: "https://picsum.photos/seed/stackedsplit-testimonial-2/80/80",
+    imageAlt: "Tom Whitaker",
+    name: "Tom Whitaker",
+    title: "Co-founder at Drift Studio",
+    quote:
+      "Cut our content production time in half. The framework they set up is still paying dividends a year later.",
+  },
+  {
+    image: "https://picsum.photos/seed/stackedsplit-testimonial-3/80/80",
+    imageAlt: "Lin Wei",
+    name: "Lin Wei",
+    title: "VP Operations at Quanta",
+    quote:
+      "Genuinely the smoothest engagement we've run. Clear deliverables, no surprise scopes, results that held up.",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Progress bar                                                       */
@@ -154,7 +193,7 @@ function StackedCards({
 export default function StackedSplit({
   headline,
   subheadline,
-  testimonials,
+  testimonials = DEFAULT_STACKED_TESTIMONIALS,
   autoAdvanceDuration = 5,
   styleKit,
   purpose,

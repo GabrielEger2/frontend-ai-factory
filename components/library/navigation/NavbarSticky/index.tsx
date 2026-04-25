@@ -33,7 +33,7 @@ export interface NavbarStickyProps {
   /** Alternate logo for dark-on-light contexts (scrolled state / mobile menu) */
   logoDark?: React.ReactNode;
   /** Navigation links */
-  links: NavbarLink[];
+  links?: NavbarLink[];
   /** Optional CTA button label shown on desktop */
   ctaText?: string;
   /** CTA destination URL */
@@ -42,9 +42,22 @@ export interface NavbarStickyProps {
   ctaStyle?: CtaStyle;
   /** Pixel threshold after which the bar switches to the scrolled (filled) style */
   scrollThreshold?: number;
+  /** When true, uses `sticky` positioning instead of `fixed` so the bar stays inside its containing block (used by the editor preview) */
+  previewMode?: boolean;
   /** Extra classes on the root `<nav>` element */
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_LINKS: NavbarLink[] = [
+  { text: "Home", href: "/" },
+  { text: "About", href: "/about" },
+  { text: "Services", href: "/services" },
+  { text: "Contact", href: "/contact" },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -295,11 +308,12 @@ function MobileMenu({
 export default function NavbarSticky({
   logo,
   logoDark,
-  links,
+  links = DEFAULT_LINKS,
   ctaText,
   ctaUrl,
   ctaStyle = "default",
   scrollThreshold = 250,
+  previewMode = false,
   className,
 }: NavbarStickyProps) {
   const [scrolled, setScrolled] = useState(false);
@@ -313,7 +327,7 @@ export default function NavbarSticky({
   return (
     <nav
       className={cn(
-        "fixed top-0 z-50 w-full px-6 transition-all duration-300 ease-out lg:px-12",
+        `${previewMode ? "sticky" : "fixed"} top-0 z-50 w-full px-6 transition-all duration-300 ease-out lg:px-12`,
         scrolled
           ? "bg-neutral/95 py-3 shadow-xl backdrop-blur-sm text-neutral-content"
           : "bg-transparent py-6 shadow-none text-base-content",

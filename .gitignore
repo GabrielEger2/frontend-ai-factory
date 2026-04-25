@@ -19,3 +19,4 @@ agents/assembler/*.generated.ts
 .claude/work/*
 .claude/settings.local.json
 components/storybook-static/*
+components/library/manifest.json

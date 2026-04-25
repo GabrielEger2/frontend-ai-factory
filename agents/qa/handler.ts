@@ -316,7 +316,9 @@ function runChecks(
 /**
  * Update the project document with QA results.
  *
- * On pass: set status to "deploying" and store qaOutput.
+ * On pass: set status to "ready_for_review" and store qaOutput. The pipeline
+ * terminates here — the seller reviews/edits the workingDraft and triggers
+ * deploy via the deploy-draft API (POST /projects/{id}/deploy).
  * On fail: set status to "qa_failed", store qaOutput and qaIssues.
  */
 async function updateProjectQAResult(
@@ -342,7 +344,7 @@ async function updateProjectQAResult(
           "SET #st = :status, qaOutput = :qaOutput, updatedAt = :now",
         ExpressionAttributeNames: { "#st": "status" },
         ExpressionAttributeValues: {
-          ":status": "deploying",
+          ":status": "ready_for_review",
           ":qaOutput": qaOutput,
           ":now": now,
         },
@@ -384,7 +386,8 @@ async function updateProjectQAResult(
  * On failure: writes qa_failed to DDB and throws so Step Functions
  * routes to the dedicated QAPipelineFailed state.
  *
- * On success: writes deploying to DDB and returns updated pipeline state.
+ * On success: writes ready_for_review to DDB and returns updated pipeline
+ * state. The pipeline terminates here — no automatic deploy.
  *
  * Invoked by Step Functions after the Assembler step.
  */
@@ -441,7 +444,7 @@ export const handler = async (event: unknown): Promise<unknown> => {
   /* ---- Return updated pipeline state ---- */
   return {
     ...input,
-    status: "deploying",
+    status: "ready_for_review",
     qaOutput,
   };
 };

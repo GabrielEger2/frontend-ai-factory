@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@lib/utils";
 import { containerVariants, fadeUp, imageReveal } from "@lib/motion-variants";
 import type { StyleKit } from "@lib/style-kit";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -28,7 +29,7 @@ export interface IconListSplitProps {
   /** Section headline */
   headline: string;
   /** List of features with icons */
-  features: FeatureIconItem[];
+  features?: FeatureIconItem[];
   /** Optional large image displayed beside the features list on desktop */
   image?: string;
   imageAlt?: string;
@@ -40,6 +41,37 @@ export interface IconListSplitProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_ICON_LIST_FEATURES: FeatureIconItem[] = [
+  {
+    icon: "✨",
+    title: "Set up in minutes",
+    description:
+      "Connect your accounts, import your data, and you're live before lunch — no migration project required.",
+  },
+  {
+    icon: "📈",
+    title: "Insights that matter",
+    description:
+      "Skip the dashboard archaeology. We surface the three trends you should care about each week.",
+  },
+  {
+    icon: "🤝",
+    title: "Built for teams",
+    description:
+      "Granular permissions, shared workspaces, and audit trails — even on the smallest plan.",
+  },
+  {
+    icon: "🔒",
+    title: "Security you can audit",
+    description:
+      "SOC 2 Type II, encryption at rest and in transit, and a data residency option in three regions.",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Decorative underline (private)                                     */
@@ -56,6 +88,33 @@ function AccentUnderline() {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Logo image (private, calls hook per item)                          */
+/* ------------------------------------------------------------------ */
+
+interface LogoImageProps {
+  logo: LogoItem;
+  index: number;
+}
+
+function LogoImage({ logo, index }: LogoImageProps) {
+  const safeImg = useSafeImageSrc(
+    logo.image,
+    `layout-iconlistsplit-01-logo-image-${index}`,
+    140,
+    32,
+  );
+  return (
+    <img
+      src={safeImg.src}
+      onError={safeImg.onError}
+      alt={logo.imageAlt}
+      className="h-8 max-w-[140px] object-contain opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0"
+      loading="lazy"
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -67,7 +126,7 @@ function AccentUnderline() {
  */
 export default function IconListSplit({
   headline,
-  features,
+  features = DEFAULT_ICON_LIST_FEATURES,
   image,
   imageAlt,
   logos,
@@ -76,6 +135,12 @@ export default function IconListSplit({
   className,
 }: IconListSplitProps) {
   const shouldReduceMotion = useReducedMotion();
+  const safeMainImg = useSafeImageSrc(
+    image,
+    "layout-iconlistsplit-01-image",
+    600,
+    544,
+  );
 
   return (
     <section
@@ -133,7 +198,8 @@ export default function IconListSplit({
               viewport={{ once: true, margin: "-100px" }}
             >
               <img
-                src={image}
+                src={safeMainImg.src}
+                onError={safeMainImg.onError}
                 alt={imageAlt ?? ""}
                 className="h-[28rem] w-[28rem] rounded-full object-cover xl:h-[34rem] xl:w-[34rem]"
                 loading="lazy"
@@ -159,12 +225,7 @@ export default function IconListSplit({
                   variants={fadeUp}
                   className="flex items-center justify-center"
                 >
-                  <img
-                    src={logo.image}
-                    alt={logo.imageAlt}
-                    className="h-8 max-w-[140px] object-contain opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0"
-                    loading="lazy"
-                  />
+                  <LogoImage logo={logo} index={i} />
                 </motion.div>
               ))}
             </motion.div>

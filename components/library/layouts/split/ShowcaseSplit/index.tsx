@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { cn } from "@lib/utils";
 import type { StyleKit } from "@lib/style-kit";
+import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -27,13 +28,44 @@ export interface ShowcaseSplitProps {
   /** Section headline */
   headline: string;
   /** List of showcase items */
-  testimonials: ShowcaseItem[];
+  testimonials?: ShowcaseItem[];
   /** Site-wide style configuration -- accepted for API consistency */
   styleKit?: StyleKit;
   /** Informational purpose tag for the section */
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_SHOWCASE_ITEMS: ShowcaseItem[] = [
+  {
+    image: "https://picsum.photos/seed/showcasesplit-item-0/416/576",
+    imageAlt: "Sarah Chen",
+    name: "Sarah Chen",
+    title: "Head of Growth at Acme",
+    quote:
+      "We doubled our pipeline in the first quarter. The team was responsive, sharp, and frankly a delight to work with.",
+  },
+  {
+    image: "https://picsum.photos/seed/showcasesplit-item-1/416/576",
+    imageAlt: "Marcus Rivera",
+    name: "Marcus Rivera",
+    title: "Founder at BuildFast",
+    quote:
+      "I've worked with a dozen agencies. None shipped this quickly without dropping quality. Genuinely impressed.",
+  },
+  {
+    image: "https://picsum.photos/seed/showcasesplit-item-2/416/576",
+    imageAlt: "Priya Natarajan",
+    name: "Priya Natarajan",
+    title: "VP Product at Lumen",
+    quote:
+      "The clarity of communication alone was worth the price. We knew where things stood every single week.",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Animation variants                                                 */
@@ -114,7 +146,7 @@ function NavArrow({
 export default function ShowcaseSplit({
   label,
   headline,
-  testimonials,
+  testimonials = DEFAULT_SHOWCASE_ITEMS,
   styleKit,
   purpose,
   className,
@@ -133,7 +165,15 @@ export default function ShowcaseSplit({
     [testimonials.length],
   );
 
+  if (!testimonials.length) return null;
+
   const current = testimonials[activeIndex];
+  const safeImg = useSafeImageSrc(
+    current.image,
+    `layout-showcasesplit-01-image-${activeIndex}`,
+    416,
+    576,
+  );
 
   return (
     <section
@@ -165,7 +205,8 @@ export default function ShowcaseSplit({
             <AnimatePresence mode="wait" custom={direction}>
               <motion.img
                 key={`image-${activeIndex}`}
-                src={current.image}
+                src={safeImg.src}
+                onError={safeImg.onError}
                 alt={current.imageAlt}
                 className="h-24 w-24 rounded-full object-cover shadow-md md:mx-6 md:h-[32rem] md:w-80 md:rounded-2xl lg:h-[36rem] lg:w-[26rem]"
                 loading="lazy"

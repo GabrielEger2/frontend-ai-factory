@@ -7,7 +7,14 @@
     "build-storybook": "storybook build",
     "type-check": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "build:manifest": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/build-manifest.ts"
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS",
+      "moduleResolution": "node"
+    }
   },
   "peerDependencies": {
     "next": "^14 || ^15",
@@ -20,6 +27,7 @@
     "@storybook/addon-webpack5-compiler-swc": "^4.0",
     "@storybook/react": "^8.1",
     "@storybook/react-webpack5": "^8.1",
+    "@types/node": "^20",
     "@types/react": "^18.3",
     "@types/react-dom": "^18.3",
     "autoprefixer": "^10.4",
@@ -31,6 +39,7 @@
     "storybook": "^8.1",
     "tailwindcss": "^3.4",
     "tailwindcss-animate": "^1.0.7",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4",
     "vitest": "^2.0.0"
   },

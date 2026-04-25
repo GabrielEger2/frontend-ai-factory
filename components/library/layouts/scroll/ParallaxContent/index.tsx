@@ -40,7 +40,7 @@ export interface ParallaxSection {
 
 export interface ParallaxContentProps {
   /** Array of parallax sections — each renders a sticky image, overlay text, and content block */
-  sections: ParallaxSection[];
+  sections?: ParallaxSection[];
   /** Site-wide style kit threaded by the Assembler */
   styleKit?: StyleKit;
   /** Horizontal padding around the image in pixels. Defaults to 12 */
@@ -49,6 +49,52 @@ export interface ParallaxContentProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_PARALLAX_SECTIONS: ParallaxSection[] = [
+  {
+    image: "https://picsum.photos/seed/parallaxcontent-section-0/800/600",
+    imageAlt: "Aerial view of a coastal city at sunset",
+    label: "Discovery",
+    heading: "Start where you are",
+    content: {
+      contentHeadline: "Map the terrain before you build",
+      contentDescription:
+        "We spend the first two weeks on the ground with your team — interviews, audits, and quiet listening — so the plan we deliver actually fits the company you have, not the one a deck imagines.",
+      ctaText: "Read the playbook",
+      ctaUrl: "#",
+    },
+  },
+  {
+    image: "https://picsum.photos/seed/parallaxcontent-section-1/800/600",
+    imageAlt: "Architect sketching plans in a sunlit studio",
+    label: "Design",
+    heading: "Decide what to build",
+    content: {
+      contentHeadline: "Tradeoffs made deliberate",
+      contentDescription:
+        "Every design choice gets paired with the cost it carries — engineering hours, support load, runway. The result is a plan you can defend in any room without flinching.",
+      ctaText: "See an example brief",
+      ctaUrl: "#",
+    },
+  },
+  {
+    image: "https://picsum.photos/seed/parallaxcontent-section-2/800/600",
+    imageAlt: "Team celebrating a launch in a modern office",
+    label: "Ship",
+    heading: "Launch in weeks, not quarters",
+    content: {
+      contentHeadline: "Built to be handed off cleanly",
+      contentDescription:
+        "We document, demo, and stay on call through the first month live. By the time we're gone, your team owns the system end-to-end — and we mean it.",
+      ctaText: "Book a kickoff",
+      ctaUrl: "#",
+    },
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -187,7 +233,7 @@ function ContentBlock({
 /* ------------------------------------------------------------------ */
 
 export default function ParallaxContent({
-  sections,
+  sections = DEFAULT_PARALLAX_SECTIONS,
   styleKit,
   imagePadding = DEFAULT_IMAGE_PADDING,
   purpose,
