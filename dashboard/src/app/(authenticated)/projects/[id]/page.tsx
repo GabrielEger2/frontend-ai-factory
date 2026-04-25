@@ -17,13 +17,19 @@ import { SeoView } from "@/components/pipeline/views/SeoView";
 import { AssemblerView } from "@/components/pipeline/views/AssemblerView";
 import { QAView } from "@/components/pipeline/views/QAView";
 import { DeployDraftButton } from "@/components/projects/DeployDraftButton";
+import { RestartPipelineButton } from "@/components/projects/RestartPipelineButton";
 import { SharePanel } from "@/components/share/SharePanel";
 import type { FeedbackItem, ProjectStatus } from "@/types/project";
 
+// retriable=true only for steps the retry-step API actually supports
+// (agents/api/retry-step/handler.ts:ALLOWED_STEPS). The earlier SFN-internal
+// steps (research/style/composer) and the SEO placeholder cannot be re-invoked
+// standalone — recovery for those goes through the failed-state restart path.
 const PIPELINE_STEPS: {
   status: ProjectStatus;
   label: string;
   stepName?: string;
+  retriable?: boolean;
 }[] = [
   { status: "queued", label: "Queued" },
   { status: "researching", label: "Researching" },
@@ -31,13 +37,28 @@ const PIPELINE_STEPS: {
   { status: "awaiting_style_approval", label: "Awaiting Style Approval" },
   { status: "composing", label: "Composing Layout" },
   { status: "awaiting_layout_approval", label: "Layout Approval" },
-  { status: "content", label: "Generating Content" },
+  { status: "content", label: "Generating Content", retriable: true },
   { status: "content" as ProjectStatus, label: "SEO", stepName: "seo" },
-  { status: "humanizing", label: "Humanizing" },
-  { status: "assembling", label: "Assembling" },
-  { status: "qa", label: "Running QA" },
+  {
+    status: "humanizing",
+    label: "Humanizing",
+    stepName: "humanizer",
+    retriable: true,
+  },
+  {
+    status: "assembling",
+    label: "Assembling",
+    stepName: "assembler",
+    retriable: true,
+  },
+  { status: "qa", label: "Running QA", retriable: true },
   { status: "ready_for_review", label: "Ready for Review" },
-  { status: "deploying", label: "Deploying" },
+  {
+    status: "deploying",
+    label: "Deploying",
+    stepName: "deploy",
+    retriable: true,
+  },
   { status: "deployed", label: "Deployed" },
 ];
 
@@ -49,7 +70,11 @@ function getStepState(
     (s) => s.status === currentStatus,
   );
 
-  if (currentStatus === "failed" || currentStatus === "qa_failed") {
+  if (
+    currentStatus === "failed" ||
+    currentStatus === "qa_failed" ||
+    currentStatus === "deploy_failed"
+  ) {
     return stepIndex <= currentIndex ? "completed" : "pending";
   }
 
@@ -84,7 +109,8 @@ export default async function ProjectDetailPage({
     project.status === "ready_for_review" ||
     project.status === "deployed" ||
     project.status === "failed" ||
-    project.status === "qa_failed";
+    project.status === "qa_failed" ||
+    project.status === "deploy_failed";
 
   const isReadyForReview = project.status === "ready_for_review";
   const isDeployed = project.status === "deployed";
@@ -140,6 +166,7 @@ export default async function ProjectDetailPage({
               stepName={stepName}
               projectId={id}
               state={state}
+              retriable={step.retriable ?? false}
             >
               {/* Researching step */}
               {step.status === "researching" &&
@@ -247,6 +274,29 @@ export default async function ProjectDetailPage({
         </div>
       )}
 
+      {project.status === "deploying" && (
+        <div className="mb-8 rounded-lg border border-blue-200 bg-blue-50 p-5">
+          <h2 className="mb-1 text-sm font-semibold text-blue-900">
+            Deploying to Vercel...
+          </h2>
+          <p className="mb-3 text-sm text-blue-800">
+            Your site is building on Vercel. This usually takes 1–2 minutes.
+            Status will update automatically here when it&apos;s live.
+          </p>
+          {project.vercelPreviewUrl && (
+            <a
+              href={project.vercelPreviewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-blue-700 underline hover:text-blue-900"
+            >
+              View build on Vercel
+              <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          )}
+        </div>
+      )}
+
       {(hasEditableDraft || hasVersions) && !isReadyForReview && (
         <div className="mb-8 flex flex-wrap items-center gap-3">
           {isDeployed && (
@@ -335,12 +385,31 @@ export default async function ProjectDetailPage({
               {project.failureReason}
             </p>
           )}
-          <Link
-            href="/projects/new"
-            className="text-sm text-red-600 hover:text-red-800 underline"
-          >
-            Create a new project
-          </Link>
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <RestartPipelineButton projectId={id} />
+            <Link
+              href="/projects/new"
+              className="text-sm text-red-600 hover:text-red-800 underline"
+            >
+              Create a new project
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {project.status === "deploy_failed" && (
+        <div className="rounded-lg bg-red-50 border border-red-200 p-4">
+          <p className="text-sm text-red-700 mb-2">
+            Deploy failed. You can retry below or edit the draft first.
+          </p>
+          {project.deployError && (
+            <p className="mt-2 font-mono text-xs text-red-700">
+              {project.deployError}
+            </p>
+          )}
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <DeployDraftButton projectId={id} />
+          </div>
         </div>
       )}
     </div>
