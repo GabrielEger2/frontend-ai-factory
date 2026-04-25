@@ -286,7 +286,6 @@ export const PipelineStateSchema = z.object({
   styleApprovalTaskToken: z.string().optional(),
   layoutApprovalTaskToken: z.string().optional(),
   desiredSections: z.array(z.string()).optional(),
-  excludedSections: z.array(z.string()).optional(),
   // brandToneKeywords (NOT toneKeywords) — avoids collision with ResearchOutputSchema.toneKeywords
   brandToneKeywords: z.array(z.string()).optional(),
   objectives: z.array(z.string()).optional(),

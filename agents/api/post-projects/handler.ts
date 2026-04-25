@@ -24,7 +24,6 @@ const CreateProjectSchema = z.object({
   // Expanded intake fields (all optional). brandToneKeywords (NOT toneKeywords)
   // — avoids collision with ResearchOutputSchema.toneKeywords.
   desiredSections: z.array(z.string()).optional(),
-  excludedSections: z.array(z.string()).optional(),
   brandToneKeywords: z.array(z.string()).optional(),
   objectives: z.array(z.string()).optional(),
   businessHours: z.string().optional(),
@@ -79,7 +78,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
           description: input.description,
           brandColor: input.brandColor,
           desiredSections: input.desiredSections,
-          excludedSections: input.excludedSections,
           brandToneKeywords: input.brandToneKeywords,
           objectives: input.objectives,
           businessHours: input.businessHours,
@@ -106,7 +104,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
           description: input.description,
           brandColor: input.brandColor,
           desiredSections: input.desiredSections,
-          excludedSections: input.excludedSections,
           brandToneKeywords: input.brandToneKeywords,
           objectives: input.objectives,
           businessHours: input.businessHours,

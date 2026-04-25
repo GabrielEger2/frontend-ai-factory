@@ -57,7 +57,6 @@ export const handler: SQSHandler = async (event) => {
             description: brief.description,
             brandColor: brief.brandColor ?? null,
             desiredSections: brief.desiredSections ?? null,
-            excludedSections: brief.excludedSections ?? null,
             brandToneKeywords: brief.brandToneKeywords ?? null,
             objectives: brief.objectives ?? null,
             businessHours: brief.businessHours ?? null,

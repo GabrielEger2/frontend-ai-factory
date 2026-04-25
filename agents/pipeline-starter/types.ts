@@ -14,7 +14,6 @@ export const ProjectBriefSchema = z.object({
   // Expanded intake fields (all optional for back-compat with in-flight projects).
   // brandToneKeywords (NOT toneKeywords) — avoids collision with ResearchOutputSchema.toneKeywords.
   desiredSections: z.array(z.string()).optional(),
-  excludedSections: z.array(z.string()).optional(),
   brandToneKeywords: z.array(z.string()).optional(),
   objectives: z.array(z.string()).optional(),
   businessHours: z.string().optional(),
