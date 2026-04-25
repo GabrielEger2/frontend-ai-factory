@@ -2,7 +2,13 @@
 
 import { useState, useTransition } from "react";
 import { approveStyle } from "@/lib/actions/approve-style";
-import type { StyleOutput, Palette } from "@/types/project";
+import type { StyleOutput, Palette, PaletteModes } from "@/types/project";
+
+const PALETTE_MODES: { mode: keyof PaletteModes; label: string }[] = [
+  { mode: "single", label: "Single" },
+  { mode: "dual", label: "Dual" },
+  { mode: "monochromatic", label: "Monochromatic" },
+];
 
 const STYLE_TAGS = [
   "modern",
@@ -69,6 +75,14 @@ export function StyleApprovalPanel({
     }));
   }
 
+  function switchPaletteMode(newMode: keyof PaletteModes) {
+    setStyle((prev) => ({
+      ...prev,
+      paletteMode: newMode,
+      palette: prev.paletteModes[newMode],
+    }));
+  }
+
   function updateFont(field: "heading" | "body", value: string) {
     setStyle((prev) => ({
       ...prev,
@@ -123,6 +137,31 @@ export function StyleApprovalPanel({
           ready.
         </p>
       </div>
+
+      {/* Palette Mode Toggle */}
+      <section className={sectionClasses}>
+        <h3 className="text-sm font-semibold text-slate-800">Palette Mode</h3>
+        <div className="flex flex-wrap gap-2">
+          {PALETTE_MODES.map(({ mode, label }) => {
+            const active = style.paletteMode === mode;
+            return (
+              <button
+                key={mode}
+                type="button"
+                aria-pressed={active}
+                onClick={() => switchPaletteMode(mode)}
+                className={
+                  active
+                    ? "rounded-md px-3 py-1.5 text-xs font-medium bg-slate-900 text-white transition-colors"
+                    : "rounded-md px-3 py-1.5 text-xs font-medium border border-slate-300 text-slate-600 hover:bg-slate-50 transition-colors"
+                }
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+      </section>
 
       {/* Palette Section */}
       <section className={sectionClasses}>
