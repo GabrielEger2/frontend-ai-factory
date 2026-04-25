@@ -7,6 +7,7 @@ import { StatusBadge } from "@/components/projects/StatusBadge";
 import { StatusPoller } from "@/components/projects/StatusPoller";
 import { StepCard } from "@/components/pipeline/StepCard";
 import { StyleApprovalPanel } from "@/components/pipeline/StyleApprovalPanel";
+import { LayoutApprovalPanel } from "@/components/pipeline/LayoutApprovalPanel";
 import { ResearchView } from "@/components/pipeline/views/ResearchView";
 import { StyleView } from "@/components/pipeline/views/StyleView";
 import { ComposerView } from "@/components/pipeline/views/ComposerView";
@@ -163,8 +164,19 @@ export default async function ProjectDetailPage({
                   <StyleView output={project.styleOutput} />
                 )}
 
-              {/* Composing step */}
+              {/* Composing step — show LayoutApprovalPanel when awaiting approval, otherwise ComposerView */}
               {step.status === "composing" &&
+                project.status === "awaiting_layout_approval" &&
+                project.composerOutput &&
+                project.styleOutput && (
+                  <LayoutApprovalPanel
+                    projectId={id}
+                    initialComposerOutput={project.composerOutput}
+                    styleOutput={project.styleOutput}
+                  />
+                )}
+              {step.status === "composing" &&
+                project.status !== "awaiting_layout_approval" &&
                 state === "completed" &&
                 project.composerOutput && (
                   <ComposerView output={project.composerOutput} />
