@@ -51,30 +51,33 @@ const DEFAULT_TYPOGRAPHY: Typography = {
  * URLs, and formatting without any LLM rewriting.
  *
  * This map enumerates which buyer-supplied PipelineState fields target
- * which component slots, per component ID. Used by `applyBuyerFieldOverrides`.
+ * which component slots, per component ID, and how each value is transformed
+ * before being written to the slot. Used by `applyBuyerFieldOverrides`.
+ *
+ * SYNC POINT: dashboard/src/lib/gap-detection.ts mirrors this map for the
+ * content-gap warning rendered on the Layout Approval panel. Update both
+ * files together when adding/removing components or slots.
  */
-const BUYER_FIELD_TO_SLOT: Record<
-  string,
-  Partial<{
-    phoneUrl: "phone";
-    emailUrl: "email";
-    addressText: "address";
-    hoursText: "businessHours";
-    socialLinks: "socialLinks";
-  }>
-> = {
+type SlotTransform = "tel" | "mailto" | "verbatim" | "social";
+
+interface SlotMapping {
+  field: keyof AssemblerInput;
+  transform: SlotTransform;
+}
+
+const BUYER_FIELD_TO_SLOT: Record<string, Record<string, SlotMapping>> = {
   "footer-reveal-01": {
-    phoneUrl: "phone",
-    emailUrl: "email",
-    addressText: "address",
-    hoursText: "businessHours",
-    socialLinks: "socialLinks",
+    phoneUrl: { field: "phone", transform: "tel" },
+    emailUrl: { field: "email", transform: "mailto" },
+    addressText: { field: "address", transform: "verbatim" },
+    hoursText: { field: "businessHours", transform: "verbatim" },
+    socialLinks: { field: "socialLinks", transform: "social" },
   },
-  "contact-form-01": {
-    phoneUrl: "phone",
-    emailUrl: "email",
-    addressText: "address",
-    hoursText: "businessHours",
+  "contact-map-info-01": {
+    address: { field: "address", transform: "verbatim" },
+    phone: { field: "phone", transform: "verbatim" },
+    email: { field: "email", transform: "verbatim" },
+    hours: { field: "businessHours", transform: "verbatim" },
   },
 };
 
@@ -82,11 +85,12 @@ const BUYER_FIELD_TO_SLOT: Record<
  * Returns a HumanizerOutput with buyer-supplied contact info deterministically
  * merged into footer/contact component slots.
  *
- * - `phone` becomes `tel:${phone}` on the matching `phoneUrl` slot
- * - `email` becomes `mailto:${email}` on the matching `emailUrl` slot
- * - `address`, `businessHours` are passed through verbatim
- * - `socialLinks` is reshaped from `{platform,url}[]` (PipelineState shape)
- *   to `{network,url}[]` (footer-reveal-01 slot shape).
+ * Per-slot `transform` controls how the raw buyer value is reshaped:
+ * - `tel` — wraps a string as `tel:<value>` (used for URL-typed slots)
+ * - `mailto` — wraps a string as `mailto:<value>` (used for URL-typed slots)
+ * - `verbatim` — passes the raw value through unchanged (plain-text slots)
+ * - `social` — reshapes `{platform,url}[]` (PipelineState shape) to
+ *   `{network,url}[]` (footer-reveal-01 slot shape).
  *
  * Missing buyer fields are skipped — the existing humanizer-supplied or
  * component-default value remains untouched (component-default fallback is
@@ -96,28 +100,41 @@ function applyBuyerFieldOverrides(
   humanizerOutput: HumanizerOutput,
   input: AssemblerInput,
 ): HumanizerOutput {
-  const sources: Record<string, unknown> = {
-    phone: input.phone ? `tel:${input.phone}` : undefined,
-    email: input.email ? `mailto:${input.email}` : undefined,
-    address: input.address,
-    businessHours: input.businessHours,
-    socialLinks: input.socialLinks?.map((s) => ({
-      network: s.platform,
-      url: s.url,
-    })),
-  };
-
   return {
     components: humanizerOutput.components.map((component) => {
-      const mapping = BUYER_FIELD_TO_SLOT[component.componentId];
-      if (!mapping) return component;
+      const componentMapping = BUYER_FIELD_TO_SLOT[component.componentId];
+      if (!componentMapping) return component;
 
       const overrides: Record<string, unknown> = {};
-      for (const [slotName, fieldName] of Object.entries(mapping)) {
-        if (!fieldName) continue;
-        const value = sources[fieldName];
-        if (value !== undefined) {
-          overrides[slotName] = value;
+      for (const [slotName, mapping] of Object.entries(componentMapping)) {
+        const rawValue = input[mapping.field];
+        if (rawValue === undefined || rawValue === null) continue;
+
+        let transformed: unknown;
+        switch (mapping.transform) {
+          case "tel":
+            transformed =
+              typeof rawValue === "string" ? `tel:${rawValue}` : undefined;
+            break;
+          case "mailto":
+            transformed =
+              typeof rawValue === "string" ? `mailto:${rawValue}` : undefined;
+            break;
+          case "social":
+            transformed = Array.isArray(rawValue)
+              ? (rawValue as { platform: string; url: string }[]).map((s) => ({
+                  network: s.platform,
+                  url: s.url,
+                }))
+              : undefined;
+            break;
+          case "verbatim":
+          default:
+            transformed = rawValue;
+        }
+
+        if (transformed !== undefined) {
+          overrides[slotName] = transformed;
         }
       }
 
