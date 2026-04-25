@@ -17,13 +17,36 @@ export interface CarouselSwipeItem {
 
 export interface CarouselSwipeProps {
   /** Array of images to display in the carousel */
-  items: CarouselSwipeItem[];
+  items?: CarouselSwipeItem[];
   /** Auto-advance interval in milliseconds. Set to 0 to disable. Defaults to 10000 */
   autoAdvanceMs?: number;
   /** Minimum drag distance (in px) to trigger a slide change. Defaults to 50 */
   dragBuffer?: number;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_CAROUSEL_SWIPE_ITEMS: CarouselSwipeItem[] = [
+  {
+    image: "https://picsum.photos/seed/carouselswipe-slide-0/1280/720",
+    imageAlt: "Modern open office with natural light",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselswipe-slide-1/1280/720",
+    imageAlt: "Team collaborating on a whiteboard",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselswipe-slide-2/1280/720",
+    imageAlt: "Close-up of laptop and notebook on a desk",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselswipe-slide-3/1280/720",
+    imageAlt: "Skyline view from a rooftop terrace",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -126,7 +149,7 @@ function GradientEdges() {
  * keyboard navigation, and optional auto-advance.
  */
 export default function CarouselSwipe({
-  items,
+  items = DEFAULT_CAROUSEL_SWIPE_ITEMS,
   autoAdvanceMs = 10000,
   dragBuffer = 50,
   className,

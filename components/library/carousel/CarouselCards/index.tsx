@@ -26,13 +26,52 @@ export interface CarouselCardsProps {
   /** Section headline */
   headline: string;
   /** Array of card items */
-  cards: CarouselCardItem[];
+  cards?: CarouselCardItem[];
   /** Fixed card width in pixels. Defaults to 350 */
   cardWidth?: number;
   /** Gap between cards in pixels. Defaults to 20 */
   cardGap?: number;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_CAROUSEL_CARDS: CarouselCardItem[] = [
+  {
+    image: "https://picsum.photos/seed/carouselcards-card-0/640/400",
+    imageAlt: "Designer reviewing mockups on a tablet",
+    tag: "Design",
+    title: "Brand systems that scale",
+    description:
+      "Build a visual language that holds together across every channel — without redoing the work each time.",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselcards-card-1/640/400",
+    imageAlt: "Developers pair-programming on dual monitors",
+    tag: "Engineering",
+    title: "Ship features, not tickets",
+    description:
+      "We pair with your engineers to clear backlogs and rebuild the foundations that keep slowing things down.",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselcards-card-2/640/400",
+    imageAlt: "Marketer analyzing dashboard charts",
+    tag: "Growth",
+    title: "Marketing that compounds",
+    description:
+      "Channels, content, and conversion experiments stitched into one engine — measured weekly, refined monthly.",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselcards-card-3/640/400",
+    imageAlt: "Strategist mapping a customer journey",
+    tag: "Strategy",
+    title: "From positioning to plan",
+    description:
+      "We turn fuzzy ambitions into a 12-month roadmap your team will actually want to ship.",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Breakpoints                                                        */
@@ -135,7 +174,7 @@ function Card({
  */
 export default function CarouselCards({
   headline,
-  cards,
+  cards = DEFAULT_CAROUSEL_CARDS,
   cardWidth = 350,
   cardGap = 20,
   className,
