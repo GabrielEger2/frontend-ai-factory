@@ -35,7 +35,7 @@ export interface StickyCardsProps {
   /** Optional section sub-headline for context */
   subheadline?: string;
   /** Feature cards — each becomes a full-viewport sticky section */
-  cards: FeatureCard[];
+  cards?: FeatureCard[];
   /** Site-wide style kit threaded by the Assembler */
   styleKit?: StyleKit;
   /** Height of each card section in px — controls scroll pacing. Defaults to 600 */
@@ -44,6 +44,34 @@ export interface StickyCardsProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_STICKY_CARDS: FeatureCard[] = [
+  {
+    title: "Define the problem worth solving",
+    description:
+      "Most teams skip this step and pay for it later. We start with a sharp written brief everyone in the room agrees with.",
+    ctaText: "Read the framework",
+    ctaUrl: "#",
+  },
+  {
+    title: "Prototype before you commit",
+    description:
+      "A clickable prototype, in front of real users, in under two weeks. The feedback rewrites the roadmap — every time.",
+    ctaText: "See an example",
+    ctaUrl: "#",
+  },
+  {
+    title: "Ship, measure, then ship again",
+    description:
+      "We instrument the launch from day one and meet weekly to decide what stays, what goes, and what gets doubled down on.",
+    ctaText: "Book a working session",
+    ctaUrl: "#",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -203,7 +231,7 @@ function SectionHeader({
 export default function StickyCards({
   headline,
   subheadline,
-  cards,
+  cards = DEFAULT_STICKY_CARDS,
   styleKit,
   cardHeight = DEFAULT_CARD_HEIGHT,
   purpose,
