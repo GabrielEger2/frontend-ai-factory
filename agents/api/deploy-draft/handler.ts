@@ -3,35 +3,34 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
   DynamoDBDocumentClient,
   GetCommand,
-  TransactWriteCommand,
+  UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
 import * as zlib from "zlib";
 
-import type {
-  ComposerOutput,
-  ProjectItem,
-  StyleOutput,
-} from "../../shared/types";
+import type { ProjectItem } from "../../shared/types";
 import { generateSiteFiles } from "../../assembler/core";
 import { buildTarBuffer } from "../../shared/tar-utils";
 import {
   deployToVercel,
   getVercelToken,
-  pollVercelDeployment,
   type VercelFile,
 } from "../../shared/vercel-deploy";
 import { requireSellerId } from "../shared/seller-guard";
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 const s3 = new S3Client({});
+const lambda = new LambdaClient({});
 
 /**
- * POST /projects/{id}/deploy — assemble workingDraft, upload to S3,
- * deploy to Vercel, snapshot as VERSION#<n> item, and promote draft
- * into frozen project outputs.
+ * POST /projects/{id}/deploy — fast async kickoff. Assembles workingDraft,
+ * uploads to S3, kicks off the Vercel deploy, flips status to "deploying",
+ * and asynchronously invokes the deploy-completer Lambda. The completer
+ * polls Vercel and writes the terminal status (deployed / deploy_failed).
  *
- * Response 200: { versionNumber, previewUrl, deployedAt }
+ * Response 202: { status: "deploying", previewUrl, deploymentId }
+ * Response 202: { status: "already_deploying" } when idempotent
  * Response 400: no workingDraft / bad state
  * Response 404: project not found or ownership mismatch
  * Response 500: configuration or Vercel/S3/DDB error
@@ -40,8 +39,14 @@ export const handler: APIGatewayProxyHandler = async (event) => {
   const tableName = process.env.PROJECTS_TABLE_NAME;
   const bucketName = process.env.PIPELINE_BUCKET_NAME;
   const vercelTokenSsmPath = process.env.VERCEL_TOKEN_SSM_PATH;
+  const completerFunctionName = process.env.DEPLOY_COMPLETER_FUNCTION_NAME;
 
-  if (!tableName || !bucketName || !vercelTokenSsmPath) {
+  if (
+    !tableName ||
+    !bucketName ||
+    !vercelTokenSsmPath ||
+    !completerFunctionName
+  ) {
     return {
       statusCode: 500,
       headers: { "Content-Type": "application/json" },
@@ -89,6 +94,14 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         statusCode: 404,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ error: "Project not found" }),
+      };
+    }
+
+    if (item.status === "deploying") {
+      return {
+        statusCode: 202,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "already_deploying" }),
       };
     }
 
@@ -184,116 +197,67 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     );
     const previewUrl = `https://${deployment.url}`;
 
-    await pollVercelDeployment(vercelToken, deployment.id);
-
-    /* ---- 7. Persist version snapshot + promote draft ---- */
-    console.log(
-      JSON.stringify({
-        stage: "persisting",
-        projectId,
-        versionNumber: nextVersionNumber,
-      }),
-    );
-
+    /* ---- 7. Flip status to deploying + fire-and-forget completer ---- */
     const now = new Date().toISOString();
 
-    // Reconstruct full ComposerOutput for version snapshot. workingDraft stores
-    // only the selected ComposerLayout; the version item keeps a full
-    // single-layout ComposerOutput so revert can restore cleanly.
-    const versionBlueprint: ComposerOutput = {
-      layouts: [workingDraft.blueprint],
-      selectedLayout: 0,
-      source: item.composerOutput?.source ?? "fallback",
-      candidateCount: item.composerOutput?.candidateCount,
-      avgScore: item.composerOutput?.avgScore ?? null,
-    };
-
-    // Merge new palette/typography/density into the frozen styleOutput,
-    // preserving prior mood/style arrays and paletteSource.
-    const promotedStyleOutput: StyleOutput = {
-      palette: workingDraft.palette,
-      typography: workingDraft.typography,
-      density: workingDraft.density,
-      mood: item.styleOutput?.mood ?? [],
-      style: item.styleOutput?.style ?? [],
-      paletteMode: item.styleOutput?.paletteMode ?? "single",
-      paletteModes: item.styleOutput?.paletteModes ?? {
-        single: workingDraft.palette,
-        dual: workingDraft.palette,
-        monochromatic: workingDraft.palette,
-      },
-      paletteSource: item.styleOutput?.paletteSource,
-      paletteSuggestions: item.styleOutput?.paletteSuggestions,
-    };
-
-    const versionItem = {
-      pk: `PROJECT#${projectId}`,
-      sk: versionSk,
-      versionNumber: nextVersionNumber,
-      createdAt: now,
-      deployedAt: now,
-      blueprint: versionBlueprint,
-      contentSlots: workingDraft.contentSlots,
-      palette: workingDraft.palette,
-      typography: workingDraft.typography,
-      density: workingDraft.density,
-      assembledTarGzKey: versionedKey,
-      vercelDeploymentId: deployment.id,
-    };
-
+    // Flip status to deploying immediately so dashboard surfaces in-progress state
     await ddb.send(
-      new TransactWriteCommand({
-        TransactItems: [
-          {
-            Put: {
-              TableName: tableName,
-              Item: versionItem,
-              ConditionExpression:
-                "attribute_not_exists(pk) AND attribute_not_exists(sk)",
-            },
-          },
-          {
-            Update: {
-              TableName: tableName,
-              Key: {
-                pk: `PROJECT#${projectId}`,
-                sk: `PROJECT#${projectId}`,
-              },
-              UpdateExpression:
-                "SET composerOutput = :co, humanizerOutput = :ho, styleOutput = :so, currentVersionNumber = :v, previewUrl = :url, #st = :status, updatedAt = :now REMOVE workingDraft",
-              ExpressionAttributeNames: { "#st": "status" },
-              ExpressionAttributeValues: {
-                ":co": versionBlueprint,
-                ":ho": workingDraft.contentSlots,
-                ":so": promotedStyleOutput,
-                ":v": nextVersionNumber,
-                ":url": previewUrl,
-                ":status": "deployed",
-                ":now": now,
-              },
-            },
-          },
-        ],
+      new UpdateCommand({
+        TableName: tableName,
+        Key: {
+          pk: `PROJECT#${projectId}`,
+          sk: `PROJECT#${projectId}`,
+        },
+        UpdateExpression:
+          "SET #st = :deploying, vercelDeploymentId = :did, vercelPreviewUrl = :purl, updatedAt = :now",
+        ExpressionAttributeNames: { "#st": "status" },
+        ExpressionAttributeValues: {
+          ":deploying": "deploying",
+          ":did": deployment.id,
+          ":purl": previewUrl,
+          ":now": now,
+        },
+      }),
+    );
+
+    // Fire-and-forget: completer polls Vercel and writes terminal state
+    const completerPayload = {
+      projectId,
+      deploymentId: deployment.id,
+      previewUrl,
+      nextVersionNumber,
+      versionSk,
+      versionedKey,
+      currentKey,
+      workingDraft,
+      composerOutput: item.composerOutput ?? null,
+      styleOutput: item.styleOutput ?? null,
+    };
+
+    await lambda.send(
+      new InvokeCommand({
+        FunctionName: completerFunctionName,
+        InvocationType: "Event",
+        Payload: Buffer.from(JSON.stringify(completerPayload)),
       }),
     );
 
     console.log(
       JSON.stringify({
-        message: "Deploy from draft complete",
+        message: "Deploy kickoff complete",
         projectId,
-        versionNumber: nextVersionNumber,
-        previewUrl,
         deploymentId: deployment.id,
+        previewUrl,
       }),
     );
 
     return {
-      statusCode: 200,
+      statusCode: 202,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        versionNumber: nextVersionNumber,
+        status: "deploying",
         previewUrl,
-        deployedAt: now,
+        deploymentId: deployment.id,
       }),
     };
   } catch (err) {
