@@ -10,6 +10,7 @@ export const ProjectBriefSchema = z.object({
   companyName: z.string(),
   description: z.string(),
   sellerId: z.string(),
+  brandColor: z.string().optional(),
 });
 
 export type ProjectBrief = z.infer<typeof ProjectBriefSchema>;
