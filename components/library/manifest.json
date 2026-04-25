@@ -1,0 +1,2931 @@
+[
+  {
+    "id": "carousel-cards-01",
+    "name": "Card Carousel",
+    "category": "carousel",
+    "purpose": [
+      "features",
+      "products",
+      "testimonials"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy"
+    ],
+    "layout": "stacked",
+    "density": "medium",
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 60
+      },
+      {
+        "name": "cards",
+        "type": "list",
+        "maxItems": 12,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "16:9"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "tag",
+              "type": "text",
+              "maxLength": 30
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 80
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 160
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "scroll",
+    "pairsWell": [
+      "cta-banner-01"
+    ],
+    "pairsPoorly": [
+      "carousel-swipe-01"
+    ]
+  },
+  {
+    "id": "carousel-swipe-01",
+    "name": "Swipe Carousel",
+    "category": "carousel",
+    "purpose": [
+      "features",
+      "products",
+      "testimonials"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "minimal"
+    ],
+    "mood": [
+      "professional",
+      "calm"
+    ],
+    "layout": "centered",
+    "density": "low",
+    "slots": [
+      {
+        "name": "items",
+        "type": "list",
+        "maxItems": 10,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "16:9"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "scroll",
+    "pairsWell": [],
+    "pairsPoorly": [
+      "carousel-cards-01"
+    ]
+  },
+  {
+    "id": "contact-form-01",
+    "name": "Contact Form",
+    "category": "contact",
+    "purpose": [
+      "contact"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "minimal"
+    ],
+    "mood": [
+      "professional",
+      "friendly"
+    ],
+    "layout": "centered",
+    "density": "medium",
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 160
+      },
+      {
+        "name": "submitText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "submitVariant",
+        "type": "text",
+        "optional": true
+      },
+      {
+        "name": "submitSize",
+        "type": "text",
+        "optional": true
+      },
+      {
+        "name": "fields",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "name",
+              "type": "text",
+              "maxLength": 30
+            },
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 50
+            },
+            {
+              "name": "type",
+              "type": "text",
+              "maxLength": 10
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "faq-accordion-01",
+      "cta-banner-01",
+      "footer-reveal-01"
+    ],
+    "pairsPoorly": [
+      "contact-map-info-01"
+    ]
+  },
+  {
+    "id": "contact-map-info-01",
+    "name": "Contact Map + Info",
+    "category": "contact",
+    "purpose": [
+      "contact"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 160
+      },
+      {
+        "name": "address",
+        "type": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "phone",
+        "type": "text",
+        "maxLength": 20
+      },
+      {
+        "name": "email",
+        "type": "text",
+        "maxLength": 60
+      },
+      {
+        "name": "hours",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "mapEmbedUrl",
+        "type": "url",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "cta-inline-01",
+      "faq-minimal-01",
+      "footer-reveal-01"
+    ],
+    "pairsPoorly": [
+      "contact-form-01"
+    ]
+  },
+  {
+    "id": "cta-banner-01",
+    "name": "CTA Banner",
+    "category": "cta",
+    "purpose": [
+      "cta"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "bold"
+    ],
+    "mood": [
+      "energetic",
+      "professional"
+    ],
+    "layout": "centered",
+    "density": "low",
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 160
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaUrl",
+        "type": "url",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "footer-reveal-01"
+    ],
+    "pairsPoorly": [
+      "cta-inline-01",
+      "cta-floating-01"
+    ]
+  },
+  {
+    "id": "cta-floating-01",
+    "name": "CTA Floating",
+    "category": "cta",
+    "purpose": [
+      "cta"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "bold"
+    ],
+    "mood": [
+      "energetic",
+      "friendly"
+    ],
+    "layout": "floating",
+    "density": "low",
+    "slots": [
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "preserve",
+    "pairsWell": [
+      "hero-geometric-01",
+      "hero-split-image-01"
+    ],
+    "pairsPoorly": [
+      "cta-banner-01",
+      "cta-inline-01"
+    ]
+  },
+  {
+    "id": "cta-inline-01",
+    "name": "CTA Inline",
+    "category": "cta",
+    "purpose": [
+      "cta"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "minimal",
+      "modern"
+    ],
+    "mood": [
+      "professional",
+      "friendly"
+    ],
+    "layout": "split",
+    "density": "low",
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 60
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-parallaxcontent-01",
+      "faq-accordion-01",
+      "footer-reveal-01"
+    ],
+    "pairsPoorly": [
+      "cta-banner-01",
+      "cta-floating-01"
+    ]
+  },
+  {
+    "id": "faq-accordion-01",
+    "name": "FAQ Accordion",
+    "category": "faq",
+    "purpose": [
+      "faq"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "minimal"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy"
+    ],
+    "layout": "centered",
+    "density": "medium",
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 160
+      },
+      {
+        "name": "items",
+        "type": "list",
+        "maxItems": 10,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "question",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "answer",
+              "type": "text",
+              "maxLength": 500
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "cta-banner-01",
+      "contact-form-01"
+    ],
+    "pairsPoorly": [
+      "faq-minimal-01",
+      "faq-solutions-01"
+    ]
+  },
+  {
+    "id": "faq-minimal-01",
+    "name": "FAQ Minimal",
+    "category": "faq",
+    "purpose": [
+      "faq"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "minimal",
+      "editorial"
+    ],
+    "mood": [
+      "calm",
+      "professional"
+    ],
+    "layout": "centered",
+    "density": "low",
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 160
+      },
+      {
+        "name": "items",
+        "type": "list",
+        "maxItems": 8,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "question",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "answer",
+              "type": "text",
+              "maxLength": 500
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "cta-banner-01",
+      "contact-form-01"
+    ],
+    "pairsPoorly": [
+      "faq-accordion-01",
+      "faq-solutions-01"
+    ]
+  },
+  {
+    "id": "faq-solutions-01",
+    "name": "FAQ Solutions",
+    "category": "faq",
+    "purpose": [
+      "faq"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "bold"
+    ],
+    "mood": [
+      "professional",
+      "energetic"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 160
+      },
+      {
+        "name": "items",
+        "type": "list",
+        "maxItems": 5,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 300
+            },
+            {
+              "name": "ctaText",
+              "type": "text",
+              "maxLength": 30
+            },
+            {
+              "name": "ctaUrl",
+              "type": "url"
+            },
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "4:3"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            }
+          ]
+        }
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "cta-banner-01"
+    ],
+    "pairsPoorly": [
+      "faq-accordion-01",
+      "faq-minimal-01"
+    ]
+  },
+  {
+    "id": "footer-reveal-01",
+    "name": "Sticky Reveal Footer",
+    "category": "footers",
+    "purpose": [
+      "footer"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "editorial"
+    ],
+    "mood": [
+      "professional",
+      "elegant"
+    ],
+    "layout": "multi-column",
+    "density": "medium",
+    "slots": [
+      {
+        "name": "logo",
+        "type": "image",
+        "aspectRatio": "auto",
+        "optional": true
+      },
+      {
+        "name": "whatsappUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "whatsappText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "phoneUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "phoneText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "emailUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "emailText",
+        "type": "text",
+        "maxLength": 60
+      },
+      {
+        "name": "addressText",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "addressMapsUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "navColumns",
+        "type": "list",
+        "maxItems": 4,
+        "itemSchema": {
+          "title": {
+            "type": "text",
+            "maxLength": 30
+          },
+          "links": {
+            "type": "list",
+            "maxItems": 6,
+            "itemSchema": {
+              "text": {
+                "type": "text",
+                "maxLength": 30
+              },
+              "href": {
+                "type": "url"
+              }
+            }
+          }
+        }
+      },
+      {
+        "name": "socialLinks",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "network": {
+            "type": "text",
+            "maxLength": 20,
+            "enum": [
+              "instagram",
+              "linkedin",
+              "facebook",
+              "whatsapp",
+              "twitter",
+              "youtube",
+              "tiktok",
+              "google",
+              "pinterest",
+              "telegram"
+            ]
+          },
+          "url": {
+            "type": "url"
+          },
+          "label": {
+            "type": "text",
+            "maxLength": 60
+          }
+        }
+      },
+      {
+        "name": "companyName",
+        "type": "text",
+        "maxLength": 60
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow"
+        ]
+      },
+      {
+        "name": "height",
+        "type": "number",
+        "optional": true,
+        "enum": [
+          350,
+          400,
+          450,
+          500,
+          550
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "cta-banner-01",
+      "faq-accordion-01",
+      "contact-form-01"
+    ],
+    "pairsPoorly": []
+  },
+  {
+    "id": "hero-geometric-01",
+    "name": "Geometric Hero",
+    "category": "hero",
+    "purpose": [
+      "hero"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": true,
+      "textDecoration": true,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "minimal",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "calm"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "headlineRotatingWords",
+        "type": "list",
+        "optional": true,
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "text",
+          "maxLength": 40
+        }
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "secondaryCtaText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "secondaryCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow"
+        ]
+      },
+      {
+        "name": "secondaryCtaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "image",
+        "type": "image",
+        "aspectRatio": "4:5",
+        "optional": true
+      },
+      {
+        "name": "imageAlt",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "socialProofAvatars",
+        "type": "list",
+        "optional": true,
+        "maxItems": 5,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "1:1"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 60
+            }
+          ]
+        }
+      },
+      {
+        "name": "socialProofLabel",
+        "type": "text",
+        "optional": true,
+        "maxLength": 60
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-cardgrid-01",
+      "cta-banner-01",
+      "layout-infinitescroll-01"
+    ],
+    "pairsPoorly": [
+      "hero-split-image-01",
+      "hero-parallax-images-01"
+    ],
+    "variants": [
+      {
+        "id": "hero-geometric-01-bold",
+        "name": "Bold Dark",
+        "density": "high",
+        "colorMode": "dark",
+        "styleOverrides": [
+          "bold",
+          "corporate"
+        ]
+      },
+      {
+        "id": "hero-geometric-01-minimal",
+        "name": "Minimal Light",
+        "density": "low",
+        "colorMode": "light",
+        "styleOverrides": [
+          "minimal",
+          "modern"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hero-parallax-images-01",
+    "name": "Parallax Images Hero",
+    "category": "hero",
+    "purpose": [
+      "hero"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": true,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "editorial",
+      "bold"
+    ],
+    "mood": [
+      "energetic",
+      "elegant",
+      "professional"
+    ],
+    "layout": "centered",
+    "density": "high",
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "headlineRotatingWords",
+        "type": "list",
+        "optional": true,
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "text",
+          "maxLength": 40
+        }
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "secondaryCtaText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "secondaryCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow"
+        ]
+      },
+      {
+        "name": "secondaryCtaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "centerImage",
+        "type": "image",
+        "aspectRatio": "16:9",
+        "optional": true
+      },
+      {
+        "name": "centerImageAlt",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "parallaxImages",
+        "type": "list",
+        "maxItems": 8,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "src",
+              "type": "image",
+              "aspectRatio": "16:9"
+            },
+            {
+              "name": "alt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "start",
+              "type": "number",
+              "optional": true
+            },
+            {
+              "name": "end",
+              "type": "number",
+              "optional": true
+            },
+            {
+              "name": "widthClass",
+              "type": "text",
+              "optional": true,
+              "maxLength": 20
+            },
+            {
+              "name": "alignClass",
+              "type": "text",
+              "optional": true,
+              "maxLength": 20
+            }
+          ]
+        }
+      },
+      {
+        "name": "scrollHeight",
+        "type": "number",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-cardgrid-01",
+      "cta-banner-01",
+      "layout-infinitescroll-01"
+    ],
+    "pairsPoorly": [
+      "hero-shuffle-cards-01",
+      "hero-split-image-01"
+    ],
+    "variants": [
+      {
+        "id": "hero-parallax-images-01-editorial",
+        "name": "Editorial Dark",
+        "density": "high",
+        "colorMode": "dark",
+        "styleOverrides": [
+          "editorial",
+          "bold"
+        ]
+      },
+      {
+        "id": "hero-parallax-images-01-airy",
+        "name": "Airy Light",
+        "density": "low",
+        "colorMode": "light",
+        "styleOverrides": [
+          "modern",
+          "editorial"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hero-shuffle-cards-01",
+    "name": "Shuffle Cards Hero",
+    "category": "hero",
+    "purpose": [
+      "hero"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": true,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "bold"
+    ],
+    "mood": [
+      "energetic",
+      "professional"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "headlineRotatingWords",
+        "type": "list",
+        "optional": true,
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "text",
+          "maxLength": 40
+        }
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline"
+        ]
+      },
+      {
+        "name": "emailPlaceholder",
+        "type": "text",
+        "optional": true,
+        "maxLength": 50
+      },
+      {
+        "name": "cards",
+        "type": "list",
+        "maxItems": 3,
+        "itemSchema": {
+          "image": {
+            "type": "image",
+            "aspectRatio": "1:1"
+          },
+          "imageAlt": {
+            "type": "text",
+            "maxLength": 120
+          },
+          "quote": {
+            "type": "text",
+            "maxLength": 200
+          },
+          "author": {
+            "type": "text",
+            "maxLength": 60
+          }
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-cardgrid-01",
+      "cta-banner-01",
+      "layout-infinitescroll-01"
+    ],
+    "pairsPoorly": [],
+    "variants": [
+      {
+        "id": "hero-shuffle-cards-01-dense",
+        "name": "Dense Dark",
+        "density": "high",
+        "colorMode": "dark",
+        "styleOverrides": [
+          "bold",
+          "modern"
+        ]
+      },
+      {
+        "id": "hero-shuffle-cards-01-airy",
+        "name": "Airy Light",
+        "density": "low",
+        "colorMode": "light",
+        "styleOverrides": [
+          "modern",
+          "minimal"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hero-split-image-01",
+    "name": "Split Image Hero",
+    "category": "hero",
+    "purpose": [
+      "hero"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": true,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "editorial"
+    ],
+    "mood": [
+      "professional",
+      "elegant"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "headlineAccent",
+        "type": "text",
+        "optional": true,
+        "maxLength": 40
+      },
+      {
+        "name": "headlineRotatingWords",
+        "type": "list",
+        "optional": true,
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "text",
+          "maxLength": 40
+        }
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "secondaryCtaText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "secondaryCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow"
+        ]
+      },
+      {
+        "name": "secondaryCtaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "whatsappUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "whatsappLabel",
+        "type": "text",
+        "optional": true,
+        "maxLength": 40
+      },
+      {
+        "name": "image",
+        "type": "image",
+        "aspectRatio": "1:1",
+        "optional": true
+      },
+      {
+        "name": "imageAlt",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "badgeHeadline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 40
+      },
+      {
+        "name": "badgeDescription",
+        "type": "text",
+        "optional": true,
+        "maxLength": 100
+      },
+      {
+        "name": "rotatingBadgeText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 60
+      },
+      {
+        "name": "featuredItems",
+        "type": "list",
+        "optional": true,
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "4:3"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 80
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 40
+            },
+            {
+              "name": "price",
+              "type": "text",
+              "optional": true,
+              "maxLength": 20
+            },
+            {
+              "name": "discountPrice",
+              "type": "text",
+              "optional": true,
+              "maxLength": 20
+            }
+          ]
+        }
+      },
+      {
+        "name": "featuredItemsLabel",
+        "type": "text",
+        "optional": true,
+        "maxLength": 40
+      },
+      {
+        "name": "featuredItemsLinkText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "featuredItemsLinkUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "gridBackground",
+        "type": "boolean",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-cardgrid-01",
+      "cta-banner-01",
+      "layout-infinitescroll-01"
+    ],
+    "pairsPoorly": [
+      "hero-shuffle-cards-01"
+    ],
+    "variants": [
+      {
+        "id": "hero-split-image-01-compact",
+        "name": "Compact Dark",
+        "density": "high",
+        "colorMode": "dark",
+        "styleOverrides": [
+          "bold",
+          "corporate"
+        ]
+      },
+      {
+        "id": "hero-split-image-01-airy",
+        "name": "Airy Light",
+        "density": "low",
+        "colorMode": "light",
+        "styleOverrides": [
+          "minimal",
+          "editorial"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "layout-cardgrid-01",
+    "name": "Card Grid",
+    "category": "layout/grid",
+    "style": [
+      "modern",
+      "bold",
+      "corporate",
+      "playful"
+    ],
+    "mood": [
+      "professional",
+      "energetic",
+      "friendly",
+      "trustworthy"
+    ],
+    "layout": "grid",
+    "density": "high",
+    "purpose": [
+      "features",
+      "products",
+      "team",
+      "services"
+    ],
+    "acceptsStyleKit": {
+      "card": true,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80,
+        "optional": true
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 160,
+        "optional": true
+      },
+      {
+        "name": "columns",
+        "type": "number",
+        "enum": [
+          2,
+          3,
+          4
+        ],
+        "optional": true
+      },
+      {
+        "name": "cards",
+        "type": "list",
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "16:9"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 80
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 200
+            },
+            {
+              "name": "ctaText",
+              "type": "text",
+              "maxLength": 30,
+              "optional": true
+            },
+            {
+              "name": "ctaUrl",
+              "type": "url",
+              "optional": true
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-simplegrid-01",
+      "layout-stickycards-01",
+      "hero-geometric-01"
+    ],
+    "pairsPoorly": [
+      "layout-staggerfan-01"
+    ]
+  },
+  {
+    "id": "layout-simplegrid-01",
+    "name": "Simple Grid",
+    "category": "layout/grid",
+    "style": [
+      "modern",
+      "corporate",
+      "minimal"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "calm"
+    ],
+    "layout": "grid",
+    "density": "medium",
+    "purpose": [
+      "features",
+      "services",
+      "benefits",
+      "process"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "slots": [
+      {
+        "name": "label",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "features",
+        "type": "list",
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 200
+            },
+            {
+              "name": "ctaText",
+              "type": "text",
+              "maxLength": 30,
+              "optional": true
+            },
+            {
+              "name": "ctaUrl",
+              "type": "url",
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "columns",
+        "type": "number",
+        "enum": [
+          2,
+          3,
+          4
+        ],
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-cardgrid-01",
+      "layout-imagetext-01",
+      "hero-split-image-01"
+    ],
+    "pairsPoorly": [
+      "layout-simplegrid-01"
+    ]
+  },
+  {
+    "id": "layout-staggerfan-01",
+    "name": "Stagger Fan",
+    "category": "layout/grid",
+    "style": [
+      "bold",
+      "playful"
+    ],
+    "mood": [
+      "energetic",
+      "fun"
+    ],
+    "layout": "centered",
+    "density": "medium",
+    "purpose": [
+      "testimonials"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "slots": [
+      {
+        "name": "testimonials",
+        "type": "list",
+        "maxItems": 12,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "3:4"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "name",
+              "type": "text",
+              "maxLength": 40
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "quote",
+              "type": "text",
+              "maxLength": 200
+            }
+          ]
+        }
+      },
+      {
+        "name": "sectionHeight",
+        "type": "number",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "scroll",
+    "pairsWell": [
+      "hero-geometric-01",
+      "hero-parallax-images-01",
+      "layout-cardgrid-01",
+      "cta-banner-01"
+    ],
+    "pairsPoorly": [
+      "layout-infinitescroll-01",
+      "layout-stackedsplit-01"
+    ]
+  },
+  {
+    "id": "layout-infinitescroll-01",
+    "name": "Infinite Scroll",
+    "category": "layout/scroll",
+    "style": [
+      "modern",
+      "bold"
+    ],
+    "mood": [
+      "energetic",
+      "trustworthy"
+    ],
+    "layout": "stacked",
+    "density": "high",
+    "purpose": [
+      "testimonials"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "rows",
+        "type": "list",
+        "maxItems": 3,
+        "itemSchema": {
+          "type": "list",
+          "maxItems": 8,
+          "itemSchema": {
+            "type": "object",
+            "fields": [
+              {
+                "name": "image",
+                "type": "image",
+                "aspectRatio": "1:1"
+              },
+              {
+                "name": "imageAlt",
+                "type": "text",
+                "maxLength": 120
+              },
+              {
+                "name": "name",
+                "type": "text",
+                "maxLength": 40
+              },
+              {
+                "name": "title",
+                "type": "text",
+                "maxLength": 60
+              },
+              {
+                "name": "quote",
+                "type": "text",
+                "maxLength": 200
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "mobileBehavior": "scroll",
+    "pairsWell": [
+      "hero-geometric-01",
+      "hero-split-image-01",
+      "cta-banner-01",
+      "layout-cardgrid-01"
+    ],
+    "pairsPoorly": [
+      "layout-stackedsplit-01",
+      "layout-staggerfan-01"
+    ]
+  },
+  {
+    "id": "layout-parallaxcontent-01",
+    "name": "Parallax Content",
+    "category": "layout/scroll",
+    "style": [
+      "modern",
+      "editorial",
+      "bold"
+    ],
+    "mood": [
+      "professional",
+      "elegant",
+      "energetic"
+    ],
+    "layout": "stacked",
+    "density": "low",
+    "purpose": [
+      "features",
+      "about",
+      "services"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "slots": [
+      {
+        "name": "sections",
+        "type": "list",
+        "maxItems": 5,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "16:9"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 40
+            },
+            {
+              "name": "heading",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "content",
+              "type": "object",
+              "fields": [
+                {
+                  "name": "contentHeadline",
+                  "type": "text",
+                  "maxLength": 80
+                },
+                {
+                  "name": "contentDescription",
+                  "type": "text",
+                  "maxLength": 300
+                },
+                {
+                  "name": "ctaText",
+                  "type": "text",
+                  "maxLength": 30
+                },
+                {
+                  "name": "ctaUrl",
+                  "type": "url"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "imagePadding",
+        "type": "number",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "scroll",
+    "pairsWell": [
+      "hero-geometric-01",
+      "hero-split-image-01",
+      "cta-banner-01",
+      "footer-reveal-01"
+    ],
+    "pairsPoorly": [
+      "layout-stickycards-01",
+      "hero-parallax-images-01"
+    ]
+  },
+  {
+    "id": "layout-stickycards-01",
+    "name": "Sticky Cards",
+    "category": "layout/scroll",
+    "style": [
+      "modern",
+      "bold",
+      "editorial"
+    ],
+    "mood": [
+      "professional",
+      "energetic",
+      "trustworthy"
+    ],
+    "layout": "stacked",
+    "density": "low",
+    "purpose": [
+      "features",
+      "services",
+      "process"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80,
+        "optional": true
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "cards",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "icon",
+              "type": "text",
+              "maxLength": 10,
+              "optional": true
+            },
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "4:3",
+              "optional": true
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120,
+              "optional": true
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 200
+            },
+            {
+              "name": "ctaText",
+              "type": "text",
+              "maxLength": 30
+            },
+            {
+              "name": "ctaUrl",
+              "type": "url"
+            }
+          ]
+        }
+      },
+      {
+        "name": "cardHeight",
+        "type": "number",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "scroll",
+    "pairsWell": [
+      "hero-geometric-01",
+      "hero-split-image-01",
+      "cta-banner-01"
+    ],
+    "pairsPoorly": [
+      "layout-cardgrid-01"
+    ]
+  },
+  {
+    "id": "layout-authorsplit-01",
+    "name": "Author Split",
+    "category": "layout/split",
+    "style": [
+      "editorial",
+      "modern",
+      "minimal"
+    ],
+    "mood": [
+      "professional",
+      "friendly",
+      "elegant"
+    ],
+    "layout": "split",
+    "density": "low",
+    "purpose": [
+      "about",
+      "team"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "slots": [
+      {
+        "name": "bannerImage",
+        "type": "image",
+        "aspectRatio": "2:1",
+        "optional": true
+      },
+      {
+        "name": "bannerImageAlt",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "authorImage",
+        "type": "image",
+        "aspectRatio": "1:1",
+        "optional": true
+      },
+      {
+        "name": "authorImageAlt",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "authorName",
+        "type": "text",
+        "maxLength": 60
+      },
+      {
+        "name": "authorTagline",
+        "type": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 600
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-geometric-01",
+      "layout-infinitescroll-01",
+      "layout-simplegrid-01",
+      "stats-count-up-01"
+    ],
+    "pairsPoorly": [
+      "layout-statementsplit-01"
+    ]
+  },
+  {
+    "id": "layout-iconlistsplit-01",
+    "name": "Icon List Split",
+    "category": "layout/split",
+    "style": [
+      "modern",
+      "corporate",
+      "minimal"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "calm"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "purpose": [
+      "features",
+      "services",
+      "process"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "features",
+        "type": "list",
+        "maxItems": 5,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "icon",
+              "type": "text",
+              "maxLength": 10
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 200
+            }
+          ]
+        }
+      },
+      {
+        "name": "image",
+        "type": "image",
+        "aspectRatio": "1:1",
+        "optional": true
+      },
+      {
+        "name": "imageAlt",
+        "type": "text",
+        "maxLength": 120,
+        "optional": true
+      },
+      {
+        "name": "logos",
+        "type": "list",
+        "optional": true,
+        "maxItems": 8,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 60
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-split-image-01",
+      "layout-showcasesplit-01",
+      "cta-banner-01",
+      "layout-authorsplit-01"
+    ],
+    "pairsPoorly": [
+      "layout-cardgrid-01"
+    ]
+  },
+  {
+    "id": "layout-imagetext-01",
+    "name": "Image Text",
+    "category": "layout/split",
+    "style": [
+      "modern",
+      "editorial",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "friendly",
+      "trustworthy"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "purpose": [
+      "features",
+      "services",
+      "about",
+      "products"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 300
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "image",
+        "type": "image",
+        "aspectRatio": "16:9",
+        "optional": true
+      },
+      {
+        "name": "imageAlt",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "label",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      },
+      {
+        "name": "imagePosition",
+        "type": "text",
+        "enum": [
+          "left",
+          "right"
+        ],
+        "optional": true
+      },
+      {
+        "name": "colorScheme",
+        "type": "text",
+        "enum": [
+          "light",
+          "dark"
+        ],
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-cardgrid-01",
+      "layout-statementsplit-01",
+      "hero-split-image-01",
+      "cta-banner-01"
+    ],
+    "pairsPoorly": [
+      "layout-authorsplit-01"
+    ]
+  },
+  {
+    "id": "layout-showcasesplit-01",
+    "name": "Showcase Split",
+    "category": "layout/split",
+    "style": [
+      "bold",
+      "modern",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "energetic"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "purpose": [
+      "testimonials"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "slots": [
+      {
+        "name": "label",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 60
+      },
+      {
+        "name": "testimonials",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "3:4"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "name",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 80
+            },
+            {
+              "name": "quote",
+              "type": "text",
+              "maxLength": 300
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-stickycards-01",
+      "layout-simplegrid-01",
+      "stats-count-up-01",
+      "cta-banner-01"
+    ],
+    "pairsPoorly": [
+      "layout-stackedsplit-01",
+      "layout-infinitescroll-01"
+    ]
+  },
+  {
+    "id": "layout-stackedsplit-01",
+    "name": "Stacked Split",
+    "category": "layout/split",
+    "style": [
+      "modern",
+      "editorial"
+    ],
+    "mood": [
+      "professional",
+      "elegant"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "purpose": [
+      "testimonials"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "testimonials",
+        "type": "list",
+        "maxItems": 8,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "1:1"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "name",
+              "type": "text",
+              "maxLength": 40
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "quote",
+              "type": "text",
+              "maxLength": 200
+            }
+          ]
+        }
+      },
+      {
+        "name": "autoAdvanceDuration",
+        "type": "number",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-split-image-01",
+      "layout-stickycards-01",
+      "cta-banner-01",
+      "footer-reveal-01"
+    ],
+    "pairsPoorly": [
+      "layout-infinitescroll-01",
+      "layout-staggerfan-01"
+    ]
+  },
+  {
+    "id": "layout-statementsplit-01",
+    "name": "Statement Split",
+    "category": "layout/split",
+    "style": [
+      "editorial",
+      "luxury",
+      "minimal"
+    ],
+    "mood": [
+      "elegant",
+      "professional",
+      "calm"
+    ],
+    "layout": "asymmetric",
+    "density": "low",
+    "purpose": [
+      "about",
+      "features",
+      "services"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 400
+      },
+      {
+        "name": "descriptionEmphasis",
+        "type": "text",
+        "maxLength": 80,
+        "optional": true
+      },
+      {
+        "name": "image",
+        "type": "image",
+        "aspectRatio": "16:9",
+        "optional": true
+      },
+      {
+        "name": "imageAlt",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "accentImage",
+        "type": "image",
+        "aspectRatio": "1:1",
+        "optional": true
+      },
+      {
+        "name": "accentImageAlt",
+        "type": "text",
+        "maxLength": 120,
+        "optional": true
+      },
+      {
+        "name": "colorScheme",
+        "type": "text",
+        "enum": [
+          "dark",
+          "light"
+        ],
+        "optional": true
+      },
+      {
+        "name": "headlinePosition",
+        "type": "text",
+        "enum": [
+          "left",
+          "right"
+        ],
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-stickycards-01",
+      "layout-imagetext-01",
+      "stats-count-up-01",
+      "layout-infinitescroll-01"
+    ],
+    "pairsPoorly": [
+      "hero-geometric-01"
+    ]
+  },
+  {
+    "id": "navbar-sticky-01",
+    "name": "Sticky Navbar",
+    "category": "navigation",
+    "purpose": [
+      "navigation"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "minimal"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy"
+    ],
+    "layout": "horizontal",
+    "density": "low",
+    "slots": [
+      {
+        "name": "logo",
+        "type": "image",
+        "aspectRatio": "auto",
+        "optional": true
+      },
+      {
+        "name": "links",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "text": {
+            "type": "text",
+            "maxLength": 30
+          },
+          "href": {
+            "type": "url"
+          }
+        }
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 20
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline"
+        ]
+      }
+    ],
+    "mobileBehavior": "collapse",
+    "pairsWell": [],
+    "pairsPoorly": []
+  },
+  {
+    "id": "stats-count-up-01",
+    "name": "Count-Up Stats",
+    "category": "stats",
+    "purpose": [
+      "stats"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "minimal",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy"
+    ],
+    "layout": "horizontal",
+    "density": "low",
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 120
+      },
+      {
+        "name": "headlineHighlight",
+        "type": "text",
+        "optional": true,
+        "maxLength": 60
+      },
+      {
+        "name": "stats",
+        "type": "list",
+        "maxItems": 5,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "value",
+              "type": "number"
+            },
+            {
+              "name": "decimals",
+              "type": "number",
+              "optional": true
+            },
+            {
+              "name": "prefix",
+              "type": "text",
+              "optional": true,
+              "maxLength": 5
+            },
+            {
+              "name": "suffix",
+              "type": "text",
+              "optional": true,
+              "maxLength": 10
+            },
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 80
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-geometric-01",
+      "hero-split-image-01",
+      "cta-banner-01",
+      "layout-stickycards-01"
+    ],
+    "pairsPoorly": []
+  }
+]
