@@ -134,6 +134,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       companyName: item.companyName,
       segment: item.segment,
       description: item.description,
+      brandColor: item.brandColor,
       sellerId: item.sellerId,
       researchOutput: item.researchOutput,
       styleOutput,
