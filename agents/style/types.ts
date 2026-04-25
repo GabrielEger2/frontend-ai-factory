@@ -12,6 +12,8 @@ export const StyleAgentInputSchema = PipelineStateSchema.pick({
   segment: true,
   description: true,
   brandColor: true,
+  brandToneKeywords: true,
+  objectives: true,
 }).extend({
   researchOutput: ResearchOutputSchema,
   taskToken: z.string(), // Injected by SFN WaitForTaskToken — NOT part of PipelineState
