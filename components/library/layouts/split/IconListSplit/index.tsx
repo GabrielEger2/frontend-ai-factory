@@ -29,7 +29,7 @@ export interface IconListSplitProps {
   /** Section headline */
   headline: string;
   /** List of features with icons */
-  features: FeatureIconItem[];
+  features?: FeatureIconItem[];
   /** Optional large image displayed beside the features list on desktop */
   image?: string;
   imageAlt?: string;
@@ -41,6 +41,37 @@ export interface IconListSplitProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_ICON_LIST_FEATURES: FeatureIconItem[] = [
+  {
+    icon: "✨",
+    title: "Set up in minutes",
+    description:
+      "Connect your accounts, import your data, and you're live before lunch — no migration project required.",
+  },
+  {
+    icon: "📈",
+    title: "Insights that matter",
+    description:
+      "Skip the dashboard archaeology. We surface the three trends you should care about each week.",
+  },
+  {
+    icon: "🤝",
+    title: "Built for teams",
+    description:
+      "Granular permissions, shared workspaces, and audit trails — even on the smallest plan.",
+  },
+  {
+    icon: "🔒",
+    title: "Security you can audit",
+    description:
+      "SOC 2 Type II, encryption at rest and in transit, and a data residency option in three regions.",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Decorative underline (private)                                     */
@@ -95,7 +126,7 @@ function LogoImage({ logo, index }: LogoImageProps) {
  */
 export default function IconListSplit({
   headline,
-  features,
+  features = DEFAULT_ICON_LIST_FEATURES,
   image,
   imageAlt,
   logos,

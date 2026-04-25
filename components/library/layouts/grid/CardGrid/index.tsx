@@ -94,7 +94,7 @@ export interface CardGridProps {
    * - `product` -> `ProductCardItem[]`
    * - `outline` -> `OutlineCardItem[]`
    */
-  cards:
+  cards?:
     | FeatureCardItem[]
     | FlipCardItem[]
     | ProductCardItem[]
@@ -107,6 +107,40 @@ export interface CardGridProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_CARD_GRID_CARDS: FeatureCardItem[] = [
+  {
+    image: "https://picsum.photos/seed/cardgrid-card-0/640/400",
+    imageAlt: "Team mapping ideas on sticky notes",
+    title: "Discover what's working",
+    description:
+      "Run a focused audit of your funnel and surface the three or four levers that are actually moving the numbers.",
+    ctaText: "Learn more",
+    ctaUrl: "#",
+  },
+  {
+    image: "https://picsum.photos/seed/cardgrid-card-1/640/400",
+    imageAlt: "Designer iterating on UI mockups",
+    title: "Design the next version",
+    description:
+      "Translate insights into a roadmap of testable bets — each one shipped on a two-week cadence with measurable outcomes.",
+    ctaText: "Learn more",
+    ctaUrl: "#",
+  },
+  {
+    image: "https://picsum.photos/seed/cardgrid-card-2/640/400",
+    imageAlt: "Engineer reviewing code on a laptop",
+    title: "Ship and iterate",
+    description:
+      "Keep the loop tight: ship, measure, learn, repeat. We'll embed with your team until the new motion is sticking.",
+    ctaText: "Learn more",
+    ctaUrl: "#",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Grid column map                                                    */
@@ -319,7 +353,7 @@ export default function CardGrid({
   headline,
   subheadline,
   styleKit,
-  cards,
+  cards = DEFAULT_CARD_GRID_CARDS,
   columns = 3,
   flipDirection = "horizontal",
   purpose,
