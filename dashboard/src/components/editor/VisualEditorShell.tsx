@@ -1,10 +1,19 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState, useTransition } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import { useRouter } from "next/navigation";
 import {
   ChevronLeft,
   LayoutList,
+  Maximize2,
+  Minimize2,
   Palette as PaletteIcon,
   Type,
 } from "lucide-react";
@@ -13,6 +22,7 @@ import { SectionList } from "./SectionList";
 import { ComponentPicker } from "./ComponentPicker";
 import { PaletteSwitcher } from "./PaletteSwitcher";
 import { InlineCopyEditor } from "./InlineCopyEditor";
+import { useFullscreenHotkeys } from "./useFullscreenHotkeys";
 import { patchDraft } from "@/lib/actions/patch-draft";
 import { deployProject } from "@/lib/actions/deploy-project";
 import type { Palette, Typography, WorkingDraft } from "@/types/project";
@@ -53,6 +63,7 @@ export function VisualEditorShell({
     "sections",
   );
   const [panelCollapsed, setPanelCollapsed] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [status, setStatus] = useState<
     | { type: "idle" }
     | { type: "saving" }
@@ -62,6 +73,15 @@ export function VisualEditorShell({
   const [isDeploying, startDeploy] = useTransition();
 
   const patchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle(
+      "editor-fullscreen",
+      isFullscreen,
+    );
+    return () => document.documentElement.classList.remove("editor-fullscreen");
+  }, [isFullscreen]);
+  useFullscreenHotkeys(isFullscreen, setIsFullscreen);
 
   // Flush a draft patch to the server. `immediate` skips the debounce
   // (used for non-typing edits like reorder / palette preset swap).
@@ -220,157 +240,163 @@ export function VisualEditorShell({
 
   return (
     <div className="flex h-full min-h-[80vh] gap-4">
-      {/* Left panel — tabbed */}
-      <aside
-        className={`flex shrink-0 flex-col gap-0 overflow-hidden rounded-lg border border-slate-200 bg-white transition-all duration-200 ${panelCollapsed ? "w-10" : "w-80"}`}
-      >
-        {panelCollapsed ? (
-          <div className="flex flex-col items-center gap-2 py-3">
-            <button
-              type="button"
-              onClick={() => {
-                setActiveTab("sections");
-                setPanelCollapsed(false);
-              }}
-              title="Sections"
-              className="flex h-8 w-8 items-center justify-center rounded hover:bg-slate-100"
-            >
-              <LayoutList className="h-4 w-4 text-slate-600" />
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setActiveTab("style");
-                setPanelCollapsed(false);
-              }}
-              title="Style"
-              className="flex h-8 w-8 items-center justify-center rounded hover:bg-slate-100"
-            >
-              <PaletteIcon className="h-4 w-4 text-slate-600" />
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setActiveTab("content");
-                setPanelCollapsed(false);
-              }}
-              title="Content"
-              className="flex h-8 w-8 items-center justify-center rounded hover:bg-slate-100"
-            >
-              <Type className="h-4 w-4 text-slate-600" />
-            </button>
-          </div>
-        ) : (
-          <>
-            {/* Tab buttons */}
-            <div className="flex shrink-0 border-b border-slate-200">
-              <button
-                type="button"
-                onClick={() => setActiveTab("sections")}
-                className={
-                  "flex-1 py-2 text-xs font-medium transition-colors " +
-                  (activeTab === "sections"
-                    ? "bg-slate-900 text-white"
-                    : "text-slate-600 hover:bg-slate-50")
-                }
-              >
-                Sections
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab("style")}
-                className={
-                  "flex-1 py-2 text-xs font-medium transition-colors " +
-                  (activeTab === "style"
-                    ? "bg-slate-900 text-white"
-                    : "text-slate-600 hover:bg-slate-50")
-                }
-              >
-                Style
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  if (selectedId) setActiveTab("content");
-                }}
-                className={
-                  "flex-1 py-2 text-xs font-medium transition-colors " +
-                  (activeTab === "content"
-                    ? "bg-slate-900 text-white"
-                    : "text-slate-600 hover:bg-slate-50") +
-                  (selectedId === null
-                    ? " opacity-50 cursor-not-allowed pointer-events-none"
-                    : "")
-                }
-              >
-                Content
-              </button>
-            </div>
-
-            {/* Tab body — overflow-y-auto so dnd-kit drag ghosts don't clip */}
-            <div className="flex-1 overflow-y-auto p-3">
-              {activeTab === "sections" && (
-                <>
-                  <div className="mb-2 flex items-center justify-between">
-                    <h2 className="text-sm font-semibold text-slate-800">
-                      Sections
-                    </h2>
-                    <StatusLabel status={status} />
-                  </div>
-                  <SectionList
-                    components={draft.blueprint.components}
-                    variantSelections={draft.blueprint.variantSelections ?? {}}
-                    onReorder={handleReorder}
-                    onSwapRequest={(id) => setActivePicker(id)}
-                    onVariantChange={handleVariantChange}
-                    onSelect={(id) => {
-                      setSelectedId(id);
-                      setActiveTab("content");
-                    }}
-                    selectedId={selectedId}
-                  />
+      {!isFullscreen && (
+        <>
+          {/* Left panel — tabbed */}
+          <aside
+            className={`flex shrink-0 flex-col gap-0 overflow-hidden rounded-lg border border-slate-200 bg-white transition-all duration-200 ${panelCollapsed ? "w-10" : "w-80"}`}
+          >
+            {panelCollapsed ? (
+              <div className="flex flex-col items-center gap-2 py-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab("sections");
+                    setPanelCollapsed(false);
+                  }}
+                  title="Sections"
+                  className="flex h-8 w-8 items-center justify-center rounded hover:bg-slate-100"
+                >
+                  <LayoutList className="h-4 w-4 text-slate-600" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab("style");
+                    setPanelCollapsed(false);
+                  }}
+                  title="Style"
+                  className="flex h-8 w-8 items-center justify-center rounded hover:bg-slate-100"
+                >
+                  <PaletteIcon className="h-4 w-4 text-slate-600" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab("content");
+                    setPanelCollapsed(false);
+                  }}
+                  title="Content"
+                  className="flex h-8 w-8 items-center justify-center rounded hover:bg-slate-100"
+                >
+                  <Type className="h-4 w-4 text-slate-600" />
+                </button>
+              </div>
+            ) : (
+              <>
+                {/* Tab buttons */}
+                <div className="flex shrink-0 border-b border-slate-200">
                   <button
                     type="button"
-                    onClick={handleDeploy}
-                    disabled={isDeploying}
-                    className="mt-3 w-full rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+                    onClick={() => setActiveTab("sections")}
+                    className={
+                      "flex-1 py-2 text-xs font-medium transition-colors " +
+                      (activeTab === "sections"
+                        ? "bg-slate-900 text-white"
+                        : "text-slate-600 hover:bg-slate-50")
+                    }
                   >
-                    {isDeploying ? "Deploying..." : "Deploy"}
+                    Sections
                   </button>
-                </>
-              )}
-              {activeTab === "style" && (
-                <PaletteSwitcher
-                  palette={draft.palette}
-                  typography={draft.typography}
-                  density={draft.density}
-                  paletteSuggestions={paletteSuggestions}
-                  onChange={handleStyleChange}
-                />
-              )}
-              {activeTab === "content" && selectedId && selectedSlots && (
-                <InlineCopyEditor
-                  componentId={selectedId}
-                  slots={selectedSlots}
-                  onSlotsChange={handleSlotsChange}
-                />
-              )}
-            </div>
-          </>
-        )}
-      </aside>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("style")}
+                    className={
+                      "flex-1 py-2 text-xs font-medium transition-colors " +
+                      (activeTab === "style"
+                        ? "bg-slate-900 text-white"
+                        : "text-slate-600 hover:bg-slate-50")
+                    }
+                  >
+                    Style
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (selectedId) setActiveTab("content");
+                    }}
+                    className={
+                      "flex-1 py-2 text-xs font-medium transition-colors " +
+                      (activeTab === "content"
+                        ? "bg-slate-900 text-white"
+                        : "text-slate-600 hover:bg-slate-50") +
+                      (selectedId === null
+                        ? " opacity-50 cursor-not-allowed pointer-events-none"
+                        : "")
+                    }
+                  >
+                    Content
+                  </button>
+                </div>
 
-      {/* Collapse toggle */}
-      <button
-        type="button"
-        onClick={() => setPanelCollapsed((p) => !p)}
-        className="-mx-2 z-10 flex h-8 w-4 items-center justify-center self-center rounded-sm bg-slate-200 hover:bg-slate-300"
-        title={panelCollapsed ? "Expand panel" : "Collapse panel"}
-      >
-        <ChevronLeft
-          className={`h-3 w-3 transition-transform ${panelCollapsed ? "rotate-180" : ""}`}
-        />
-      </button>
+                {/* Tab body — overflow-y-auto so dnd-kit drag ghosts don't clip */}
+                <div className="flex-1 overflow-y-auto p-3">
+                  {activeTab === "sections" && (
+                    <>
+                      <div className="mb-2 flex items-center justify-between">
+                        <h2 className="text-sm font-semibold text-slate-800">
+                          Sections
+                        </h2>
+                        <StatusLabel status={status} />
+                      </div>
+                      <SectionList
+                        components={draft.blueprint.components}
+                        variantSelections={
+                          draft.blueprint.variantSelections ?? {}
+                        }
+                        onReorder={handleReorder}
+                        onSwapRequest={(id) => setActivePicker(id)}
+                        onVariantChange={handleVariantChange}
+                        onSelect={(id) => {
+                          setSelectedId(id);
+                          setActiveTab("content");
+                        }}
+                        selectedId={selectedId}
+                      />
+                      <button
+                        type="button"
+                        onClick={handleDeploy}
+                        disabled={isDeploying}
+                        className="mt-3 w-full rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {isDeploying ? "Deploying..." : "Deploy"}
+                      </button>
+                    </>
+                  )}
+                  {activeTab === "style" && (
+                    <PaletteSwitcher
+                      palette={draft.palette}
+                      typography={draft.typography}
+                      density={draft.density}
+                      paletteSuggestions={paletteSuggestions}
+                      onChange={handleStyleChange}
+                    />
+                  )}
+                  {activeTab === "content" && selectedId && selectedSlots && (
+                    <InlineCopyEditor
+                      componentId={selectedId}
+                      slots={selectedSlots}
+                      onSlotsChange={handleSlotsChange}
+                    />
+                  )}
+                </div>
+              </>
+            )}
+          </aside>
+
+          {/* Collapse toggle */}
+          <button
+            type="button"
+            onClick={() => setPanelCollapsed((p) => !p)}
+            className="-mx-2 z-10 flex h-8 w-4 items-center justify-center self-center rounded-sm bg-slate-200 hover:bg-slate-300"
+            title={panelCollapsed ? "Expand panel" : "Collapse panel"}
+          >
+            <ChevronLeft
+              className={`h-3 w-3 transition-transform ${panelCollapsed ? "rotate-180" : ""}`}
+            />
+          </button>
+        </>
+      )}
 
       {/* Center panel */}
       <section className="flex min-w-0 flex-1 flex-col gap-3">
@@ -390,6 +416,20 @@ export function VisualEditorShell({
               {w === 1280 ? "Desktop" : w === 768 ? "Tablet" : "Mobile"}
             </button>
           ))}
+          <button
+            type="button"
+            onClick={() => setIsFullscreen((f) => !f)}
+            className="ml-2 rounded border border-slate-200 px-2 py-1 text-xs text-slate-600 hover:bg-slate-50"
+            title={
+              isFullscreen ? "Exit fullscreen (Esc)" : "Fullscreen preview (F)"
+            }
+          >
+            {isFullscreen ? (
+              <Minimize2 className="h-3 w-3" />
+            ) : (
+              <Maximize2 className="h-3 w-3" />
+            )}
+          </button>
         </div>
         <div className="flex min-h-0 flex-1 items-start justify-center overflow-auto rounded-lg bg-slate-100 p-4">
           <BlueprintPreview draft={draft} viewportWidth={viewport} />

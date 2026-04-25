@@ -68,7 +68,7 @@ export default async function VisualEditorPage({
 
   return (
     <div className="flex h-full flex-col">
-      <div className="mb-4 flex items-center justify-between">
+      <div className="editor-chrome mb-4 flex items-center justify-between">
         <Link
           href={`/projects/${id}`}
           className="text-sm text-slate-500 transition-colors hover:text-slate-700"

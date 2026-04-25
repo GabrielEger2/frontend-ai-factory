@@ -9,7 +9,7 @@ const navItems = [
 
 export function SidebarCompact() {
   return (
-    <aside className="w-14 h-full bg-slate-50 border-r border-slate-200 flex flex-col shrink-0 items-center py-4 gap-6">
+    <aside className="editor-chrome w-14 h-full bg-slate-50 border-r border-slate-200 flex flex-col shrink-0 items-center py-4 gap-6">
       <div className="mb-4">
         <span className="text-base font-black text-slate-900">S</span>
       </div>
