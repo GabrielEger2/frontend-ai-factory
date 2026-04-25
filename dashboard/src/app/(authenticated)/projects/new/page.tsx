@@ -17,6 +17,7 @@ import { createProject } from "@/lib/actions/create-project";
 import { SUPPORTED_SEGMENTS, SEGMENT_LABELS } from "@/types/project";
 import { TONE_KEYWORDS, OBJECTIVES } from "@/lib/constants";
 import { selectableCategories } from "@/lib/manifest-utils";
+import { FormProgressSidebar } from "./_components/FormProgressSidebar";
 
 /* ─── Validators ─────────────────────────────────────────────────── */
 const HEX_RE = /^#?[0-9a-fA-F]{6}$/;
@@ -296,6 +297,58 @@ export default function NewProjectPage() {
 
   const categories = useMemo(() => selectableCategories(), []);
 
+  const sections = useMemo(() => {
+    const defs = [
+      {
+        id: "company",
+        label: "Company basics",
+        isDone: Boolean(companyName.trim() && segment && description.trim()),
+      },
+      {
+        id: "brand",
+        label: "Brand & tone",
+        isDone: brandToneKeywords.length > 0 || objectives.length > 0,
+      },
+      {
+        id: "sections",
+        label: "Site sections",
+        isDone: desiredSections.length > 0,
+      },
+      {
+        id: "contact",
+        label: "Contact info",
+        isDone: Boolean(
+          phone.trim() ||
+          emailValue.trim() ||
+          address.street.trim() ||
+          address.zip.trim() ||
+          address.city.trim(),
+        ),
+      },
+    ];
+    let foundActive = false;
+    return defs.map((d) => {
+      if (d.isDone) return { ...d, state: "done" as const };
+      if (!foundActive) {
+        foundActive = true;
+        return { ...d, state: "active" as const };
+      }
+      return { ...d, state: "pending" as const };
+    });
+  }, [
+    companyName,
+    segment,
+    description,
+    brandToneKeywords,
+    objectives,
+    desiredSections,
+    phone,
+    emailValue,
+    address.street,
+    address.zip,
+    address.city,
+  ]);
+
   function handleHexInput(raw: string) {
     setBrandColorHexInput(raw);
     if (HEX_RE.test(raw)) {
@@ -480,599 +533,608 @@ export default function NewProjectPage() {
         </p>
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col bg-white border border-slate-200 rounded-lg shadow-sm divide-y divide-slate-200"
-      >
-        {/* ── Company basics ─────────────────────────────────────── */}
-        <section className={sectionClasses}>
-          <header className={sectionHeaderClasses}>
-            <h2 className={sectionTitleClasses}>Company basics</h2>
-            <p className={sectionSubtitleClasses}>
-              Core information used by every agent in the pipeline.
-            </p>
-          </header>
-          <div className="flex flex-col gap-6">
-            <div>
-              <label htmlFor="companyName" className={labelClasses}>
-                Company Name
-              </label>
-              <input
-                id="companyName"
-                type="text"
-                required
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
-                className={inputClasses}
-              />
-            </div>
+      <div className="flex gap-8 items-start">
+        <form
+          onSubmit={handleSubmit}
+          className="flex-1 flex flex-col bg-white border border-slate-200 rounded-lg shadow-sm divide-y divide-slate-200"
+        >
+          {/* ── Company basics ─────────────────────────────────────── */}
+          <section className={sectionClasses}>
+            <header className={sectionHeaderClasses}>
+              <h2 className={sectionTitleClasses}>Company basics</h2>
+              <p className={sectionSubtitleClasses}>
+                Core information used by every agent in the pipeline.
+              </p>
+            </header>
+            <div className="flex flex-col gap-6">
+              <div>
+                <label htmlFor="companyName" className={labelClasses}>
+                  Company Name
+                </label>
+                <input
+                  id="companyName"
+                  type="text"
+                  required
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  className={inputClasses}
+                />
+              </div>
 
-            <div>
-              <label htmlFor="segment" className={labelClasses}>
-                Segment
-              </label>
-              <select
-                id="segment"
-                required
-                value={segment}
-                onChange={(e) => setSegment(e.target.value)}
-                className={inputClasses}
-              >
-                <option value="" disabled>
-                  Select a segment...
-                </option>
-                {SUPPORTED_SEGMENTS.map((seg) => (
-                  <option key={seg} value={seg}>
-                    {SEGMENT_LABELS[seg] ?? seg}
+              <div>
+                <label htmlFor="segment" className={labelClasses}>
+                  Segment
+                </label>
+                <select
+                  id="segment"
+                  required
+                  value={segment}
+                  onChange={(e) => setSegment(e.target.value)}
+                  className={inputClasses}
+                >
+                  <option value="" disabled>
+                    Select a segment...
                   </option>
-                ))}
-              </select>
-            </div>
+                  {SUPPORTED_SEGMENTS.map((seg) => (
+                    <option key={seg} value={seg}>
+                      {SEGMENT_LABELS[seg] ?? seg}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            <div>
-              <label htmlFor="description" className={labelClasses}>
-                Description
-              </label>
-              <textarea
-                id="description"
-                required
-                rows={5}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="What the company does, who it serves, what makes it different. The more specific, the better the AI output."
-                className={inputClasses}
-              />
-            </div>
+              <div>
+                <label htmlFor="description" className={labelClasses}>
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  required
+                  rows={5}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="What the company does, who it serves, what makes it different. The more specific, the better the AI output."
+                  className={inputClasses}
+                />
+              </div>
 
-            <div>
-              <fieldset className="flex flex-col gap-2">
-                <legend className={labelClasses}>
-                  Does the company have a brand color?
-                </legend>
-                <div className="flex gap-4">
-                  <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="hasBrandColor"
-                      value="no"
-                      checked={!hasBrandColor}
-                      onChange={() => {
-                        setHasBrandColor(false);
-                        setBrandColorError(null);
-                      }}
-                      className="accent-slate-900"
-                    />
-                    No
-                  </label>
-                  <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="hasBrandColor"
-                      value="yes"
-                      checked={hasBrandColor}
-                      onChange={() => setHasBrandColor(true)}
-                      className="accent-slate-900"
-                    />
-                    Yes
-                  </label>
-                </div>
-              </fieldset>
-
-              {hasBrandColor && (
-                <div className="mt-3 flex flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="color"
-                      aria-label="Brand color picker"
-                      value={brandColor}
-                      onChange={(e) => {
-                        const value = e.target.value.toUpperCase();
-                        setBrandColor(value);
-                        setBrandColorHexInput(value);
-                        setBrandColorError(null);
-                      }}
-                      className="h-9 w-12 cursor-pointer rounded border border-slate-300"
-                    />
-                    <input
-                      type="text"
-                      aria-label="Brand color hex value"
-                      value={brandColorHexInput}
-                      onChange={(e) => handleHexInput(e.target.value)}
-                      placeholder="#000000"
-                      className={inputClasses}
-                    />
+              <div>
+                <fieldset className="flex flex-col gap-2">
+                  <legend className={labelClasses}>
+                    Does the company have a brand color?
+                  </legend>
+                  <div className="flex gap-4">
+                    <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="hasBrandColor"
+                        value="no"
+                        checked={!hasBrandColor}
+                        onChange={() => {
+                          setHasBrandColor(false);
+                          setBrandColorError(null);
+                        }}
+                        className="accent-slate-900"
+                      />
+                      No
+                    </label>
+                    <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="hasBrandColor"
+                        value="yes"
+                        checked={hasBrandColor}
+                        onChange={() => setHasBrandColor(true)}
+                        className="accent-slate-900"
+                      />
+                      Yes
+                    </label>
                   </div>
-                  {brandColorError && (
-                    <p className={errorTextClasses} role="alert">
-                      {brandColorError}
-                    </p>
-                  )}
+                </fieldset>
+
+                {hasBrandColor && (
+                  <div className="mt-3 flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="color"
+                        aria-label="Brand color picker"
+                        value={brandColor}
+                        onChange={(e) => {
+                          const value = e.target.value.toUpperCase();
+                          setBrandColor(value);
+                          setBrandColorHexInput(value);
+                          setBrandColorError(null);
+                        }}
+                        className="h-9 w-12 cursor-pointer rounded border border-slate-300"
+                      />
+                      <input
+                        type="text"
+                        aria-label="Brand color hex value"
+                        value={brandColorHexInput}
+                        onChange={(e) => handleHexInput(e.target.value)}
+                        placeholder="#000000"
+                        className={inputClasses}
+                      />
+                    </div>
+                    {brandColorError && (
+                      <p className={errorTextClasses} role="alert">
+                        {brandColorError}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+
+          {/* ── Brand & tone ───────────────────────────────────────── */}
+          <section className={sectionClasses}>
+            <header className={sectionHeaderClasses}>
+              <h2 className={sectionTitleClasses}>Brand &amp; tone</h2>
+              <p className={sectionSubtitleClasses}>
+                Shapes the voice and visual mood of the generated copy.
+              </p>
+            </header>
+            <div className="flex flex-col gap-6">
+              <div>
+                <p className="block text-sm font-medium text-slate-700 mb-2">
+                  Brand tone keywords
+                </p>
+                <p className="text-xs text-slate-500 mb-2">
+                  Choose words that describe the brand&apos;s personality.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {TONE_KEYWORDS.map((tag) => {
+                    const selected = brandToneKeywords.includes(tag);
+                    return (
+                      <button
+                        key={tag}
+                        type="button"
+                        aria-pressed={selected}
+                        onClick={() => toggleToneKeyword(tag)}
+                        className={pillClasses(selected)}
+                      >
+                        {tag}
+                      </button>
+                    );
+                  })}
                 </div>
+              </div>
+
+              <div>
+                <p className="block text-sm font-medium text-slate-700 mb-2">
+                  Objectives
+                </p>
+                <p className="text-xs text-slate-500 mb-2">
+                  What should the website achieve for the business?
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {OBJECTIVES.map((tag) => {
+                    const selected = objectives.includes(tag);
+                    return (
+                      <button
+                        key={tag}
+                        type="button"
+                        aria-pressed={selected}
+                        onClick={() => toggleObjective(tag)}
+                        className={pillClasses(selected)}
+                      >
+                        {OBJECTIVE_LABELS[tag] ?? tag}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ── Site sections ──────────────────────────────────────── */}
+          <section className={sectionClasses}>
+            <header className={sectionHeaderClasses}>
+              <h2 className={sectionTitleClasses}>Site sections</h2>
+              <p className={sectionSubtitleClasses}>
+                Pick which kinds of sections must appear in the generated site.
+                Navigation and footer are always included.
+              </p>
+            </header>
+            <div className="flex flex-col gap-6">
+              <div>
+                <p className="block text-sm font-medium text-slate-700 mb-2">
+                  Sections to include
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {categories.map((category) => {
+                    const selected = desiredSections.includes(category);
+                    return (
+                      <button
+                        key={`incl-${category}`}
+                        type="button"
+                        aria-pressed={selected}
+                        onClick={() => toggleDesired(category)}
+                        className={pillClasses(selected)}
+                      >
+                        {formatCategoryLabel(category)}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {sectionsError && (
+                <p className={errorTextClasses} role="alert">
+                  {sectionsError}
+                </p>
               )}
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* ── Brand & tone ───────────────────────────────────────── */}
-        <section className={sectionClasses}>
-          <header className={sectionHeaderClasses}>
-            <h2 className={sectionTitleClasses}>Brand &amp; tone</h2>
-            <p className={sectionSubtitleClasses}>
-              Shapes the voice and visual mood of the generated copy.
-            </p>
-          </header>
-          <div className="flex flex-col gap-6">
-            <div>
-              <p className="block text-sm font-medium text-slate-700 mb-2">
-                Brand tone keywords
+          {/* ── Contact info ───────────────────────────────────────── */}
+          <section className={sectionClasses}>
+            <header className={sectionHeaderClasses}>
+              <h2 className={sectionTitleClasses}>Contact info</h2>
+              <p className={sectionSubtitleClasses}>
+                Optional. Used to populate the contact and footer sections of
+                the generated site.
               </p>
-              <p className="text-xs text-slate-500 mb-2">
-                Choose words that describe the brand&apos;s personality.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {TONE_KEYWORDS.map((tag) => {
-                  const selected = brandToneKeywords.includes(tag);
-                  return (
-                    <button
-                      key={tag}
-                      type="button"
-                      aria-pressed={selected}
-                      onClick={() => toggleToneKeyword(tag)}
-                      className={pillClasses(selected)}
-                    >
-                      {tag}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div>
-              <p className="block text-sm font-medium text-slate-700 mb-2">
-                Objectives
-              </p>
-              <p className="text-xs text-slate-500 mb-2">
-                What should the website achieve for the business?
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {OBJECTIVES.map((tag) => {
-                  const selected = objectives.includes(tag);
-                  return (
-                    <button
-                      key={tag}
-                      type="button"
-                      aria-pressed={selected}
-                      onClick={() => toggleObjective(tag)}
-                      className={pillClasses(selected)}
-                    >
-                      {OBJECTIVE_LABELS[tag] ?? tag}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Site sections ──────────────────────────────────────── */}
-        <section className={sectionClasses}>
-          <header className={sectionHeaderClasses}>
-            <h2 className={sectionTitleClasses}>Site sections</h2>
-            <p className={sectionSubtitleClasses}>
-              Pick which kinds of sections must appear in the generated site.
-              Navigation and footer are always included.
-            </p>
-          </header>
-          <div className="flex flex-col gap-6">
-            <div>
-              <p className="block text-sm font-medium text-slate-700 mb-2">
-                Sections to include
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {categories.map((category) => {
-                  const selected = desiredSections.includes(category);
-                  return (
-                    <button
-                      key={`incl-${category}`}
-                      type="button"
-                      aria-pressed={selected}
-                      onClick={() => toggleDesired(category)}
-                      className={pillClasses(selected)}
-                    >
-                      {formatCategoryLabel(category)}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {sectionsError && (
-              <p className={errorTextClasses} role="alert">
-                {sectionsError}
-              </p>
-            )}
-          </div>
-        </section>
-
-        {/* ── Contact info ───────────────────────────────────────── */}
-        <section className={sectionClasses}>
-          <header className={sectionHeaderClasses}>
-            <h2 className={sectionTitleClasses}>Contact info</h2>
-            <p className={sectionSubtitleClasses}>
-              Optional. Used to populate the contact and footer sections of the
-              generated site.
-            </p>
-          </header>
-          <div className="flex flex-col gap-6">
-            {/* Phone & email side-by-side */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="phone" className={labelClasses}>
-                  Phone
-                </label>
-                <input
-                  id="phone"
-                  type="tel"
-                  inputMode="tel"
-                  value={phone}
-                  onChange={(e) => {
-                    setPhone(e.target.value);
-                    setPhoneError(null);
-                  }}
-                  placeholder="+55 11 99999-9999"
-                  aria-invalid={phoneError ? "true" : "false"}
-                  className={inputClasses}
-                />
-                {phoneError && (
-                  <p className={errorTextClasses} role="alert">
-                    {phoneError}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label htmlFor="email" className={labelClasses}>
-                  Email
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  value={emailValue}
-                  onChange={(e) => {
-                    setEmailValue(e.target.value);
-                    setEmailError(null);
-                  }}
-                  placeholder="contact@company.com"
-                  aria-invalid={emailError ? "true" : "false"}
-                  className={inputClasses}
-                />
-                {emailError && (
-                  <p className={errorTextClasses} role="alert">
-                    {emailError}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Address — structured */}
-            <div className="flex flex-col gap-3">
-              <p className="block text-sm font-medium text-slate-700">
-                Address
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="sm:col-span-1">
-                  <label htmlFor="addr-zip" className="text-xs text-slate-600">
-                    ZIP
+            </header>
+            <div className="flex flex-col gap-6">
+              {/* Phone & email side-by-side */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="phone" className={labelClasses}>
+                    Phone
                   </label>
                   <input
-                    id="addr-zip"
-                    type="text"
-                    inputMode="numeric"
-                    value={address.zip}
-                    onChange={(e) => updateAddress("zip", e.target.value)}
-                    placeholder="01234-567"
+                    id="phone"
+                    type="tel"
+                    inputMode="tel"
+                    value={phone}
+                    onChange={(e) => {
+                      setPhone(e.target.value);
+                      setPhoneError(null);
+                    }}
+                    placeholder="+55 11 99999-9999"
+                    aria-invalid={phoneError ? "true" : "false"}
                     className={inputClasses}
                   />
-                  {zipError && (
+                  {phoneError && (
                     <p className={errorTextClasses} role="alert">
-                      {zipError}
+                      {phoneError}
                     </p>
                   )}
                 </div>
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="addr-street"
-                    className="text-xs text-slate-600"
-                  >
-                    Street
+
+                <div>
+                  <label htmlFor="email" className={labelClasses}>
+                    Email
                   </label>
                   <input
-                    id="addr-street"
-                    type="text"
-                    value={address.street}
-                    onChange={(e) => updateAddress("street", e.target.value)}
-                    placeholder="Av. Paulista"
+                    id="email"
+                    type="email"
+                    value={emailValue}
+                    onChange={(e) => {
+                      setEmailValue(e.target.value);
+                      setEmailError(null);
+                    }}
+                    placeholder="contact@company.com"
+                    aria-invalid={emailError ? "true" : "false"}
                     className={inputClasses}
                   />
+                  {emailError && (
+                    <p className={errorTextClasses} role="alert">
+                      {emailError}
+                    </p>
+                  )}
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div>
-                  <label
-                    htmlFor="addr-number"
-                    className="text-xs text-slate-600"
-                  >
-                    Number
-                  </label>
-                  <input
-                    id="addr-number"
-                    type="text"
-                    value={address.number}
-                    onChange={(e) => updateAddress("number", e.target.value)}
-                    placeholder="1234"
-                    className={inputClasses}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="addr-complement"
-                    className="text-xs text-slate-600"
-                  >
-                    Complement
-                  </label>
-                  <input
-                    id="addr-complement"
-                    type="text"
-                    value={address.complement}
-                    onChange={(e) =>
-                      updateAddress("complement", e.target.value)
-                    }
-                    placeholder="Apt 5"
-                    className={inputClasses}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="addr-neighborhood"
-                    className="text-xs text-slate-600"
-                  >
-                    Neighborhood
-                  </label>
-                  <input
-                    id="addr-neighborhood"
-                    type="text"
-                    value={address.neighborhood}
-                    onChange={(e) =>
-                      updateAddress("neighborhood", e.target.value)
-                    }
-                    placeholder="Bela Vista"
-                    className={inputClasses}
-                  />
-                </div>
-              </div>
+              {/* Address — structured */}
+              <div className="flex flex-col gap-3">
+                <p className="block text-sm font-medium text-slate-700">
+                  Address
+                </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="sm:col-span-2">
-                  <label htmlFor="addr-city" className="text-xs text-slate-600">
-                    City
-                  </label>
-                  <input
-                    id="addr-city"
-                    type="text"
-                    value={address.city}
-                    onChange={(e) => updateAddress("city", e.target.value)}
-                    placeholder="São Paulo"
-                    className={inputClasses}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="addr-state"
-                    className="text-xs text-slate-600"
-                  >
-                    State
-                  </label>
-                  <select
-                    id="addr-state"
-                    value={address.state}
-                    onChange={(e) => updateAddress("state", e.target.value)}
-                    className={inputClasses}
-                  >
-                    <option value="">—</option>
-                    {BR_STATES.map((s) => (
-                      <option key={s} value={s}>
-                        {s}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            {/* Business hours — day-by-day grid */}
-            <div className="flex flex-col gap-2">
-              <p className="block text-sm font-medium text-slate-700">
-                Business hours
-              </p>
-              <div className="rounded-md border border-slate-200 divide-y divide-slate-200">
-                {DAYS.map((day) => {
-                  const h = businessHours[day.id];
-                  return (
-                    <div
-                      key={day.id}
-                      className="flex flex-wrap items-center gap-3 px-3 py-2"
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="sm:col-span-1">
+                    <label
+                      htmlFor="addr-zip"
+                      className="text-xs text-slate-600"
                     >
-                      <span className="w-12 text-sm font-medium text-slate-700">
-                        {day.short}
-                      </span>
-                      <input
-                        type="time"
-                        aria-label={`${day.full} open`}
-                        value={h.open}
-                        disabled={h.closed}
-                        onChange={(e) =>
-                          updateHours(day.id, { open: e.target.value })
-                        }
-                        className="border border-slate-300 rounded-md px-2 py-1 text-sm disabled:bg-slate-50 disabled:text-slate-400"
-                      />
-                      <span className="text-slate-400 text-sm">–</span>
-                      <input
-                        type="time"
-                        aria-label={`${day.full} close`}
-                        value={h.close}
-                        disabled={h.closed}
-                        onChange={(e) =>
-                          updateHours(day.id, { close: e.target.value })
-                        }
-                        className="border border-slate-300 rounded-md px-2 py-1 text-sm disabled:bg-slate-50 disabled:text-slate-400"
-                      />
-                      <label className="ml-auto flex items-center gap-2 text-xs text-slate-600 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={h.closed}
-                          onChange={(e) =>
-                            updateHours(day.id, {
-                              closed: e.target.checked,
-                              ...(e.target.checked
-                                ? { open: "", close: "" }
-                                : {}),
-                            })
-                          }
-                          className="accent-slate-900"
-                        />
-                        Closed
-                      </label>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Social links ───────────────────────────────────────── */}
-        <section className={sectionClasses}>
-          <header className={sectionHeaderClasses}>
-            <h2 className={sectionTitleClasses}>Social links</h2>
-            <p className={sectionSubtitleClasses}>
-              Add any social profiles to surface in the footer.
-            </p>
-          </header>
-          <div className="flex flex-col gap-3">
-            {socialLinks.length === 0 && (
-              <p className="text-xs text-slate-500">
-                No social links yet. Add a row to include one.
-              </p>
-            )}
-
-            {socialLinks.map((row, index) => {
-              const platform = SOCIAL_PLATFORMS.find(
-                (p) => p.id === row.platform,
-              );
-              const Icon = platform?.icon ?? Globe;
-              return (
-                <div key={index} className="flex flex-col gap-1">
-                  <div className="flex flex-col sm:flex-row gap-2 items-stretch">
-                    <div className="flex items-center gap-2 sm:w-56">
-                      <Icon
-                        className="h-5 w-5 text-slate-500 shrink-0"
-                        aria-hidden
-                      />
-                      <select
-                        aria-label={`Social platform ${index + 1}`}
-                        value={row.platform}
-                        onChange={(e) =>
-                          updateSocialLink(index, "platform", e.target.value)
-                        }
-                        className={inputClasses}
-                      >
-                        <option value="">Select platform…</option>
-                        {SOCIAL_PLATFORMS.map((p) => (
-                          <option key={p.id} value={p.id}>
-                            {p.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                      ZIP
+                    </label>
                     <input
-                      type="url"
-                      aria-label={`Social URL ${index + 1}`}
-                      value={row.url}
-                      onChange={(e) =>
-                        updateSocialLink(index, "url", e.target.value)
-                      }
-                      placeholder={platform?.placeholder ?? "https://..."}
+                      id="addr-zip"
+                      type="text"
+                      inputMode="numeric"
+                      value={address.zip}
+                      onChange={(e) => updateAddress("zip", e.target.value)}
+                      placeholder="01234-567"
                       className={inputClasses}
                     />
-                    <button
-                      type="button"
-                      onClick={() => removeSocialLink(index)}
-                      className="rounded-md border border-slate-300 px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors self-start sm:self-auto"
-                    >
-                      Remove
-                    </button>
+                    {zipError && (
+                      <p className={errorTextClasses} role="alert">
+                        {zipError}
+                      </p>
+                    )}
                   </div>
-                  {socialErrors[index] && (
-                    <p className={errorTextClasses} role="alert">
-                      {socialErrors[index]}
-                    </p>
-                  )}
+                  <div className="sm:col-span-2">
+                    <label
+                      htmlFor="addr-street"
+                      className="text-xs text-slate-600"
+                    >
+                      Street
+                    </label>
+                    <input
+                      id="addr-street"
+                      type="text"
+                      value={address.street}
+                      onChange={(e) => updateAddress("street", e.target.value)}
+                      placeholder="Av. Paulista"
+                      className={inputClasses}
+                    />
+                  </div>
                 </div>
-              );
-            })}
 
-            <div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label
+                      htmlFor="addr-number"
+                      className="text-xs text-slate-600"
+                    >
+                      Number
+                    </label>
+                    <input
+                      id="addr-number"
+                      type="text"
+                      value={address.number}
+                      onChange={(e) => updateAddress("number", e.target.value)}
+                      placeholder="1234"
+                      className={inputClasses}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="addr-complement"
+                      className="text-xs text-slate-600"
+                    >
+                      Complement
+                    </label>
+                    <input
+                      id="addr-complement"
+                      type="text"
+                      value={address.complement}
+                      onChange={(e) =>
+                        updateAddress("complement", e.target.value)
+                      }
+                      placeholder="Apt 5"
+                      className={inputClasses}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="addr-neighborhood"
+                      className="text-xs text-slate-600"
+                    >
+                      Neighborhood
+                    </label>
+                    <input
+                      id="addr-neighborhood"
+                      type="text"
+                      value={address.neighborhood}
+                      onChange={(e) =>
+                        updateAddress("neighborhood", e.target.value)
+                      }
+                      placeholder="Bela Vista"
+                      className={inputClasses}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="sm:col-span-2">
+                    <label
+                      htmlFor="addr-city"
+                      className="text-xs text-slate-600"
+                    >
+                      City
+                    </label>
+                    <input
+                      id="addr-city"
+                      type="text"
+                      value={address.city}
+                      onChange={(e) => updateAddress("city", e.target.value)}
+                      placeholder="São Paulo"
+                      className={inputClasses}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="addr-state"
+                      className="text-xs text-slate-600"
+                    >
+                      State
+                    </label>
+                    <select
+                      id="addr-state"
+                      value={address.state}
+                      onChange={(e) => updateAddress("state", e.target.value)}
+                      className={inputClasses}
+                    >
+                      <option value="">—</option>
+                      {BR_STATES.map((s) => (
+                        <option key={s} value={s}>
+                          {s}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Business hours — day-by-day grid */}
+              <div className="flex flex-col gap-2">
+                <p className="block text-sm font-medium text-slate-700">
+                  Business hours
+                </p>
+                <div className="rounded-md border border-slate-200 divide-y divide-slate-200">
+                  {DAYS.map((day) => {
+                    const h = businessHours[day.id];
+                    return (
+                      <div
+                        key={day.id}
+                        className="flex flex-wrap items-center gap-3 px-3 py-2"
+                      >
+                        <span className="w-12 text-sm font-medium text-slate-700">
+                          {day.short}
+                        </span>
+                        <input
+                          type="time"
+                          aria-label={`${day.full} open`}
+                          value={h.open}
+                          disabled={h.closed}
+                          onChange={(e) =>
+                            updateHours(day.id, { open: e.target.value })
+                          }
+                          className="border border-slate-300 rounded-md px-2 py-1 text-sm disabled:bg-slate-50 disabled:text-slate-400"
+                        />
+                        <span className="text-slate-400 text-sm">–</span>
+                        <input
+                          type="time"
+                          aria-label={`${day.full} close`}
+                          value={h.close}
+                          disabled={h.closed}
+                          onChange={(e) =>
+                            updateHours(day.id, { close: e.target.value })
+                          }
+                          className="border border-slate-300 rounded-md px-2 py-1 text-sm disabled:bg-slate-50 disabled:text-slate-400"
+                        />
+                        <label className="ml-auto flex items-center gap-2 text-xs text-slate-600 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={h.closed}
+                            onChange={(e) =>
+                              updateHours(day.id, {
+                                closed: e.target.checked,
+                                ...(e.target.checked
+                                  ? { open: "", close: "" }
+                                  : {}),
+                              })
+                            }
+                            className="accent-slate-900"
+                          />
+                          Closed
+                        </label>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ── Social links ───────────────────────────────────────── */}
+          <section className={sectionClasses}>
+            <header className={sectionHeaderClasses}>
+              <h2 className={sectionTitleClasses}>Social links</h2>
+              <p className={sectionSubtitleClasses}>
+                Add any social profiles to surface in the footer.
+              </p>
+            </header>
+            <div className="flex flex-col gap-3">
+              {socialLinks.length === 0 && (
+                <p className="text-xs text-slate-500">
+                  No social links yet. Add a row to include one.
+                </p>
+              )}
+
+              {socialLinks.map((row, index) => {
+                const platform = SOCIAL_PLATFORMS.find(
+                  (p) => p.id === row.platform,
+                );
+                const Icon = platform?.icon ?? Globe;
+                return (
+                  <div key={index} className="flex flex-col gap-1">
+                    <div className="flex flex-col sm:flex-row gap-2 items-stretch">
+                      <div className="flex items-center gap-2 sm:w-56">
+                        <Icon
+                          className="h-5 w-5 text-slate-500 shrink-0"
+                          aria-hidden
+                        />
+                        <select
+                          aria-label={`Social platform ${index + 1}`}
+                          value={row.platform}
+                          onChange={(e) =>
+                            updateSocialLink(index, "platform", e.target.value)
+                          }
+                          className={inputClasses}
+                        >
+                          <option value="">Select platform…</option>
+                          {SOCIAL_PLATFORMS.map((p) => (
+                            <option key={p.id} value={p.id}>
+                              {p.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <input
+                        type="url"
+                        aria-label={`Social URL ${index + 1}`}
+                        value={row.url}
+                        onChange={(e) =>
+                          updateSocialLink(index, "url", e.target.value)
+                        }
+                        placeholder={platform?.placeholder ?? "https://..."}
+                        className={inputClasses}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeSocialLink(index)}
+                        className="rounded-md border border-slate-300 px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors self-start sm:self-auto"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                    {socialErrors[index] && (
+                      <p className={errorTextClasses} role="alert">
+                        {socialErrors[index]}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+
+              <div>
+                <button
+                  type="button"
+                  onClick={addSocialLink}
+                  className="rounded-md border border-slate-300 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                >
+                  Add row
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* ── Footer ─────────────────────────────────────────────── */}
+          <div className="flex flex-col gap-3 px-6 py-5 sm:px-8 bg-slate-50 rounded-b-lg">
+            {error && (
+              <p className="text-sm text-red-600" role="alert">
+                {error}
+              </p>
+            )}
+            <div className="flex justify-end">
               <button
-                type="button"
-                onClick={addSocialLink}
-                className="rounded-md border border-slate-300 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                type="submit"
+                disabled={isPending}
+                className="bg-slate-900 text-white px-5 py-2 rounded-md hover:bg-slate-800 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Add row
+                {isPending ? "Generating..." : "Generate Website"}
               </button>
             </div>
           </div>
-        </section>
-
-        {/* ── Footer ─────────────────────────────────────────────── */}
-        <div className="flex flex-col gap-3 px-6 py-5 sm:px-8 bg-slate-50 rounded-b-lg">
-          {error && (
-            <p className="text-sm text-red-600" role="alert">
-              {error}
-            </p>
-          )}
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              disabled={isPending}
-              className="bg-slate-900 text-white px-5 py-2 rounded-md hover:bg-slate-800 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isPending ? "Generating..." : "Generate Website"}
-            </button>
-          </div>
-        </div>
-      </form>
+        </form>
+        <FormProgressSidebar sections={sections} />
+      </div>
     </div>
   );
 }
