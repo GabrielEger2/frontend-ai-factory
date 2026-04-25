@@ -772,6 +772,12 @@
         "optional": true
       },
       {
+        "name": "hoursText",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      },
+      {
         "name": "navColumns",
         "type": "list",
         "maxItems": 4,
