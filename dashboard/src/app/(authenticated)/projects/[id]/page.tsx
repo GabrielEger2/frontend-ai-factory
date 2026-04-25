@@ -173,6 +173,13 @@ export default async function ProjectDetailPage({
                     projectId={id}
                     initialComposerOutput={project.composerOutput}
                     styleOutput={project.styleOutput}
+                    buyerFields={{
+                      phone: project.phone ?? undefined,
+                      email: project.email ?? undefined,
+                      address: project.address ?? undefined,
+                      businessHours: project.businessHours ?? undefined,
+                      socialLinks: project.socialLinks ?? undefined,
+                    }}
                   />
                 )}
               {step.status === "composing" &&
