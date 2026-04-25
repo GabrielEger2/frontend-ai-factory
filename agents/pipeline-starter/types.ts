@@ -11,6 +11,19 @@ export const ProjectBriefSchema = z.object({
   description: z.string(),
   sellerId: z.string(),
   brandColor: z.string().optional(),
+  // Expanded intake fields (all optional for back-compat with in-flight projects).
+  // brandToneKeywords (NOT toneKeywords) — avoids collision with ResearchOutputSchema.toneKeywords.
+  desiredSections: z.array(z.string()).optional(),
+  excludedSections: z.array(z.string()).optional(),
+  brandToneKeywords: z.array(z.string()).optional(),
+  objectives: z.array(z.string()).optional(),
+  businessHours: z.string().optional(),
+  address: z.string().optional(),
+  phone: z.string().optional(),
+  email: z.string().optional(),
+  socialLinks: z
+    .array(z.object({ platform: z.string(), url: z.string() }))
+    .optional(),
 });
 
 export type ProjectBrief = z.infer<typeof ProjectBriefSchema>;

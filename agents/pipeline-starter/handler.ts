@@ -44,13 +44,27 @@ export const handler: SQSHandler = async (event) => {
         new StartExecutionCommand({
           stateMachineArn,
           name: brief.projectId,
+          // IMPORTANT: every field referenced by a JsonPath in the SFN payload
+          // blocks (e.g. styleStep, composerStep) MUST exist in this input
+          // object — `?? null` defaults guarantee no JsonPath runtime error
+          // when an optional intake field is unset. If you add a new optional
+          // field downstream, extend this defaults block too.
           input: JSON.stringify({
             projectId: brief.projectId,
             sellerId: brief.sellerId,
             segment: brief.segment,
             companyName: brief.companyName,
             description: brief.description,
-            brandColor: brief.brandColor,
+            brandColor: brief.brandColor ?? null,
+            desiredSections: brief.desiredSections ?? null,
+            excludedSections: brief.excludedSections ?? null,
+            brandToneKeywords: brief.brandToneKeywords ?? null,
+            objectives: brief.objectives ?? null,
+            businessHours: brief.businessHours ?? null,
+            address: brief.address ?? null,
+            phone: brief.phone ?? null,
+            email: brief.email ?? null,
+            socialLinks: brief.socialLinks ?? null,
             status: "queued",
           }),
         }),
