@@ -97,7 +97,7 @@ export function BlueprintPreview({
         ...cssVars,
         width: viewportWidth,
         maxWidth: "100%",
-        maxHeight: "80vh",
+        contain: "paint",
         pointerEvents: interactive ? "auto" : "none",
       }}
     >
@@ -119,13 +119,19 @@ export function BlueprintPreview({
         );
         const slots = (contentEntry?.slots ?? {}) as Record<string, unknown>;
         const variant = draft.blueprint.variantSelections?.[componentId];
+        const previewProps =
+          componentId === "navbar-sticky-01" ? { previewMode: true } : {};
 
         return (
           <SectionErrorBoundary
             key={`${componentId}-${index}`}
             componentId={componentId}
           >
-            <Component {...slots} {...(variant ? { variant } : {})} />
+            <Component
+              {...slots}
+              {...(variant ? { variant } : {})}
+              {...previewProps}
+            />
           </SectionErrorBoundary>
         );
       })}
