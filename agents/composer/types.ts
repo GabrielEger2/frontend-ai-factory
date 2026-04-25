@@ -15,9 +15,15 @@ export const ComposerAgentInputSchema = PipelineStateSchema.pick({
   companyName: true,
   segment: true,
   description: true,
+  desiredSections: true,
+  brandToneKeywords: true,
+  objectives: true,
 }).extend({
   researchOutput: ResearchOutputSchema,
   styleOutput: StyleOutputSchema,
+  // Optional: present in the SFN WAIT_FOR_TASK_TOKEN path; absent in the
+  // regenerate-layout sync invoke path. The handler branches on its presence.
+  taskToken: z.string().optional(),
 });
 
 export type ComposerAgentInput = z.infer<typeof ComposerAgentInputSchema>;

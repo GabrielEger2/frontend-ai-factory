@@ -48,6 +48,10 @@ export interface ApiStackProps extends StackProps {
  *   GET  /projects  — list project summaries
  *   GET  /projects/{id} — read project status
  *   POST /projects/{id}/approve-style — approve style and resume pipeline
+ *   POST /projects/{id}/approve-layout — approve layout and resume pipeline
+ *   POST /projects/{id}/regenerate-layout — re-run Composer at layout gate
+ *   POST /projects/{id}/swap-component — swap one component in selected layout
+ *   POST /projects/{id}/restart — restart a failed pipeline from scratch
  */
 export class ApiStack extends Stack {
   /** The REST API — exposed for cross-stack wiring (e.g. dashboard config). */
@@ -234,6 +238,47 @@ export class ApiStack extends Stack {
     );
 
     /* -------------------------------------------------------------- */
+    /*  POST /projects/{id}/restart Lambda                              */
+    /* -------------------------------------------------------------- */
+
+    const restartPipelineFn = new NodejsFunction(this, "RestartPipelineFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(
+        __dirname,
+        "../../agents/api/restart-pipeline/handler.ts",
+      ),
+      handler: "handler",
+      functionName: "sitegen-restart-pipeline",
+      description:
+        "SiteGen POST /projects/{id}/restart — restart failed pipeline from scratch",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        PIPELINE_QUEUE_URL: props.pipelineQueueUrl,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    // DynamoDB read+write on projects table (read for ownership check, update
+    // for clearing agent outputs and resetting status).
+    restartPipelineFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem", "dynamodb:UpdateItem"],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    // SQS sendMessage on pipeline queue
+    restartPipelineFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["sqs:SendMessage"],
+        resources: [props.pipelineQueueArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
     /*  GET /projects/{id}/files Lambda                                 */
     /* -------------------------------------------------------------- */
 
@@ -344,6 +389,106 @@ export class ApiStack extends Stack {
     );
 
     /* -------------------------------------------------------------- */
+    /*  POST /projects/{id}/approve-layout Lambda                      */
+    /* -------------------------------------------------------------- */
+
+    const approveLayoutFn = new NodejsFunction(this, "ApproveLayoutFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(__dirname, "../../agents/api/approve-layout/handler.ts"),
+      handler: "handler",
+      functionName: "sitegen-approve-layout",
+      description: "SiteGen POST /projects/{id}/approve-layout",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        STATE_MACHINE_ARN: props.stateMachineArn,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    approveLayoutFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem", "dynamodb:UpdateItem"],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    approveLayoutFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["states:SendTaskSuccess", "states:SendTaskFailure"],
+        resources: [props.stateMachineArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  POST /projects/{id}/regenerate-layout Lambda                   */
+    /* -------------------------------------------------------------- */
+
+    const regenerateLayoutFn = new NodejsFunction(this, "RegenerateLayoutFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(
+        __dirname,
+        "../../agents/api/regenerate-layout/handler.ts",
+      ),
+      handler: "handler",
+      functionName: "sitegen-regenerate-layout",
+      description: "SiteGen POST /projects/{id}/regenerate-layout",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    regenerateLayoutFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem"],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    // Tighter than retry-step's `sitegen-*` wildcard: this handler only ever
+    // re-invokes the Composer Lambda, so scope is the exact function ARN.
+    regenerateLayoutFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["lambda:InvokeFunction"],
+        resources: [
+          `arn:aws:lambda:${Stack.of(this).region}:${Stack.of(this).account}:function:sitegen-composer`,
+        ],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  POST /projects/{id}/swap-component Lambda                      */
+    /* -------------------------------------------------------------- */
+
+    const swapComponentFn = new NodejsFunction(this, "SwapComponentFn", {
+      ...LAMBDA_DEFAULTS,
+      entry: path.join(__dirname, "../../agents/api/swap-component/handler.ts"),
+      handler: "handler",
+      functionName: "sitegen-swap-component",
+      description: "SiteGen POST /projects/{id}/swap-component",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        ALLOWED_SELLER_IDS: props.allowedSellerIds,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    swapComponentFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem", "dynamodb:UpdateItem"],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
     /*  PATCH /projects/{id}/draft Lambda                              */
     /* -------------------------------------------------------------- */
 
@@ -404,24 +549,27 @@ export class ApiStack extends Stack {
     /*  POST /projects/{id}/deploy Lambda                              */
     /* -------------------------------------------------------------- */
 
-    // NOTE: deploy-draft does in-Lambda assembly + tar/gzip + Vercel deploy +
-    // polling + DDB writes. Needs 10 min timeout + 1024 MB memory — Vercel
-    // polling alone can take up to 7.5 min. Do NOT spread LAMBDA_DEFAULTS.
+    // NOTE: deploy-draft is the fast async kickoff — it does assembly +
+    // tar/gzip + initial Vercel POST, flips status to "deploying", then
+    // fires-and-forgets the deploy-completer Lambda which polls Vercel and
+    // writes terminal state. 30s timeout is enough for the kickoff path;
+    // long Vercel poll budget lives on deployCompleterFn below.
     const deployDraftFn = new NodejsFunction(this, "DeployDraftFn", {
       runtime: Runtime.NODEJS_20_X,
       architecture: Architecture.ARM_64,
-      timeout: Duration.minutes(10),
+      timeout: Duration.seconds(30),
       memorySize: 1024,
       entry: path.join(__dirname, "../../agents/api/deploy-draft/handler.ts"),
       handler: "handler",
       functionName: "sitegen-deploy-draft",
       description:
-        "SiteGen POST /projects/{id}/deploy — assemble, upload, Vercel deploy, VERSION# snapshot",
+        "SiteGen POST /projects/{id}/deploy — assemble, upload, Vercel kickoff, async invoke completer",
       environment: {
         PROJECTS_TABLE_NAME: props.projectsTableName,
         PIPELINE_BUCKET_NAME: props.pipelineBucketName,
         VERCEL_TOKEN_SSM_PATH: props.vercelTokenSsmPath,
         ALLOWED_SELLER_IDS: props.allowedSellerIds,
+        DEPLOY_COMPLETER_FUNCTION_NAME: "sitegen-deploy-completer",
       },
       bundling: {
         ...ESBUILD_DEFAULTS,
@@ -454,6 +602,58 @@ export class ApiStack extends Stack {
         ],
       }),
     );
+
+    /* -------------------------------------------------------------- */
+    /*  Deploy Completer Lambda (async background poll + finalize)     */
+    /* -------------------------------------------------------------- */
+
+    // Invoked only via lambda:Invoke (InvocationType=Event) from
+    // deployDraftFn. Polls Vercel for up to 7.5 min, writes terminal
+    // status (deployed | deploy_failed) + VERSION# snapshot to DDB.
+    const deployCompleterFn = new NodejsFunction(this, "DeployCompleterFn", {
+      runtime: Runtime.NODEJS_20_X,
+      architecture: Architecture.ARM_64,
+      timeout: Duration.minutes(10),
+      memorySize: 1024,
+      entry: path.join(
+        __dirname,
+        "../../agents/api/deploy-completer/handler.ts",
+      ),
+      handler: "handler",
+      functionName: "sitegen-deploy-completer",
+      description:
+        "SiteGen async vercel poll + VERSION snapshot + status finalization",
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        VERCEL_TOKEN_SSM_PATH: props.vercelTokenSsmPath,
+      },
+      bundling: {
+        ...ESBUILD_DEFAULTS,
+      },
+    });
+
+    deployCompleterFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:TransactWriteItems",
+        ],
+        resources: [props.projectsTableArn],
+      }),
+    );
+
+    deployCompleterFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["ssm:GetParameter"],
+        resources: [
+          `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.vercelTokenSsmPath}`,
+        ],
+      }),
+    );
+
+    deployCompleterFn.grantInvoke(deployDraftFn);
 
     /* -------------------------------------------------------------- */
     /*  GET /projects/{id}/versions Lambda                             */
@@ -741,6 +941,31 @@ export class ApiStack extends Stack {
       { apiKeyRequired: true },
     );
 
+    // POST /projects/{id}/approve-layout
+    const approveLayoutResource = projectById.addResource("approve-layout");
+    approveLayoutResource.addMethod(
+      "POST",
+      new LambdaIntegration(approveLayoutFn),
+      { apiKeyRequired: true },
+    );
+
+    // POST /projects/{id}/regenerate-layout
+    const regenerateLayoutResource =
+      projectById.addResource("regenerate-layout");
+    regenerateLayoutResource.addMethod(
+      "POST",
+      new LambdaIntegration(regenerateLayoutFn),
+      { apiKeyRequired: true },
+    );
+
+    // POST /projects/{id}/swap-component
+    const swapComponentResource = projectById.addResource("swap-component");
+    swapComponentResource.addMethod(
+      "POST",
+      new LambdaIntegration(swapComponentFn),
+      { apiKeyRequired: true },
+    );
+
     // POST /projects/{id}/steps/{stepName}/retry
     const steps = projectById.addResource("steps");
     const stepByName = steps.addResource("{stepName}");
@@ -748,6 +973,14 @@ export class ApiStack extends Stack {
     retryResource.addMethod("POST", new LambdaIntegration(retryStepFn), {
       apiKeyRequired: true,
     });
+
+    // POST /projects/{id}/restart
+    const restartResource = projectById.addResource("restart");
+    restartResource.addMethod(
+      "POST",
+      new LambdaIntegration(restartPipelineFn),
+      { apiKeyRequired: true },
+    );
 
     // GET + PUT /projects/{id}/files
     const filesResource = projectById.addResource("files");

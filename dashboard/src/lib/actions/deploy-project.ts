@@ -11,10 +11,12 @@ import { apiFetch } from "@/lib/api/client";
  * Invalidates `/projects/:id` server cache after success so the detail
  * page reflects the new previewUrl, version, and status.
  */
-export async function deployProject(
-  projectId: string,
-): Promise<
-  | { versionNumber: number; previewUrl: string; deployedAt: string }
+export async function deployProject(projectId: string): Promise<
+  | {
+      status: "deploying" | "already_deploying";
+      previewUrl?: string;
+      deploymentId?: string;
+    }
   | { error: string }
 > {
   try {
@@ -24,9 +26,9 @@ export async function deployProject(
 
     if (res.ok) {
       const data = (await res.json()) as {
-        versionNumber: number;
-        previewUrl: string;
-        deployedAt: string;
+        status: "deploying" | "already_deploying";
+        previewUrl?: string;
+        deploymentId?: string;
       };
       revalidatePath("/projects/" + projectId);
       return data;
@@ -45,7 +47,7 @@ export async function deployProject(
       };
     }
 
-    return { error: `Unexpected response: ${res.status}` };
+    return { error: `Deploy request failed (${res.status})` };
   } catch (error) {
     console.error(`Failed to deploy project ${projectId}:`, error);
     return { error: "Failed to deploy project" };

@@ -8,21 +8,24 @@ import {
 import { SFNClient, SendTaskSuccessCommand } from "@aws-sdk/client-sfn";
 
 import type { PipelineState, ProjectItem } from "../../shared/types";
-import { PipelineStateSchema, StyleOutputSchema } from "../../shared/types";
+import { PipelineStateSchema } from "../../shared/types";
 import { requireSellerId } from "../shared/seller-guard";
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 const sfn = new SFNClient({});
 
 /**
- * POST /projects/{id}/approve-style — approves (and optionally edits) the
- * AI-generated style output, then resumes the Step Functions pipeline.
+ * POST /projects/{id}/approve-layout — approves the AI-generated layout
+ * blueprint (after any number of swap-component / regenerate-layout calls)
+ * and resumes the Step Functions pipeline at the Content + SEO stage.
  *
- * Body: { styleOutput: StyleOutput }
+ * Body: optional empty `{}`. Layout edits already live in DDB via prior
+ * swap-component calls; this handler does NOT accept a layout payload.
+ *
  * Response 202: { message, projectId }
- * Response 400: missing params, invalid body, or missing task token
- * Response 404: project not found
- * Response 409: project is not awaiting style approval
+ * Response 400: missing params or missing task token
+ * Response 404: project not found (or not owned by this seller)
+ * Response 409: project not awaiting layout approval, or already processed
  */
 export const handler: APIGatewayProxyHandler = async (event) => {
   const tableName = process.env.PROJECTS_TABLE_NAME;
@@ -50,30 +53,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     };
   }
 
-  // Parse and validate styleOutput from request body
-  let styleOutput;
-  try {
-    if (!event.body) {
-      return {
-        statusCode: 400,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ error: "Missing request body" }),
-      };
-    }
-
-    const body = JSON.parse(event.body);
-    styleOutput = StyleOutputSchema.parse(body.styleOutput);
-  } catch (err) {
-    return {
-      statusCode: 400,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        error: "Invalid styleOutput",
-        details: err instanceof Error ? err.message : String(err),
-      }),
-    };
-  }
-
   try {
     // Fetch project from DynamoDB
     const result = await ddb.send(
@@ -96,6 +75,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     const item = result.Item as ProjectItem;
 
+    // Tenancy check: 404 (not 403) to avoid project-id enumeration
     if (item.sellerId !== sellerId) {
       return {
         statusCode: 404,
@@ -104,46 +84,48 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       };
     }
 
-    // Guard: project must be awaiting style approval
-    if (item.status !== "awaiting_style_approval") {
+    // Guard: project must be awaiting layout approval
+    if (item.status !== "awaiting_layout_approval") {
       return {
         statusCode: 409,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          error: `Project is not awaiting style approval (current status: ${item.status})`,
+          error: `Project is not awaiting layout approval (current status: ${item.status})`,
         }),
       };
     }
 
-    // Read task token — must exist for awaiting_style_approval status
-    const taskToken = item.styleApprovalTaskToken;
+    // Read task token — must exist for awaiting_layout_approval status
+    const taskToken = item.layoutApprovalTaskToken;
     if (!taskToken) {
       return {
         statusCode: 400,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          error: "Missing styleApprovalTaskToken — project state is corrupted",
+          error: "Missing layoutApprovalTaskToken — project state is corrupted",
         }),
       };
     }
 
     // Reconstruct FULL PipelineState by spreading the parsed DDB item and
-    // overriding the seller-edited styleOutput + advanced status.
+    // advancing status to `content` for downstream Content + SEO agents.
     //
     // HARDENING: Using PipelineStateSchema.parse(item) instead of a manual
-    // field list eliminates "stale field list" drift — any future field added
-    // to PipelineStateSchema (intake fields, layout-gate fields, etc.) flows
-    // through to downstream agents automatically. This is now THE template
-    // approve-layout follows in Wave 4.
+    // field list eliminates "stale field list" drift — any future field
+    // added to PipelineStateSchema flows through to downstream agents
+    // automatically. This is the same pattern used by approve-style.
+    //
+    // Layout edits made via swap-component already live on `item.composerOutput`,
+    // so the spread carries them forward without an explicit body payload.
     const baseState = PipelineStateSchema.parse(item);
     const pipelineState: PipelineState = {
       ...baseState,
-      styleOutput,
-      status: "composing" as const,
+      status: "content" as const,
     };
 
-    // Step 8: DDB update FIRST — persist edited style and advance status
-    // This must happen before SendTaskSuccess to avoid status display race
+    // DDB update FIRST — advance status and remove the consumed task token.
+    // This must happen before SendTaskSuccess to avoid a status display race
+    // where the dashboard polls between SendTaskSuccess and the DDB write.
     await ddb.send(
       new UpdateCommand({
         TableName: tableName,
@@ -152,24 +134,22 @@ export const handler: APIGatewayProxyHandler = async (event) => {
           sk: `PROJECT#${projectId}`,
         },
         UpdateExpression:
-          "SET styleOutput = :so, #s = :status, updatedAt = :now REMOVE styleApprovalTaskToken",
+          "SET #s = :status, updatedAt = :now REMOVE layoutApprovalTaskToken",
         ExpressionAttributeNames: { "#s": "status" },
         ExpressionAttributeValues: {
-          ":so": styleOutput,
-          ":status": "composing",
+          ":status": "content",
           ":now": new Date().toISOString(),
         },
       }),
     );
 
-    // Step 9: Resume Step Functions pipeline with full state
+    // Resume Step Functions pipeline with the full reconstructed state.
     //
     // HARDENING: SendTaskSuccess is single-use — a second call with the same
-    // token throws TaskTimedOut / TaskDoesNotExist / InvalidToken. Without this
-    // catch, a duplicate approve click would surface as a 500 even though the
-    // first call already advanced the pipeline correctly. Return 409 instead so
-    // the dashboard can refetch and reflect the real state. This is now THE
-    // template approve-layout follows in Wave 4.
+    // token throws TaskTimedOut / TaskDoesNotExist / InvalidToken. Without
+    // this catch, a duplicate approve click would surface as a 500 even
+    // though the first call already advanced the pipeline correctly. Return
+    // 409 instead so the dashboard can refetch and reflect the real state.
     try {
       await sfn.send(
         new SendTaskSuccessCommand({
@@ -193,7 +173,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
           statusCode: 409,
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            error: "Style approval already processed",
+            error: "Layout approval already processed",
             code: errName,
           }),
         };
@@ -203,7 +183,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     console.log(
       JSON.stringify({
-        message: "Style approved",
+        message: "Layout approved",
         projectId,
       }),
     );
@@ -212,14 +192,14 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       statusCode: 202,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        message: "Style approved",
+        message: "Layout approved",
         projectId,
       }),
     };
   } catch (err) {
     console.error(
       JSON.stringify({
-        message: "Failed to approve style",
+        message: "Failed to approve layout",
         projectId,
         error: err instanceof Error ? err.message : String(err),
       }),

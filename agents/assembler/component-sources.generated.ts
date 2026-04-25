@@ -11,6 +11,7 @@ export const COMPONENT_SOURCES: Record<string, string> = {
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -33,13 +34,52 @@ export interface CarouselCardsProps {
   /** Section headline */
   headline: string;
   /** Array of card items */
-  cards: CarouselCardItem[];
+  cards?: CarouselCardItem[];
   /** Fixed card width in pixels. Defaults to 350 */
   cardWidth?: number;
   /** Gap between cards in pixels. Defaults to 20 */
   cardGap?: number;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_CAROUSEL_CARDS: CarouselCardItem[] = [
+  {
+    image: "https://picsum.photos/seed/carouselcards-card-0/640/400",
+    imageAlt: "Designer reviewing mockups on a tablet",
+    tag: "Design",
+    title: "Brand systems that scale",
+    description:
+      "Build a visual language that holds together across every channel — without redoing the work each time.",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselcards-card-1/640/400",
+    imageAlt: "Developers pair-programming on dual monitors",
+    tag: "Engineering",
+    title: "Ship features, not tickets",
+    description:
+      "We pair with your engineers to clear backlogs and rebuild the foundations that keep slowing things down.",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselcards-card-2/640/400",
+    imageAlt: "Marketer analyzing dashboard charts",
+    tag: "Growth",
+    title: "Marketing that compounds",
+    description:
+      "Channels, content, and conversion experiments stitched into one engine — measured weekly, refined monthly.",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselcards-card-3/640/400",
+    imageAlt: "Strategist mapping a customer journey",
+    tag: "Strategy",
+    title: "From positioning to plan",
+    description:
+      "We turn fuzzy ambitions into a 12-month roadmap your team will actually want to ship.",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Breakpoints                                                        */
@@ -91,11 +131,19 @@ function Card({
   item,
   cardWidth,
   cardGap,
+  index,
 }: {
   item: CarouselCardItem;
   cardWidth: number;
   cardGap: number;
+  index: number;
 }) {
+  const safeImg = useSafeImageSrc(
+    item.image,
+    \`carousel-cards-01-card-image-\${index}\`,
+    600,
+    200,
+  );
   return (
     <div
       className="relative shrink-0 cursor-pointer transition-transform hover:-translate-y-1"
@@ -105,7 +153,8 @@ function Card({
       }}
     >
       <img
-        src={item.image}
+        src={safeImg.src}
+        onError={safeImg.onError}
         alt={item.imageAlt}
         className="mb-3 h-[200px] w-full rounded-lg bg-base-300 object-cover"
         loading="lazy"
@@ -133,7 +182,7 @@ function Card({
  */
 export default function CarouselCards({
   headline,
-  cards,
+  cards = DEFAULT_CAROUSEL_CARDS,
   cardWidth = 350,
   cardGap = 20,
   className,
@@ -238,6 +287,7 @@ export default function CarouselCards({
                 item={card}
                 cardWidth={cardWidth}
                 cardGap={cardGap}
+                index={idx}
               />
             ))}
           </motion.div>
@@ -266,13 +316,36 @@ export interface CarouselSwipeItem {
 
 export interface CarouselSwipeProps {
   /** Array of images to display in the carousel */
-  items: CarouselSwipeItem[];
+  items?: CarouselSwipeItem[];
   /** Auto-advance interval in milliseconds. Set to 0 to disable. Defaults to 10000 */
   autoAdvanceMs?: number;
   /** Minimum drag distance (in px) to trigger a slide change. Defaults to 50 */
   dragBuffer?: number;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_CAROUSEL_SWIPE_ITEMS: CarouselSwipeItem[] = [
+  {
+    image: "https://picsum.photos/seed/carouselswipe-slide-0/1280/720",
+    imageAlt: "Modern open office with natural light",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselswipe-slide-1/1280/720",
+    imageAlt: "Team collaborating on a whiteboard",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselswipe-slide-2/1280/720",
+    imageAlt: "Close-up of laptop and notebook on a desk",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselswipe-slide-3/1280/720",
+    imageAlt: "Skyline view from a rooftop terrace",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -375,7 +448,7 @@ function GradientEdges() {
  * keyboard navigation, and optional auto-advance.
  */
 export default function CarouselSwipe({
-  items,
+  items = DEFAULT_CAROUSEL_SWIPE_ITEMS,
   autoAdvanceMs = 10000,
   dragBuffer = 50,
   className,
@@ -887,7 +960,7 @@ export interface FaqAccordionProps {
   /** Optional supporting text below the headline */
   subheadline?: string;
   /** Array of question/answer pairs */
-  items: FaqAccordionItem[];
+  items?: FaqAccordionItem[];
   /** Allow multiple items to be open at once (default: false) */
   allowMultiple?: boolean;
   /** Index of the item to expand by default (-1 for none) */
@@ -896,13 +969,40 @@ export interface FaqAccordionProps {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_FAQ_ACCORDION_ITEMS: FaqAccordionItem[] = [
+  {
+    question: "How long does setup take?",
+    answer:
+      "Most teams are up and running in under an hour. Connect your accounts, invite your team, and you're live — no migration project required.",
+  },
+  {
+    question: "What does pricing actually look like at scale?",
+    answer:
+      "Plans start at $29/seat/month and we publish a clear volume discount table. You'll never be surprised by your invoice — and there's no per-feature paywall.",
+  },
+  {
+    question: "Do you offer hands-on support?",
+    answer:
+      "Yes — every paid plan includes a real human you can email or message. Enterprise tiers add a dedicated solutions engineer for the first 90 days.",
+  },
+  {
+    question: "Will it integrate with the tools we already use?",
+    answer:
+      "We support 60+ native integrations, plus Zapier, webhooks, and a fully documented API. If something's missing, our team will usually build it within two weeks.",
+  },
+];
+
+/* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
 export default function FaqAccordion({
   headline,
   subheadline,
-  items,
+  items = DEFAULT_FAQ_ACCORDION_ITEMS,
   allowMultiple = false,
   defaultOpenIndex = -1,
   className,
@@ -1049,11 +1149,38 @@ export interface FaqMinimalProps {
   /** Optional supporting text below the headline */
   subheadline?: string;
   /** Array of question/answer pairs */
-  items: FaqMinimalItem[];
+  items?: FaqMinimalItem[];
   /** Index of the item to expand by default (-1 for none) */
   defaultOpenIndex?: number;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_FAQ_MINIMAL_ITEMS: FaqMinimalItem[] = [
+  {
+    question: "Can I try it before committing?",
+    answer:
+      "Every plan starts with a 14-day trial — no credit card required. You'll have access to every feature, not a stripped-down demo.",
+  },
+  {
+    question: "What happens to my data if I cancel?",
+    answer:
+      "You can export everything as CSV or JSON at any time. We hold your data for 30 days after cancellation, then delete it permanently.",
+  },
+  {
+    question: "Is there a free plan for small teams?",
+    answer:
+      "Yes — teams of three or fewer can use the Starter tier indefinitely with all core features included. We only charge once you outgrow it.",
+  },
+  {
+    question: "How do you handle privacy and compliance?",
+    answer:
+      "We're SOC 2 Type II and GDPR compliant, encrypt data at rest and in transit, and offer EU-only data residency on Business and Enterprise plans.",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Sub-component                                                      */
@@ -1161,7 +1288,7 @@ function Question({
 export default function FaqMinimal({
   headline,
   subheadline,
-  items,
+  items = DEFAULT_FAQ_MINIMAL_ITEMS,
   defaultOpenIndex = -1,
   className,
 }: FaqMinimalProps) {
@@ -1210,6 +1337,7 @@ export default function FaqMinimal({
 
 import { cn } from "@/lib/utils";
 import { buttonStyles, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
@@ -1255,7 +1383,7 @@ export interface FaqSolutionsProps {
   /** Optional supporting text below the headline */
   subheadline?: string;
   /** Array of solution items with title, description, CTA, and image */
-  items: FaqSolutionsItem[];
+  items?: FaqSolutionsItem[];
   /** Index of the item to expand by default (default: 0) */
   defaultOpenIndex?: number;
   /** CTA button style */
@@ -1264,6 +1392,40 @@ export interface FaqSolutionsProps {
   ctaColorScheme?: ColorScheme;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_FAQ_SOLUTIONS_ITEMS: FaqSolutionsItem[] = [
+  {
+    title: "Move from spreadsheets to a real system",
+    description:
+      "Stop chasing data across tabs. We migrate your existing workflow into a single source of truth — usually in under a week.",
+    ctaText: "See migration guide",
+    ctaUrl: "#",
+    image: "https://picsum.photos/seed/faqsolutions-item-0/640/400",
+    imageAlt: "Clean dashboard replacing a cluttered spreadsheet",
+  },
+  {
+    title: "Run a tighter weekly review",
+    description:
+      "Pre-built templates for the meetings that actually move the business — quarterly planning, weekly retros, and monthly business reviews.",
+    ctaText: "Browse templates",
+    ctaUrl: "#",
+    image: "https://picsum.photos/seed/faqsolutions-item-1/640/400",
+    imageAlt: "Team gathered around a planning board",
+  },
+  {
+    title: "Onboard new hires in their first week",
+    description:
+      "Shareable checklists, role-based access, and built-in document signing — so day one feels organized instead of overwhelming.",
+    ctaText: "See an onboarding flow",
+    ctaUrl: "#",
+    image: "https://picsum.photos/seed/faqsolutions-item-2/640/400",
+    imageAlt: "New employee reviewing onboarding tasks on a laptop",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Sub-component — individual solution panel                          */
@@ -1375,7 +1537,7 @@ function SolutionItem({
 export default function FaqSolutions({
   headline,
   subheadline,
-  items,
+  items = DEFAULT_FAQ_SOLUTIONS_ITEMS,
   defaultOpenIndex = 0,
   ctaStyle,
   ctaColorScheme,
@@ -1385,6 +1547,12 @@ export default function FaqSolutions({
 
   const activeImage = items[openIndex]?.image;
   const activeImageAlt = items[openIndex]?.imageAlt ?? "";
+  const safeImg = useSafeImageSrc(
+    activeImage,
+    \`faq-solutions-01-item-image-\${openIndex ?? 0}\`,
+    600,
+    450,
+  );
 
   return (
     <section
@@ -1429,7 +1597,8 @@ export default function FaqSolutions({
             className="hidden aspect-[4/3] overflow-hidden rounded-2xl bg-base-200 lg:block lg:aspect-auto"
           >
             <img
-              src={activeImage}
+              src={safeImg.src}
+              onError={safeImg.onError}
               alt={activeImageAlt}
               className="h-full w-full object-cover"
             />
@@ -1513,12 +1682,14 @@ export interface FooterRevealProps {
   addressText?: string;
   /** Google Maps link for the address */
   addressMapsUrl?: string;
+  /** Business hours text (e.g. "Mon–Fri 9am–6pm") */
+  hoursText?: string;
   /** Navigation columns (max 4) */
-  navColumns: FooterNavColumn[];
+  navColumns?: FooterNavColumn[];
   /** Social media links shown in the bottom bar */
-  socialLinks: FooterSocialLink[];
+  socialLinks?: FooterSocialLink[];
   /** Company name for copyright */
-  companyName: string;
+  companyName?: string;
   /** Optional CTA button label */
   ctaText?: string;
   /** CTA destination URL */
@@ -1530,6 +1701,37 @@ export interface FooterRevealProps {
   /** Extra classes on the root element */
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_NAV_COLUMNS: FooterNavColumn[] = [
+  {
+    title: "Product",
+    links: [
+      { text: "Features", href: "/features" },
+      { text: "Pricing", href: "/pricing" },
+      { text: "Integrations", href: "/integrations" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { text: "About", href: "/about" },
+      { text: "Careers", href: "/careers" },
+      { text: "Contact", href: "/contact" },
+    ],
+  },
+];
+
+const DEFAULT_SOCIAL_LINKS: FooterSocialLink[] = [
+  {
+    network: "instagram",
+    url: "https://instagram.com",
+    label: "Instagram",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -1565,9 +1767,10 @@ export default function FooterReveal({
   emailText,
   addressText,
   addressMapsUrl,
-  navColumns,
-  socialLinks,
-  companyName,
+  hoursText,
+  navColumns = DEFAULT_NAV_COLUMNS,
+  socialLinks = DEFAULT_SOCIAL_LINKS,
+  companyName = "Your Company",
   ctaText,
   ctaUrl,
   ctaStyle = "default",
@@ -1656,6 +1859,13 @@ export default function FooterReveal({
                           {addressText}
                         </span>
                       </a>
+                    )}
+
+                    {/* Business hours */}
+                    {hoursText && (
+                      <p className="text-sm text-neutral-content/80">
+                        {hoursText}
+                      </p>
                     )}
                   </div>
 
@@ -1751,6 +1961,7 @@ import {
   AnimatedSvgBackground,
   GEOMETRIC_SHAPES,
 } from "@/lib/ui/backgrounds/AnimatedSvgBackground";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -1824,21 +2035,38 @@ interface SocialProofBadgeProps {
   label: string;
 }
 
+interface AvatarImageProps {
+  avatar: SocialProofAvatar;
+  index: number;
+}
+
+function AvatarImage({ avatar, index }: AvatarImageProps) {
+  const safeImg = useSafeImageSrc(
+    avatar.image,
+    \`hero-geometric-01-avatar-image-\${index}\`,
+    28,
+    28,
+  );
+  return (
+    <img
+      className={cn(
+        "h-7 w-7 rounded-full border-[3px] border-base-100 bg-base-200 object-cover",
+        index > 0 && "-ml-2",
+      )}
+      src={safeImg.src}
+      onError={safeImg.onError}
+      alt={avatar.imageAlt}
+      loading="lazy"
+    />
+  );
+}
+
 function SocialProofBadge({ avatars, label }: SocialProofBadgeProps) {
   return (
     <div className="flex flex-wrap items-center justify-center gap-1 rounded-full border border-base-300 p-1.5 text-xs text-base-content/60 md:justify-start">
       <div className="flex items-center">
         {avatars.map((avatar, i) => (
-          <img
-            key={i}
-            className={cn(
-              "h-7 w-7 rounded-full border-[3px] border-base-100 bg-base-200 object-cover",
-              i > 0 && "-ml-2",
-            )}
-            src={avatar.image}
-            alt={avatar.imageAlt}
-            loading="lazy"
-          />
+          <AvatarImage key={i} avatar={avatar} index={i} />
         ))}
       </div>
       <p className={avatars.length > 0 ? "-ml-1" : ""}>{label}</p>
@@ -1869,6 +2097,12 @@ export default function HeroGeometric({
   className,
 }: HeroGeometricProps) {
   const shouldReduceMotion = useReducedMotion();
+  const safeMainImg = useSafeImageSrc(
+    image,
+    "hero-geometric-01-image",
+    320,
+    320,
+  );
 
   return (
     <section
@@ -1960,7 +2194,8 @@ export default function HeroGeometric({
           className="flex justify-center md:justify-end"
         >
           <img
-            src={image}
+            src={safeMainImg.src}
+            onError={safeMainImg.onError}
             alt={imageAlt}
             className="max-w-xs rounded-lg transition-all duration-300 sm:max-w-sm lg:max-w-md"
             loading="eager"
@@ -1984,6 +2219,7 @@ import {
 import { cn } from "@/lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
 import { TypeWriter } from "@/lib/ui/text-decorations/TypeWriter";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -2023,11 +2259,36 @@ export interface HeroParallaxImagesProps {
   centerImage?: string;
   centerImageAlt: string;
   /** Floating parallax images scattered around the center image */
-  parallaxImages: ParallaxImage[];
+  parallaxImages?: ParallaxImage[];
   /** Height of the scroll section in px — controls how long the parallax effect lasts. Defaults to 1500 */
   scrollHeight?: number;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_PARALLAX_IMAGES: ParallaxImage[] = [
+  {
+    src: "https://picsum.photos/seed/heroparallax-img-0/360/480",
+    alt: "Designer reviewing wireframes on a tablet",
+    widthClass: "w-1/3",
+    alignClass: "ml-auto",
+  },
+  {
+    src: "https://picsum.photos/seed/heroparallax-img-1/280/360",
+    alt: "Developer pair-programming on a laptop",
+    widthClass: "w-1/4",
+    alignClass: "mr-auto",
+  },
+  {
+    src: "https://picsum.photos/seed/heroparallax-img-2/440/520",
+    alt: "Team collaborating in a sunlit studio",
+    widthClass: "w-2/5",
+    alignClass: "ml-16",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -2110,6 +2371,7 @@ interface ParallaxImgProps {
   end: number;
   className?: string;
   shouldReduceMotion: boolean | null;
+  index: number;
 }
 
 function ParallaxImg({
@@ -2119,8 +2381,15 @@ function ParallaxImg({
   end,
   className,
   shouldReduceMotion,
+  index,
 }: ParallaxImgProps) {
   const ref = useRef<HTMLImageElement>(null);
+  const safeImg = useSafeImageSrc(
+    src,
+    \`hero-parallax-images-01-image-\${index}\`,
+    400,
+    600,
+  );
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -2135,7 +2404,8 @@ function ParallaxImg({
   if (shouldReduceMotion) {
     return (
       <img
-        src={src}
+        src={safeImg.src}
+        onError={safeImg.onError}
         alt={alt}
         className={cn("rounded-lg object-cover", className)}
         ref={ref}
@@ -2146,7 +2416,8 @@ function ParallaxImg({
 
   return (
     <motion.img
-      src={src}
+      src={safeImg.src}
+      onError={safeImg.onError}
       alt={alt}
       className={cn("rounded-lg object-cover", className)}
       ref={ref}
@@ -2194,7 +2465,7 @@ export default function HeroParallaxImages({
   secondaryCtaColorScheme = "primary",
   centerImage,
   centerImageAlt,
-  parallaxImages,
+  parallaxImages = DEFAULT_PARALLAX_IMAGES,
   scrollHeight = DEFAULT_SCROLL_HEIGHT,
   className,
 }: HeroParallaxImagesProps) {
@@ -2227,6 +2498,7 @@ export default function HeroParallaxImages({
               end={img.end ?? (i % 2 === 0 ? 200 : -250)}
               className={cn(img.widthClass ?? "w-1/3", img.alignClass)}
               shouldReduceMotion={shouldReduceMotion}
+              index={i}
             />
           ))}
         </div>
@@ -2303,6 +2575,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button, CtaButton, type CtaVariant } from "@/lib/ui/button";
 import { TypeWriter } from "@/lib/ui/text-decorations/TypeWriter";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -2321,7 +2594,7 @@ export interface HeroShuffleCardsProps {
   emailPlaceholder?: string;
   /** Callback when the email form is submitted */
   onEmailSubmit?: (email: string) => void;
-  cards: Array<{
+  cards?: Array<{
     image: string;
     imageAlt: string;
     quote: string;
@@ -2331,6 +2604,35 @@ export interface HeroShuffleCardsProps {
 }
 
 type CardPosition = "front" | "middle" | "back";
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_HERO_SHUFFLE_CARDS: NonNullable<HeroShuffleCardsProps["cards"]> =
+  [
+    {
+      image: "https://picsum.photos/seed/heroshufflecards-card-0/350/450",
+      imageAlt: "Sarah Chen",
+      quote:
+        "Felt like the team had been with us for years. Three weeks in and the redesign was already paying for itself.",
+      author: "Sarah Chen — Head of Growth at Acme",
+    },
+    {
+      image: "https://picsum.photos/seed/heroshufflecards-card-1/350/450",
+      imageAlt: "Marcus Rivera",
+      quote:
+        "Genuinely the smoothest engagement we've run. Clear deliverables and results that held up under load.",
+      author: "Marcus Rivera — Founder at BuildFast",
+    },
+    {
+      image: "https://picsum.photos/seed/heroshufflecards-card-2/350/450",
+      imageAlt: "Priya Natarajan",
+      quote:
+        "We doubled the pipeline in a quarter. I've recommended them to four other founders since.",
+      author: "Priya Natarajan — VP Product at Lumen",
+    },
+  ];
 
 /* ------------------------------------------------------------------ */
 /*  Card sub-component                                                 */
@@ -2343,6 +2645,7 @@ interface CardProps {
   author: string;
   position: CardPosition;
   onShuffle: () => void;
+  index: number;
 }
 
 function Card({
@@ -2352,8 +2655,15 @@ function Card({
   author,
   position,
   onShuffle,
+  index,
 }: CardProps) {
   const mousePosRef = useRef(0);
+  const safeImg = useSafeImageSrc(
+    image,
+    \`hero-shuffle-cards-01-card-image-\${index}\`,
+    128,
+    128,
+  );
 
   const onDragStart = (e: MouseEvent | TouchEvent | PointerEvent) => {
     if ("clientX" in e) {
@@ -2395,7 +2705,8 @@ function Card({
       )}
     >
       <img
-        src={image}
+        src={safeImg.src}
+        onError={safeImg.onError}
         alt={imageAlt}
         className="pointer-events-none mx-auto h-32 w-32 rounded-full border-2 border-base-300 bg-base-200 object-cover"
       />
@@ -2422,7 +2733,7 @@ export default function HeroShuffleCards({
   ctaStyle = "default",
   emailPlaceholder,
   onEmailSubmit,
-  cards,
+  cards = DEFAULT_HERO_SHUFFLE_CARDS,
   className,
 }: HeroShuffleCardsProps) {
   const [order, setOrder] = useState<CardPosition[]>([
@@ -2511,6 +2822,7 @@ export default function HeroShuffleCards({
               author={card.author}
               position={order[i]}
               onShuffle={handleShuffle}
+              index={i}
             />
           ))}
         </div>
@@ -2526,6 +2838,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
 import { TypeWriter } from "@/lib/ui/text-decorations/TypeWriter";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -2681,13 +2994,21 @@ function RotatingBadge({ text, shouldReduceMotion }: RotatingBadgeProps) {
 
 interface FeaturedItemCardProps {
   item: FeaturedItem;
+  index: number;
 }
 
-function FeaturedItemCard({ item }: FeaturedItemCardProps) {
+function FeaturedItemCard({ item, index }: FeaturedItemCardProps) {
+  const safeImg = useSafeImageSrc(
+    item.image,
+    \`hero-split-image-01-featured-image-\${index}\`,
+    64,
+    48,
+  );
   return (
     <div className="flex items-center gap-3">
       <img
-        src={item.image}
+        src={safeImg.src}
+        onError={safeImg.onError}
         alt={item.imageAlt}
         className="h-12 w-16 shrink-0 rounded-md bg-base-200 object-cover shadow-sm"
         loading="lazy"
@@ -2746,6 +3067,12 @@ export default function HeroSplitImage({
   className,
 }: HeroSplitImageProps) {
   const shouldReduceMotion = useReducedMotion();
+  const safeMainImg = useSafeImageSrc(
+    image,
+    "hero-split-image-01-image",
+    800,
+    800,
+  );
 
   return (
     <section
@@ -2894,7 +3221,7 @@ export default function HeroSplitImage({
               )}
               <div className="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2">
                 {featuredItems.map((item, i) => (
-                  <FeaturedItemCard key={i} item={item} />
+                  <FeaturedItemCard key={i} item={item} index={i} />
                 ))}
               </div>
             </motion.div>
@@ -2918,7 +3245,8 @@ export default function HeroSplitImage({
             className="aspect-square overflow-hidden rounded-2xl shadow-xl rotate-2"
           >
             <img
-              src={image}
+              src={safeMainImg.src}
+              onError={safeMainImg.onError}
               alt={imageAlt}
               className="h-full w-full object-cover"
               loading="eager"
@@ -3101,6 +3429,7 @@ import { CardRevealSlide } from "@/lib/ui/cards/CardRevealSlide";
 import { CardMagic } from "@/lib/ui/cards/CardMagic";
 import { CardProduct } from "@/lib/ui/cards/CardProduct";
 import { CardOutlineGrid } from "@/lib/ui/cards/CardOutline";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -3184,7 +3513,7 @@ export interface CardGridProps {
    * - \`product\` -> \`ProductCardItem[]\`
    * - \`outline\` -> \`OutlineCardItem[]\`
    */
-  cards:
+  cards?:
     | FeatureCardItem[]
     | FlipCardItem[]
     | ProductCardItem[]
@@ -3197,6 +3526,40 @@ export interface CardGridProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_CARD_GRID_CARDS: FeatureCardItem[] = [
+  {
+    image: "https://picsum.photos/seed/cardgrid-card-0/640/400",
+    imageAlt: "Team mapping ideas on sticky notes",
+    title: "Discover what's working",
+    description:
+      "Run a focused audit of your funnel and surface the three or four levers that are actually moving the numbers.",
+    ctaText: "Learn more",
+    ctaUrl: "#",
+  },
+  {
+    image: "https://picsum.photos/seed/cardgrid-card-1/640/400",
+    imageAlt: "Designer iterating on UI mockups",
+    title: "Design the next version",
+    description:
+      "Translate insights into a roadmap of testable bets — each one shipped on a two-week cadence with measurable outcomes.",
+    ctaText: "Learn more",
+    ctaUrl: "#",
+  },
+  {
+    image: "https://picsum.photos/seed/cardgrid-card-2/640/400",
+    imageAlt: "Engineer reviewing code on a laptop",
+    title: "Ship and iterate",
+    description:
+      "Keep the loop tight: ship, measure, learn, repeat. We'll embed with your team until the new motion is sticking.",
+    ctaText: "Learn more",
+    ctaUrl: "#",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Grid column map                                                    */
@@ -3231,6 +3594,39 @@ function renderBaseCards(
   ));
 }
 
+function FlipCardFront({ card, index }: { card: FlipCardItem; index: number }) {
+  const safeImg = useSafeImageSrc(
+    card.image,
+    \`layout-cardgrid-01-card-image-flip-\${index}\`,
+    400,
+    160,
+  );
+  return (
+    <div className="flex h-full flex-col">
+      <div className="relative h-1/2 overflow-hidden bg-base-300">
+        <img
+          src={safeImg.src}
+          onError={safeImg.onError}
+          alt={card.imageAlt}
+          className="h-full w-full object-cover"
+          loading="lazy"
+        />
+        {card.badge && (
+          <span className="absolute left-3 top-3 rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-content">
+            {card.badge}
+          </span>
+        )}
+      </div>
+      <div className="flex flex-1 flex-col justify-center p-4">
+        <h3 className="text-lg font-semibold text-base-content">
+          {card.title}
+        </h3>
+        <p className="mt-1 text-sm text-base-content/60">{card.description}</p>
+      </div>
+    </div>
+  );
+}
+
 function renderFlipCards(
   cards: FlipCardItem[],
   flipDirection: "horizontal" | "vertical",
@@ -3242,31 +3638,7 @@ function renderFlipCards(
       key={i}
       flipDirection={flipDirection}
       className="h-80 w-full"
-      front={
-        <div className="flex h-full flex-col">
-          <div className="relative h-1/2 overflow-hidden bg-base-300">
-            <img
-              src={card.image}
-              alt={card.imageAlt}
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-            {card.badge && (
-              <span className="absolute left-3 top-3 rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-content">
-                {card.badge}
-              </span>
-            )}
-          </div>
-          <div className="flex flex-1 flex-col justify-center p-4">
-            <h3 className="text-lg font-semibold text-base-content">
-              {card.title}
-            </h3>
-            <p className="mt-1 text-sm text-base-content/60">
-              {card.description}
-            </p>
-          </div>
-        </div>
-      }
+      front={<FlipCardFront card={card} index={i} />}
       back={
         <div className="flex h-full flex-col items-center justify-center bg-neutral p-6 text-center">
           <h3 className="mb-2 text-lg font-semibold text-neutral-content">
@@ -3306,6 +3678,50 @@ function renderRevealCards(cards: FeatureCardItem[]) {
   ));
 }
 
+function MagicCardBody({
+  card,
+  index,
+  ctaVariant,
+}: {
+  card: FeatureCardItem;
+  index: number;
+  ctaVariant?: CtaVariant;
+}) {
+  const safeImg = useSafeImageSrc(
+    card.image,
+    \`layout-cardgrid-01-card-image-magic-\${index}\`,
+    400,
+    225,
+  );
+  return (
+    <div className="flex flex-col gap-3 p-5">
+      <div className="aspect-video overflow-hidden rounded-md bg-base-300">
+        <img
+          src={safeImg.src}
+          onError={safeImg.onError}
+          alt={card.imageAlt}
+          className="h-full w-full object-cover"
+          loading="lazy"
+        />
+      </div>
+      <h3 className="text-lg font-semibold text-base-content">{card.title}</h3>
+      <p className="text-sm text-base-content/60">{card.description}</p>
+      {card.ctaText && card.ctaUrl && (
+        <a
+          href={card.ctaUrl}
+          className={buttonStyles({
+            variant: toButtonVariant(ctaVariant),
+            size: "sm",
+            className: "mt-1 self-start",
+          })}
+        >
+          {card.ctaText}
+        </a>
+      )}
+    </div>
+  );
+}
+
 function renderMagicCards(
   cards: FeatureCardItem[],
   mode: "gradient" | "orb",
@@ -3314,32 +3730,7 @@ function renderMagicCards(
 ) {
   return cards.map((card, i) => (
     <CardMagic key={i} mode={mode}>
-      <div className="flex flex-col gap-3 p-5">
-        <div className="aspect-video overflow-hidden rounded-md bg-base-300">
-          <img
-            src={card.image}
-            alt={card.imageAlt}
-            className="h-full w-full object-cover"
-            loading="lazy"
-          />
-        </div>
-        <h3 className="text-lg font-semibold text-base-content">
-          {card.title}
-        </h3>
-        <p className="text-sm text-base-content/60">{card.description}</p>
-        {card.ctaText && card.ctaUrl && (
-          <a
-            href={card.ctaUrl}
-            className={buttonStyles({
-              variant: toButtonVariant(ctaVariant),
-              size: "sm",
-              className: "mt-1 self-start",
-            })}
-          >
-            {card.ctaText}
-          </a>
-        )}
-      </div>
+      <MagicCardBody card={card} index={i} ctaVariant={ctaVariant} />
     </CardMagic>
   ));
 }
@@ -3381,7 +3772,7 @@ export default function CardGrid({
   headline,
   subheadline,
   styleKit,
-  cards,
+  cards = DEFAULT_CARD_GRID_CARDS,
   columns = 3,
   flipDirection = "horizontal",
   purpose,
@@ -3551,7 +3942,7 @@ export interface SimpleGridProps {
   /** Supporting paragraph below the headline */
   description?: string;
   /** List of feature items */
-  features: FeatureItem[];
+  features?: FeatureItem[];
   /** CTA button text below the features list */
   ctaText?: string;
   /** CTA destination URL */
@@ -3564,6 +3955,33 @@ export interface SimpleGridProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_SIMPLE_GRID_FEATURES: FeatureItem[] = [
+  {
+    title: "Faster onboarding",
+    description:
+      "Get new teammates productive in days instead of weeks with guided setup flows and pre-built templates.",
+  },
+  {
+    title: "Real-time collaboration",
+    description:
+      "Edit, review, and ship together — no more sending stale screenshots back and forth in chat.",
+  },
+  {
+    title: "Built-in analytics",
+    description:
+      "Track usage, conversion, and retention out of the box. No extra tools to wire up or maintain.",
+  },
+  {
+    title: "Enterprise-grade security",
+    description:
+      "SOC 2, SSO, and granular access controls included on every plan — not gated behind a sales call.",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Column map                                                         */
@@ -3609,7 +4027,7 @@ export default function SimpleGrid({
   label,
   headline,
   description,
-  features,
+  features = DEFAULT_SIMPLE_GRID_FEATURES,
   ctaText,
   ctaUrl,
   styleKit,
@@ -3734,7 +4152,7 @@ type InternalTestimonial = TestimonialItem & { _key: number };
 
 export interface StaggerFanProps {
   /** List of testimonials — displayed as a fan of overlapping cards */
-  testimonials: TestimonialItem[];
+  testimonials?: TestimonialItem[];
   /** Height of the section in pixels. Defaults to 600 */
   sectionHeight?: number;
   /** Card size on large screens in pixels. Defaults to 365 */
@@ -3747,6 +4165,53 @@ export interface StaggerFanProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_STAGGER_TESTIMONIALS: TestimonialItem[] = [
+  {
+    image: "https://picsum.photos/seed/staggerfan-testimonial-0/80/80",
+    imageAlt: "Sarah Chen",
+    name: "Sarah Chen",
+    title: "Head of Growth at Acme",
+    quote:
+      "We doubled our pipeline in the first quarter. The team was responsive, sharp, and frankly a delight to work with.",
+  },
+  {
+    image: "https://picsum.photos/seed/staggerfan-testimonial-1/80/80",
+    imageAlt: "Marcus Rivera",
+    name: "Marcus Rivera",
+    title: "Founder at BuildFast",
+    quote:
+      "I've worked with a dozen agencies. None of them shipped this quickly without dropping quality. Genuinely impressed.",
+  },
+  {
+    image: "https://picsum.photos/seed/staggerfan-testimonial-2/80/80",
+    imageAlt: "Priya Natarajan",
+    name: "Priya Natarajan",
+    title: "VP Product at Lumen",
+    quote:
+      "The clarity of communication alone was worth the price. We knew where things stood every single week.",
+  },
+  {
+    image: "https://picsum.photos/seed/staggerfan-testimonial-3/80/80",
+    imageAlt: "David Okafor",
+    name: "David Okafor",
+    title: "CTO at Northwind Labs",
+    quote:
+      "Our conversion rate jumped 38% within six weeks. The redesign paid for itself before the next billing cycle.",
+  },
+  {
+    image: "https://picsum.photos/seed/staggerfan-testimonial-4/80/80",
+    imageAlt: "Elena Martinez",
+    name: "Elena Martinez",
+    title: "Marketing Director at Pixelworks",
+    quote:
+      "They didn't just build us a website — they gave us a system we can keep iterating on for years.",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -3877,7 +4342,7 @@ function ArrowIcon({ direction }: { direction: "left" | "right" }) {
  * Navigate with left/right arrow buttons or click any card to center it.
  */
 export default function StaggerFan({
-  testimonials: testimonialsProp,
+  testimonials: testimonialsProp = DEFAULT_STAGGER_TESTIMONIALS,
   sectionHeight = 600,
   cardSizeLg = 365,
   cardSizeSm = 290,
@@ -3986,7 +4451,7 @@ export interface InfiniteScrollProps {
   /** Supporting text below the headline */
   subheadline?: string;
   /** Three rows of testimonials — each row scrolls independently */
-  rows: [TestimonialItem[], TestimonialItem[], TestimonialItem[]];
+  rows?: [TestimonialItem[], TestimonialItem[], TestimonialItem[]];
   /** Duration in seconds for one full scroll cycle per row. Defaults to [125, 75, 275] */
   durations?: [number, number, number];
   /** Site-wide style configuration — accepted for API consistency */
@@ -3995,6 +4460,134 @@ export interface InfiniteScrollProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_INFINITE_SCROLL_ROWS: [
+  TestimonialItem[],
+  TestimonialItem[],
+  TestimonialItem[],
+] = [
+  [
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r0-0/80/80",
+      imageAlt: "Sarah Chen",
+      name: "Sarah Chen",
+      title: "Head of Growth at Acme",
+      quote:
+        "We doubled our pipeline in the first quarter. The team was responsive, sharp, and a delight to work with.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r0-1/80/80",
+      imageAlt: "Marcus Rivera",
+      name: "Marcus Rivera",
+      title: "Founder at BuildFast",
+      quote:
+        "I've worked with a dozen agencies. None shipped this quickly without dropping quality.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r0-2/80/80",
+      imageAlt: "Priya Natarajan",
+      name: "Priya Natarajan",
+      title: "VP Product at Lumen",
+      quote:
+        "The clarity of communication alone was worth the price. We knew where things stood every week.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r0-3/80/80",
+      imageAlt: "David Okafor",
+      name: "David Okafor",
+      title: "CTO at Northwind Labs",
+      quote:
+        "Our conversion rate jumped 38% within six weeks. The redesign paid for itself.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r0-4/80/80",
+      imageAlt: "Elena Martinez",
+      name: "Elena Martinez",
+      title: "Marketing Director at Pixelworks",
+      quote:
+        "They didn't just build us a website — they gave us a system we can keep iterating on.",
+    },
+  ],
+  [
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r1-0/80/80",
+      imageAlt: "Jordan Patel",
+      name: "Jordan Patel",
+      title: "Director of Engineering at Helix",
+      quote:
+        "Two weeks in and we already had a launch-ready prototype the team could test against.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r1-1/80/80",
+      imageAlt: "Amina Hassan",
+      name: "Amina Hassan",
+      title: "Head of Design at Northwave",
+      quote:
+        "Felt like extending our own team rather than handing things off to a vendor.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r1-2/80/80",
+      imageAlt: "Tom Whitaker",
+      name: "Tom Whitaker",
+      title: "Co-founder at Drift Studio",
+      quote:
+        "Cut our content production time in half. The framework still pays dividends a year later.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r1-3/80/80",
+      imageAlt: "Lin Wei",
+      name: "Lin Wei",
+      title: "VP Operations at Quanta",
+      quote:
+        "The smoothest engagement we've run. Clear deliverables, no scope surprises, results that held up.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r1-4/80/80",
+      imageAlt: "Hannah Schmitt",
+      name: "Hannah Schmitt",
+      title: "Founder at Morrow & Co",
+      quote:
+        "They asked the right uncomfortable questions early. That alone changed the direction of the project.",
+    },
+  ],
+  [
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r2-0/80/80",
+      imageAlt: "Rafael Costa",
+      name: "Rafael Costa",
+      title: "Head of Product at Kinetic",
+      quote:
+        "Three weeks from kickoff to a redesigned site that actually felt like us. Quality I didn't expect at this pace.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r2-1/80/80",
+      imageAlt: "Naomi Wright",
+      name: "Naomi Wright",
+      title: "CEO at Rivermark",
+      quote: "Best money we've spent on a partner this year. Period.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r2-2/80/80",
+      imageAlt: "Yuki Tanaka",
+      name: "Yuki Tanaka",
+      title: "VP Marketing at Glasscube",
+      quote:
+        "We finally have a brand story everyone in the company tells the same way. Worth every cent.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r2-3/80/80",
+      imageAlt: "Felix Brandt",
+      name: "Felix Brandt",
+      title: "COO at Northbeam",
+      quote:
+        "Replaced four different tools with one cleaner workflow. The team adopted it without a single training session.",
+    },
+  ],
+];
 
 /* ------------------------------------------------------------------ */
 /*  Marquee row                                                        */
@@ -4056,7 +4649,7 @@ function MarqueeRow({
 export default function InfiniteScroll({
   headline,
   subheadline,
-  rows,
+  rows = DEFAULT_INFINITE_SCROLL_ROWS,
   durations = [125, 75, 275],
   styleKit,
   purpose,
@@ -4159,7 +4752,7 @@ export interface ParallaxSection {
 
 export interface ParallaxContentProps {
   /** Array of parallax sections — each renders a sticky image, overlay text, and content block */
-  sections: ParallaxSection[];
+  sections?: ParallaxSection[];
   /** Site-wide style kit threaded by the Assembler */
   styleKit?: StyleKit;
   /** Horizontal padding around the image in pixels. Defaults to 12 */
@@ -4168,6 +4761,52 @@ export interface ParallaxContentProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_PARALLAX_SECTIONS: ParallaxSection[] = [
+  {
+    image: "https://picsum.photos/seed/parallaxcontent-section-0/800/600",
+    imageAlt: "Aerial view of a coastal city at sunset",
+    label: "Discovery",
+    heading: "Start where you are",
+    content: {
+      contentHeadline: "Map the terrain before you build",
+      contentDescription:
+        "We spend the first two weeks on the ground with your team — interviews, audits, and quiet listening — so the plan we deliver actually fits the company you have, not the one a deck imagines.",
+      ctaText: "Read the playbook",
+      ctaUrl: "#",
+    },
+  },
+  {
+    image: "https://picsum.photos/seed/parallaxcontent-section-1/800/600",
+    imageAlt: "Architect sketching plans in a sunlit studio",
+    label: "Design",
+    heading: "Decide what to build",
+    content: {
+      contentHeadline: "Tradeoffs made deliberate",
+      contentDescription:
+        "Every design choice gets paired with the cost it carries — engineering hours, support load, runway. The result is a plan you can defend in any room without flinching.",
+      ctaText: "See an example brief",
+      ctaUrl: "#",
+    },
+  },
+  {
+    image: "https://picsum.photos/seed/parallaxcontent-section-2/800/600",
+    imageAlt: "Team celebrating a launch in a modern office",
+    label: "Ship",
+    heading: "Launch in weeks, not quarters",
+    content: {
+      contentHeadline: "Built to be handed off cleanly",
+      contentDescription:
+        "We document, demo, and stay on call through the first month live. By the time we're gone, your team owns the system end-to-end — and we mean it.",
+      ctaText: "Book a kickoff",
+      ctaUrl: "#",
+    },
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -4306,7 +4945,7 @@ function ContentBlock({
 /* ------------------------------------------------------------------ */
 
 export default function ParallaxContent({
-  sections,
+  sections = DEFAULT_PARALLAX_SECTIONS,
   styleKit,
   imagePadding = DEFAULT_IMAGE_PADDING,
   purpose,
@@ -4372,6 +5011,7 @@ import {
 import { cn } from "@/lib/utils";
 import type { StyleKit } from "@/lib/style-kit";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -4395,7 +5035,7 @@ export interface StickyCardsProps {
   /** Optional section sub-headline for context */
   subheadline?: string;
   /** Feature cards — each becomes a full-viewport sticky section */
-  cards: FeatureCard[];
+  cards?: FeatureCard[];
   /** Site-wide style kit threaded by the Assembler */
   styleKit?: StyleKit;
   /** Height of each card section in px — controls scroll pacing. Defaults to 600 */
@@ -4404,6 +5044,34 @@ export interface StickyCardsProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_STICKY_CARDS: FeatureCard[] = [
+  {
+    title: "Define the problem worth solving",
+    description:
+      "Most teams skip this step and pay for it later. We start with a sharp written brief everyone in the room agrees with.",
+    ctaText: "Read the framework",
+    ctaUrl: "#",
+  },
+  {
+    title: "Prototype before you commit",
+    description:
+      "A clickable prototype, in front of real users, in under two weeks. The feedback rewrites the roadmap — every time.",
+    ctaText: "See an example",
+    ctaUrl: "#",
+  },
+  {
+    title: "Ship, measure, then ship again",
+    description:
+      "We instrument the launch from day one and meet weekly to decide what stays, what goes, and what gets doubled down on.",
+    ctaText: "Book a working session",
+    ctaUrl: "#",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -4425,6 +5093,7 @@ interface StickyCardProps {
   ctaStyle: CtaVariant;
   ctaColorScheme: ColorScheme;
   shouldReduceMotion: boolean | null;
+  index: number;
 }
 
 function StickyCard({
@@ -4437,10 +5106,17 @@ function StickyCard({
   ctaStyle,
   ctaColorScheme,
   shouldReduceMotion,
+  index,
 }: StickyCardProps) {
   const isLast = position === totalCards;
   const scaleFromPct = (position - 1) / totalCards;
   const y = useTransform(scrollYProgress, [scaleFromPct, 1], [0, -cardHeight]);
+  const safeImg = useSafeImageSrc(
+    card.image,
+    \`layout-stickycards-01-card-image-\${index}\`,
+    400,
+    320,
+  );
 
   return (
     <motion.div
@@ -4461,17 +5137,16 @@ function StickyCard({
           card.image && "md:flex-row md:gap-12",
         )}
       >
-        {/* Image column — only when image is provided */}
-        {card.image && (
-          <div className="flex w-full shrink-0 justify-center md:w-2/5">
-            <img
-              src={card.image}
-              alt={card.imageAlt ?? ""}
-              className="max-h-64 w-auto rounded-lg object-cover md:max-h-80"
-              loading="lazy"
-            />
-          </div>
-        )}
+        {/* Image column */}
+        <div className="flex w-full shrink-0 justify-center md:w-2/5">
+          <img
+            src={safeImg.src}
+            onError={safeImg.onError}
+            alt={card.imageAlt ?? ""}
+            className="max-h-64 w-auto rounded-lg object-cover md:max-h-80"
+            loading="lazy"
+          />
+        </div>
 
         {/* Content column */}
         <div
@@ -4556,7 +5231,7 @@ function SectionHeader({
 export default function StickyCards({
   headline,
   subheadline,
-  cards,
+  cards = DEFAULT_STICKY_CARDS,
   styleKit,
   cardHeight = DEFAULT_CARD_HEIGHT,
   purpose,
@@ -4596,6 +5271,7 @@ export default function StickyCards({
             ctaStyle={ctaStyle}
             ctaColorScheme={ctaColorScheme}
             shouldReduceMotion={shouldReduceMotion}
+            index={idx}
           />
         ))}
       </div>
@@ -4609,6 +5285,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { containerVariants, fadeUp, imageReveal } from "@/lib/motion-variants";
 import type { StyleKit } from "@/lib/style-kit";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -4683,6 +5360,18 @@ export default function AuthorSplit({
   className,
 }: AuthorSplitProps) {
   const shouldReduceMotion = useReducedMotion();
+  const safeBannerImg = useSafeImageSrc(
+    bannerImage,
+    "layout-authorsplit-01-banner-image",
+    800,
+    256,
+  );
+  const safeAuthorImg = useSafeImageSrc(
+    authorImage,
+    "layout-authorsplit-01-author-image",
+    80,
+    80,
+  );
 
   return (
     <section
@@ -4699,7 +5388,8 @@ export default function AuthorSplit({
           viewport={{ once: true, margin: "-100px" }}
         >
           <img
-            src={bannerImage}
+            src={safeBannerImg.src}
+            onError={safeBannerImg.onError}
             alt={bannerImageAlt}
             className="h-full w-full object-cover object-center"
             loading="lazy"
@@ -4721,7 +5411,8 @@ export default function AuthorSplit({
           >
             <div className="inline-flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-base-200">
               <img
-                src={authorImage}
+                src={safeAuthorImg.src}
+                onError={safeAuthorImg.onError}
                 alt={authorImageAlt}
                 className="h-full w-full object-cover"
                 loading="lazy"
@@ -4764,6 +5455,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { containerVariants, fadeUp, imageReveal } from "@/lib/motion-variants";
 import type { StyleKit } from "@/lib/style-kit";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -4788,7 +5480,7 @@ export interface IconListSplitProps {
   /** Section headline */
   headline: string;
   /** List of features with icons */
-  features: FeatureIconItem[];
+  features?: FeatureIconItem[];
   /** Optional large image displayed beside the features list on desktop */
   image?: string;
   imageAlt?: string;
@@ -4800,6 +5492,37 @@ export interface IconListSplitProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_ICON_LIST_FEATURES: FeatureIconItem[] = [
+  {
+    icon: "✨",
+    title: "Set up in minutes",
+    description:
+      "Connect your accounts, import your data, and you're live before lunch — no migration project required.",
+  },
+  {
+    icon: "📈",
+    title: "Insights that matter",
+    description:
+      "Skip the dashboard archaeology. We surface the three trends you should care about each week.",
+  },
+  {
+    icon: "🤝",
+    title: "Built for teams",
+    description:
+      "Granular permissions, shared workspaces, and audit trails — even on the smallest plan.",
+  },
+  {
+    icon: "🔒",
+    title: "Security you can audit",
+    description:
+      "SOC 2 Type II, encryption at rest and in transit, and a data residency option in three regions.",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Decorative underline (private)                                     */
@@ -4816,6 +5539,33 @@ function AccentUnderline() {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Logo image (private, calls hook per item)                          */
+/* ------------------------------------------------------------------ */
+
+interface LogoImageProps {
+  logo: LogoItem;
+  index: number;
+}
+
+function LogoImage({ logo, index }: LogoImageProps) {
+  const safeImg = useSafeImageSrc(
+    logo.image,
+    \`layout-iconlistsplit-01-logo-image-\${index}\`,
+    140,
+    32,
+  );
+  return (
+    <img
+      src={safeImg.src}
+      onError={safeImg.onError}
+      alt={logo.imageAlt}
+      className="h-8 max-w-[140px] object-contain opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0"
+      loading="lazy"
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -4827,7 +5577,7 @@ function AccentUnderline() {
  */
 export default function IconListSplit({
   headline,
-  features,
+  features = DEFAULT_ICON_LIST_FEATURES,
   image,
   imageAlt,
   logos,
@@ -4836,6 +5586,12 @@ export default function IconListSplit({
   className,
 }: IconListSplitProps) {
   const shouldReduceMotion = useReducedMotion();
+  const safeMainImg = useSafeImageSrc(
+    image,
+    "layout-iconlistsplit-01-image",
+    600,
+    544,
+  );
 
   return (
     <section
@@ -4893,7 +5649,8 @@ export default function IconListSplit({
               viewport={{ once: true, margin: "-100px" }}
             >
               <img
-                src={image}
+                src={safeMainImg.src}
+                onError={safeMainImg.onError}
                 alt={imageAlt ?? ""}
                 className="h-[28rem] w-[28rem] rounded-full object-cover xl:h-[34rem] xl:w-[34rem]"
                 loading="lazy"
@@ -4919,12 +5676,7 @@ export default function IconListSplit({
                   variants={fadeUp}
                   className="flex items-center justify-center"
                 >
-                  <img
-                    src={logo.image}
-                    alt={logo.imageAlt}
-                    className="h-8 max-w-[140px] object-contain opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0"
-                    loading="lazy"
-                  />
+                  <LogoImage logo={logo} index={i} />
                 </motion.div>
               ))}
             </motion.div>
@@ -4942,6 +5694,7 @@ import { cn } from "@/lib/utils";
 import { CtaButton } from "@/lib/ui/button";
 import { containerVariants, fadeUp, imageReveal } from "@/lib/motion-variants";
 import type { StyleKit } from "@/lib/style-kit";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -4991,6 +5744,7 @@ export default function ImageText({
   className,
 }: ImageTextProps) {
   const shouldReduceMotion = useReducedMotion();
+  const safeImg = useSafeImageSrc(image, "layout-imagetext-01-image", 600, 400);
 
   const isDark = colorScheme === "dark";
   const isReversed = imagePosition === "right";
@@ -5021,7 +5775,8 @@ export default function ImageText({
           viewport={{ once: true, margin: "-100px" }}
         >
           <img
-            src={image}
+            src={safeImg.src}
+            onError={safeImg.onError}
             alt={imageAlt}
             className="h-auto w-full object-cover"
             loading="lazy"
@@ -5089,6 +5844,7 @@ import { useState, useCallback } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import type { StyleKit } from "@/lib/style-kit";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -5112,13 +5868,44 @@ export interface ShowcaseSplitProps {
   /** Section headline */
   headline: string;
   /** List of showcase items */
-  testimonials: ShowcaseItem[];
+  testimonials?: ShowcaseItem[];
   /** Site-wide style configuration -- accepted for API consistency */
   styleKit?: StyleKit;
   /** Informational purpose tag for the section */
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_SHOWCASE_ITEMS: ShowcaseItem[] = [
+  {
+    image: "https://picsum.photos/seed/showcasesplit-item-0/416/576",
+    imageAlt: "Sarah Chen",
+    name: "Sarah Chen",
+    title: "Head of Growth at Acme",
+    quote:
+      "We doubled our pipeline in the first quarter. The team was responsive, sharp, and frankly a delight to work with.",
+  },
+  {
+    image: "https://picsum.photos/seed/showcasesplit-item-1/416/576",
+    imageAlt: "Marcus Rivera",
+    name: "Marcus Rivera",
+    title: "Founder at BuildFast",
+    quote:
+      "I've worked with a dozen agencies. None shipped this quickly without dropping quality. Genuinely impressed.",
+  },
+  {
+    image: "https://picsum.photos/seed/showcasesplit-item-2/416/576",
+    imageAlt: "Priya Natarajan",
+    name: "Priya Natarajan",
+    title: "VP Product at Lumen",
+    quote:
+      "The clarity of communication alone was worth the price. We knew where things stood every single week.",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Animation variants                                                 */
@@ -5199,7 +5986,7 @@ function NavArrow({
 export default function ShowcaseSplit({
   label,
   headline,
-  testimonials,
+  testimonials = DEFAULT_SHOWCASE_ITEMS,
   styleKit,
   purpose,
   className,
@@ -5218,7 +6005,15 @@ export default function ShowcaseSplit({
     [testimonials.length],
   );
 
+  if (!testimonials.length) return null;
+
   const current = testimonials[activeIndex];
+  const safeImg = useSafeImageSrc(
+    current.image,
+    \`layout-showcasesplit-01-image-\${activeIndex}\`,
+    416,
+    576,
+  );
 
   return (
     <section
@@ -5250,7 +6045,8 @@ export default function ShowcaseSplit({
             <AnimatePresence mode="wait" custom={direction}>
               <motion.img
                 key={\`image-\${activeIndex}\`}
-                src={current.image}
+                src={safeImg.src}
+                onError={safeImg.onError}
                 alt={current.imageAlt}
                 className="h-24 w-24 rounded-full object-cover shadow-md md:mx-6 md:h-[32rem] md:w-80 md:rounded-2xl lg:h-[36rem] lg:w-[26rem]"
                 loading="lazy"
@@ -5328,7 +6124,7 @@ export interface StackedSplitProps {
   /** Supporting text below the headline */
   subheadline?: string;
   /** List of testimonials rendered as stacked cards */
-  testimonials: TestimonialItem[];
+  testimonials?: TestimonialItem[];
   /** Auto-advance duration in seconds per card. Defaults to 5 */
   autoAdvanceDuration?: number;
   /** Site-wide style configuration — accepted for API consistency */
@@ -5337,6 +6133,45 @@ export interface StackedSplitProps {
   purpose?: string;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_STACKED_TESTIMONIALS: TestimonialItem[] = [
+  {
+    image: "https://picsum.photos/seed/stackedsplit-testimonial-0/80/80",
+    imageAlt: "Jordan Patel",
+    name: "Jordan Patel",
+    title: "Director of Engineering at Helix",
+    quote:
+      "The pace of execution was unreal. Two weeks in and we already had a launch-ready prototype the team could test against.",
+  },
+  {
+    image: "https://picsum.photos/seed/stackedsplit-testimonial-1/80/80",
+    imageAlt: "Amina Hassan",
+    name: "Amina Hassan",
+    title: "Head of Design at Northwave",
+    quote:
+      "I've never seen a vendor get our brand voice this quickly. Felt like extending our own team rather than handing things off.",
+  },
+  {
+    image: "https://picsum.photos/seed/stackedsplit-testimonial-2/80/80",
+    imageAlt: "Tom Whitaker",
+    name: "Tom Whitaker",
+    title: "Co-founder at Drift Studio",
+    quote:
+      "Cut our content production time in half. The framework they set up is still paying dividends a year later.",
+  },
+  {
+    image: "https://picsum.photos/seed/stackedsplit-testimonial-3/80/80",
+    imageAlt: "Lin Wei",
+    name: "Lin Wei",
+    title: "VP Operations at Quanta",
+    quote:
+      "Genuinely the smoothest engagement we've run. Clear deliverables, no surprise scopes, results that held up.",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Progress bar                                                       */
@@ -5464,7 +6299,7 @@ function StackedCards({
 export default function StackedSplit({
   headline,
   subheadline,
-  testimonials,
+  testimonials = DEFAULT_STACKED_TESTIMONIALS,
   autoAdvanceDuration = 5,
   styleKit,
   purpose,
@@ -5522,6 +6357,7 @@ import {
   accentReveal,
 } from "@/lib/motion-variants";
 import type { StyleKit } from "@/lib/style-kit";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -5570,6 +6406,18 @@ export default function StatementSplit({
   className,
 }: StatementSplitProps) {
   const shouldReduceMotion = useReducedMotion();
+  const safeImg = useSafeImageSrc(
+    image,
+    "layout-statementsplit-01-image",
+    800,
+    520,
+  );
+  const safeAccentImg = useSafeImageSrc(
+    accentImage,
+    "layout-statementsplit-01-accent-image",
+    224,
+    224,
+  );
 
   const isDark = colorScheme === "dark";
   const isReversed = headlinePosition === "right";
@@ -5623,7 +6471,8 @@ export default function StatementSplit({
               className="h-[260px] w-full overflow-hidden md:h-[380px] lg:h-[520px]"
             >
               <img
-                src={image}
+                src={safeImg.src}
+                onError={safeImg.onError}
                 alt={imageAlt}
                 className="h-full w-full max-w-none object-cover"
                 loading="lazy"
@@ -5637,7 +6486,8 @@ export default function StatementSplit({
                 className="absolute -left-10 -bottom-10 hidden h-40 w-40 overflow-hidden md:block lg:h-56 lg:w-56"
               >
                 <img
-                  src={accentImage}
+                  src={safeAccentImg.src}
+                  onError={safeAccentImg.onError}
                   alt={accentImageAlt ?? ""}
                   className="h-full w-full object-cover"
                   loading="lazy"
@@ -5711,7 +6561,7 @@ export interface NavbarStickyProps {
   /** Alternate logo for dark-on-light contexts (scrolled state / mobile menu) */
   logoDark?: React.ReactNode;
   /** Navigation links */
-  links: NavbarLink[];
+  links?: NavbarLink[];
   /** Optional CTA button label shown on desktop */
   ctaText?: string;
   /** CTA destination URL */
@@ -5720,9 +6570,22 @@ export interface NavbarStickyProps {
   ctaStyle?: CtaStyle;
   /** Pixel threshold after which the bar switches to the scrolled (filled) style */
   scrollThreshold?: number;
+  /** When true, uses \`sticky\` positioning instead of \`fixed\` so the bar stays inside its containing block (used by the editor preview) */
+  previewMode?: boolean;
   /** Extra classes on the root \`<nav>\` element */
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_LINKS: NavbarLink[] = [
+  { text: "Home", href: "/" },
+  { text: "About", href: "/about" },
+  { text: "Services", href: "/services" },
+  { text: "Contact", href: "/contact" },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -5973,11 +6836,12 @@ function MobileMenu({
 export default function NavbarSticky({
   logo,
   logoDark,
-  links,
+  links = DEFAULT_LINKS,
   ctaText,
   ctaUrl,
   ctaStyle = "default",
   scrollThreshold = 250,
+  previewMode = false,
   className,
 }: NavbarStickyProps) {
   const [scrolled, setScrolled] = useState(false);
@@ -5991,7 +6855,7 @@ export default function NavbarSticky({
   return (
     <nav
       className={cn(
-        "fixed top-0 z-50 w-full px-6 transition-all duration-300 ease-out lg:px-12",
+        \`\${previewMode ? "sticky" : "fixed"} top-0 z-50 w-full px-6 transition-all duration-300 ease-out lg:px-12\`,
         scrolled
           ? "bg-neutral/95 py-3 shadow-xl backdrop-blur-sm text-neutral-content"
           : "bg-transparent py-6 shadow-none text-base-content",
@@ -6065,11 +6929,22 @@ export interface StatsCountUpProps {
   /** Optional highlighted word/phrase within the headline */
   headlineHighlight?: string;
   /** Array of stats to display — each animates independently on scroll */
-  stats: StatItem[];
+  stats?: StatItem[];
   /** Animation duration in seconds. Defaults to 2.5 */
   duration?: number;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_STATS: StatItem[] = [
+  { value: 200, suffix: "%", label: "Growth in 12 months" },
+  { value: 12000, suffix: "+", label: "Active users" },
+  { value: 98, suffix: "%", label: "Customer satisfaction" },
+  { value: 4.9, decimals: 1, label: "Average rating" },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -6133,7 +7008,7 @@ function Divider() {
 export default function StatsCountUp({
   headline,
   headlineHighlight,
-  stats,
+  stats = DEFAULT_STATS,
   duration = DEFAULT_DURATION,
   className,
 }: StatsCountUpProps) {
@@ -9453,6 +10328,56 @@ function useMediaQuery(query: string): boolean {
   return matches;
 }
 `,
+  "src/lib/ui/useSafeImageSrc.ts": `import { useState, useEffect } from "react";
+import type { ReactEventHandler } from "react";
+
+/* ------------------------------------------------------------------ */
+/*  useSafeImageSrc                                                    */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Resolves an image \`src\` with layered fallbacks:
+ *   1. If \`src\` is provided, use it as-is.
+ *   2. Otherwise, use a seeded Picsum URL at the requested dimensions.
+ *   3. If the final URL fails to load, swap to an inline SVG placeholder
+ *      (slate-100 background, slate-400 "W×H" label).
+ *
+ * The returned \`{ src, onError }\` must be spread onto the \`<img>\` or
+ * \`<motion.img>\` element; the hook is agnostic to the element type so
+ * Framer Motion wrappers keep their motion props intact.
+ */
+export function useSafeImageSrc(
+  src: string | undefined | null,
+  seed: string,
+  w: number,
+  h: number,
+): { src: string; onError: ReactEventHandler<HTMLImageElement> } {
+  const pickInitial = () =>
+    src || \`https://picsum.photos/seed/\${seed}/\${w}/\${h}\`;
+
+  const [resolved, setResolved] = useState<string>(pickInitial);
+
+  useEffect(() => {
+    if (src) {
+      setResolved(src);
+    } else {
+      setResolved(\`https://picsum.photos/seed/\${seed}/\${w}/\${h}\`);
+    }
+  }, [src, seed, w, h]);
+
+  const onError: ReactEventHandler<HTMLImageElement> = () => {
+    const svg =
+      \`<svg xmlns="http://www.w3.org/2000/svg" width="\${w}" height="\${h}">\` +
+      \`<rect width="100%" height="100%" fill="#f1f5f9"/>\` +
+      \`<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" \` +
+      \`font-family="sans-serif" font-size="14" fill="#94a3b8">\${w}×\${h}</text>\` +
+      \`</svg>\`;
+    setResolved(\`data:image/svg+xml,\${encodeURIComponent(svg)}\`);
+  };
+
+  return { src: resolved, onError };
+}
+`,
   "src/lib/ui/WhatsAppFloat.tsx": `"use client";
 
 import React, { useEffect, useState } from "react";
@@ -9788,7 +10713,7 @@ export const COMPONENT_METADATA: Record<string, { slots: unknown[] }> = {
   "faq-accordion-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":10,"itemSchema":{"type":"object","fields":[{"name":"question","type":"text","maxLength":120},{"name":"answer","type":"text","maxLength":500}]}}]},
   "faq-minimal-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"question","type":"text","maxLength":120},{"name":"answer","type":"text","maxLength":500}]}}]},
   "faq-solutions-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"title","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":300},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"},{"name":"image","type":"image","aspectRatio":"4:3"},{"name":"imageAlt","type":"text","maxLength":120}]}},{"name":"ctaStyle","type":"text","optional":true},{"name":"ctaColorScheme","type":"text","optional":true}]},
-  "footer-reveal-01": {"slots":[{"name":"logo","type":"image","aspectRatio":"auto","optional":true},{"name":"whatsappUrl","type":"url","optional":true},{"name":"whatsappText","type":"text","maxLength":30},{"name":"phoneUrl","type":"url","optional":true},{"name":"phoneText","type":"text","maxLength":30},{"name":"emailUrl","type":"url","optional":true},{"name":"emailText","type":"text","maxLength":60},{"name":"addressText","type":"text","maxLength":120},{"name":"addressMapsUrl","type":"url","optional":true},{"name":"navColumns","type":"list","maxItems":4,"itemSchema":{"title":{"type":"text","maxLength":30},"links":{"type":"list","maxItems":6,"itemSchema":{"text":{"type":"text","maxLength":30},"href":{"type":"url"}}}}},{"name":"socialLinks","type":"list","maxItems":6,"itemSchema":{"network":{"type":"text","maxLength":20,"enum":["instagram","linkedin","facebook","whatsapp","twitter","youtube","tiktok","google","pinterest","telegram"]},"url":{"type":"url"},"label":{"type":"text","maxLength":60}}},{"name":"companyName","type":"text","maxLength":60},{"name":"ctaText","type":"text","maxLength":40,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"height","type":"number","optional":true,"enum":[350,400,450,500,550]}]},
+  "footer-reveal-01": {"slots":[{"name":"logo","type":"image","aspectRatio":"auto","optional":true},{"name":"whatsappUrl","type":"url","optional":true},{"name":"whatsappText","type":"text","maxLength":30},{"name":"phoneUrl","type":"url","optional":true},{"name":"phoneText","type":"text","maxLength":30},{"name":"emailUrl","type":"url","optional":true},{"name":"emailText","type":"text","maxLength":60},{"name":"addressText","type":"text","maxLength":120},{"name":"addressMapsUrl","type":"url","optional":true},{"name":"hoursText","type":"text","maxLength":60,"optional":true},{"name":"navColumns","type":"list","maxItems":4,"itemSchema":{"title":{"type":"text","maxLength":30},"links":{"type":"list","maxItems":6,"itemSchema":{"text":{"type":"text","maxLength":30},"href":{"type":"url"}}}}},{"name":"socialLinks","type":"list","maxItems":6,"itemSchema":{"network":{"type":"text","maxLength":20,"enum":["instagram","linkedin","facebook","whatsapp","twitter","youtube","tiktok","google","pinterest","telegram"]},"url":{"type":"url"},"label":{"type":"text","maxLength":60}}},{"name":"companyName","type":"text","maxLength":60},{"name":"ctaText","type":"text","maxLength":40,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"height","type":"number","optional":true,"enum":[350,400,450,500,550]}]},
   "hero-geometric-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"image","type":"image","aspectRatio":"4:5","optional":true},{"name":"imageAlt","type":"text","maxLength":120},{"name":"socialProofAvatars","type":"list","optional":true,"maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"1:1"},{"name":"imageAlt","type":"text","maxLength":60}]}},{"name":"socialProofLabel","type":"text","optional":true,"maxLength":60}]},
   "hero-parallax-images-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"centerImage","type":"image","aspectRatio":"16:9","optional":true},{"name":"centerImageAlt","type":"text","maxLength":120},{"name":"parallaxImages","type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"src","type":"image","aspectRatio":"16:9"},{"name":"alt","type":"text","maxLength":120},{"name":"start","type":"number","optional":true},{"name":"end","type":"number","optional":true},{"name":"widthClass","type":"text","optional":true,"maxLength":20},{"name":"alignClass","type":"text","optional":true,"maxLength":20}]}},{"name":"scrollHeight","type":"number","optional":true}]},
   "hero-shuffle-cards-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline"]},{"name":"emailPlaceholder","type":"text","optional":true,"maxLength":50},{"name":"cards","type":"list","maxItems":3,"itemSchema":{"image":{"type":"image","aspectRatio":"1:1"},"imageAlt":{"type":"text","maxLength":120},"quote":{"type":"text","maxLength":200},"author":{"type":"text","maxLength":60}}}]},

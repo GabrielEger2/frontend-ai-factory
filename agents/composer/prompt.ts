@@ -141,6 +141,45 @@ export function buildUserPrompt(
     `- **Density:** ${input.styleOutput.density}`,
   ].join("\n");
 
+  // Buyer-supplied tone tags refine the AI inference. When present, treat
+  // them as authoritative signal alongside the approved Style mood/style.
+  const brandToneSection =
+    input.brandToneKeywords && input.brandToneKeywords.length > 0
+      ? [
+          "## Buyer Brand Tone Keywords",
+          "",
+          `The seller (on the buyer's behalf) supplied these tone tags: **${input.brandToneKeywords.join(", ")}**.`,
+          "Treat them as an explicit signal about how the brand should feel — favor components whose mood/style metadata aligns with these keywords.",
+        ].join("\n")
+      : "";
+
+  // Buyer objectives shape ordering / CTA placement. Hints, not hard rules.
+  const objectivesSection =
+    input.objectives && input.objectives.length > 0
+      ? [
+          "## Buyer Objectives",
+          "",
+          `The buyer wants the site to accomplish: **${input.objectives.join(", ")}**.`,
+          "- `more_leads`, `drive_whatsapp`, `drive_purchases` → place a CTA earlier in the flow.",
+          "- `showcase_portfolio`, `brand_awareness` → favor visual/editorial sections higher up.",
+          "- `support_inquiries`, `increase_signups` → ensure a contact/form section is present and accessible.",
+          "Use these as soft hints when ordering components.",
+        ].join("\n")
+      : "";
+
+  // HARD RULES from the section selector. These come from the buyer intake
+  // form and MUST be honored — the Composer handler enforces them with a
+  // deterministic post-process (see enforceDesiredSections).
+  const desiredSectionsSection =
+    input.desiredSections && input.desiredSections.length > 0
+      ? [
+          "## REQUIRED Sections (hard rule)",
+          "",
+          `The selected layout MUST include at least one component from each of these categories: **${input.desiredSections.join(", ")}**.`,
+          "Failure to include all required categories will cause the layout to be rejected.",
+        ].join("\n")
+      : "";
+
   const candidateRows = candidates
     .map((c) => {
       const variantCol =
@@ -183,6 +222,12 @@ export function buildUserPrompt(
     companySection,
     "",
     styleSection,
+    "",
+    brandToneSection,
+    "",
+    objectivesSection,
+    "",
+    desiredSectionsSection,
     "",
     candidateSection,
     "",

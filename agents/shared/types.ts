@@ -10,6 +10,7 @@ export const PROJECT_STATUSES = [
   "styling",
   "awaiting_style_approval",
   "composing",
+  "awaiting_layout_approval",
   "content",
   "humanizing",
   "assembling",
@@ -19,6 +20,7 @@ export const PROJECT_STATUSES = [
   "deployed",
   "failed",
   "qa_failed",
+  "deploy_failed",
 ] as const;
 
 /* ------------------------------------------------------------------ */
@@ -262,6 +264,7 @@ export const PipelineStateSchema = z.object({
     "styling",
     "awaiting_style_approval",
     "composing",
+    "awaiting_layout_approval",
     "content",
     "humanizing",
     "assembling",
@@ -271,6 +274,7 @@ export const PipelineStateSchema = z.object({
     "deployed",
     "failed",
     "qa_failed",
+    "deploy_failed",
   ]),
   companyName: z.string(),
   segment: z.string(),
@@ -282,6 +286,18 @@ export const PipelineStateSchema = z.object({
   researchOutput: ResearchOutputSchema.optional(),
   styleOutput: StyleOutputSchema.optional(),
   styleApprovalTaskToken: z.string().optional(),
+  layoutApprovalTaskToken: z.string().optional(),
+  desiredSections: z.array(z.string()).optional(),
+  // brandToneKeywords (NOT toneKeywords) — avoids collision with ResearchOutputSchema.toneKeywords
+  brandToneKeywords: z.array(z.string()).optional(),
+  objectives: z.array(z.string()).optional(),
+  businessHours: z.string().optional(),
+  address: z.string().optional(),
+  phone: z.string().optional(),
+  email: z.string().optional(),
+  socialLinks: z
+    .array(z.object({ platform: z.string(), url: z.string() }))
+    .optional(),
   composerOutput: ComposerOutputSchema.optional(),
   contentOutput: ContentOutputSchema.optional(),
   humanizerOutput: HumanizerOutputSchema.optional(),
@@ -308,6 +324,9 @@ export const ProjectItemSchema = PipelineStateSchema.extend({
   qaIssues: QAOutputSchema.shape.issues.optional(),
   workingDraft: WorkingDraftSchema.optional().nullable(),
   currentVersionNumber: z.number().int().optional(),
+  vercelDeploymentId: z.string().optional(),
+  vercelPreviewUrl: z.string().optional(),
+  deployError: z.string().optional(),
 });
 
 export type ProjectItem = z.infer<typeof ProjectItemSchema>;

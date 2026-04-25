@@ -71,6 +71,8 @@ export interface FooterRevealProps {
   addressText?: string;
   /** Google Maps link for the address */
   addressMapsUrl?: string;
+  /** Business hours text (e.g. "Mon–Fri 9am–6pm") */
+  hoursText?: string;
   /** Navigation columns (max 4) */
   navColumns?: FooterNavColumn[];
   /** Social media links shown in the bottom bar */
@@ -154,6 +156,7 @@ export default function FooterReveal({
   emailText,
   addressText,
   addressMapsUrl,
+  hoursText,
   navColumns = DEFAULT_NAV_COLUMNS,
   socialLinks = DEFAULT_SOCIAL_LINKS,
   companyName = "Your Company",
@@ -245,6 +248,13 @@ export default function FooterReveal({
                           {addressText}
                         </span>
                       </a>
+                    )}
+
+                    {/* Business hours */}
+                    {hoursText && (
+                      <p className="text-sm text-neutral-content/80">
+                        {hoursText}
+                      </p>
                     )}
                   </div>
 

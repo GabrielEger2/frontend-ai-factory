@@ -2,8 +2,13 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { AssemblerInputSchema } from "./types";
-import type { AssemblerResult } from "./types";
-import type { Palette, Typography, WorkingDraft } from "../shared/types";
+import type { AssemblerInput, AssemblerResult } from "./types";
+import type {
+  HumanizerOutput,
+  Palette,
+  Typography,
+  WorkingDraft,
+} from "../shared/types";
 import { buildTarBuffer } from "../shared/tar-utils";
 import { generateSiteFiles } from "./core";
 import * as zlib from "zlib";
@@ -33,6 +38,111 @@ const DEFAULT_TYPOGRAPHY: Typography = {
   heading: "ui-serif",
   body: "ui-sans-serif",
 };
+
+/* ------------------------------------------------------------------ */
+/*  Deterministic Buyer-Field → Slot Fill                              */
+/* ------------------------------------------------------------------ */
+
+/**
+ * IMMUTABLE RULE: Buyer-supplied contact data NEVER flows through the
+ * Content Agent or Humanizer Agent. It is applied here, deterministically,
+ * directly onto component slots. The Assembler is the only place buyer
+ * contact data touches the generated site — preserving exact strings,
+ * URLs, and formatting without any LLM rewriting.
+ *
+ * This map enumerates which buyer-supplied PipelineState fields target
+ * which component slots, per component ID, and how each value is transformed
+ * before being written to the slot. Used by `applyBuyerFieldOverrides`.
+ *
+ * SYNC POINT: dashboard/src/lib/gap-detection.ts mirrors this map for the
+ * content-gap warning rendered on the Layout Approval panel. Update both
+ * files together when adding/removing components or slots.
+ */
+type SlotTransform = "tel" | "mailto" | "verbatim" | "social";
+
+interface SlotMapping {
+  field: keyof AssemblerInput;
+  transform: SlotTransform;
+}
+
+const BUYER_FIELD_TO_SLOT: Record<string, Record<string, SlotMapping>> = {
+  "footer-reveal-01": {
+    phoneUrl: { field: "phone", transform: "tel" },
+    emailUrl: { field: "email", transform: "mailto" },
+    addressText: { field: "address", transform: "verbatim" },
+    hoursText: { field: "businessHours", transform: "verbatim" },
+    socialLinks: { field: "socialLinks", transform: "social" },
+  },
+  "contact-map-info-01": {
+    address: { field: "address", transform: "verbatim" },
+    phone: { field: "phone", transform: "verbatim" },
+    email: { field: "email", transform: "verbatim" },
+    hours: { field: "businessHours", transform: "verbatim" },
+  },
+};
+
+/**
+ * Returns a HumanizerOutput with buyer-supplied contact info deterministically
+ * merged into footer/contact component slots.
+ *
+ * Per-slot `transform` controls how the raw buyer value is reshaped:
+ * - `tel` — wraps a string as `tel:<value>` (used for URL-typed slots)
+ * - `mailto` — wraps a string as `mailto:<value>` (used for URL-typed slots)
+ * - `verbatim` — passes the raw value through unchanged (plain-text slots)
+ * - `social` — reshapes `{platform,url}[]` (PipelineState shape) to
+ *   `{network,url}[]` (footer-reveal-01 slot shape).
+ *
+ * Missing buyer fields are skipped — the existing humanizer-supplied or
+ * component-default value remains untouched (component-default fallback is
+ * already handled downstream by `sanitizeSlotValue`).
+ */
+function applyBuyerFieldOverrides(
+  humanizerOutput: HumanizerOutput,
+  input: AssemblerInput,
+): HumanizerOutput {
+  return {
+    components: humanizerOutput.components.map((component) => {
+      const componentMapping = BUYER_FIELD_TO_SLOT[component.componentId];
+      if (!componentMapping) return component;
+
+      const overrides: Record<string, unknown> = {};
+      for (const [slotName, mapping] of Object.entries(componentMapping)) {
+        const rawValue = input[mapping.field];
+        if (rawValue === undefined || rawValue === null) continue;
+
+        let transformed: unknown;
+        switch (mapping.transform) {
+          case "tel":
+            transformed =
+              typeof rawValue === "string" ? `tel:${rawValue}` : undefined;
+            break;
+          case "mailto":
+            transformed =
+              typeof rawValue === "string" ? `mailto:${rawValue}` : undefined;
+            break;
+          case "social":
+            transformed = Array.isArray(rawValue)
+              ? (rawValue as { platform: string; url: string }[]).map((s) => ({
+                  network: s.platform,
+                  url: s.url,
+                }))
+              : undefined;
+            break;
+          case "verbatim":
+          default:
+            transformed = rawValue;
+        }
+
+        if (transformed !== undefined) {
+          overrides[slotName] = transformed;
+        }
+      }
+
+      if (Object.keys(overrides).length === 0) return component;
+      return { ...component, slots: { ...component.slots, ...overrides } };
+    }),
+  };
+}
 
 /* ------------------------------------------------------------------ */
 /*  Handler                                                            */
@@ -73,9 +183,17 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
   const palette = input.styleOutput?.palette ?? DEFAULT_PALETTE;
   const typography = input.styleOutput?.typography ?? DEFAULT_TYPOGRAPHY;
 
+  // Deterministic buyer-field → slot fill (footer/contact contact info).
+  // This happens AFTER Humanizer, so it overwrites any LLM-generated
+  // placeholder phone/email/address with the seller-supplied real values.
+  const humanizerOutput = applyBuyerFieldOverrides(
+    input.humanizerOutput,
+    input,
+  );
+
   const files = generateSiteFiles(
     input.projectId,
-    input.humanizerOutput,
+    humanizerOutput,
     palette,
     typography,
   );
@@ -122,7 +240,7 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
   const workingDraft: WorkingDraft = {
     blueprint:
       input.composerOutput.layouts[input.composerOutput.selectedLayout],
-    contentSlots: input.humanizerOutput,
+    contentSlots: humanizerOutput,
     palette,
     typography,
     density: input.styleOutput?.density ?? "medium",
@@ -157,7 +275,7 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
     segment: input.segment,
     description: input.description,
     sellerId: input.sellerId,
-    humanizerOutput: input.humanizerOutput,
+    humanizerOutput,
     assemblerOutput: { s3Key, s3Bucket: bucketName },
   };
 };

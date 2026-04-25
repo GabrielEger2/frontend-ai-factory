@@ -64,6 +64,24 @@ Adapt your choices to the business segment:
 
 Use these as guidelines, not rigid rules. The research output (tone keywords, audience, differentiators) should refine your choices.
 
+## Seller-Supplied Brand Tone Keywords
+
+In addition to the research-derived \`toneKeywords\`, the seller may provide \`brandToneKeywords\` — a curated list of tone tags chosen on the buyer's behalf during intake. These are an EXPLICIT signal from the buyer about how the brand should feel.
+
+- Treat \`brandToneKeywords\` as authoritative when conflicting with research-derived tone. Buyer intent overrides AI inference.
+- Map them onto the same mood/style vocabulary above (e.g. \`brandToneKeywords: ["bold","energetic"]\` → favor \`mood\` containing "energetic" and \`style\` containing "bold").
+- If \`brandToneKeywords\` is absent or empty, fall back to research-derived tone signals only.
+
+## Buyer Objectives
+
+The seller may also supply \`objectives\` — what the buyer wants the site to accomplish (e.g. \`more_leads\`, \`drive_whatsapp\`, \`brand_awareness\`). Use them to refine \`density\`:
+
+- \`more_leads\`, \`drive_whatsapp\`, \`drive_purchases\` → favor higher density and high-contrast accents (conversion-focused)
+- \`showcase_portfolio\`, \`brand_awareness\` → favor lower density and editorial/minimal styling (presentation-focused)
+- \`support_inquiries\`, \`increase_signups\` → balanced medium density with clear CTAs
+
+Objectives are guidance, not rigid rules — keep palette/style coherent above all.
+
 ## Style-Tag → Palette Character Guidance
 
 Use the selected style tags to shape the palette's character (saturation, contrast, hue temperature):
@@ -188,6 +206,30 @@ export function buildStyleUserPrompt(
         ].join("\n")
       : "";
 
+  const brandToneSection =
+    input.brandToneKeywords && input.brandToneKeywords.length > 0
+      ? [
+          "## Seller-Supplied Brand Tone Keywords",
+          "",
+          "The seller has explicitly tagged the brand with these tone keywords (authoritative — overrides research-derived tone when conflicting):",
+          "",
+          ...input.brandToneKeywords.map((kw) => `- ${kw}`),
+        ].join("\n")
+      : "";
+
+  const objectivesSection =
+    input.objectives && input.objectives.length > 0
+      ? [
+          "## Buyer Objectives",
+          "",
+          "The buyer wants this site to accomplish:",
+          "",
+          ...input.objectives.map((obj) => `- ${obj}`),
+          "",
+          "Use these to refine density and accent choices per the system prompt guidance.",
+        ].join("\n")
+      : "";
+
   const brandColorSection = input.brandColor
     ? [
         "## Brand Color (Mandatory Anchor)",
@@ -208,6 +250,10 @@ export function buildStyleUserPrompt(
     researchSection,
     "",
     paletteSection,
+    "",
+    brandToneSection,
+    "",
+    objectivesSection,
     "",
     brandColorSection,
     "",

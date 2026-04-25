@@ -47,6 +47,7 @@ export type ProjectStatus =
   | "styling"
   | "awaiting_style_approval"
   | "composing"
+  | "awaiting_layout_approval"
   | "content"
   | "humanizing"
   | "assembling"
@@ -55,7 +56,8 @@ export type ProjectStatus =
   | "deploying"
   | "deployed"
   | "failed"
-  | "qa_failed";
+  | "qa_failed"
+  | "deploy_failed";
 
 export interface ProjectSummary {
   projectId: string;
@@ -251,6 +253,18 @@ export interface ProjectDetail {
   qaIssues: QAIssue[] | null;
   workingDraft: WorkingDraft | null;
   currentVersionNumber: number | null;
+  layoutApprovalTaskToken?: string;
+  desiredSections?: string[];
+  brandToneKeywords?: string[];
+  objectives?: string[];
+  businessHours?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+  socialLinks?: { platform: string; url: string }[];
+  vercelDeploymentId?: string;
+  vercelPreviewUrl?: string;
+  deployError?: string;
 }
 
 export interface CreateProjectInput {
@@ -258,4 +272,12 @@ export interface CreateProjectInput {
   segment: string;
   description: string;
   brandColor?: string;
+  desiredSections?: string[];
+  brandToneKeywords?: string[];
+  objectives?: string[];
+  businessHours?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+  socialLinks?: { platform: string; url: string }[];
 }
