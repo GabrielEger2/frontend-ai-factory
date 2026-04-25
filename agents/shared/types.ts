@@ -20,6 +20,7 @@ export const PROJECT_STATUSES = [
   "deployed",
   "failed",
   "qa_failed",
+  "deploy_failed",
 ] as const;
 
 /* ------------------------------------------------------------------ */
@@ -273,6 +274,7 @@ export const PipelineStateSchema = z.object({
     "deployed",
     "failed",
     "qa_failed",
+    "deploy_failed",
   ]),
   companyName: z.string(),
   segment: z.string(),
@@ -322,6 +324,9 @@ export const ProjectItemSchema = PipelineStateSchema.extend({
   qaIssues: QAOutputSchema.shape.issues.optional(),
   workingDraft: WorkingDraftSchema.optional().nullable(),
   currentVersionNumber: z.number().int().optional(),
+  vercelDeploymentId: z.string().optional(),
+  vercelPreviewUrl: z.string().optional(),
+  deployError: z.string().optional(),
 });
 
 export type ProjectItem = z.infer<typeof ProjectItemSchema>;
