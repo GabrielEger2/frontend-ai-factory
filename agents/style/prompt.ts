@@ -42,6 +42,13 @@ Given a company brief and research output, you must produce a cohesive style def
 
 5. **density** — One of: low (spacious, breathing room), medium (balanced), high (compact, information-dense)
 
+6. **paletteMode** — The active palette variant the seller will see first. One of:
+   - "single" — one dominant brand color, supporting neutrals (focused, calm, single-message brands)
+   - "dual" — primary + a distinct secondary that share equal visual weight (complementary or split-complementary, energetic, dual-message brands)
+   - "monochromatic" — primary plus tints/shades of the same hue with grayscale neutrals (refined, editorial, minimal brands)
+
+7. **paletteModes** — All three palette variants pre-computed so the seller can switch between them at the approval gate without regenerating. Each variant is a full Palette object (primary, secondary, accent, neutral, primaryLight, primaryDark). The "single", "dual", and "monochromatic" entries must each be internally consistent with their respective mode definition above. The active variant (\`paletteModes[paletteMode]\`) MUST equal \`palette\` exactly.
+
 ## Segment-Aware Personality Mapping
 
 Adapt your choices to the business segment:
@@ -57,6 +64,26 @@ Adapt your choices to the business segment:
 
 Use these as guidelines, not rigid rules. The research output (tone keywords, audience, differentiators) should refine your choices.
 
+## Style-Tag → Palette Character Guidance
+
+Use the selected style tags to shape the palette's character (saturation, contrast, hue temperature):
+
+- **modern** → clean, slightly desaturated, high contrast against neutral, mid-temperature hues
+- **classic** → restrained saturation, warm-leaning neutrals, traditional hue families (navy, burgundy, forest, taupe)
+- **editorial** → muted but confident, magazine-like, sophisticated neutrals (off-white, ivory, charcoal), high typographic contrast
+- **luxury** → deep, rich primaries (deep teal, oxblood, midnight, gold accent), low-to-medium saturation, premium contrast
+- **playful** → bright, saturated, often warm, cheerful contrasts; accent should pop visibly
+- **minimal** → near-monochrome, very limited palette, neutrals dominate, primary used sparingly
+- **bold** → high-saturation primary, strong accent, dramatic contrast against neutral
+- **corporate** → trustworthy blues/greens/grays, restrained saturation, high readability, no jarring accents
+
+Mood modifiers refine the same palette family:
+
+- **professional / serious / trustworthy** → cooler, lower saturation, higher contrast for readability
+- **friendly / fun / energetic** → warmer, higher saturation, brighter accent
+- **elegant / calm** → softer contrast, muted saturation, harmonious neighboring hues
+- **playful + energetic together** → push toward bright accents; never wash out primary
+
 ## Rules
 
 1. Output ONLY valid JSON. No explanations, no markdown, no comments outside the JSON.
@@ -66,6 +93,8 @@ Use these as guidelines, not rigid rules. The research output (tone keywords, au
 5. Ensure sufficient color contrast between primary and neutral for accessibility.
 6. The palette should feel cohesive — colors should work harmoniously together.
 7. heading and body fonts should complement each other (avoid pairing two very similar fonts).
+8. **Brand color anchoring (when a brandColor is supplied):** \`primary\` MUST equal the supplied brandColor EXACTLY (same hex, character-for-character, uppercase normalized). Derive \`primaryLight\` by increasing the brand color's lightness by ~25% (in HSL space) and \`primaryDark\` by decreasing lightness by ~20%. The brand color must remain the \`primary\` across ALL three variants in \`paletteModes\` (single, dual, monochromatic) — only the secondary, accent, and neutral relationships change between modes.
+9. **Monochromatic mode constraints:** in \`paletteModes.monochromatic\`, \`secondary\` and \`accent\` MUST share the same hue family as \`primary\` (vary only saturation/lightness). \`neutral\` MUST be a true grayscale value (no chromatic tint). This rule applies regardless of whether \`paletteMode\` is "monochromatic".
 
 ## Output Schema
 
@@ -77,6 +106,33 @@ Use these as guidelines, not rigid rules. The research output (tone keywords, au
     "neutral": "<hex>",
     "primaryLight": "<hex>",
     "primaryDark": "<hex>"
+  },
+  "paletteMode": "<single|dual|monochromatic>",
+  "paletteModes": {
+    "single": {
+      "primary": "<hex>",
+      "secondary": "<hex>",
+      "accent": "<hex>",
+      "neutral": "<hex>",
+      "primaryLight": "<hex>",
+      "primaryDark": "<hex>"
+    },
+    "dual": {
+      "primary": "<hex>",
+      "secondary": "<hex>",
+      "accent": "<hex>",
+      "neutral": "<hex>",
+      "primaryLight": "<hex>",
+      "primaryDark": "<hex>"
+    },
+    "monochromatic": {
+      "primary": "<hex>",
+      "secondary": "<hex>",
+      "accent": "<hex>",
+      "neutral": "<hex>",
+      "primaryLight": "<hex>",
+      "primaryDark": "<hex>"
+    }
   },
   "typography": {
     "heading": "<Google Font name>",
@@ -132,12 +188,28 @@ export function buildStyleUserPrompt(
         ].join("\n")
       : "";
 
+  const brandColorSection = input.brandColor
+    ? [
+        "## Brand Color (Mandatory Anchor)",
+        "",
+        `The seller has supplied an existing brand color: **${input.brandColor}**.`,
+        "",
+        `- \`palette.primary\` MUST equal \`${input.brandColor}\` EXACTLY (character-for-character, uppercase normalized).`,
+        `- \`palette.primary\` MUST also equal \`${input.brandColor}\` in EVERY entry of \`paletteModes\` (single, dual, monochromatic).`,
+        `- Derive \`primaryLight\` by increasing the brand color's lightness by ~25% (HSL).`,
+        `- Derive \`primaryDark\` by decreasing the brand color's lightness by ~20% (HSL).`,
+        `- Choose \`secondary\`, \`accent\`, and \`neutral\` to harmonize with the anchored brand color according to the selected \`paletteMode\`.`,
+      ].join("\n")
+    : "";
+
   return [
     companySection,
     "",
     researchSection,
     "",
     paletteSection,
+    "",
+    brandColorSection,
     "",
     "Based on the company brief and research output above, define the complete visual identity JSON.",
   ]
