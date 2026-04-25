@@ -32,6 +32,7 @@ const ALL_STATUSES: ProjectStatus[] = [
   "styling",
   "awaiting_style_approval",
   "composing",
+  "awaiting_layout_approval",
   "content",
   "humanizing",
   "assembling",

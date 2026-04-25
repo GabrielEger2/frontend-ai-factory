@@ -9,6 +9,7 @@ export const STATUS_LABELS: Record<ProjectStatus, string> = {
   styling: "Generating Style...",
   awaiting_style_approval: "Awaiting Style Approval",
   composing: "Composing Layout...",
+  awaiting_layout_approval: "Awaiting Layout Approval",
   content: "Generating Content...",
   humanizing: "Humanizing...",
   assembling: "Assembling...",
@@ -46,6 +47,11 @@ const STATUS_BADGE_MAP: Record<ProjectStatus, BadgeMapping> = {
     variant: "default",
     className:
       "border-transparent bg-violet-100 text-violet-700 animate-pulse hover:bg-violet-100",
+  },
+  awaiting_layout_approval: {
+    variant: "default",
+    className:
+      "border-transparent bg-amber-100 text-amber-700 hover:bg-amber-100",
   },
   content: {
     variant: "default",

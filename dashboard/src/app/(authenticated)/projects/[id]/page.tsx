@@ -29,6 +29,7 @@ const PIPELINE_STEPS: {
   { status: "styling", label: "Generating Style" },
   { status: "awaiting_style_approval", label: "Awaiting Style Approval" },
   { status: "composing", label: "Composing Layout" },
+  { status: "awaiting_layout_approval", label: "Layout Approval" },
   { status: "content", label: "Generating Content" },
   { status: "content" as ProjectStatus, label: "SEO", stepName: "seo" },
   { status: "humanizing", label: "Humanizing" },
