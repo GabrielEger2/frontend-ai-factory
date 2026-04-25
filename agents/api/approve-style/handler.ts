@@ -8,7 +8,7 @@ import {
 import { SFNClient, SendTaskSuccessCommand } from "@aws-sdk/client-sfn";
 
 import type { PipelineState, ProjectItem } from "../../shared/types";
-import { StyleOutputSchema } from "../../shared/types";
+import { PipelineStateSchema, StyleOutputSchema } from "../../shared/types";
 import { requireSellerId } from "../shared/seller-guard";
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
@@ -127,18 +127,19 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       };
     }
 
-    // Reconstruct FULL PipelineState with edited styleOutput
-    // CRITICAL: Include ALL fields — downstream agents depend on them
+    // Reconstruct FULL PipelineState by spreading the parsed DDB item and
+    // overriding the seller-edited styleOutput + advanced status.
+    //
+    // HARDENING: Using PipelineStateSchema.parse(item) instead of a manual
+    // field list eliminates "stale field list" drift — any future field added
+    // to PipelineStateSchema (intake fields, layout-gate fields, etc.) flows
+    // through to downstream agents automatically. This is now THE template
+    // approve-layout follows in Wave 4.
+    const baseState = PipelineStateSchema.parse(item);
     const pipelineState: PipelineState = {
-      projectId: item.projectId,
-      companyName: item.companyName,
-      segment: item.segment,
-      description: item.description,
-      brandColor: item.brandColor,
-      sellerId: item.sellerId,
-      researchOutput: item.researchOutput,
+      ...baseState,
       styleOutput,
-      status: "composing",
+      status: "composing" as const,
     };
 
     // Step 8: DDB update FIRST — persist edited style and advance status
@@ -162,12 +163,43 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     );
 
     // Step 9: Resume Step Functions pipeline with full state
-    await sfn.send(
-      new SendTaskSuccessCommand({
-        taskToken,
-        output: JSON.stringify(pipelineState),
-      }),
-    );
+    //
+    // HARDENING: SendTaskSuccess is single-use — a second call with the same
+    // token throws TaskTimedOut / TaskDoesNotExist / InvalidToken. Without this
+    // catch, a duplicate approve click would surface as a 500 even though the
+    // first call already advanced the pipeline correctly. Return 409 instead so
+    // the dashboard can refetch and reflect the real state. This is now THE
+    // template approve-layout follows in Wave 4.
+    try {
+      await sfn.send(
+        new SendTaskSuccessCommand({
+          taskToken,
+          output: JSON.stringify(pipelineState),
+        }),
+      );
+    } catch (err) {
+      const errName =
+        err instanceof Error
+          ? err.name
+          : typeof err === "object" && err !== null && "name" in err
+            ? String((err as { name: unknown }).name)
+            : "";
+      if (
+        errName === "TaskTimedOut" ||
+        errName === "TaskDoesNotExist" ||
+        errName === "InvalidToken"
+      ) {
+        return {
+          statusCode: 409,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            error: "Style approval already processed",
+            code: errName,
+          }),
+        };
+      }
+      throw err;
+    }
 
     console.log(
       JSON.stringify({
