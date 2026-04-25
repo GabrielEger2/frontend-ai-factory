@@ -21,6 +21,19 @@ const CreateProjectSchema = z.object({
     .string()
     .regex(/^#[0-9a-fA-F]{6}$/)
     .optional(),
+  // Expanded intake fields (all optional). brandToneKeywords (NOT toneKeywords)
+  // — avoids collision with ResearchOutputSchema.toneKeywords.
+  desiredSections: z.array(z.string()).optional(),
+  excludedSections: z.array(z.string()).optional(),
+  brandToneKeywords: z.array(z.string()).optional(),
+  objectives: z.array(z.string()).optional(),
+  businessHours: z.string().optional(),
+  address: z.string().optional(),
+  phone: z.string().optional(),
+  email: z.string().optional(),
+  socialLinks: z
+    .array(z.object({ platform: z.string(), url: z.string() }))
+    .optional(),
 });
 
 /**
@@ -65,6 +78,15 @@ export const handler: APIGatewayProxyHandler = async (event) => {
           segment: input.segment,
           description: input.description,
           brandColor: input.brandColor,
+          desiredSections: input.desiredSections,
+          excludedSections: input.excludedSections,
+          brandToneKeywords: input.brandToneKeywords,
+          objectives: input.objectives,
+          businessHours: input.businessHours,
+          address: input.address,
+          phone: input.phone,
+          email: input.email,
+          socialLinks: input.socialLinks,
           status: "queued",
           createdAt: now,
           updatedAt: now,
@@ -83,6 +105,15 @@ export const handler: APIGatewayProxyHandler = async (event) => {
           segment: input.segment,
           description: input.description,
           brandColor: input.brandColor,
+          desiredSections: input.desiredSections,
+          excludedSections: input.excludedSections,
+          brandToneKeywords: input.brandToneKeywords,
+          objectives: input.objectives,
+          businessHours: input.businessHours,
+          address: input.address,
+          phone: input.phone,
+          email: input.email,
+          socialLinks: input.socialLinks,
         }),
       }),
     );
