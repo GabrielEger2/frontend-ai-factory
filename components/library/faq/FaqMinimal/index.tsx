@@ -20,11 +20,38 @@ export interface FaqMinimalProps {
   /** Optional supporting text below the headline */
   subheadline?: string;
   /** Array of question/answer pairs */
-  items: FaqMinimalItem[];
+  items?: FaqMinimalItem[];
   /** Index of the item to expand by default (-1 for none) */
   defaultOpenIndex?: number;
   className?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_FAQ_MINIMAL_ITEMS: FaqMinimalItem[] = [
+  {
+    question: "Can I try it before committing?",
+    answer:
+      "Every plan starts with a 14-day trial — no credit card required. You'll have access to every feature, not a stripped-down demo.",
+  },
+  {
+    question: "What happens to my data if I cancel?",
+    answer:
+      "You can export everything as CSV or JSON at any time. We hold your data for 30 days after cancellation, then delete it permanently.",
+  },
+  {
+    question: "Is there a free plan for small teams?",
+    answer:
+      "Yes — teams of three or fewer can use the Starter tier indefinitely with all core features included. We only charge once you outgrow it.",
+  },
+  {
+    question: "How do you handle privacy and compliance?",
+    answer:
+      "We're SOC 2 Type II and GDPR compliant, encrypt data at rest and in transit, and offer EU-only data residency on Business and Enterprise plans.",
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Sub-component                                                      */
@@ -132,7 +159,7 @@ function Question({
 export default function FaqMinimal({
   headline,
   subheadline,
-  items,
+  items = DEFAULT_FAQ_MINIMAL_ITEMS,
   defaultOpenIndex = -1,
   className,
 }: FaqMinimalProps) {

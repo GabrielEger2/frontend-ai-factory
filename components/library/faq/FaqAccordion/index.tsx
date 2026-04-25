@@ -20,7 +20,7 @@ export interface FaqAccordionProps {
   /** Optional supporting text below the headline */
   subheadline?: string;
   /** Array of question/answer pairs */
-  items: FaqAccordionItem[];
+  items?: FaqAccordionItem[];
   /** Allow multiple items to be open at once (default: false) */
   allowMultiple?: boolean;
   /** Index of the item to expand by default (-1 for none) */
@@ -29,13 +29,40 @@ export interface FaqAccordionProps {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_FAQ_ACCORDION_ITEMS: FaqAccordionItem[] = [
+  {
+    question: "How long does setup take?",
+    answer:
+      "Most teams are up and running in under an hour. Connect your accounts, invite your team, and you're live — no migration project required.",
+  },
+  {
+    question: "What does pricing actually look like at scale?",
+    answer:
+      "Plans start at $29/seat/month and we publish a clear volume discount table. You'll never be surprised by your invoice — and there's no per-feature paywall.",
+  },
+  {
+    question: "Do you offer hands-on support?",
+    answer:
+      "Yes — every paid plan includes a real human you can email or message. Enterprise tiers add a dedicated solutions engineer for the first 90 days.",
+  },
+  {
+    question: "Will it integrate with the tools we already use?",
+    answer:
+      "We support 60+ native integrations, plus Zapier, webhooks, and a fully documented API. If something's missing, our team will usually build it within two weeks.",
+  },
+];
+
+/* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
 export default function FaqAccordion({
   headline,
   subheadline,
-  items,
+  items = DEFAULT_FAQ_ACCORDION_ITEMS,
   allowMultiple = false,
   defaultOpenIndex = -1,
   className,
