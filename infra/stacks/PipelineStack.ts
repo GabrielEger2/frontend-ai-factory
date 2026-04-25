@@ -331,15 +331,21 @@ export class PipelineStack extends Stack {
     const styleStep = new tasks.LambdaInvoke(this, "StyleStep", {
       lambdaFunction: styleFn.fn,
       integrationPattern: sfn.IntegrationPattern.WAIT_FOR_TASK_TOKEN,
-      // IMPORTANT: Add new upstream fields here if PipelineState expands
+      // IMPORTANT: Add new upstream fields here if PipelineState expands.
+      // JsonPath references throw at runtime for missing keys, so the
+      // pipeline-starter must always seed every field listed here (with
+      // null / [] defaults when the brief omits them).
       payload: sfn.TaskInput.fromObject({
         "projectId.$": "$.projectId",
         "status.$": "$.status",
         "companyName.$": "$.companyName",
         "segment.$": "$.segment",
         "description.$": "$.description",
+        "brandColor.$": "$.brandColor",
         "sellerId.$": "$.sellerId",
         "researchOutput.$": "$.researchOutput",
+        "brandToneKeywords.$": "$.brandToneKeywords",
+        "objectives.$": "$.objectives",
         taskToken: sfn.JsonPath.taskToken,
       }),
     });
@@ -348,7 +354,27 @@ export class PipelineStack extends Stack {
 
     const composerStep = new tasks.LambdaInvoke(this, "ComposerStep", {
       lambdaFunction: composerFn.fn,
-      outputPath: "$.Payload",
+      integrationPattern: sfn.IntegrationPattern.WAIT_FOR_TASK_TOKEN,
+      // IMPORTANT: Add new upstream fields here if PipelineState expands.
+      // JsonPath references throw at runtime for missing keys, so the
+      // pipeline-starter must always seed every field listed here (with
+      // null / [] defaults when the brief omits them).
+      payload: sfn.TaskInput.fromObject({
+        "projectId.$": "$.projectId",
+        "status.$": "$.status",
+        "companyName.$": "$.companyName",
+        "segment.$": "$.segment",
+        "description.$": "$.description",
+        "brandColor.$": "$.brandColor",
+        "sellerId.$": "$.sellerId",
+        "researchOutput.$": "$.researchOutput",
+        "styleOutput.$": "$.styleOutput",
+        "desiredSections.$": "$.desiredSections",
+        "excludedSections.$": "$.excludedSections",
+        "brandToneKeywords.$": "$.brandToneKeywords",
+        "objectives.$": "$.objectives",
+        taskToken: sfn.JsonPath.taskToken,
+      }),
     });
     composerStep.addRetry(retryConfig);
     composerStep.addCatch(failHandlerStep, { resultPath: "$.error" });
