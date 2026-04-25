@@ -216,6 +216,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       density: workingDraft.density,
       mood: item.styleOutput?.mood ?? [],
       style: item.styleOutput?.style ?? [],
+      paletteMode: item.styleOutput?.paletteMode ?? "single",
+      paletteModes: item.styleOutput?.paletteModes ?? {
+        single: workingDraft.palette,
+        dual: workingDraft.palette,
+        monochromatic: workingDraft.palette,
+      },
       paletteSource: item.styleOutput?.paletteSource,
       paletteSuggestions: item.styleOutput?.paletteSuggestions,
     };
