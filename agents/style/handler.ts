@@ -176,6 +176,9 @@ async function generateStyle(
   }
 
   const validated = StyleOutputSchema.parse(parsed);
+  // Safety sync: ensure palette exactly matches the active mode variant.
+  // Prevents propagation downstream if the LLM returns inconsistent paletteModes.
+  validated.palette = validated.paletteModes[validated.paletteMode];
   return validated;
 }
 

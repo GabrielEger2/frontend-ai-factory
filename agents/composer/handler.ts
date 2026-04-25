@@ -35,6 +35,34 @@ export interface PairMatrixEntry {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Mandatory navbar/footer enforcement                                */
+/* ------------------------------------------------------------------ */
+
+const NAVBAR_ID = "navbar-sticky-01";
+const FOOTER_ID = "footer-reveal-01";
+
+/**
+ * Ensure every layout begins with the mandatory navbar and ends with the
+ * mandatory footer. This is an ID-based comparison: Phase 1 has exactly one
+ * navbar (`navbar-sticky-01`) and one footer (`footer-reveal-01`), so direct
+ * ID matching is sufficient and avoids a metadata lookup. Upgrade this to a
+ * category-based check (`category === "navigation" | "footer"`) when a
+ * second navbar or footer component is added.
+ */
+function enforceNavbarFooter(output: ComposerOutput): ComposerOutput {
+  for (const layout of output.layouts) {
+    if (layout.components[0] !== NAVBAR_ID) {
+      layout.components.unshift(NAVBAR_ID);
+    }
+    const last = layout.components[layout.components.length - 1];
+    if (last !== FOOTER_ID) {
+      layout.components.push(FOOTER_ID);
+    }
+  }
+  return output;
+}
+
+/* ------------------------------------------------------------------ */
 /*  Clients (reused across Lambda invocations)                         */
 /* ------------------------------------------------------------------ */
 
@@ -307,7 +335,9 @@ async function composeLayouts(
   }
   validated.avgScore = scoreCount > 0 ? scoreSum / scoreCount : null;
 
-  return validated;
+  const enforced = enforceNavbarFooter(validated);
+
+  return enforced;
 }
 
 /* ------------------------------------------------------------------ */

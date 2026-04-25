@@ -107,6 +107,13 @@ export const PaletteSchema = z.object({
   primaryDark: z.string(),
 });
 
+export const PaletteModesSchema = z.object({
+  single: PaletteSchema,
+  dual: PaletteSchema,
+  monochromatic: PaletteSchema,
+});
+export type PaletteModes = z.infer<typeof PaletteModesSchema>;
+
 export const TypographySchema = z.object({
   heading: z.string(),
   body: z.string(),
@@ -114,6 +121,8 @@ export const TypographySchema = z.object({
 
 export const StyleOutputSchema = z.object({
   palette: PaletteSchema,
+  paletteMode: z.enum(["single", "dual", "monochromatic"]),
+  paletteModes: PaletteModesSchema,
   typography: TypographySchema,
   mood: z.array(
     z.enum([
@@ -266,6 +275,10 @@ export const PipelineStateSchema = z.object({
   companyName: z.string(),
   segment: z.string(),
   description: z.string(),
+  brandColor: z
+    .string()
+    .regex(/^#[0-9a-fA-F]{6}$/)
+    .optional(),
   researchOutput: ResearchOutputSchema.optional(),
   styleOutput: StyleOutputSchema.optional(),
   styleApprovalTaskToken: z.string().optional(),
