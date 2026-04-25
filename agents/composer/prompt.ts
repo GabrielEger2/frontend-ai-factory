@@ -180,16 +180,6 @@ export function buildUserPrompt(
         ].join("\n")
       : "";
 
-  const excludedSectionsSection =
-    input.excludedSections && input.excludedSections.length > 0
-      ? [
-          "## EXCLUDED Sections (hard rule)",
-          "",
-          `The selected layout MUST NOT include ANY component from these categories: **${input.excludedSections.join(", ")}**.`,
-          "Failure to exclude all listed categories will cause the layout to be rejected.",
-        ].join("\n")
-      : "";
-
   const candidateRows = candidates
     .map((c) => {
       const variantCol =
@@ -238,8 +228,6 @@ export function buildUserPrompt(
     objectivesSection,
     "",
     desiredSectionsSection,
-    "",
-    excludedSectionsSection,
     "",
     candidateSection,
     "",

@@ -140,7 +140,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       researchOutput: baseState.researchOutput,
       styleOutput: baseState.styleOutput,
       desiredSections: baseState.desiredSections,
-      excludedSections: baseState.excludedSections,
       brandToneKeywords: baseState.brandToneKeywords,
       objectives: baseState.objectives,
     };

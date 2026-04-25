@@ -100,10 +100,9 @@ function enforceNavbarFooter(output: ComposerOutput): ComposerOutput {
 function enforceDesiredSections(
   output: ComposerOutput,
   desired: string[],
-  excluded: string[],
   candidates: CandidateComponent[],
 ): ComposerOutput {
-  if (desired.length === 0 && excluded.length === 0) {
+  if (desired.length === 0) {
     return output;
   }
 
@@ -130,14 +129,6 @@ function enforceDesiredSections(
   if (missing.length > 0) {
     throw new LayoutConstraintError(
       `Selected layout is missing required categories: ${missing.join(", ")}`,
-    );
-  }
-
-  // Excluded categories must not appear at all.
-  const offending = excluded.filter((c) => presentCategories.has(c));
-  if (offending.length > 0) {
-    throw new LayoutConstraintError(
-      `Selected layout contains excluded categories: ${offending.join(", ")}`,
     );
   }
 
@@ -425,12 +416,7 @@ async function composeLayouts(
 
   // Hard-rule validation against buyer-supplied section selections. Throws
   // LayoutConstraintError on violation; SFN retry/Catch handle the failure.
-  enforceDesiredSections(
-    enforced,
-    input.desiredSections ?? [],
-    input.excludedSections ?? [],
-    candidates,
-  );
+  enforceDesiredSections(enforced, input.desiredSections ?? [], candidates);
 
   return enforced;
 }

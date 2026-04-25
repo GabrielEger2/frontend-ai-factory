@@ -16,7 +16,6 @@ export const ComposerAgentInputSchema = PipelineStateSchema.pick({
   segment: true,
   description: true,
   desiredSections: true,
-  excludedSections: true,
   brandToneKeywords: true,
   objectives: true,
 }).extend({
