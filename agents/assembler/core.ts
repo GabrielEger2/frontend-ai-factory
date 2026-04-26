@@ -29,10 +29,70 @@ export function toComponentName(componentId: string): string {
  * Slot metadata passed through recursive sanitization.
  * Mirrors the structure of metadata.json slot definitions so enum
  * constraints inside itemSchema are propagated to nested fields.
+ *
+ * itemSchema appears in two shapes across the generated registry:
+ *   1. Flat record: { fieldName: { type, ... } } (e.g. footer-reveal-01.navColumns)
+ *   2. Object schema: { type: "object", fields: [{ name, type, ... }, ...] }
+ *      (e.g. layout-parallaxcontent-01.sections)
+ * We accept both — `itemSchema` is typed loosely and resolved by helpers below.
  */
 interface SlotMeta {
   enum?: unknown[];
-  itemSchema?: Record<string, SlotMeta>;
+  itemSchema?: unknown;
+}
+
+/**
+ * Field declaration extracted from a slot's itemSchema. Supports both shapes
+ * the registry produces (flat-record and {type, fields[]}).
+ */
+interface FieldDecl {
+  name: string;
+  type?: string;
+  optional?: boolean;
+  enum?: unknown[];
+  itemSchema?: unknown;
+}
+
+/**
+ * Normalize an itemSchema (either flat-record or {type,fields[]}) into a
+ * map of field-name → field declaration. Returns an empty object if the
+ * shape is unrecognized.
+ */
+function fieldsFromItemSchema(itemSchema: unknown): Record<string, FieldDecl> {
+  if (!itemSchema || typeof itemSchema !== "object") return {};
+  const schema = itemSchema as Record<string, unknown>;
+
+  // Shape 2: { type: "object", fields: [{name, type, ...}] }
+  if (schema.type === "object" && Array.isArray(schema.fields)) {
+    const out: Record<string, FieldDecl> = {};
+    for (const f of schema.fields as FieldDecl[]) {
+      if (f && typeof f.name === "string") out[f.name] = f;
+    }
+    return out;
+  }
+
+  // Shape 1: flat record { fieldName: {type, ...} }
+  const out: Record<string, FieldDecl> = {};
+  for (const [name, def] of Object.entries(schema)) {
+    if (def && typeof def === "object") {
+      out[name] = { name, ...(def as object) } as FieldDecl;
+    }
+  }
+  return out;
+}
+
+/**
+ * Default value for a missing image/url field, derived from key name.
+ * Mirrors the top-level fallback in sanitizeSlotValue so nested fields
+ * inside list-item objects get the same treatment when omitted entirely.
+ * Returns undefined if the key doesn't match any image/url/alt pattern.
+ */
+function defaultForMissingField(key: string): unknown {
+  if (/url|href|src/i.test(key)) return "#";
+  if (/image|img|banner|photo|avatar|logo|icon/i.test(key))
+    return "/placeholder.svg";
+  if (/alt/i.test(key)) return "";
+  return undefined;
 }
 
 /**
@@ -86,6 +146,7 @@ export function sanitizeSlotValue(
         }
       }
       // Pass itemSchema so nested object fields get their enum constraints
+      // and their image/url defaults when omitted entirely.
       return sanitizeSlotValue(
         item,
         key,
@@ -95,14 +156,43 @@ export function sanitizeSlotValue(
   }
   if (typeof value === "object") {
     const result: Record<string, unknown> = {};
+    const fieldDecls = fieldsFromItemSchema(slotMeta?.itemSchema);
+
+    // Sanitize keys present on the input object.
     for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
-      // Look up field-specific metadata from itemSchema (e.g. network.enum)
-      const fieldMeta = slotMeta?.itemSchema?.[k] as SlotMeta | undefined;
+      const decl = fieldDecls[k];
+      // Build per-field meta. For nested object-typed fields, the sub-schema
+      // lives in `decl.fields`; for nested list fields, in `decl.itemSchema`.
+      const childItemSchema =
+        decl?.itemSchema ??
+        ((decl as unknown as { fields?: unknown })?.fields
+          ? {
+              type: "object",
+              fields: (decl as unknown as { fields?: unknown }).fields,
+            }
+          : undefined);
+      const fieldMeta: SlotMeta | undefined =
+        decl?.enum || childItemSchema
+          ? { enum: decl?.enum, itemSchema: childItemSchema }
+          : undefined;
       const sanitized = sanitizeSlotValue(v, k, fieldMeta);
       if (sanitized !== undefined) {
         result[k] = sanitized;
       }
     }
+
+    // Fill in declared image/url/alt fields that were omitted entirely by
+    // the Content Agent. This mirrors the top-level fallback so nested
+    // sections[].image (and similar) never reach the component as undefined.
+    for (const [name, decl] of Object.entries(fieldDecls)) {
+      if (name in result) continue;
+      if (decl.optional) continue;
+      const fallback = defaultForMissingField(name);
+      if (fallback !== undefined) {
+        result[name] = fallback;
+      }
+    }
+
     return result;
   }
   return value;

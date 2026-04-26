@@ -68,6 +68,11 @@ Adapt your choices to the business segment:
 
 Use these as guidelines, not rigid rules. The research output (tone keywords, audience, differentiators) should refine your choices.
 
+Palette rules for food, grocery, distributor, comfort, and hospitality segments:
+  - Dominant palette MUST be neutral-warm (cream, off-white, beige, soft brown).
+  - Saturated reds/oranges allowed as ACCENT only (CTAs, badges) — NEVER as primary surface.
+  - Avoid bright primary red as the dominant brand color in food/comfort segments.
+
 ## StyleKit Selection
 
 The \`styleKit.background\` field controls a project-wide visual motif that echoes across compatible hero/CTA/contact sections for cohesion.

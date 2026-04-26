@@ -445,6 +445,7 @@ async function composeLayouts(
     enforced,
     candidates,
     COMPONENT_METADATA,
+    input.desiredSections ?? [],
   );
   return { ...checked, warnings };
 }

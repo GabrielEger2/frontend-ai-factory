@@ -3744,6 +3744,28 @@ const DEFAULT_PARALLAX_IMAGES: ParallaxImage[] = [
 const DEFAULT_SCROLL_HEIGHT = 1500;
 
 /* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Normalize semantic alignment values ("left" | "right" | "center") into
+ * Tailwind utility classes. If the caller already passes a Tailwind class
+ * (e.g. "ml-auto", "mr-16"), it is passed through unchanged.
+ */
+function normalizeAlign(align: string | undefined): string {
+  switch (align) {
+    case "left":
+      return "mr-auto";
+    case "right":
+      return "ml-auto";
+    case "center":
+      return "mx-auto";
+    default:
+      return align ?? "";
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /*  Sub-components                                                     */
 /* ------------------------------------------------------------------ */
 
@@ -3943,7 +3965,10 @@ export default function HeroParallaxImages({
               alt={img.alt}
               start={img.start ?? (i % 2 === 0 ? -200 : 200)}
               end={img.end ?? (i % 2 === 0 ? 200 : -250)}
-              className={cn(img.widthClass ?? "w-1/3", img.alignClass)}
+              className={cn(
+                img.widthClass ?? "w-1/3",
+                normalizeAlign(img.alignClass),
+              )}
               shouldReduceMotion={shouldReduceMotion}
               index={i}
             />
@@ -8434,8 +8459,7 @@ export default function StaggerFan({
       style={{ height: sectionHeight }}
     >
       {items.map((t, idx) => {
-        const center =
-          items.length % 2 ? (items.length + 1) / 2 : items.length / 2;
+        const center = Math.floor(items.length / 2);
         const position = idx - center;
 
         return (

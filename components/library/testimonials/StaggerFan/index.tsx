@@ -261,8 +261,7 @@ export default function StaggerFan({
       style={{ height: sectionHeight }}
     >
       {items.map((t, idx) => {
-        const center =
-          items.length % 2 ? (items.length + 1) / 2 : items.length / 2;
+        const center = Math.floor(items.length / 2);
         const position = idx - center;
 
         return (
