@@ -13,6 +13,7 @@
   "mood": ["energetic", "elegant", "professional"],
   "layout": "centered",
   "density": "high",
+  "imageWeight": 0.15,
   "slots": [
     { "name": "headline", "type": "text", "maxLength": 80 },
     {

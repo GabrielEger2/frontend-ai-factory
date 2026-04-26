@@ -6,6 +6,7 @@
   "mood": ["professional", "trustworthy", "calm"],
   "layout": "split",
   "density": "medium",
+  "imageWeight": 0.2,
   "purpose": ["features", "services", "process"],
   "acceptsStyleKit": {
     "card": false,

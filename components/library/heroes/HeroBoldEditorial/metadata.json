@@ -2,29 +2,18 @@
   "id": "hero-hero-bold-editorial-01",
   "name": "Bold Editorial Hero",
   "category": "hero",
-  "purpose": [
-    "hero",
-    "brand-statement",
-    "magazine-opener"
-  ],
+  "purpose": ["hero", "brand-statement", "magazine-opener"],
   "acceptsStyleKit": {
     "card": false,
     "background": true,
     "textDecoration": true,
     "button": true
   },
-  "style": [
-    "editorial",
-    "bold",
-    "luxury"
-  ],
-  "mood": [
-    "elegant",
-    "serious",
-    "trustworthy"
-  ],
+  "style": ["editorial", "bold", "luxury"],
+  "mood": ["elegant", "serious", "trustworthy"],
   "layout": "asymmetric",
   "density": "low",
+  "imageWeight": 0.15,
   "slots": [
     {
       "name": "eyebrow",
@@ -91,24 +80,13 @@
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "default",
-        "slide",
-        "dotExpand",
-        "drawOutline",
-        "glow"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
     },
     {
       "name": "ctaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "accent",
-        "neutral"
-      ]
+      "enum": ["primary", "secondary", "accent", "neutral"]
     },
     {
       "name": "secondaryCtaText",
@@ -125,35 +103,19 @@
       "name": "secondaryCtaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "default",
-        "slide",
-        "dotExpand",
-        "drawOutline",
-        "glow"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
     },
     {
       "name": "secondaryCtaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "accent",
-        "neutral"
-      ]
+      "enum": ["primary", "secondary", "accent", "neutral"]
     },
     {
       "name": "accentColorScheme",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "accent",
-        "neutral"
-      ]
+      "enum": ["primary", "secondary", "accent", "neutral"]
     }
   ],
   "mobileBehavior": "stack",

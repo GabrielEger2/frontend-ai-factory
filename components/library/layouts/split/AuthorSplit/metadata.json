@@ -6,6 +6,7 @@
   "mood": ["professional", "friendly", "elegant"],
   "layout": "split",
   "density": "low",
+  "imageWeight": 0.2,
   "purpose": ["about", "team"],
   "acceptsStyleKit": {
     "card": false,

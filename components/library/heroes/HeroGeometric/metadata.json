@@ -13,6 +13,7 @@
   "mood": ["professional", "trustworthy", "calm"],
   "layout": "split",
   "density": "medium",
+  "imageWeight": 0.15,
   "slots": [
     { "name": "headline", "type": "text", "maxLength": 80 },
     {
