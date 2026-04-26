@@ -44,8 +44,7 @@
   "pairsWell": [
     "layout-cardgrid-01",
     "layout-statementsplit-01",
-    "hero-split-image-01",
-    "cta-banner-01"
+    "hero-split-image-01"
   ],
   "pairsPoorly": ["layout-authorsplit-01"]
 }

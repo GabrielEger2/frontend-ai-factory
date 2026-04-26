@@ -36,8 +36,7 @@
   "pairsWell": [
     "hero-geometric-01",
     "hero-parallax-images-01",
-    "layout-cardgrid-01",
-    "cta-banner-01"
+    "layout-cardgrid-01"
   ],
   "pairsPoorly": ["layout-infinitescroll-01", "layout-stackedsplit-01"]
 }

@@ -97,5 +97,5 @@
   ],
   "mobileBehavior": "stack",
   "pairsWell": ["footer-reveal-01", "faq-accordion-01", "carousel-cards-01"],
-  "pairsPoorly": ["cta-banner-01", "cta-inline-01", "cta-floating-01"]
+  "pairsPoorly": []
 }

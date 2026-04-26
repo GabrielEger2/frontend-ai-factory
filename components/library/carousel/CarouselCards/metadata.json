@@ -75,6 +75,6 @@
     }
   ],
   "mobileBehavior": "scroll",
-  "pairsWell": ["cta-banner-01"],
+  "pairsWell": [],
   "pairsPoorly": ["carousel-swipe-01"]
 }

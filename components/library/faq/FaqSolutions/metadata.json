@@ -37,6 +37,6 @@
     { "name": "ctaColorScheme", "type": "text", "optional": true }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["cta-banner-01"],
+  "pairsWell": [],
   "pairsPoorly": ["faq-accordion-01", "faq-minimal-01"]
 }

@@ -97,11 +97,7 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "layout-cardgrid-01",
-    "cta-banner-01",
-    "layout-infinitescroll-01"
-  ],
+  "pairsWell": ["layout-cardgrid-01", "layout-infinitescroll-01"],
   "pairsPoorly": ["hero-shuffle-cards-01", "hero-split-image-01"],
   "variants": [
     {

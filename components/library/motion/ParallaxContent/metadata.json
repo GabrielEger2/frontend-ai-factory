@@ -46,11 +46,6 @@
     { "name": "imagePadding", "type": "number", "optional": true }
   ],
   "mobileBehavior": "scroll",
-  "pairsWell": [
-    "hero-geometric-01",
-    "hero-split-image-01",
-    "cta-banner-01",
-    "footer-reveal-01"
-  ],
+  "pairsWell": ["hero-geometric-01", "hero-split-image-01", "footer-reveal-01"],
   "pairsPoorly": ["layout-stickycards-01", "hero-parallax-images-01"]
 }

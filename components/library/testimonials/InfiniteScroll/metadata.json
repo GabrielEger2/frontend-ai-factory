@@ -46,7 +46,6 @@
   "pairsWell": [
     "hero-geometric-01",
     "hero-split-image-01",
-    "cta-banner-01",
     "layout-cardgrid-01"
   ],
   "pairsPoorly": ["layout-stackedsplit-01", "layout-staggerfan-01"]
