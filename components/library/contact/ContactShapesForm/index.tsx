@@ -5,6 +5,14 @@ import { cn } from "@lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
 import { Highlighter } from "@ui/text-decorations/Highlighter";
 import { TextReveal } from "@ui/text-decorations/TextReveal";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@ui/backgrounds/DotPattern";
+import { StripedPattern } from "@ui/backgrounds/StripedPattern";
+import { GradientBars } from "@ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@ui/backgrounds/InteractiveGridPattern";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -41,12 +49,31 @@ export interface ContactShapesFormProps {
   locationLabel?: string;
   /** Optional pin sub-label (address line shown under the label) */
   locationAddress?: string;
+  /** Optional motif-echo background rendered behind the decorative shapes */
+  backgroundVariant?: string;
   className?: string;
 }
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
+}
 
 function renderHighlightedHeadline(
   headline: string,
@@ -89,6 +116,7 @@ export default function ContactShapesForm({
   mapImageAlt,
   locationLabel,
   locationAddress,
+  backgroundVariant,
   className,
 }: ContactShapesFormProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -118,10 +146,14 @@ export default function ContactShapesForm({
   return (
     <section
       className={cn(
-        "relative w-full overflow-hidden bg-base-100 px-4 py-12 md:px-8 md:py-16 lg:px-12 lg:py-24",
+        "relative isolate w-full overflow-hidden bg-base-100 px-4 py-12 md:px-8 md:py-16 lg:px-12 lg:py-24",
         className,
       )}
     >
+      {/* Motif-echo layer (behind the decorative shapes) */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
       {/* Decorative shapes layer */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <motion.div
