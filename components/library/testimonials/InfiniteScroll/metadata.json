@@ -1,7 +1,7 @@
 {
   "id": "layout-infinitescroll-01",
   "name": "Infinite Scroll",
-  "category": "layout/scroll",
+  "category": "testimonial",
   "style": ["modern", "bold"],
   "mood": ["energetic", "trustworthy"],
   "layout": "stacked",

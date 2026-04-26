@@ -1,7 +1,7 @@
 {
   "id": "layout-staggerfan-01",
   "name": "Stagger Fan",
-  "category": "layout/grid",
+  "category": "testimonial",
   "style": ["bold", "playful"],
   "mood": ["energetic", "fun"],
   "layout": "centered",

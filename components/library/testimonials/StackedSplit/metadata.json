@@ -1,7 +1,7 @@
 {
   "id": "layout-stackedsplit-01",
   "name": "Stacked Split",
-  "category": "layout/split",
+  "category": "testimonial",
   "style": ["modern", "editorial"],
   "mood": ["professional", "elegant"],
   "layout": "split",
