@@ -5,6 +5,14 @@ import { cn } from "@lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
 import { Highlighter } from "@ui/text-decorations/Highlighter";
 import { TextReveal } from "@ui/text-decorations/TextReveal";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@ui/backgrounds/DotPattern";
+import { StripedPattern } from "@ui/backgrounds/StripedPattern";
+import { GradientBars } from "@ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@ui/backgrounds/InteractiveGridPattern";
 
 export interface CtaCollageDuoProps {
   /** Bold uppercase headline rendered in the brand primary color. */
@@ -37,7 +45,26 @@ export interface CtaCollageDuoProps {
   highlightWord?: string;
   /** Wrap the headline in a TextReveal word-by-word entrance. Default off. */
   revealHeadline?: boolean;
+  /** Optional motif-echo background rendered behind the section content */
+  backgroundVariant?: string;
   className?: string;
+}
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
 }
 
 function renderHeadline(headline: string, highlightWord?: string) {
@@ -74,6 +101,7 @@ export default function CtaCollageDuo({
   attributionUrl,
   highlightWord,
   revealHeadline = false,
+  backgroundVariant,
   className,
 }: CtaCollageDuoProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -90,10 +118,13 @@ export default function CtaCollageDuo({
   return (
     <section
       className={cn(
-        "relative w-full bg-neutral text-neutral-content py-12 md:py-16 lg:py-24",
+        "relative isolate w-full overflow-hidden bg-neutral text-neutral-content py-12 md:py-16 lg:py-24",
         className,
       )}
     >
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-10 px-4 md:px-8 lg:grid-cols-12 lg:gap-12 lg:px-12">
         {/* Left column: paired collage of two images */}
         <div className="relative lg:col-span-6">
@@ -171,7 +202,10 @@ export default function CtaCollageDuo({
             </motion.p>
           )}
 
-          <motion.div {...fadeUp} className="flex flex-wrap items-center gap-4 pt-2">
+          <motion.div
+            {...fadeUp}
+            className="flex flex-wrap items-center gap-4 pt-2"
+          >
             <CtaButton
               variant={ctaStyle}
               colorScheme={ctaColorScheme}
