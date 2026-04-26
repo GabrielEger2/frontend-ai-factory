@@ -1,0 +1,110 @@
+{
+  "id": "contact-contact-shapes-form-01",
+  "name": "Contact Form with Shapes",
+  "category": "contact",
+  "purpose": ["contact", "lead-capture", "location-display"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": true,
+    "button": true
+  },
+  "style": ["modern", "editorial"],
+  "mood": ["professional", "friendly", "trustworthy"],
+  "layout": "split",
+  "density": "medium",
+  "slots": [
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
+    {
+      "name": "body",
+      "type": "text",
+      "maxLength": 320
+    },
+    {
+      "name": "highlightWord",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "revealHeadline",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "namePlaceholder",
+      "type": "text",
+      "optional": true,
+      "maxLength": 40
+    },
+    {
+      "name": "emailPlaceholder",
+      "type": "text",
+      "optional": true,
+      "maxLength": 40
+    },
+    {
+      "name": "messagePlaceholder",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    },
+    {
+      "name": "submitText",
+      "type": "text",
+      "maxLength": 30
+    },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "mapEmbedUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "mapImageUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "mapImageAlt",
+      "type": "text",
+      "optional": true,
+      "maxLength": 120
+    },
+    {
+      "name": "locationLabel",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    },
+    {
+      "name": "locationAddress",
+      "type": "text",
+      "optional": true,
+      "maxLength": 160
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "faq-accordion-01",
+    "footer-reveal-01",
+    "cta-banner-01",
+    "stats-countup-01"
+  ],
+  "pairsPoorly": ["contact-form-01", "contact-map-info-01"]
+}

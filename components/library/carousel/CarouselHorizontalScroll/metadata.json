@@ -1,0 +1,71 @@
+{
+  "id": "carousel-horizontal-scroll-01",
+  "name": "Horizontal Scroll Carousel",
+  "category": "carousel",
+  "purpose": ["features", "products", "portfolio", "showcase"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["modern", "editorial", "bold"],
+  "mood": ["energetic", "elegant"],
+  "layout": "stacked",
+  "density": "medium",
+  "slots": [
+    {
+      "name": "headline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 80
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 160
+    },
+    {
+      "name": "scrollHintBefore",
+      "type": "text",
+      "optional": true,
+      "maxLength": 40
+    },
+    {
+      "name": "scrollHintAfter",
+      "type": "text",
+      "optional": true,
+      "maxLength": 40
+    },
+    {
+      "name": "items",
+      "type": "list",
+      "maxItems": 12,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          {
+            "name": "image",
+            "type": "image",
+            "aspectRatio": "1:1"
+          },
+          {
+            "name": "imageAlt",
+            "type": "text",
+            "maxLength": 120
+          },
+          {
+            "name": "title",
+            "type": "text",
+            "optional": true,
+            "maxLength": 30
+          }
+        ]
+      }
+    }
+  ],
+  "mobileBehavior": "scroll",
+  "pairsWell": ["cta-banner-01", "footer-reveal-01"],
+  "pairsPoorly": ["carousel-cards-01", "carousel-swipe-01"]
+}

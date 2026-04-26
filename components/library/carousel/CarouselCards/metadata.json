@@ -6,8 +6,8 @@
   "acceptsStyleKit": {
     "card": false,
     "background": false,
-    "textDecoration": false,
-    "button": false
+    "textDecoration": true,
+    "button": true
   },
   "style": ["modern", "corporate"],
   "mood": ["professional", "trustworthy"],
@@ -15,6 +15,48 @@
   "density": "medium",
   "slots": [
     { "name": "headline", "type": "text", "maxLength": 60 },
+    {
+      "name": "highlightWord",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "highlightColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "revealHeadline",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 200
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    { "name": "ctaUrl", "type": "url", "optional": true },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
     {
       "name": "cards",
       "type": "list",

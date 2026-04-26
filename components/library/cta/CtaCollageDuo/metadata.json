@@ -1,0 +1,138 @@
+{
+  "id": "cta-cta-collage-duo-01",
+  "name": "CTA Collage Duo",
+  "category": "cta",
+  "purpose": [
+    "Promote a club, program, or community offering with paired lifestyle imagery",
+    "Anchor an editorial about-style section with a bold uppercase headline and supporting copy",
+    "Drive enrollment, signup, or membership intent with a confident image-led pitch"
+  ],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": true,
+    "button": true
+  },
+  "style": [
+    "editorial",
+    "bold",
+    "modern"
+  ],
+  "mood": [
+    "energetic",
+    "friendly",
+    "trustworthy"
+  ],
+  "layout": "asymmetric",
+  "density": "medium",
+  "slots": [
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 60
+    },
+    {
+      "name": "body",
+      "type": "text",
+      "maxLength": 320
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 30
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": [
+        "default",
+        "slide",
+        "dotExpand",
+        "drawOutline",
+        "glow"
+      ]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": [
+        "primary",
+        "secondary",
+        "accent",
+        "neutral"
+      ]
+    },
+    {
+      "name": "primaryImage",
+      "type": "image",
+      "aspectRatio": "3:4"
+    },
+    {
+      "name": "primaryImageAlt",
+      "type": "text",
+      "maxLength": 160
+    },
+    {
+      "name": "secondaryImage",
+      "type": "image",
+      "aspectRatio": "4:3"
+    },
+    {
+      "name": "secondaryImageAlt",
+      "type": "text",
+      "maxLength": 160
+    },
+    {
+      "name": "attributionText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 80
+    },
+    {
+      "name": "attributionLinkText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 40
+    },
+    {
+      "name": "attributionUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "highlightWord",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "revealHeadline",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "className",
+      "type": "text",
+      "optional": true
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-modern-split-01",
+    "features-icon-grid-01",
+    "testimonial-carousel-01",
+    "footer-multi-column-01"
+  ],
+  "pairsPoorly": [
+    "cta-editorial-split-01",
+    "cta-banner-01",
+    "cta-floating-01"
+  ]
+}

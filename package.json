@@ -17,6 +17,7 @@
     "components:build-storybook": "npm run build-storybook --workspace=components",
     "components:publish": "npm run build-storybook --workspace=components && npm run seed:components --workspace=agents",
     "predeploy": "npm run generate-sources --workspace=agents",
-    "components:type-check": "npm run type-check --workspace=components"
+    "components:type-check": "npm run type-check --workspace=components",
+    "nicepage:import": "npm run import:nicepage --workspace=agents"
   }
 }

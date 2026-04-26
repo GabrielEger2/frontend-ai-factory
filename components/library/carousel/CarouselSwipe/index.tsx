@@ -86,7 +86,7 @@ function Slides({
             scale: shouldReduceMotion ? 1 : activeIndex === idx ? 0.95 : 0.85,
           }}
           transition={SPRING_OPTIONS}
-          className="aspect-video w-full shrink-0 rounded-xl bg-base-300"
+          className="aspect-video max-h-[70vh] w-full shrink-0 rounded-xl bg-base-300"
           role="img"
           aria-label={item.imageAlt}
           aria-hidden={activeIndex !== idx}
@@ -185,7 +185,7 @@ export default function CarouselSwipe({
   return (
     <section
       className={cn(
-        "relative w-full overflow-hidden bg-neutral py-8",
+        "relative max-h-[80vh] w-full overflow-hidden bg-neutral py-8",
         className,
       )}
       aria-roledescription="carousel"

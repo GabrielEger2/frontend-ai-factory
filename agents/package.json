@@ -9,7 +9,8 @@
     "generate:pairs": "ts-node scripts/generate-pair-scores.ts",
     "seed:graph": "ts-node scripts/seed-graph.ts",
     "verify:graph": "ts-node scripts/verify-graph.ts",
-    "generate-sources": "ts-node assembler/generate-sources.ts"
+    "generate-sources": "ts-node assembler/generate-sources.ts",
+    "import:nicepage": "ts-node scripts/nicepage-import.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39",
@@ -20,7 +21,9 @@
     "@aws-sdk/client-ssm": "^3",
     "@aws-sdk/client-sfn": "^3",
     "@aws-sdk/client-sqs": "^3",
+    "cheerio": "^1.0.0-rc.12",
     "neo4j-driver": "^5",
+    "playwright": "^1.44.0",
     "zod": "^3"
   },
   "devDependencies": {
