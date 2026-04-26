@@ -8,6 +8,8 @@ import * as path from "path";
 
 import { captureNicePage } from "./lib/browser";
 import { extractSignals } from "./lib/signals";
+import { ClaudeResponseSchema } from "./lib/types";
+import { writeComponent } from "./lib/writeComponent";
 
 // `__dirname` is `<repo>/agents/scripts` under ts-node CJS. Two levels
 // up lands at the repo root.
@@ -126,7 +128,42 @@ async function main(): Promise<void> {
     );
     process.exit(1);
   }
-  console.log(`TODO: write-from ${artifactDir}`);
+
+  const briefPath = path.join(artifactDir, "brief.json");
+  let rawBrief: string;
+  try {
+    rawBrief = fs.readFileSync(briefPath, "utf-8");
+  } catch (err) {
+    console.error(
+      "[nicepage-import] brief.json not found in",
+      artifactDir,
+      err,
+    );
+    process.exit(1);
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(rawBrief);
+  } catch (err) {
+    console.error("[nicepage-import] brief.json is not valid JSON:", err);
+    process.exit(1);
+  }
+
+  const result = ClaudeResponseSchema.safeParse(parsed);
+  if (!result.success) {
+    console.error("[nicepage-import] brief.json failed schema validation:");
+    console.error(result.error.format());
+    process.exit(2);
+  }
+
+  const libraryRoot = path.join(repoRoot, "components/library");
+  const componentDir = writeComponent(result.data, libraryRoot, {
+    dryRun: false,
+  });
+
+  console.log(`Component written to: ${componentDir}`);
+  console.log("Next: npm run components:storybook");
 }
 
 main().catch((err) => {
