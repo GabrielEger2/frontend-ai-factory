@@ -6,6 +6,9 @@
 import * as fs from "fs";
 import * as path from "path";
 
+import { captureNicePage } from "./lib/browser";
+import { extractSignals } from "./lib/signals";
+
 // `__dirname` is `<repo>/agents/scripts` under ts-node CJS. Two levels
 // up lands at the repo root.
 const repoRoot = path.resolve(__dirname, "../../");
@@ -89,7 +92,20 @@ async function main(): Promise<void> {
     const slug = buildSlug(url);
     const artifactDir = path.join(repoRoot, ".claude/work/imports", slug);
     fs.mkdirSync(artifactDir, { recursive: true });
-    console.log(`TODO: capture-only ${artifactDir}`);
+
+    try {
+      const { html, cssPalette } = await captureNicePage(url, artifactDir);
+      const signals = extractSignals(html);
+      fs.writeFileSync(
+        path.join(artifactDir, "signals.json"),
+        JSON.stringify({ signals, cssPalette }, null, 2),
+        "utf-8",
+      );
+      console.log(`[capture] artifactDir=${artifactDir}`);
+    } catch (err) {
+      console.error("[nicepage-import] capture failed:", err);
+      process.exit(4);
+    }
     return;
   }
 
