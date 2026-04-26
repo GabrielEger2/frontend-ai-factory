@@ -121,6 +121,14 @@ export const TypographySchema = z.object({
   body: z.string(),
 });
 
+export const StyleKitSchema = z.object({
+  card: z.string().optional(),
+  ctaVariant: z.string().optional(),
+  ctaColorScheme: z.string().optional(),
+  background: z.string().optional(),
+  textDecoration: z.string().optional(),
+});
+
 export const StyleOutputSchema = z.object({
   palette: PaletteSchema,
   paletteMode: z.enum(["single", "dual", "monochromatic"]),
@@ -153,6 +161,8 @@ export const StyleOutputSchema = z.object({
   density: z.enum(["low", "medium", "high"]),
   paletteSource: z.enum(["graph", "fallback"]).optional(),
   paletteSuggestions: z.array(PaletteSchema).optional(),
+  styleKit: StyleKitSchema.optional(),
+  imageryDensity: z.enum(["low", "medium", "high"]).optional(),
 });
 
 export type StyleOutput = z.infer<typeof StyleOutputSchema>;
@@ -176,6 +186,7 @@ export const ComposerOutputSchema = z.object({
   source: z.enum(["graph", "fallback"]),
   candidateCount: z.number().int().optional(),
   avgScore: z.number().nullable().optional(),
+  warnings: z.array(z.string()).optional(),
 });
 
 export type ComposerLayout = z.infer<typeof ComposerLayoutSchema>;
@@ -347,4 +358,5 @@ export interface ComponentItem {
   pairsWell: string[];
   pairsPoorly: string[];
   acceptsStyleKit: Record<string, boolean>;
+  imageWeight?: number;
 }
