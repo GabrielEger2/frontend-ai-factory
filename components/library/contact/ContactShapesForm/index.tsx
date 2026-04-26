@@ -99,7 +99,7 @@ export default function ContactShapesForm({
         initial: { opacity: 0, y: 16 },
         whileInView: { opacity: 1, y: 0 },
         viewport: { once: true, margin: "-100px" },
-        transition: { duration: 0.3, ease: "easeOut" },
+        transition: { duration: 0.3, ease: "easeOut" as const },
       };
 
   const shapeReveal = prefersReducedMotion
@@ -108,7 +108,7 @@ export default function ContactShapesForm({
         initial: { opacity: 0, scale: 0.96 },
         whileInView: { opacity: 1, scale: 1 },
         viewport: { once: true, margin: "-100px" },
-        transition: { duration: 0.3, ease: "easeOut" },
+        transition: { duration: 0.3, ease: "easeOut" as const },
       };
 
   const useHighlighter = Boolean(highlightWord);
