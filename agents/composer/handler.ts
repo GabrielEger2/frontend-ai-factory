@@ -22,6 +22,8 @@ import {
   buildUserPrompt,
   CandidateComponent,
 } from "./prompt";
+import { runPairPostCheck } from "./post-check";
+import { COMPONENT_METADATA } from "../assembler/component-sources.generated";
 
 /* ------------------------------------------------------------------ */
 /*  Layout constraint violation                                        */
@@ -436,7 +438,15 @@ async function composeLayouts(
   // LayoutConstraintError on violation; SFN retry/Catch handle the failure.
   enforceDesiredSections(enforced, input.desiredSections ?? [], candidates);
 
-  return enforced;
+  // Deterministic post-LLM passes: sequence, same-category adjacency,
+  // pairsPoorly. Warnings are surfaced on the ComposerOutput for the
+  // dashboard / learning loop. Pure — does not throw.
+  const { result: checked, warnings } = runPairPostCheck(
+    enforced,
+    candidates,
+    COMPONENT_METADATA,
+  );
+  return { ...checked, warnings };
 }
 
 /* ------------------------------------------------------------------ */
