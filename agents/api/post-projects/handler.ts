@@ -6,7 +6,7 @@ import {
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
 import { z, ZodError } from "zod";
-import { SUPPORTED_SEGMENTS } from "../../shared/segment-presets";
+import { SUPPORTED_SEGMENTS } from "../../shared/constants";
 import { requireSellerId } from "../shared/seller-guard";
 import crypto from "crypto";
 

@@ -54,3 +54,24 @@ export type ToneKeyword = (typeof TONE_KEYWORDS)[number];
 export type Objective = (typeof OBJECTIVES)[number];
 export type StyleTag = (typeof STYLE_TAGS)[number];
 export type MoodTag = (typeof MOOD_TAGS)[number];
+
+export const SUPPORTED_SEGMENTS = [
+  "pet-shop",
+  "law-firm",
+  "restaurant",
+  "saas",
+  "ecommerce",
+  "bakery",
+  "dental-clinic",
+  "gym",
+  "beauty-salon",
+  "real-estate",
+  "accounting",
+  "auto-repair",
+  "construction",
+  "photography",
+  "consulting",
+  "education",
+  "clothing-store",
+  "health-clinic",
+];
