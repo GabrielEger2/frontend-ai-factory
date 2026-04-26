@@ -3,6 +3,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@lib/utils";
+import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
+import { Highlighter } from "@ui/text-decorations/Highlighter";
+import { TextReveal } from "@ui/text-decorations/TextReveal";
 import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
@@ -25,8 +28,23 @@ export interface CarouselCardItem {
 export interface CarouselCardsProps {
   /** Section headline */
   headline: string;
+  /** Word inside `headline` to wrap with the Highlighter underline. When set, the word-level TextReveal is skipped. */
+  highlightWord?: string;
+  /** Wrap the headline in a word-level TextReveal. Defaults to true. Ignored when `highlightWord` is set. */
+  revealHeadline?: boolean;
+  /** Supporting text rendered below the headline */
+  subheadline?: string;
   /** Array of card items */
   cards?: CarouselCardItem[];
+  /** Primary CTA — when provided, renders a button next to the carousel arrows */
+  ctaText?: string;
+  ctaUrl?: string;
+  /** CTA animation style — text/button decoration */
+  ctaStyle?: CtaVariant;
+  /** CTA color scheme */
+  ctaColorScheme?: ColorScheme;
+  /** Color scheme used by the headline highlighter — defaults to "primary" */
+  highlightColorScheme?: ColorScheme;
   /** Fixed card width in pixels. Defaults to 350 */
   cardWidth?: number;
   /** Gap between cards in pixels. Defaults to 20 */
@@ -81,6 +99,31 @@ const BREAKPOINTS = {
   sm: 640,
   lg: 1024,
 };
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+function renderHighlightedHeadline(
+  headline: string,
+  highlightWord: string,
+  scheme: ColorScheme,
+) {
+  const idx = headline.toLowerCase().indexOf(highlightWord.toLowerCase());
+  if (idx === -1) return headline;
+  const before = headline.slice(0, idx);
+  const match = headline.slice(idx, idx + highlightWord.length);
+  const after = headline.slice(idx + highlightWord.length);
+  return (
+    <>
+      {before}
+      <Highlighter action="underline" colorScheme={scheme} triggerOnView>
+        {match}
+      </Highlighter>
+      {after}
+    </>
+  );
+}
 
 /* ------------------------------------------------------------------ */
 /*  Arrow icon                                                         */
@@ -171,10 +214,25 @@ function Card({
  * Responsive: shows 1 card on mobile, 2 on tablet, 3 on desktop.
  * Cards shift left/right by one card width at a time with smooth
  * easeInOut animation.
+ *
+ * Accepts:
+ *  - text decorations on the headline (`highlightWord` for an inline underline,
+ *    or `revealHeadline` for a word-level TextReveal on scroll)
+ *  - a button decoration via `ctaText` + `ctaStyle` + `ctaColorScheme`
+ *    rendered alongside the navigation arrows
+ *  - a `subheadline` paragraph below the headline
  */
 export default function CarouselCards({
   headline,
+  highlightWord,
+  revealHeadline = true,
+  subheadline,
   cards = DEFAULT_CAROUSEL_CARDS,
+  ctaText,
+  ctaUrl,
+  ctaStyle = "default",
+  ctaColorScheme = "primary",
+  highlightColorScheme = "primary",
   cardWidth = 350,
   cardGap = 20,
   className,
@@ -223,6 +281,10 @@ export default function CarouselCards({
 
   if (cards.length === 0) return null;
 
+  const useHighlighter = Boolean(highlightWord);
+  const useTextReveal =
+    !useHighlighter && revealHeadline && !shouldReduceMotion;
+
   return (
     <section
       className={cn("w-full bg-base-100 py-8", className)}
@@ -233,33 +295,64 @@ export default function CarouselCards({
       <div className="relative overflow-hidden p-4">
         <div className="mx-auto max-w-6xl">
           {/* Header + navigation */}
-          <div className="flex items-center justify-between">
-            <h2 className="mb-4 text-3xl font-bold text-base-content sm:text-4xl">
-              {headline}
-            </h2>
-            <div className="flex items-center gap-2">
-              <button
-                className={cn(
-                  "grid h-10 w-10 place-content-center rounded-lg border border-base-300 bg-base-100 text-xl text-base-content transition-opacity",
-                  !canShiftLeft && "opacity-30",
+          <div className="mb-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-2xl">
+              <h2 className="text-balance text-3xl font-bold leading-tight text-base-content sm:text-4xl">
+                {useHighlighter ? (
+                  renderHighlightedHeadline(
+                    headline,
+                    highlightWord as string,
+                    highlightColorScheme,
+                  )
+                ) : useTextReveal ? (
+                  <TextReveal split="word" triggerOnView>
+                    {headline}
+                  </TextReveal>
+                ) : (
+                  headline
                 )}
-                disabled={!canShiftLeft}
-                onClick={shiftLeft}
-                aria-label="Previous cards"
-              >
-                <ArrowIcon direction="left" />
-              </button>
-              <button
-                className={cn(
-                  "grid h-10 w-10 place-content-center rounded-lg border border-base-300 bg-base-100 text-xl text-base-content transition-opacity",
-                  !canShiftRight && "opacity-30",
-                )}
-                disabled={!canShiftRight}
-                onClick={shiftRight}
-                aria-label="Next cards"
-              >
-                <ArrowIcon direction="right" />
-              </button>
+              </h2>
+              {subheadline && (
+                <p className="mt-3 text-base leading-relaxed text-base-content/60 sm:text-lg">
+                  {subheadline}
+                </p>
+              )}
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              {ctaText && (
+                <CtaButton
+                  variant={ctaStyle}
+                  colorScheme={ctaColorScheme}
+                  href={ctaUrl}
+                >
+                  {ctaText}
+                </CtaButton>
+              )}
+              <div className="flex items-center gap-2">
+                <button
+                  className={cn(
+                    "grid h-10 w-10 place-content-center rounded-lg border border-base-300 bg-base-100 text-xl text-base-content transition-opacity",
+                    !canShiftLeft && "opacity-30",
+                  )}
+                  disabled={!canShiftLeft}
+                  onClick={shiftLeft}
+                  aria-label="Previous cards"
+                >
+                  <ArrowIcon direction="left" />
+                </button>
+                <button
+                  className={cn(
+                    "grid h-10 w-10 place-content-center rounded-lg border border-base-300 bg-base-100 text-xl text-base-content transition-opacity",
+                    !canShiftRight && "opacity-30",
+                  )}
+                  disabled={!canShiftRight}
+                  onClick={shiftRight}
+                  aria-label="Next cards"
+                >
+                  <ArrowIcon direction="right" />
+                </button>
+              </div>
             </div>
           </div>
 

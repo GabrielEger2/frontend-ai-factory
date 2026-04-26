@@ -11,8 +11,8 @@
     "acceptsStyleKit": {
       "card": false,
       "background": false,
-      "textDecoration": false,
-      "button": false
+      "textDecoration": true,
+      "button": true
     },
     "style": [
       "modern",
@@ -29,6 +29,68 @@
         "name": "headline",
         "type": "text",
         "maxLength": 60
+      },
+      {
+        "name": "highlightWord",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "highlightColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "revealHeadline",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 200
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
       },
       {
         "name": "cards",
@@ -403,7 +465,7 @@
     "acceptsStyleKit": {
       "card": false,
       "background": true,
-      "textDecoration": false,
+      "textDecoration": true,
       "button": true
     },
     "style": [
@@ -427,6 +489,17 @@
         "name": "body",
         "type": "text",
         "maxLength": 320
+      },
+      {
+        "name": "highlightWord",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "revealHeadline",
+        "type": "boolean",
+        "optional": true
       },
       {
         "name": "namePlaceholder",
@@ -456,9 +529,22 @@
         "type": "text",
         "optional": true,
         "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
           "primary",
           "secondary",
-          "ghost"
+          "accent",
+          "neutral"
         ]
       },
       {

@@ -2,26 +2,15 @@
   "id": "contact-contact-shapes-form-01",
   "name": "Contact Form with Shapes",
   "category": "contact",
-  "purpose": [
-    "contact",
-    "lead-capture",
-    "location-display"
-  ],
+  "purpose": ["contact", "lead-capture", "location-display"],
   "acceptsStyleKit": {
     "card": false,
     "background": true,
-    "textDecoration": false,
+    "textDecoration": true,
     "button": true
   },
-  "style": [
-    "modern",
-    "editorial"
-  ],
-  "mood": [
-    "professional",
-    "friendly",
-    "trustworthy"
-  ],
+  "style": ["modern", "editorial"],
+  "mood": ["professional", "friendly", "trustworthy"],
   "layout": "split",
   "density": "medium",
   "slots": [
@@ -34,6 +23,17 @@
       "name": "body",
       "type": "text",
       "maxLength": 320
+    },
+    {
+      "name": "highlightWord",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "revealHeadline",
+      "type": "boolean",
+      "optional": true
     },
     {
       "name": "namePlaceholder",
@@ -62,11 +62,13 @@
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "ghost"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
     },
     {
       "name": "mapEmbedUrl",
@@ -104,8 +106,5 @@
     "cta-banner-01",
     "stats-countup-01"
   ],
-  "pairsPoorly": [
-    "contact-form-01",
-    "contact-map-info-01"
-  ]
+  "pairsPoorly": ["contact-form-01", "contact-map-info-01"]
 }
