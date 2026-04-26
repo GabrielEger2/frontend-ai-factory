@@ -1,0 +1,172 @@
+{
+  "id": "hero-hero-bold-editorial-01",
+  "name": "Bold Editorial Hero",
+  "category": "hero",
+  "purpose": [
+    "hero",
+    "brand-statement",
+    "magazine-opener"
+  ],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": true,
+    "button": true
+  },
+  "style": [
+    "editorial",
+    "bold",
+    "luxury"
+  ],
+  "mood": [
+    "elegant",
+    "serious",
+    "trustworthy"
+  ],
+  "layout": "asymmetric",
+  "density": "low",
+  "slots": [
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "optional": true,
+      "maxLength": 160
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 60
+    },
+    {
+      "name": "highlightWord",
+      "type": "text",
+      "optional": true,
+      "maxLength": 20
+    },
+    {
+      "name": "revealHeadline",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "primaryImage",
+      "type": "image",
+      "aspectRatio": "3:4"
+    },
+    {
+      "name": "primaryImageAlt",
+      "type": "text",
+      "maxLength": 120
+    },
+    {
+      "name": "primaryImageOverlayText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "accentImage",
+      "type": "image",
+      "optional": true,
+      "aspectRatio": "1:1"
+    },
+    {
+      "name": "accentImageAlt",
+      "type": "text",
+      "optional": true,
+      "maxLength": 120
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": [
+        "default",
+        "slide",
+        "dotExpand",
+        "drawOutline",
+        "glow"
+      ]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": [
+        "primary",
+        "secondary",
+        "accent",
+        "neutral"
+      ]
+    },
+    {
+      "name": "secondaryCtaText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "secondaryCtaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "secondaryCtaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": [
+        "default",
+        "slide",
+        "dotExpand",
+        "drawOutline",
+        "glow"
+      ]
+    },
+    {
+      "name": "secondaryCtaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": [
+        "primary",
+        "secondary",
+        "accent",
+        "neutral"
+      ]
+    },
+    {
+      "name": "accentColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": [
+        "primary",
+        "secondary",
+        "accent",
+        "neutral"
+      ]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "layout-statementsplit-01",
+    "layout-imagetext-01",
+    "cta-banner-01",
+    "stats-count-up-01"
+  ],
+  "pairsPoorly": [
+    "hero-split-image-01",
+    "hero-geometric-01",
+    "hero-shuffle-cards-01",
+    "hero-parallax-images-01"
+  ]
+}

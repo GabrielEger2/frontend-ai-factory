@@ -1,0 +1,109 @@
+{
+  "id": "contact-contact-locations-map-01",
+  "name": "Contact Locations with Map",
+  "category": "contact",
+  "purpose": [
+    "showcase multiple office or store locations",
+    "provide contact details per city",
+    "visually anchor locations on a shared map"
+  ],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": true,
+    "button": false
+  },
+  "style": [
+    "modern",
+    "corporate",
+    "editorial"
+  ],
+  "mood": [
+    "professional",
+    "trustworthy",
+    "elegant"
+  ],
+  "layout": "grid",
+  "density": "medium",
+  "slots": [
+    {
+      "name": "headline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 80
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 200
+    },
+    {
+      "name": "highlightWord",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "featuredImage",
+      "type": "image",
+      "aspectRatio": "16:9"
+    },
+    {
+      "name": "featuredImageAlt",
+      "type": "text",
+      "maxLength": 160
+    },
+    {
+      "name": "locations",
+      "type": "list",
+      "maxItems": 6,
+      "itemSchema": [
+        {
+          "name": "city",
+          "type": "text",
+          "maxLength": 40
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "maxLength": 160
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "maxLength": 30,
+          "optional": true
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "maxLength": 80,
+          "optional": true
+        },
+        {
+          "name": "hours",
+          "type": "text",
+          "maxLength": 80,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "name": "mapEmbedUrl",
+      "type": "url",
+      "optional": true
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "cta-inline-01",
+    "faq-minimal-01",
+    "footer-reveal-01",
+    "navbar-sticky-01"
+  ],
+  "pairsPoorly": [
+    "contact-form-01",
+    "contact-map-info-01"
+  ]
+}

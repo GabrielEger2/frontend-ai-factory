@@ -12,6 +12,7 @@ import type { ComponentType } from "react";
 
 // Carousel
 export { default as CarouselCards } from "./carousel/CarouselCards";
+export { default as CarouselHorizontalScroll } from "./carousel/CarouselHorizontalScroll";
 export { default as CarouselSwipe } from "./carousel/CarouselSwipe";
 
 // Contact
@@ -65,6 +66,7 @@ export { default as StatsCountUp } from "./stats/StatsCountUp";
 // (Named exports above are what consumers import; this map is for
 // dynamic lookup by blueprint IDs — used by BlueprintPreview.)
 import CarouselCards from "./carousel/CarouselCards";
+import CarouselHorizontalScroll from "./carousel/CarouselHorizontalScroll";
 import CarouselSwipe from "./carousel/CarouselSwipe";
 import ContactForm from "./contact/ContactForm";
 import ContactMapInfo from "./contact/ContactMapInfo";
@@ -104,6 +106,7 @@ import StatsCountUp from "./stats/StatsCountUp";
  */
 export const componentsById: Record<string, ComponentType<any>> = {
   "carousel-cards-01": CarouselCards,
+  "carousel-horizontal-scroll-01": CarouselHorizontalScroll,
   "carousel-swipe-01": CarouselSwipe,
   "contact-form-01": ContactForm,
   "contact-map-info-01": ContactMapInfo,
