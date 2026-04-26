@@ -87,6 +87,7 @@ interface MetadataJson {
   acceptsStyleKit: Record<string, boolean>;
   layout: string;
   density: string;
+  imageWeight?: number;
   slots: unknown[];
   mobileBehavior: string;
   pairsWell: string[];
@@ -107,6 +108,7 @@ interface ComponentSeedItem {
   acceptsStyleKit: Record<string, boolean>;
   layout: string;
   density: string;
+  imageWeight: number;
   slots: unknown[];
   mobileBehavior: string;
   pairsWell: string[];
@@ -142,6 +144,7 @@ function buildItem(
     acceptsStyleKit: json.acceptsStyleKit ?? {},
     layout: json.layout ?? "unknown",
     density: json.density ?? "medium",
+    imageWeight: json.imageWeight ?? 0,
     slots: json.slots ?? [],
     mobileBehavior: json.mobileBehavior ?? "stack",
     pairsWell: json.pairsWell ?? [],
