@@ -284,12 +284,8 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
 
   /* ---- Return pipeline state ---- */
   return {
-    projectId: input.projectId,
+    ...input,
     status: "qa",
-    companyName: input.companyName,
-    segment: input.segment,
-    description: input.description,
-    sellerId: input.sellerId,
     humanizerOutput,
     assemblerOutput: { s3Key, s3Bucket: bucketName },
   };
