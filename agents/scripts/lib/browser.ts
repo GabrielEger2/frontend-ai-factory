@@ -5,12 +5,7 @@
 // and a small CSS palette of the most-used colors derived from
 // `getComputedStyle()` of structural/heading/button elements.
 //
-// IMPORTANT — media_type sync:
-//   This module captures JPEG buffers (`type: 'jpeg', quality: 80`).
-//   The companion `generate.ts` module passes those buffers to Claude
-//   vision with `media_type: "image/jpeg"`. If the screenshot format
-//   ever changes here (e.g. to "png"), `generate.ts` MUST change in
-//   lockstep — the SDK rejects mismatched media types.
+// JPEG, q80 — preserved for downstream consumers.
 //
 // Chromium binary: this module does NOT auto-install. If the binary is
 // missing it logs the install command and exits with code 4.
