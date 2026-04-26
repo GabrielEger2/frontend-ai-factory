@@ -5,6 +5,14 @@ import { cn } from "@lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
 import { Highlighter } from "@ui/text-decorations/Highlighter";
 import { TextReveal } from "@ui/text-decorations/TextReveal";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@ui/backgrounds/DotPattern";
+import { StripedPattern } from "@ui/backgrounds/StripedPattern";
+import { GradientBars } from "@ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@ui/backgrounds/InteractiveGridPattern";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -38,7 +46,30 @@ export interface HeroBoldEditorialProps {
   secondaryCtaColorScheme?: ColorScheme;
   /** Token used for the colored accent column — defaults to "primary" */
   accentColorScheme?: ColorScheme;
+  /** Optional motif-echo background rendered behind the section content */
+  backgroundVariant?: string;
   className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Motif renderer                                                     */
+/* ------------------------------------------------------------------ */
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -148,6 +179,7 @@ export default function HeroBoldEditorial({
   secondaryCtaStyle = "drawOutline",
   secondaryCtaColorScheme = "neutral",
   accentColorScheme = "primary",
+  backgroundVariant,
   className,
 }: HeroBoldEditorialProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -161,10 +193,13 @@ export default function HeroBoldEditorial({
   return (
     <section
       className={cn(
-        "relative w-full overflow-hidden bg-base-100",
+        "relative isolate w-full overflow-hidden bg-base-100",
         className,
       )}
     >
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
       <div className="relative grid min-h-[640px] w-full grid-cols-1 lg:min-h-[720px] lg:grid-cols-12">
         {/* -- Accent column with primary image -- */}
         <motion.div
