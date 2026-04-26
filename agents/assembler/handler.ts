@@ -39,6 +39,19 @@ const DEFAULT_TYPOGRAPHY: Typography = {
   body: "ui-sans-serif",
 };
 
+/**
+ * Default styleKit used when styleOutput.styleKit is missing — matches the
+ * fallback applied by the Style Agent post-parse step. Keeps assembler
+ * output stable for legacy projects whose styleOutput predates styleKit.
+ */
+const DEFAULT_STYLE_KIT = {
+  card: "base",
+  ctaVariant: "default",
+  ctaColorScheme: "primary",
+  background: "none",
+  textDecoration: "none",
+} as const;
+
 /* ------------------------------------------------------------------ */
 /*  Deterministic Buyer-Field → Slot Fill                              */
 /* ------------------------------------------------------------------ */
@@ -182,6 +195,7 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
   /* ---- Generate files ---- */
   const palette = input.styleOutput?.palette ?? DEFAULT_PALETTE;
   const typography = input.styleOutput?.typography ?? DEFAULT_TYPOGRAPHY;
+  const styleKit = input.styleOutput?.styleKit ?? DEFAULT_STYLE_KIT;
 
   // Deterministic buyer-field → slot fill (footer/contact contact info).
   // This happens AFTER Humanizer, so it overwrites any LLM-generated
@@ -196,6 +210,7 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
     humanizerOutput,
     palette,
     typography,
+    styleKit,
   );
 
   /* ---- Create tar.gz archive ---- */
