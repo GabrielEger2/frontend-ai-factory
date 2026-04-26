@@ -69,6 +69,17 @@ Creative/casual segments (pet-shop, restaurant, bakery, gym, clothing-store) can
 - Use playful, bold, and energetic components.
 - Vary density more freely.
 
+## Segment-fit guidance
+
+Segments {B2B local distributor, commodity supplier, food/grocery} should PREFER:
+  - Split heroes (HeroSplitImage)
+  - Grid feature lists
+  - Simple banner CTAs
+  - Contact forms / location info
+And should AVOID:
+  - Editorial scroll-driven layouts
+  - Heavy parallax / sticky-card narratives
+
 ## PAIRS_WITH Adjacency
 
 A pair compatibility matrix is provided in the user prompt when available. Use the explicit pair scores to evaluate adjacency when placing components next to each other. A score near 1.0 means excellent adjacency; near 0.0 means poor adjacency. When no pair score is listed for a pair, treat it as neutral (0.5). Prefer placing consecutive components with pair scores >= 0.6.
