@@ -41,8 +41,9 @@ export const MetadataSchema = z.object({
     "navigation",
     "carousel",
     "stats",
+    "testimonial",
+    "motion",
     "layout/grid",
-    "layout/scroll",
     "layout/split",
   ]),
   purpose: z.array(z.string()).min(1),
@@ -91,10 +92,12 @@ export const MetadataSchema = z.object({
     "floating",
   ]),
   density: z.enum(["low", "medium", "high"]),
+  imageWeight: z.number().min(0).max(1).optional(),
   slots: z.array(SlotSchema).min(1),
   mobileBehavior: z.enum(["stack", "scroll", "collapse", "preserve"]),
   pairsWell: z.array(z.string()),
   pairsPoorly: z.array(z.string()),
+  nativeMotif: z.string().optional(),
   variants: z
     .array(
       z.object({
@@ -150,9 +153,10 @@ export const CATEGORY_TO_DIR: Record<Category, string> = {
   navigation: "navigation",
   carousel: "carousel",
   stats: "stats",
+  testimonial: "testimonials",
+  motion: "motion",
   // `layouts/` (plural) on disk vs `layout/...` (singular) in the category value
   "layout/grid": "layouts/grid",
-  "layout/scroll": "layouts/scroll",
   "layout/split": "layouts/split",
 };
 
@@ -180,7 +184,8 @@ export const CATEGORY_TO_PREFIX: Record<Category, string> = {
   navigation: "navigation",
   carousel: "carousel",
   stats: "stats",
+  testimonial: "layout", // frozen IDs — prefix mismatch acceptable
+  motion: "layout", // frozen IDs — prefix mismatch acceptable
   "layout/grid": "layout",
-  "layout/scroll": "layout",
   "layout/split": "layout",
 };
