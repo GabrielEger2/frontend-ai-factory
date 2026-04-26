@@ -51,7 +51,7 @@ The brief written in step 7 must be a single JSON object matching `ClaudeRespons
 - `category` — enum, one of: `hero`, `contact`, `cta`, `faq`, `footers`, `navigation`, `carousel`, `stats`, `layout/grid`, `layout/scroll`, `layout/split`.
 - `name` — human-readable string (e.g. `"Contact Form with Shapes"`).
 - `purpose` — `string[]`, min 1 item, each a short phrase.
-- `acceptsStyleKit` — object `{ card: boolean, background: boolean, textDecoration: boolean, button: boolean }`.
+- `acceptsStyleKit` — object `{ card: boolean, background: boolean, textDecoration: boolean, button: boolean }`. **Setting `textDecoration: false` locks downstream agents out of typographic primitives** — only do that for genuinely decoration-free components (plain bodies, legal pages, sparse footers). Default it to `true` whenever the component imports a primitive from `@ui/text-decorations/*` — see the `### Text decorators` rule below.
 - `style` — non-empty array of: `modern` | `classic` | `editorial` | `luxury` | `playful` | `minimal` | `bold` | `corporate`.
 - `mood` — non-empty array of: `professional` | `elegant` | `fun` | `serious` | `friendly` | `energetic` | `calm` | `trustworthy`.
 - `layout` — one of: `split` | `centered` | `grid` | `stacked` | `asymmetric` | `multi-column` | `horizontal` | `floating`.
@@ -118,10 +118,37 @@ Line 1 must be the `"use client";` directive whenever the component uses Framer 
 
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { cn } from "@lib/utils";
-import { Button, buttonStyles } from "@ui/button";
+import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
 ```
 
-Notes on the import path: the canonical SiteGen import is `"motion/react"` — **never** `"framer-motion"`. Both `references/animation.md` and `references/component-patterns.md` show `framer-motion` in their snippets; ignore those snippets and use `motion/react` here. Allowed path aliases: `@ui/`, `@lib/`, `@components/`, `@hooks/`. No relative imports across directories. Use `<Button>` for actual `<button>` elements; use `buttonStyles({ variant, size })` to style `<a>` tags or other non-button elements that need a button look.
+Notes on the import path: the canonical SiteGen import is `"motion/react"` — **never** `"framer-motion"`. Both `references/animation.md` and `references/component-patterns.md` show `framer-motion` in their snippets; ignore those snippets and use `motion/react` here. Allowed path aliases: `@ui/`, `@lib/`, `@components/`, `@hooks/`. No relative imports across directories.
+
+**Pick the right button primitive — never render a raw `<button>` for a CTA:**
+
+- **`CtaButton`** is the default for marketing CTAs (heroes, banners, footers, navigation, cards). It accepts `variant: "default" | "slide" | "dotExpand" | "drawOutline" | "glow"` and `colorScheme: "primary" | "secondary" | "accent" | "neutral"`, plus `href` for navigation. Expose them as props (`ctaVariant?: CtaVariant`, `ctaColorScheme?: ColorScheme`) so stories can mix variants. **Use this for ~90% of imports** — the entire library converges on it (`HeroSplitImage`, `HeroGeometric`, `CtaBanner`, `CtaInline`, `CtaFloating`, `FooterReveal`, `NavbarSticky`, `ImageText`, `SimpleGrid`, etc.).
+- **`Button`** is for utility / form-submit buttons inside contact forms, search bars, login flows — places where the button is functionally an `<button type="submit">` and not a marketing CTA. Even here, prefer `CtaButton` if the visible affordance is the same as a marketing CTA. Import as `import { Button } from "@ui/button";`.
+- **`buttonStyles({ variant, size })`** is the class-string helper for `<a>` tags or other non-button elements that need a button look (e.g. inline links inside FAQ entries, card-level "learn more" links). Import as `import { buttonStyles, type CtaVariant } from "@ui/button";`.
+- Pick exactly one of the three for any given CTA; do not import all three "just in case".
+
+### Text decorators
+SiteGen ships a small library of typographic primitives in `components/ui/text-decorations/` that should be evaluated for every imported section that has a hero-scale or emphasis-bearing heading. **Hand-rolling `<h2>` with raw Tailwind for a marketing headline is a miss whenever one of these would fit.** Each is optional and rides on an optional prop — `present = decorator on, absent = plain text`.
+
+| Primitive | Import | When the source design suggests it | Prop pattern |
+|---|---|---|---|
+| `TypeWriter` | `import { TypeWriter } from "@ui/text-decorations/TypeWriter";` | Headline contains a rotating phrase, multiple short alt-headlines, or a "we do X / Y / Z" cadence in the screenshot or `signals.headings` | `headlineRotatingWords?: string[]` — when present, render `<TypeWriter text={headlineRotatingWords} />` inside the headline; when absent, render the static `headline` |
+| `Highlighter` | `import { Highlighter } from "@ui/text-decorations/Highlighter";` | A single word or short phrase in the headline carries a hand-drawn underline, circle, box, or marker effect (rough-notation style) | `highlightWord?: string` — when present, wrap the matching span in `<Highlighter action="underline">{word}</Highlighter>` |
+| `TextReveal` | `import { TextReveal } from "@ui/text-decorations/TextReveal";` | Hero / opening section where the headline is the dominant visual; word-level entrance animation reinforces the drama | `revealHeadline?: boolean` (or always-on for hero categories) — wraps the headline in `<TextReveal split="word" />` |
+| `LineShadowText` | `import { LineShadowText } from "@ui/text-decorations/LineShadowText";` | Display headline with a diagonal/offset shadow effect behind it (common in editorial / luxury / bold styles) | `shadowHeadline?: boolean` — wraps the headline in `<LineShadowText as="h1" shadowColor="hsl(var(--primary))">` |
+
+Heuristics for evaluating decorators from the captured signals:
+
+1. **Look at `signals.headings`** — if it contains 2+ short variants of the same idea (e.g. "Build sites", "Ship sites", "Launch sites"), that's a TypeWriter signal. Lift them into a `headlineRotatingWords` slot.
+2. **Look at the desktop screenshot** — if a single word in the headline is visually emphasized (color shift, underline, marker stroke, italic accent), that's a Highlighter signal. Lift it into a `highlightWord` slot.
+3. **Category as default** — for `hero` and `cta` categories, a `TextReveal`-wrapped headline is a safe default (gate behind `revealHeadline?: boolean` so stories can opt out). For `editorial` / `luxury` / `bold` styles, evaluate `LineShadowText`.
+4. **Mirror in `slots[]`** — every decorator-driven prop on the props interface must appear in the `slots[]` array as an optional slot (`optional: true`), with `maxLength` for text and `maxItems` for arrays.
+5. **Set `acceptsStyleKit.textDecoration: true`** in the brief whenever the component imports one or more decorator primitives. Setting it to `false` (the failure mode that prompted this section) tells the downstream Content/Humanizer agents that decorators are off-limits — only set it to `false` for genuinely text-decoration-free components (privacy policy bodies, plain footers).
+
+Do **not** stack decorators on the same headline (no `TextReveal` wrapping `TypeWriter` wrapping `Highlighter`). Pick one per heading at most. Avoid letter-by-letter reveals (already in the forbidden patterns list).
 
 ### Framer Motion conventions
 The default reveal pattern for a website section is scroll-triggered:
