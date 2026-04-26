@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@lib/utils";
 import { containerVariants, fadeUp, imageReveal } from "@lib/motion-variants";
 import type { StyleKit } from "@lib/style-kit";
+import { CtaButton } from "@ui/button";
 import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
@@ -74,7 +75,7 @@ export default function AuthorSplit({
   description,
   ctaText,
   ctaUrl,
-  styleKit: _styleKit,
+  styleKit,
   purpose,
   className,
 }: AuthorSplitProps) {
@@ -153,13 +154,14 @@ export default function AuthorSplit({
               {description}
             </p>
             {ctaText && ctaUrl && (
-              <a
+              <CtaButton
+                variant={styleKit?.ctaVariant ?? "default"}
+                colorScheme={styleKit?.ctaColorScheme ?? "primary"}
                 href={ctaUrl}
-                className="inline-flex items-center text-primary transition-colors hover:text-primary/80"
               >
                 {ctaText}
                 <ArrowRight className="ml-2" />
-              </a>
+              </CtaButton>
             )}
           </motion.div>
         </motion.div>
