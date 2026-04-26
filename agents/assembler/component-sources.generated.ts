@@ -856,6 +856,31 @@ export default function CarouselSwipe({
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Highlighter } from "@/lib/ui/text-decorations/Highlighter";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@/lib/ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@/lib/ui/backgrounds/DotPattern";
+import { StripedPattern } from "@/lib/ui/backgrounds/StripedPattern";
+import { GradientBars } from "@/lib/ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@/lib/ui/backgrounds/InteractiveGridPattern";
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
+}
 
 export interface LocationItem {
   city: string;
@@ -880,6 +905,8 @@ export interface ContactLocationsMapProps {
   locations: LocationItem[];
   /** Optional Google Maps embed URL rendered below the locations grid. */
   mapEmbedUrl?: string;
+  /** Optional motif-echo background rendered behind the section content */
+  backgroundVariant?: string;
   className?: string;
 }
 
@@ -909,6 +936,7 @@ export default function ContactLocationsMap({
   featuredImageAlt,
   locations,
   mapEmbedUrl,
+  backgroundVariant,
   className,
 }: ContactLocationsMapProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -923,10 +951,13 @@ export default function ContactLocationsMap({
   return (
     <section
       className={cn(
-        "w-full bg-base-100 px-4 py-12 md:px-8 md:py-16 lg:px-12 lg:py-24",
+        "relative isolate w-full overflow-hidden bg-base-100 px-4 py-12 md:px-8 md:py-16 lg:px-12 lg:py-24",
         className,
       )}
     >
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
       <div className="mx-auto flex max-w-7xl flex-col gap-10 md:gap-14">
         {(headline || subheadline) && (
           <motion.header
@@ -969,10 +1000,7 @@ export default function ContactLocationsMap({
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
-          className={cn(
-            "grid grid-cols-1 gap-8 md:gap-10",
-            columnsClass,
-          )}
+          className={cn("grid grid-cols-1 gap-8 md:gap-10", columnsClass)}
         >
           {cappedLocations.map((location, index) => (
             <motion.li
@@ -1062,6 +1090,14 @@ import { cn } from "@/lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
 import { Highlighter } from "@/lib/ui/text-decorations/Highlighter";
 import { TextReveal } from "@/lib/ui/text-decorations/TextReveal";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@/lib/ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@/lib/ui/backgrounds/DotPattern";
+import { StripedPattern } from "@/lib/ui/backgrounds/StripedPattern";
+import { GradientBars } from "@/lib/ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@/lib/ui/backgrounds/InteractiveGridPattern";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -1098,12 +1134,31 @@ export interface ContactShapesFormProps {
   locationLabel?: string;
   /** Optional pin sub-label (address line shown under the label) */
   locationAddress?: string;
+  /** Optional motif-echo background rendered behind the decorative shapes */
+  backgroundVariant?: string;
   className?: string;
 }
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
+}
 
 function renderHighlightedHeadline(
   headline: string,
@@ -1146,6 +1201,7 @@ export default function ContactShapesForm({
   mapImageAlt,
   locationLabel,
   locationAddress,
+  backgroundVariant,
   className,
 }: ContactShapesFormProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -1175,10 +1231,14 @@ export default function ContactShapesForm({
   return (
     <section
       className={cn(
-        "relative w-full overflow-hidden bg-base-100 px-4 py-12 md:px-8 md:py-16 lg:px-12 lg:py-24",
+        "relative isolate w-full overflow-hidden bg-base-100 px-4 py-12 md:px-8 md:py-16 lg:px-12 lg:py-24",
         className,
       )}
     >
+      {/* Motif-echo layer (behind the decorative shapes) */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
       {/* Decorative shapes layer */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <motion.div
@@ -1323,6 +1383,14 @@ import { cn } from "@/lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
 import { Highlighter } from "@/lib/ui/text-decorations/Highlighter";
 import { TextReveal } from "@/lib/ui/text-decorations/TextReveal";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@/lib/ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@/lib/ui/backgrounds/DotPattern";
+import { StripedPattern } from "@/lib/ui/backgrounds/StripedPattern";
+import { GradientBars } from "@/lib/ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@/lib/ui/backgrounds/InteractiveGridPattern";
 
 export interface CtaCollageDuoProps {
   /** Bold uppercase headline rendered in the brand primary color. */
@@ -1355,7 +1423,26 @@ export interface CtaCollageDuoProps {
   highlightWord?: string;
   /** Wrap the headline in a TextReveal word-by-word entrance. Default off. */
   revealHeadline?: boolean;
+  /** Optional motif-echo background rendered behind the section content */
+  backgroundVariant?: string;
   className?: string;
+}
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
 }
 
 function renderHeadline(headline: string, highlightWord?: string) {
@@ -1392,6 +1479,7 @@ export default function CtaCollageDuo({
   attributionUrl,
   highlightWord,
   revealHeadline = false,
+  backgroundVariant,
   className,
 }: CtaCollageDuoProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -1408,10 +1496,13 @@ export default function CtaCollageDuo({
   return (
     <section
       className={cn(
-        "relative w-full bg-neutral text-neutral-content py-12 md:py-16 lg:py-24",
+        "relative isolate w-full overflow-hidden bg-neutral text-neutral-content py-12 md:py-16 lg:py-24",
         className,
       )}
     >
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-10 px-4 md:px-8 lg:grid-cols-12 lg:gap-12 lg:px-12">
         {/* Left column: paired collage of two images */}
         <div className="relative lg:col-span-6">
@@ -1489,7 +1580,10 @@ export default function CtaCollageDuo({
             </motion.p>
           )}
 
-          <motion.div {...fadeUp} className="flex flex-wrap items-center gap-4 pt-2">
+          <motion.div
+            {...fadeUp}
+            className="flex flex-wrap items-center gap-4 pt-2"
+          >
             <CtaButton
               variant={ctaStyle}
               colorScheme={ctaColorScheme}
@@ -1508,9 +1602,22 @@ export default function CtaCollageDuo({
 
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
-import { CtaButton, type CtaVariant, type ColorScheme, buttonStyles } from "@/lib/ui/button";
+import {
+  CtaButton,
+  type CtaVariant,
+  type ColorScheme,
+  buttonStyles,
+} from "@/lib/ui/button";
 import { Highlighter } from "@/lib/ui/text-decorations/Highlighter";
 import { TextReveal } from "@/lib/ui/text-decorations/TextReveal";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@/lib/ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@/lib/ui/backgrounds/DotPattern";
+import { StripedPattern } from "@/lib/ui/backgrounds/StripedPattern";
+import { GradientBars } from "@/lib/ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@/lib/ui/backgrounds/InteractiveGridPattern";
 
 export interface CtaEditorialSplitProps {
   /** Bold callout block text (uppercase headline placed over the primary image). */
@@ -1543,7 +1650,26 @@ export interface CtaEditorialSplitProps {
   highlightWord?: string;
   /** Wrap the headline in a TextReveal word-by-word entrance. Default off. */
   revealHeadline?: boolean;
+  /** Optional motif-echo background rendered behind the section content */
+  backgroundVariant?: string;
   className?: string;
+}
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
 }
 
 function renderHeadline(headline: string, highlightWord?: string) {
@@ -1580,6 +1706,7 @@ export default function CtaEditorialSplit({
   secondaryImageAlt,
   highlightWord,
   revealHeadline = false,
+  backgroundVariant,
   className,
 }: CtaEditorialSplitProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -1596,10 +1723,13 @@ export default function CtaEditorialSplit({
   return (
     <section
       className={cn(
-        "relative w-full bg-base-100 py-12 md:py-16 lg:py-24",
+        "relative isolate w-full overflow-hidden bg-base-100 py-12 md:py-16 lg:py-24",
         className,
       )}
     >
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 md:px-8 lg:grid-cols-12 lg:gap-12 lg:px-12">
         {/* Left column: portrait image + headline + body + CTAs */}
         <div className="flex flex-col gap-8 lg:col-span-6">
@@ -1690,6 +1820,14 @@ import { cn } from "@/lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
 import { Highlighter } from "@/lib/ui/text-decorations/Highlighter";
 import { TextReveal } from "@/lib/ui/text-decorations/TextReveal";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@/lib/ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@/lib/ui/backgrounds/DotPattern";
+import { StripedPattern } from "@/lib/ui/backgrounds/StripedPattern";
+import { GradientBars } from "@/lib/ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@/lib/ui/backgrounds/InteractiveGridPattern";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -1737,12 +1875,31 @@ export interface CtaImageBackdropProps {
   highlightWord?: string;
   /** Wrap the display word in a TextReveal entrance. Defaults to true. */
   revealDisplayWord?: boolean;
+  /** Optional motif-echo background rendered behind the image backdrop */
+  backgroundVariant?: string;
   className?: string;
 }
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
+}
 
 function renderEyebrow(eyebrow: string, highlightWord?: string) {
   // Split on \\n so the user can stack lines deliberately like the reference.
@@ -1794,6 +1951,7 @@ export default function CtaImageBackdrop({
   minHeight = "80vh",
   highlightWord,
   revealDisplayWord = true,
+  backgroundVariant,
   className,
 }: CtaImageBackdropProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -1813,11 +1971,15 @@ export default function CtaImageBackdrop({
   return (
     <section
       className={cn(
-        "relative w-full overflow-hidden text-neutral-content",
+        "relative isolate w-full overflow-hidden text-neutral-content",
         className,
       )}
       style={{ minHeight }}
     >
+      {/* Motif-echo layer (behind the image backdrop) */}
+      <div className="pointer-events-none absolute inset-0 -z-20">
+        {renderMotif(backgroundVariant)}
+      </div>
       {/* Background image layer */}
       <div
         aria-label={backgroundImageAlt}
@@ -2925,6 +3087,14 @@ import { cn } from "@/lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
 import { Highlighter } from "@/lib/ui/text-decorations/Highlighter";
 import { TextReveal } from "@/lib/ui/text-decorations/TextReveal";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@/lib/ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@/lib/ui/backgrounds/DotPattern";
+import { StripedPattern } from "@/lib/ui/backgrounds/StripedPattern";
+import { GradientBars } from "@/lib/ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@/lib/ui/backgrounds/InteractiveGridPattern";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -2958,7 +3128,30 @@ export interface HeroBoldEditorialProps {
   secondaryCtaColorScheme?: ColorScheme;
   /** Token used for the colored accent column — defaults to "primary" */
   accentColorScheme?: ColorScheme;
+  /** Optional motif-echo background rendered behind the section content */
+  backgroundVariant?: string;
   className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Motif renderer                                                     */
+/* ------------------------------------------------------------------ */
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -3068,6 +3261,7 @@ export default function HeroBoldEditorial({
   secondaryCtaStyle = "drawOutline",
   secondaryCtaColorScheme = "neutral",
   accentColorScheme = "primary",
+  backgroundVariant,
   className,
 }: HeroBoldEditorialProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -3081,10 +3275,13 @@ export default function HeroBoldEditorial({
   return (
     <section
       className={cn(
-        "relative w-full overflow-hidden bg-base-100",
+        "relative isolate w-full overflow-hidden bg-base-100",
         className,
       )}
     >
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
       <div className="relative grid min-h-[640px] w-full grid-cols-1 lg:min-h-[720px] lg:grid-cols-12">
         {/* -- Accent column with primary image -- */}
         <motion.div
@@ -5569,6 +5766,14 @@ import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
 import { Highlighter } from "@/lib/ui/text-decorations/Highlighter";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@/lib/ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@/lib/ui/backgrounds/DotPattern";
+import { StripedPattern } from "@/lib/ui/backgrounds/StripedPattern";
+import { GradientBars } from "@/lib/ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@/lib/ui/backgrounds/InteractiveGridPattern";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -5601,7 +5806,30 @@ export interface EditorialFramedSplitProps {
   ctaVariant?: CtaVariant;
   /** CTA color scheme. */
   ctaColorScheme?: ColorScheme;
+  /** Optional motif-echo background rendered behind the section content */
+  backgroundVariant?: string;
   className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Motif renderer                                                     */
+/* ------------------------------------------------------------------ */
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -5648,6 +5876,7 @@ export default function EditorialFramedSplit({
   supportingBody,
   ctaVariant = "default",
   ctaColorScheme = "neutral",
+  backgroundVariant,
   className,
 }: EditorialFramedSplitProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -5662,11 +5891,14 @@ export default function EditorialFramedSplit({
   return (
     <section
       className={cn(
-        "w-full bg-base-100 text-base-content",
+        "relative isolate w-full overflow-hidden bg-base-100 text-base-content",
         "px-4 py-12 md:px-8 md:py-16 lg:px-12 lg:py-24",
         className,
       )}
     >
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-10">
         {/* Row 1 — framed headline card */}
         <motion.div
@@ -5711,10 +5943,7 @@ export default function EditorialFramedSplit({
         </motion.div>
 
         {/* Row 2 — secondary image */}
-        <motion.div
-          {...sharedReveal}
-          className="overflow-hidden rounded-lg"
-        >
+        <motion.div {...sharedReveal} className="overflow-hidden rounded-lg">
           <img
             src={secondaryImage}
             alt={secondaryImageAlt}
