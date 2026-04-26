@@ -17,6 +17,7 @@
   "mood": ["elegant", "calm", "trustworthy"],
   "layout": "stacked",
   "density": "low",
+  "imageWeight": 0.1,
   "slots": [
     {
       "name": "eyebrow",
@@ -106,10 +107,5 @@
     "faq-accordion-01",
     "footer-multi-column-01"
   ],
-  "pairsPoorly": [
-    "cta-banner-01",
-    "cta-cta-editorial-split-01",
-    "cta-cta-collage-duo-01",
-    "cta-floating-01"
-  ]
+  "pairsPoorly": ["cta-cta-editorial-split-01", "cta-cta-collage-duo-01"]
 }

@@ -39,6 +39,19 @@ const DEFAULT_TYPOGRAPHY: Typography = {
   body: "ui-sans-serif",
 };
 
+/**
+ * Default styleKit used when styleOutput.styleKit is missing — matches the
+ * fallback applied by the Style Agent post-parse step. Keeps assembler
+ * output stable for legacy projects whose styleOutput predates styleKit.
+ */
+const DEFAULT_STYLE_KIT = {
+  card: "base",
+  ctaVariant: "default",
+  ctaColorScheme: "primary",
+  background: "none",
+  textDecoration: "none",
+} as const;
+
 /* ------------------------------------------------------------------ */
 /*  Deterministic Buyer-Field → Slot Fill                              */
 /* ------------------------------------------------------------------ */
@@ -73,7 +86,7 @@ const BUYER_FIELD_TO_SLOT: Record<string, Record<string, SlotMapping>> = {
     hoursText: { field: "businessHours", transform: "verbatim" },
     socialLinks: { field: "socialLinks", transform: "social" },
   },
-  "contact-map-info-01": {
+  "contact-contact-locations-map-01": {
     address: { field: "address", transform: "verbatim" },
     phone: { field: "phone", transform: "verbatim" },
     email: { field: "email", transform: "verbatim" },
@@ -182,6 +195,7 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
   /* ---- Generate files ---- */
   const palette = input.styleOutput?.palette ?? DEFAULT_PALETTE;
   const typography = input.styleOutput?.typography ?? DEFAULT_TYPOGRAPHY;
+  const styleKit = input.styleOutput?.styleKit ?? DEFAULT_STYLE_KIT;
 
   // Deterministic buyer-field → slot fill (footer/contact contact info).
   // This happens AFTER Humanizer, so it overwrites any LLM-generated
@@ -196,6 +210,7 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
     humanizerOutput,
     palette,
     typography,
+    styleKit,
   );
 
   /* ---- Create tar.gz archive ---- */
@@ -269,12 +284,8 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
 
   /* ---- Return pipeline state ---- */
   return {
-    projectId: input.projectId,
+    ...input,
     status: "qa",
-    companyName: input.companyName,
-    segment: input.segment,
-    description: input.description,
-    sellerId: input.sellerId,
     humanizerOutput,
     assemblerOutput: { s3Key, s3Bucket: bucketName },
   };

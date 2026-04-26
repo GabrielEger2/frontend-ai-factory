@@ -4,6 +4,14 @@ import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
 import { Highlighter } from "@ui/text-decorations/Highlighter";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@ui/backgrounds/DotPattern";
+import { StripedPattern } from "@ui/backgrounds/StripedPattern";
+import { GradientBars } from "@ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@ui/backgrounds/InteractiveGridPattern";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -36,7 +44,30 @@ export interface EditorialFramedSplitProps {
   ctaVariant?: CtaVariant;
   /** CTA color scheme. */
   ctaColorScheme?: ColorScheme;
+  /** Optional motif-echo background rendered behind the section content */
+  backgroundVariant?: string;
   className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Motif renderer                                                     */
+/* ------------------------------------------------------------------ */
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -83,6 +114,7 @@ export default function EditorialFramedSplit({
   supportingBody,
   ctaVariant = "default",
   ctaColorScheme = "neutral",
+  backgroundVariant,
   className,
 }: EditorialFramedSplitProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -97,11 +129,14 @@ export default function EditorialFramedSplit({
   return (
     <section
       className={cn(
-        "w-full bg-base-100 text-base-content",
+        "relative isolate w-full overflow-hidden bg-base-100 text-base-content",
         "px-4 py-12 md:px-8 md:py-16 lg:px-12 lg:py-24",
         className,
       )}
     >
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-10">
         {/* Row 1 — framed headline card */}
         <motion.div
@@ -146,10 +181,7 @@ export default function EditorialFramedSplit({
         </motion.div>
 
         {/* Row 2 — secondary image */}
-        <motion.div
-          {...sharedReveal}
-          className="overflow-hidden rounded-lg"
-        >
+        <motion.div {...sharedReveal} className="overflow-hidden rounded-lg">
           <img
             src={secondaryImage}
             alt={secondaryImageAlt}

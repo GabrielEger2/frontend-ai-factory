@@ -1,4 +1,4 @@
-// Source of truth: agents/shared/segment-presets.ts — keep in sync
+// Segment values must match agents/shared/constants.ts SUPPORTED_SEGMENTS
 export const SUPPORTED_SEGMENTS = [
   "pet-shop",
   "law-firm",
@@ -157,6 +157,14 @@ export interface StyleOutput {
   density: "low" | "medium" | "high";
   paletteSource?: "graph" | "fallback";
   paletteSuggestions?: Palette[];
+  styleKit?: {
+    card?: string;
+    ctaVariant?: string;
+    ctaColorScheme?: string;
+    background?: string;
+    textDecoration?: string;
+  };
+  imageryDensity?: "low" | "medium" | "high";
 }
 
 /* ------------------------------------------------------------------ */
@@ -176,6 +184,7 @@ export interface ComposerOutput {
   source: "graph" | "fallback";
   candidateCount?: number;
   avgScore?: number | null;
+  warnings?: string[];
 }
 
 /* ------------------------------------------------------------------ */

@@ -121,6 +121,14 @@ export const TypographySchema = z.object({
   body: z.string(),
 });
 
+export const StyleKitSchema = z.object({
+  card: z.string().optional(),
+  ctaVariant: z.string().optional(),
+  ctaColorScheme: z.string().optional(),
+  background: z.string().optional(),
+  textDecoration: z.string().optional(),
+});
+
 export const StyleOutputSchema = z.object({
   palette: PaletteSchema,
   paletteMode: z.enum(["single", "dual", "monochromatic"]),
@@ -153,6 +161,8 @@ export const StyleOutputSchema = z.object({
   density: z.enum(["low", "medium", "high"]),
   paletteSource: z.enum(["graph", "fallback"]).optional(),
   paletteSuggestions: z.array(PaletteSchema).optional(),
+  styleKit: StyleKitSchema.optional(),
+  imageryDensity: z.enum(["low", "medium", "high"]).optional(),
 });
 
 export type StyleOutput = z.infer<typeof StyleOutputSchema>;
@@ -176,6 +186,7 @@ export const ComposerOutputSchema = z.object({
   source: z.enum(["graph", "fallback"]),
   candidateCount: z.number().int().optional(),
   avgScore: z.number().nullable().optional(),
+  warnings: z.array(z.string()).optional(),
 });
 
 export type ComposerLayout = z.infer<typeof ComposerLayoutSchema>;
@@ -279,25 +290,36 @@ export const PipelineStateSchema = z.object({
   companyName: z.string(),
   segment: z.string(),
   description: z.string(),
+  // Null-seeded fields below: pipeline-starter writes `null` for any optional
+  // intake field the seller leaves blank, so SFN JsonPath blocks (StyleStep,
+  // ComposerStep) don't throw on missing keys. `.nullable().default(null)`
+  // unifies both ingress paths: DDB reads (attribute absent → undefined) get
+  // defaulted to `null`, and SFN payloads (already `null`) pass through. This
+  // is critical for SFN-resume handlers (approve-style, approve-layout) which
+  // rebuild state via PipelineStateSchema.parse(item) and then SendTaskSuccess
+  // — JSON.stringify drops `undefined` keys, which would break the JsonPath
+  // contract on the next step. See agents/pipeline-starter/handler.ts.
   brandColor: z
     .string()
     .regex(/^#[0-9a-fA-F]{6}$/)
-    .optional(),
+    .nullable()
+    .default(null),
   researchOutput: ResearchOutputSchema.optional(),
   styleOutput: StyleOutputSchema.optional(),
   styleApprovalTaskToken: z.string().optional(),
   layoutApprovalTaskToken: z.string().optional(),
-  desiredSections: z.array(z.string()).optional(),
+  desiredSections: z.array(z.string()).nullable().default(null),
   // brandToneKeywords (NOT toneKeywords) — avoids collision with ResearchOutputSchema.toneKeywords
-  brandToneKeywords: z.array(z.string()).optional(),
-  objectives: z.array(z.string()).optional(),
-  businessHours: z.string().optional(),
-  address: z.string().optional(),
-  phone: z.string().optional(),
-  email: z.string().optional(),
+  brandToneKeywords: z.array(z.string()).nullable().default(null),
+  objectives: z.array(z.string()).nullable().default(null),
+  businessHours: z.string().nullable().default(null),
+  address: z.string().nullable().default(null),
+  phone: z.string().nullable().default(null),
+  email: z.string().nullable().default(null),
   socialLinks: z
     .array(z.object({ platform: z.string(), url: z.string() }))
-    .optional(),
+    .nullable()
+    .default(null),
   composerOutput: ComposerOutputSchema.optional(),
   contentOutput: ContentOutputSchema.optional(),
   humanizerOutput: HumanizerOutputSchema.optional(),
@@ -347,4 +369,5 @@ export interface ComponentItem {
   pairsWell: string[];
   pairsPoorly: string[];
   acceptsStyleKit: Record<string, boolean>;
+  imageWeight?: number;
 }

@@ -2,29 +2,18 @@
   "id": "cta-cta-editorial-split-01",
   "name": "Editorial Split CTA",
   "category": "cta",
-  "purpose": [
-    "cta",
-    "brand storytelling",
-    "editorial conversion"
-  ],
+  "purpose": ["cta", "brand storytelling", "editorial conversion"],
   "acceptsStyleKit": {
     "card": false,
     "background": true,
     "textDecoration": true,
     "button": true
   },
-  "style": [
-    "editorial",
-    "bold",
-    "modern"
-  ],
-  "mood": [
-    "serious",
-    "trustworthy",
-    "energetic"
-  ],
+  "style": ["editorial", "bold", "modern"],
+  "mood": ["serious", "trustworthy", "energetic"],
   "layout": "asymmetric",
   "density": "medium",
+  "imageWeight": 0.15,
   "slots": [
     {
       "name": "eyebrowCallout",
@@ -55,24 +44,13 @@
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "default",
-        "slide",
-        "dotExpand",
-        "drawOutline",
-        "glow"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
     },
     {
       "name": "ctaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "accent",
-        "neutral"
-      ]
+      "enum": ["primary", "secondary", "accent", "neutral"]
     },
     {
       "name": "secondaryCtaText",
@@ -118,14 +96,6 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "footer-reveal-01",
-    "faq-accordion-01",
-    "carousel-cards-01"
-  ],
-  "pairsPoorly": [
-    "cta-banner-01",
-    "cta-inline-01",
-    "cta-floating-01"
-  ]
+  "pairsWell": ["footer-reveal-01", "faq-accordion-01", "carousel-cards-01"],
+  "pairsPoorly": []
 }

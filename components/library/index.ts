@@ -16,13 +16,13 @@ export { default as CarouselHorizontalScroll } from "./carousel/CarouselHorizont
 export { default as CarouselSwipe } from "./carousel/CarouselSwipe";
 
 // Contact
-export { default as ContactForm } from "./contact/ContactForm";
-export { default as ContactMapInfo } from "./contact/ContactMapInfo";
+export { default as ContactLocationsMap } from "./contact/ContactLocationsMap";
+export { default as ContactShapesForm } from "./contact/ContactShapesForm";
 
 // CTA
-export { default as CtaBanner } from "./cta/CtaBanner";
-export { default as CtaFloating } from "./cta/CtaFloating";
-export { default as CtaInline } from "./cta/CtaInline";
+export { default as CtaCollageDuo } from "./cta/CtaCollageDuo";
+export { default as CtaEditorialSplit } from "./cta/CtaEditorialSplit";
+export { default as CtaImageBackdrop } from "./cta/CtaImageBackdrop";
 
 // FAQ
 export { default as FaqAccordion } from "./faq/FaqAccordion";
@@ -33,6 +33,7 @@ export { default as FaqSolutions } from "./faq/FaqSolutions";
 export { default as FooterReveal } from "./footers/FooterReveal";
 
 // Heroes
+export { default as HeroBoldEditorial } from "./heroes/HeroBoldEditorial";
 export { default as HeroGeometric } from "./heroes/HeroGeometric";
 export { default as HeroParallaxImages } from "./heroes/HeroParallaxImages";
 export { default as HeroShuffleCards } from "./heroes/HeroShuffleCards";
@@ -41,20 +42,22 @@ export { default as HeroSplitImage } from "./heroes/HeroSplitImage";
 // Layouts — grid
 export { default as CardGrid } from "./layouts/grid/CardGrid";
 export { default as SimpleGrid } from "./layouts/grid/SimpleGrid";
-export { default as StaggerFan } from "./layouts/grid/StaggerFan";
-
-// Layouts — scroll
-export { default as InfiniteScroll } from "./layouts/scroll/InfiniteScroll";
-export { default as ParallaxContent } from "./layouts/scroll/ParallaxContent";
-export { default as StickyCards } from "./layouts/scroll/StickyCards";
 
 // Layouts — split
 export { default as AuthorSplit } from "./layouts/split/AuthorSplit";
+export { default as EditorialFramedSplit } from "./layouts/split/EditorialFramedSplit";
 export { default as IconListSplit } from "./layouts/split/IconListSplit";
 export { default as ImageText } from "./layouts/split/ImageText";
-export { default as ShowcaseSplit } from "./layouts/split/ShowcaseSplit";
-export { default as StackedSplit } from "./layouts/split/StackedSplit";
 export { default as StatementSplit } from "./layouts/split/StatementSplit";
+
+// Motion
+export { default as ParallaxContent } from "./motion/ParallaxContent";
+export { default as StickyCards } from "./motion/StickyCards";
+
+// Testimonials
+export { default as InfiniteScroll } from "./testimonials/InfiniteScroll";
+export { default as StackedSplit } from "./testimonials/StackedSplit";
+export { default as StaggerFan } from "./testimonials/StaggerFan";
 
 // Navigation
 export { default as NavbarSticky } from "./navigation/NavbarSticky";
@@ -68,31 +71,32 @@ export { default as StatsCountUp } from "./stats/StatsCountUp";
 import CarouselCards from "./carousel/CarouselCards";
 import CarouselHorizontalScroll from "./carousel/CarouselHorizontalScroll";
 import CarouselSwipe from "./carousel/CarouselSwipe";
-import ContactForm from "./contact/ContactForm";
-import ContactMapInfo from "./contact/ContactMapInfo";
-import CtaBanner from "./cta/CtaBanner";
-import CtaFloating from "./cta/CtaFloating";
-import CtaInline from "./cta/CtaInline";
+import ContactLocationsMap from "./contact/ContactLocationsMap";
+import ContactShapesForm from "./contact/ContactShapesForm";
+import CtaCollageDuo from "./cta/CtaCollageDuo";
+import CtaEditorialSplit from "./cta/CtaEditorialSplit";
+import CtaImageBackdrop from "./cta/CtaImageBackdrop";
 import FaqAccordion from "./faq/FaqAccordion";
 import FaqMinimal from "./faq/FaqMinimal";
 import FaqSolutions from "./faq/FaqSolutions";
 import FooterReveal from "./footers/FooterReveal";
+import HeroBoldEditorial from "./heroes/HeroBoldEditorial";
 import HeroGeometric from "./heroes/HeroGeometric";
 import HeroParallaxImages from "./heroes/HeroParallaxImages";
 import HeroShuffleCards from "./heroes/HeroShuffleCards";
 import HeroSplitImage from "./heroes/HeroSplitImage";
 import CardGrid from "./layouts/grid/CardGrid";
 import SimpleGrid from "./layouts/grid/SimpleGrid";
-import StaggerFan from "./layouts/grid/StaggerFan";
-import InfiniteScroll from "./layouts/scroll/InfiniteScroll";
-import ParallaxContent from "./layouts/scroll/ParallaxContent";
-import StickyCards from "./layouts/scroll/StickyCards";
 import AuthorSplit from "./layouts/split/AuthorSplit";
+import EditorialFramedSplit from "./layouts/split/EditorialFramedSplit";
 import IconListSplit from "./layouts/split/IconListSplit";
 import ImageText from "./layouts/split/ImageText";
-import ShowcaseSplit from "./layouts/split/ShowcaseSplit";
-import StackedSplit from "./layouts/split/StackedSplit";
 import StatementSplit from "./layouts/split/StatementSplit";
+import ParallaxContent from "./motion/ParallaxContent";
+import StickyCards from "./motion/StickyCards";
+import InfiniteScroll from "./testimonials/InfiniteScroll";
+import StackedSplit from "./testimonials/StackedSplit";
+import StaggerFan from "./testimonials/StaggerFan";
 import NavbarSticky from "./navigation/NavbarSticky";
 import StatsCountUp from "./stats/StatsCountUp";
 
@@ -108,15 +112,16 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "carousel-cards-01": CarouselCards,
   "carousel-horizontal-scroll-01": CarouselHorizontalScroll,
   "carousel-swipe-01": CarouselSwipe,
-  "contact-form-01": ContactForm,
-  "contact-map-info-01": ContactMapInfo,
-  "cta-banner-01": CtaBanner,
-  "cta-floating-01": CtaFloating,
-  "cta-inline-01": CtaInline,
+  "contact-contact-locations-map-01": ContactLocationsMap,
+  "contact-contact-shapes-form-01": ContactShapesForm,
+  "cta-cta-collage-duo-01": CtaCollageDuo,
+  "cta-cta-editorial-split-01": CtaEditorialSplit,
+  "cta-image-backdrop-01": CtaImageBackdrop,
   "faq-accordion-01": FaqAccordion,
   "faq-minimal-01": FaqMinimal,
   "faq-solutions-01": FaqSolutions,
   "footer-reveal-01": FooterReveal,
+  "hero-hero-bold-editorial-01": HeroBoldEditorial,
   "hero-geometric-01": HeroGeometric,
   "hero-parallax-images-01": HeroParallaxImages,
   "hero-shuffle-cards-01": HeroShuffleCards,
@@ -128,9 +133,9 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "layout-parallaxcontent-01": ParallaxContent,
   "layout-stickycards-01": StickyCards,
   "layout-authorsplit-01": AuthorSplit,
+  "layout-editorial-framed-split-01": EditorialFramedSplit,
   "layout-iconlistsplit-01": IconListSplit,
   "layout-imagetext-01": ImageText,
-  "layout-showcasesplit-01": ShowcaseSplit,
   "layout-stackedsplit-01": StackedSplit,
   "layout-statementsplit-01": StatementSplit,
   "navbar-sticky-01": NavbarSticky,

@@ -10,6 +10,14 @@ import { buildStyleSystemPrompt, buildStyleUserPrompt } from "./prompt";
 import { getDriver, getNeo4jDatabase } from "../shared/neo4j-client";
 import { emitNeo4jQueryError } from "../shared/metrics";
 
+const DEFAULT_STYLE_KIT = {
+  card: "base",
+  ctaVariant: "default",
+  ctaColorScheme: "primary",
+  background: "none",
+  textDecoration: "none",
+};
+
 /* ------------------------------------------------------------------ */
 /*  Palette suggestion from Neo4j graph                                */
 /* ------------------------------------------------------------------ */
@@ -179,6 +187,8 @@ async function generateStyle(
   // Safety sync: ensure palette exactly matches the active mode variant.
   // Prevents propagation downstream if the LLM returns inconsistent paletteModes.
   validated.palette = validated.paletteModes[validated.paletteMode];
+  validated.styleKit = validated.styleKit ?? DEFAULT_STYLE_KIT;
+  validated.imageryDensity = validated.imageryDensity ?? "medium";
   return validated;
 }
 

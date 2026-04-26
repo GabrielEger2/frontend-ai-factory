@@ -3,6 +3,31 @@
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@lib/utils";
 import { Highlighter } from "@ui/text-decorations/Highlighter";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@ui/backgrounds/DotPattern";
+import { StripedPattern } from "@ui/backgrounds/StripedPattern";
+import { GradientBars } from "@ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@ui/backgrounds/InteractiveGridPattern";
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
+}
 
 export interface LocationItem {
   city: string;
@@ -27,6 +52,8 @@ export interface ContactLocationsMapProps {
   locations: LocationItem[];
   /** Optional Google Maps embed URL rendered below the locations grid. */
   mapEmbedUrl?: string;
+  /** Optional motif-echo background rendered behind the section content */
+  backgroundVariant?: string;
   className?: string;
 }
 
@@ -56,6 +83,7 @@ export default function ContactLocationsMap({
   featuredImageAlt,
   locations,
   mapEmbedUrl,
+  backgroundVariant,
   className,
 }: ContactLocationsMapProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -70,10 +98,13 @@ export default function ContactLocationsMap({
   return (
     <section
       className={cn(
-        "w-full bg-base-100 px-4 py-12 md:px-8 md:py-16 lg:px-12 lg:py-24",
+        "relative isolate w-full overflow-hidden bg-base-100 px-4 py-12 md:px-8 md:py-16 lg:px-12 lg:py-24",
         className,
       )}
     >
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
       <div className="mx-auto flex max-w-7xl flex-col gap-10 md:gap-14">
         {(headline || subheadline) && (
           <motion.header
@@ -116,10 +147,7 @@ export default function ContactLocationsMap({
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
-          className={cn(
-            "grid grid-cols-1 gap-8 md:gap-10",
-            columnsClass,
-          )}
+          className={cn("grid grid-cols-1 gap-8 md:gap-10", columnsClass)}
         >
           {cappedLocations.map((location, index) => (
             <motion.li

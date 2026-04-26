@@ -11,6 +11,9 @@ export const COMPONENT_SOURCES: Record<string, string> = {
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
+import { Highlighter } from "@/lib/ui/text-decorations/Highlighter";
+import { TextReveal } from "@/lib/ui/text-decorations/TextReveal";
 import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
@@ -33,8 +36,23 @@ export interface CarouselCardItem {
 export interface CarouselCardsProps {
   /** Section headline */
   headline: string;
+  /** Word inside \`headline\` to wrap with the Highlighter underline. When set, the word-level TextReveal is skipped. */
+  highlightWord?: string;
+  /** Wrap the headline in a word-level TextReveal. Defaults to true. Ignored when \`highlightWord\` is set. */
+  revealHeadline?: boolean;
+  /** Supporting text rendered below the headline */
+  subheadline?: string;
   /** Array of card items */
   cards?: CarouselCardItem[];
+  /** Primary CTA — when provided, renders a button next to the carousel arrows */
+  ctaText?: string;
+  ctaUrl?: string;
+  /** CTA animation style — text/button decoration */
+  ctaStyle?: CtaVariant;
+  /** CTA color scheme */
+  ctaColorScheme?: ColorScheme;
+  /** Color scheme used by the headline highlighter — defaults to "primary" */
+  highlightColorScheme?: ColorScheme;
   /** Fixed card width in pixels. Defaults to 350 */
   cardWidth?: number;
   /** Gap between cards in pixels. Defaults to 20 */
@@ -89,6 +107,31 @@ const BREAKPOINTS = {
   sm: 640,
   lg: 1024,
 };
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+function renderHighlightedHeadline(
+  headline: string,
+  highlightWord: string,
+  scheme: ColorScheme,
+) {
+  const idx = headline.toLowerCase().indexOf(highlightWord.toLowerCase());
+  if (idx === -1) return headline;
+  const before = headline.slice(0, idx);
+  const match = headline.slice(idx, idx + highlightWord.length);
+  const after = headline.slice(idx + highlightWord.length);
+  return (
+    <>
+      {before}
+      <Highlighter action="underline" colorScheme={scheme} triggerOnView>
+        {match}
+      </Highlighter>
+      {after}
+    </>
+  );
+}
 
 /* ------------------------------------------------------------------ */
 /*  Arrow icon                                                         */
@@ -179,10 +222,25 @@ function Card({
  * Responsive: shows 1 card on mobile, 2 on tablet, 3 on desktop.
  * Cards shift left/right by one card width at a time with smooth
  * easeInOut animation.
+ *
+ * Accepts:
+ *  - text decorations on the headline (\`highlightWord\` for an inline underline,
+ *    or \`revealHeadline\` for a word-level TextReveal on scroll)
+ *  - a button decoration via \`ctaText\` + \`ctaStyle\` + \`ctaColorScheme\`
+ *    rendered alongside the navigation arrows
+ *  - a \`subheadline\` paragraph below the headline
  */
 export default function CarouselCards({
   headline,
+  highlightWord,
+  revealHeadline = true,
+  subheadline,
   cards = DEFAULT_CAROUSEL_CARDS,
+  ctaText,
+  ctaUrl,
+  ctaStyle = "default",
+  ctaColorScheme = "primary",
+  highlightColorScheme = "primary",
   cardWidth = 350,
   cardGap = 20,
   className,
@@ -231,6 +289,10 @@ export default function CarouselCards({
 
   if (cards.length === 0) return null;
 
+  const useHighlighter = Boolean(highlightWord);
+  const useTextReveal =
+    !useHighlighter && revealHeadline && !shouldReduceMotion;
+
   return (
     <section
       className={cn("w-full bg-base-100 py-8", className)}
@@ -241,33 +303,64 @@ export default function CarouselCards({
       <div className="relative overflow-hidden p-4">
         <div className="mx-auto max-w-6xl">
           {/* Header + navigation */}
-          <div className="flex items-center justify-between">
-            <h2 className="mb-4 text-3xl font-bold text-base-content sm:text-4xl">
-              {headline}
-            </h2>
-            <div className="flex items-center gap-2">
-              <button
-                className={cn(
-                  "grid h-10 w-10 place-content-center rounded-lg border border-base-300 bg-base-100 text-xl text-base-content transition-opacity",
-                  !canShiftLeft && "opacity-30",
+          <div className="mb-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-2xl">
+              <h2 className="text-balance text-3xl font-bold leading-tight text-base-content sm:text-4xl">
+                {useHighlighter ? (
+                  renderHighlightedHeadline(
+                    headline,
+                    highlightWord as string,
+                    highlightColorScheme,
+                  )
+                ) : useTextReveal ? (
+                  <TextReveal split="word" triggerOnView>
+                    {headline}
+                  </TextReveal>
+                ) : (
+                  headline
                 )}
-                disabled={!canShiftLeft}
-                onClick={shiftLeft}
-                aria-label="Previous cards"
-              >
-                <ArrowIcon direction="left" />
-              </button>
-              <button
-                className={cn(
-                  "grid h-10 w-10 place-content-center rounded-lg border border-base-300 bg-base-100 text-xl text-base-content transition-opacity",
-                  !canShiftRight && "opacity-30",
-                )}
-                disabled={!canShiftRight}
-                onClick={shiftRight}
-                aria-label="Next cards"
-              >
-                <ArrowIcon direction="right" />
-              </button>
+              </h2>
+              {subheadline && (
+                <p className="mt-3 text-base leading-relaxed text-base-content/60 sm:text-lg">
+                  {subheadline}
+                </p>
+              )}
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              {ctaText && (
+                <CtaButton
+                  variant={ctaStyle}
+                  colorScheme={ctaColorScheme}
+                  href={ctaUrl}
+                >
+                  {ctaText}
+                </CtaButton>
+              )}
+              <div className="flex items-center gap-2">
+                <button
+                  className={cn(
+                    "grid h-10 w-10 place-content-center rounded-lg border border-base-300 bg-base-100 text-xl text-base-content transition-opacity",
+                    !canShiftLeft && "opacity-30",
+                  )}
+                  disabled={!canShiftLeft}
+                  onClick={shiftLeft}
+                  aria-label="Previous cards"
+                >
+                  <ArrowIcon direction="left" />
+                </button>
+                <button
+                  className={cn(
+                    "grid h-10 w-10 place-content-center rounded-lg border border-base-300 bg-base-100 text-xl text-base-content transition-opacity",
+                    !canShiftRight && "opacity-30",
+                  )}
+                  disabled={!canShiftRight}
+                  onClick={shiftRight}
+                  aria-label="Next cards"
+                >
+                  <ArrowIcon direction="right" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -293,6 +386,246 @@ export default function CarouselCards({
           </motion.div>
         </div>
       </div>
+    </section>
+  );
+}
+`,
+  "src/components/carousel/CarouselHorizontalScroll/index.tsx": `"use client";
+
+import { useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+  type MotionValue,
+} from "framer-motion";
+import { cn } from "@/lib/utils";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+
+export interface CarouselHorizontalScrollItem {
+  /** Card image URL */
+  image: string;
+  /** Accessible alt text for the image */
+  imageAlt: string;
+  /** Title overlaid on the card. When omitted the card shows only the image */
+  title?: string;
+}
+
+export interface CarouselHorizontalScrollProps {
+  /** Optional section headline displayed above the carousel */
+  headline?: string;
+  /** Optional supporting copy below the headline */
+  subheadline?: string;
+  /** Optional hint label rendered before/after the carousel (e.g. "Scroll down") */
+  scrollHintBefore?: string;
+  /** Optional hint label rendered after the carousel (e.g. "Scroll up") */
+  scrollHintAfter?: string;
+  /** Cards to display in the horizontal track */
+  items?: CarouselHorizontalScrollItem[];
+  /**
+   * Total scroll height of the section as a multiplier of the viewport
+   * height. Higher numbers slow the horizontal pacing. Defaults to 3.
+   */
+  scrollHeightVh?: number;
+  className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_ITEMS: CarouselHorizontalScrollItem[] = [
+  {
+    image: "https://picsum.photos/seed/carouselhorizontal-0/900/900",
+    imageAlt: "Aerial view of a winding coastal road at golden hour",
+    title: "Coastline",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselhorizontal-1/900/900",
+    imageAlt: "Sunrise over a mountain range with low clouds",
+    title: "Summit",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselhorizontal-2/900/900",
+    imageAlt: "Dense forest canopy from above",
+    title: "Canopy",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselhorizontal-3/900/900",
+    imageAlt: "Frozen lake reflecting the northern lights",
+    title: "Aurora",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselhorizontal-4/900/900",
+    imageAlt: "Sand dunes shaped by wind under a clear sky",
+    title: "Dunes",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselhorizontal-5/900/900",
+    imageAlt: "Cobblestone alley lit by a single street lamp",
+    title: "Alley",
+  },
+  {
+    image: "https://picsum.photos/seed/carouselhorizontal-6/900/900",
+    imageAlt: "Rolling hills covered in early morning mist",
+    title: "Mist",
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Sub-components                                                     */
+/* ------------------------------------------------------------------ */
+
+function ScrollHint({ label }: { label: string }) {
+  return (
+    <div className="flex h-48 items-center justify-center bg-neutral text-neutral-content">
+      <span className="text-sm font-semibold uppercase tracking-widest text-neutral-content/50">
+        {label}
+      </span>
+    </div>
+  );
+}
+
+function SectionHeader({
+  headline,
+  subheadline,
+}: {
+  headline?: string;
+  subheadline?: string;
+}) {
+  if (!headline && !subheadline) return null;
+  return (
+    <div className="mx-auto max-w-3xl px-4 pb-8 pt-16 text-center md:px-8 md:pb-12 md:pt-24">
+      {headline && (
+        <h2 className="text-3xl font-bold text-neutral-content sm:text-4xl md:text-5xl">
+          {headline}
+        </h2>
+      )}
+      {subheadline && (
+        <p className="mt-4 text-base text-neutral-content/60 md:text-lg">
+          {subheadline}
+        </p>
+      )}
+    </div>
+  );
+}
+
+interface CardProps {
+  item: CarouselHorizontalScrollItem;
+  index: number;
+}
+
+function Card({ item, index }: CardProps) {
+  const safeImg = useSafeImageSrc(
+    item.image,
+    \`carousel-horizontal-scroll-01-card-\${index}\`,
+    900,
+    900,
+  );
+
+  return (
+    <div className="group relative h-[300px] w-[300px] shrink-0 overflow-hidden rounded-xl bg-base-200 sm:h-[400px] sm:w-[400px] md:h-[450px] md:w-[450px]">
+      <img
+        src={safeImg.src}
+        onError={safeImg.onError}
+        alt={item.imageAlt}
+        loading="lazy"
+        className="absolute inset-0 z-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+      />
+      {item.title && (
+        <div className="absolute inset-0 z-10 grid place-content-center">
+          <p className="bg-gradient-to-br from-neutral-content/20 to-neutral-content/0 p-6 text-4xl font-black uppercase tracking-tight text-neutral-content backdrop-blur-md sm:p-8 sm:text-5xl md:text-6xl">
+            {item.title}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+interface TrackProps {
+  items: CarouselHorizontalScrollItem[];
+  x: MotionValue<string>;
+  shouldReduceMotion: boolean | null;
+}
+
+function Track({ items, x, shouldReduceMotion }: TrackProps) {
+  return (
+    <motion.div
+      style={shouldReduceMotion ? undefined : { x }}
+      className={cn(
+        "flex gap-4",
+        shouldReduceMotion && "flex-wrap justify-center px-4",
+      )}
+    >
+      {items.map((item, idx) => (
+        <Card key={idx} item={item} index={idx} />
+      ))}
+    </motion.div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Component                                                          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * CarouselHorizontalScroll -- a sticky-section carousel where a tall
+ * scroll container drives a horizontal translation of the card track.
+ * As the visitor scrolls vertically through the section, the cards
+ * slide left to reveal the rest of the content. Falls back to a wrapped
+ * grid when the user prefers reduced motion.
+ */
+export default function CarouselHorizontalScroll({
+  headline,
+  subheadline,
+  scrollHintBefore,
+  scrollHintAfter,
+  items = DEFAULT_ITEMS,
+  scrollHeightVh = 3,
+  className,
+}: CarouselHorizontalScrollProps) {
+  const targetRef = useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({ target: targetRef });
+  const x = useTransform(scrollYProgress, [0, 1], ["1%", "-95%"]);
+
+  if (items.length === 0) return null;
+
+  const sectionHeight = \`\${Math.max(1, scrollHeightVh) * 100}vh\`;
+
+  return (
+    <section
+      className={cn("w-full bg-neutral", className)}
+      aria-roledescription="carousel"
+      aria-label={headline ?? "Horizontal scrolling carousel"}
+    >
+      <SectionHeader headline={headline} subheadline={subheadline} />
+
+      {scrollHintBefore && <ScrollHint label={scrollHintBefore} />}
+
+      <div
+        ref={targetRef}
+        className="relative bg-neutral"
+        style={shouldReduceMotion ? undefined : { height: sectionHeight }}
+      >
+        <div
+          className={cn(
+            "flex items-center overflow-hidden",
+            shouldReduceMotion ? "py-12" : "sticky top-0 h-screen",
+          )}
+        >
+          <Track items={items} x={x} shouldReduceMotion={shouldReduceMotion} />
+        </div>
+      </div>
+
+      {scrollHintAfter && <ScrollHint label={scrollHintAfter} />}
     </section>
   );
 }
@@ -385,7 +718,7 @@ function Slides({
             scale: shouldReduceMotion ? 1 : activeIndex === idx ? 0.95 : 0.85,
           }}
           transition={SPRING_OPTIONS}
-          className="aspect-video w-full shrink-0 rounded-xl bg-base-300"
+          className="aspect-video max-h-[70vh] w-full shrink-0 rounded-xl bg-base-300"
           role="img"
           aria-label={item.imageAlt}
           aria-hidden={activeIndex !== idx}
@@ -484,7 +817,7 @@ export default function CarouselSwipe({
   return (
     <section
       className={cn(
-        "relative w-full overflow-hidden bg-neutral py-8",
+        "relative max-h-[80vh] w-full overflow-hidden bg-neutral py-8",
         className,
       )}
       aria-roledescription="carousel"
@@ -518,226 +851,756 @@ export default function CarouselSwipe({
   );
 }
 `,
-  "src/components/contact/ContactForm/index.tsx": `"use client";
+  "src/components/contact/ContactLocationsMap/index.tsx": `"use client";
 
+import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/lib/ui/button";
+import { Highlighter } from "@/lib/ui/text-decorations/Highlighter";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@/lib/ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@/lib/ui/backgrounds/DotPattern";
+import { StripedPattern } from "@/lib/ui/backgrounds/StripedPattern";
+import { GradientBars } from "@/lib/ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@/lib/ui/backgrounds/InteractiveGridPattern";
 
-/* ------------------------------------------------------------------ */
-/*  Types                                                              */
-/* ------------------------------------------------------------------ */
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
+}
 
-export interface ContactFormProps {
-  /** Section heading */
-  headline: string;
-  /** Supporting text below the headline */
+export interface LocationItem {
+  city: string;
+  address: string;
+  phone?: string;
+  email?: string;
+  hours?: string;
+}
+
+export interface ContactLocationsMapProps {
+  /** Optional section headline rendered above the featured image. */
+  headline?: string;
+  /** Optional supporting copy under the headline. */
   subheadline?: string;
-  /** Form submit button text */
-  submitText?: string;
-  /** Submit button visual variant */
-  submitVariant?: "primary" | "secondary" | "accent" | "outline" | "ghost";
-  /** Submit button size */
-  submitSize?: "sm" | "md" | "lg";
-  /** Fields to render — name, email, phone, message are standard */
-  fields?: Array<{
-    name: string;
-    label: string;
-    type: "text" | "email" | "tel" | "textarea";
-    required?: boolean;
-  }>;
+  /** Optional word inside the headline to wrap in a Highlighter underline. */
+  highlightWord?: string;
+  /** Featured editorial image rendered above the locations grid. */
+  featuredImage: string;
+  /** Accessible description of the featured image. */
+  featuredImageAlt: string;
+  /** Up to six office or store locations rendered as a responsive column grid. */
+  locations: LocationItem[];
+  /** Optional Google Maps embed URL rendered below the locations grid. */
+  mapEmbedUrl?: string;
+  /** Optional motif-echo background rendered behind the section content */
+  backgroundVariant?: string;
   className?: string;
 }
 
-const defaultFields: ContactFormProps["fields"] = [
-  { name: "name", label: "Nome", type: "text", required: true },
-  { name: "email", label: "E-mail", type: "email", required: true },
-  { name: "phone", label: "Telefone", type: "tel" },
-  { name: "message", label: "Mensagem", type: "textarea", required: true },
-];
-
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
-
-export default function ContactForm({
-  headline,
-  subheadline,
-  submitText = "Enviar",
-  submitVariant = "primary",
-  submitSize = "md",
-  fields = defaultFields,
-  className,
-}: ContactFormProps) {
+function renderHighlightedHeadline(text: string, highlight?: string) {
+  if (!highlight) return text;
+  const idx = text.toLowerCase().indexOf(highlight.toLowerCase());
+  if (idx === -1) return text;
+  const before = text.slice(0, idx);
+  const match = text.slice(idx, idx + highlight.length);
+  const after = text.slice(idx + highlight.length);
   return (
-    <section
-      className={cn(
-        "relative w-full overflow-hidden py-20 md:py-28",
-        className,
-      )}
-    >
-      <div className="mx-auto max-w-2xl px-6">
-        <div className="mb-10 text-center">
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-            {headline}
-          </h2>
-          {subheadline && (
-            <p className="mt-4 text-lg opacity-70">{subheadline}</p>
-          )}
-        </div>
-        <form className="space-y-6">
-          {fields?.map((field) => (
-            <div key={field.name}>
-              <label
-                htmlFor={field.name}
-                className="mb-2 block text-sm font-medium"
-              >
-                {field.label}
-              </label>
-              {field.type === "textarea" ? (
-                <textarea
-                  id={field.name}
-                  name={field.name}
-                  required={field.required}
-                  rows={4}
-                  className="w-full rounded-lg border bg-transparent px-4 py-3"
-                />
-              ) : (
-                <input
-                  id={field.name}
-                  name={field.name}
-                  type={field.type}
-                  required={field.required}
-                  className="w-full rounded-lg border bg-transparent px-4 py-3"
-                />
-              )}
-            </div>
-          ))}
-          <Button
-            type="submit"
-            variant={submitVariant}
-            size={submitSize}
-            className="w-full"
-          >
-            {submitText}
-          </Button>
-        </form>
-      </div>
-    </section>
+    <>
+      {before}
+      <Highlighter action="underline" colorScheme="primary">
+        {match}
+      </Highlighter>
+      {after}
+    </>
   );
 }
-`,
-  "src/components/contact/ContactMapInfo/index.tsx": `"use client";
 
-import { cn } from "@/lib/utils";
-
-/* ------------------------------------------------------------------ */
-/*  Types                                                              */
-/* ------------------------------------------------------------------ */
-
-export interface ContactMapInfoProps {
-  /** Section heading */
-  headline: string;
-  /** Supporting text */
-  subheadline?: string;
-  /** Full address text */
-  address: string;
-  /** Phone number */
-  phone?: string;
-  /** Email address */
-  email?: string;
-  /** Business hours description */
-  hours?: string;
-  /** Google Maps embed URL or coordinates */
-  mapEmbedUrl?: string;
-  className?: string;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
-
-export default function ContactMapInfo({
+export default function ContactLocationsMap({
   headline,
   subheadline,
-  address,
-  phone,
-  email,
-  hours,
+  highlightWord,
+  featuredImage,
+  featuredImageAlt,
+  locations,
   mapEmbedUrl,
+  backgroundVariant,
   className,
-}: ContactMapInfoProps) {
+}: ContactLocationsMapProps) {
+  const prefersReducedMotion = useReducedMotion();
+  const cappedLocations = locations.slice(0, 6);
+  const columnsClass =
+    cappedLocations.length >= 4
+      ? "sm:grid-cols-2 lg:grid-cols-4"
+      : cappedLocations.length === 3
+        ? "sm:grid-cols-2 lg:grid-cols-3"
+        : "sm:grid-cols-2";
+
   return (
     <section
       className={cn(
-        "relative w-full overflow-hidden py-20 md:py-28",
+        "relative isolate w-full overflow-hidden bg-base-100 px-4 py-12 md:px-8 md:py-16 lg:px-12 lg:py-24",
         className,
       )}
     >
-      <div className="mx-auto grid max-w-6xl gap-10 px-6 md:grid-cols-2">
-        {/* Info side */}
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-            {headline}
-          </h2>
-          {subheadline && (
-            <p className="mt-4 text-lg opacity-70">{subheadline}</p>
-          )}
-          <dl className="mt-8 space-y-4">
-            <div>
-              <dt className="text-sm font-semibold uppercase tracking-wider opacity-50">
-                Endereco
-              </dt>
-              <dd className="mt-1">{address}</dd>
-            </div>
-            {phone && (
-              <div>
-                <dt className="text-sm font-semibold uppercase tracking-wider opacity-50">
-                  Telefone
-                </dt>
-                <dd className="mt-1">{phone}</dd>
-              </div>
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
+      <div className="mx-auto flex max-w-7xl flex-col gap-10 md:gap-14">
+        {(headline || subheadline) && (
+          <motion.header
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="max-w-3xl"
+          >
+            {headline && (
+              <h2 className="text-3xl font-bold leading-tight tracking-tight text-base-content md:text-4xl lg:text-5xl">
+                {renderHighlightedHeadline(headline, highlightWord)}
+              </h2>
             )}
-            {email && (
-              <div>
-                <dt className="text-sm font-semibold uppercase tracking-wider opacity-50">
-                  E-mail
-                </dt>
-                <dd className="mt-1">{email}</dd>
-              </div>
+            {subheadline && (
+              <p className="mt-4 text-base text-base-content/70 md:text-lg">
+                {subheadline}
+              </p>
             )}
-            {hours && (
-              <div>
-                <dt className="text-sm font-semibold uppercase tracking-wider opacity-50">
-                  Horario
-                </dt>
-                <dd className="mt-1">{hours}</dd>
-              </div>
-            )}
-          </dl>
-        </div>
+          </motion.header>
+        )}
 
-        {/* Map side */}
-        <div className="min-h-[300px] overflow-hidden rounded-xl bg-base-200">
-          {mapEmbedUrl ? (
+        <motion.figure
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          className="overflow-hidden rounded-lg bg-base-200"
+        >
+          <img
+            src={featuredImage}
+            alt={featuredImageAlt}
+            className="aspect-[16/9] h-auto w-full object-cover"
+            loading="lazy"
+          />
+        </motion.figure>
+
+        <motion.ul
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+          className={cn("grid grid-cols-1 gap-8 md:gap-10", columnsClass)}
+        >
+          {cappedLocations.map((location, index) => (
+            <motion.li
+              key={\`\${location.city}-\${index}\`}
+              variants={{
+                hidden: { opacity: 0, y: 16 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="flex flex-col gap-3 border-t border-base-300 pt-6"
+            >
+              <h3 className="text-xl font-bold tracking-tight text-base-content md:text-2xl">
+                {location.city}
+              </h3>
+              <address className="not-italic text-sm leading-relaxed text-base-content/70 md:text-base">
+                {location.address}
+              </address>
+              <dl className="flex flex-col gap-2 text-sm text-base-content/70 md:text-base">
+                {location.phone && (
+                  <div className="flex flex-col">
+                    <dt className="text-xs font-semibold uppercase tracking-wider text-base-content/40">
+                      Phone
+                    </dt>
+                    <dd className="mt-0.5">
+                      <a
+                        href={\`tel:\${location.phone.replace(/\\s+/g, "")}\`}
+                        className="transition-colors hover:text-primary"
+                      >
+                        {location.phone}
+                      </a>
+                    </dd>
+                  </div>
+                )}
+                {location.email && (
+                  <div className="flex flex-col">
+                    <dt className="text-xs font-semibold uppercase tracking-wider text-base-content/40">
+                      Email
+                    </dt>
+                    <dd className="mt-0.5 break-words">
+                      <a
+                        href={\`mailto:\${location.email}\`}
+                        className="transition-colors hover:text-primary"
+                      >
+                        {location.email}
+                      </a>
+                    </dd>
+                  </div>
+                )}
+                {location.hours && (
+                  <div className="flex flex-col">
+                    <dt className="text-xs font-semibold uppercase tracking-wider text-base-content/40">
+                      Hours
+                    </dt>
+                    <dd className="mt-0.5">{location.hours}</dd>
+                  </div>
+                )}
+              </dl>
+            </motion.li>
+          ))}
+        </motion.ul>
+
+        {mapEmbedUrl && (
+          <motion.div
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="overflow-hidden rounded-lg border border-base-300 bg-base-200"
+          >
             <iframe
               src={mapEmbedUrl}
-              className="h-full w-full border-0"
+              title="Map of locations"
               loading="lazy"
-              title="Mapa"
+              className="aspect-[16/9] w-full border-0"
             />
-          ) : (
-            <div className="flex h-full items-center justify-center opacity-40">
-              Mapa
+          </motion.div>
+        )}
+      </div>
+    </section>
+  );
+}
+`,
+  "src/components/contact/ContactShapesForm/index.tsx": `"use client";
+
+import { motion, useReducedMotion } from "motion/react";
+import { cn } from "@/lib/utils";
+import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
+import { Highlighter } from "@/lib/ui/text-decorations/Highlighter";
+import { TextReveal } from "@/lib/ui/text-decorations/TextReveal";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@/lib/ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@/lib/ui/backgrounds/DotPattern";
+import { StripedPattern } from "@/lib/ui/backgrounds/StripedPattern";
+import { GradientBars } from "@/lib/ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@/lib/ui/backgrounds/InteractiveGridPattern";
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+
+export interface ContactShapesFormProps {
+  /** Bold section heading shown above the body copy */
+  headline: string;
+  /** Supporting paragraph (welcome note, hours, GMT, etc.) */
+  body: string;
+  /** Optional word inside \`headline\` to wrap with the Highlighter underline. When set, the word-level TextReveal is skipped. */
+  highlightWord?: string;
+  /** Wrap the headline in a word-level TextReveal entrance. Defaults to false. Ignored when \`highlightWord\` is set. */
+  revealHeadline?: boolean;
+  /** Placeholder for the name input */
+  namePlaceholder?: string;
+  /** Placeholder for the email input */
+  emailPlaceholder?: string;
+  /** Placeholder for the message textarea */
+  messagePlaceholder?: string;
+  /** Form submit button label */
+  submitText: string;
+  /** Submit button visual variant — animated CTA style */
+  ctaStyle?: CtaVariant;
+  /** Submit button color scheme — maps to design-token color families */
+  ctaColorScheme?: ColorScheme;
+  /** Google Maps embed URL — when provided, renders an interactive map */
+  mapEmbedUrl?: string;
+  /** Static map image URL — fallback when no embed URL is given */
+  mapImageUrl?: string;
+  /** Alt text for the static map image */
+  mapImageAlt?: string;
+  /** Optional pin label rendered as a floating card over the map */
+  locationLabel?: string;
+  /** Optional pin sub-label (address line shown under the label) */
+  locationAddress?: string;
+  /** Optional motif-echo background rendered behind the decorative shapes */
+  backgroundVariant?: string;
+  className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
+}
+
+function renderHighlightedHeadline(
+  headline: string,
+  highlightWord: string,
+  scheme: ColorScheme,
+) {
+  const idx = headline.toLowerCase().indexOf(highlightWord.toLowerCase());
+  if (idx === -1) return headline;
+  const before = headline.slice(0, idx);
+  const match = headline.slice(idx, idx + highlightWord.length);
+  const after = headline.slice(idx + highlightWord.length);
+  return (
+    <>
+      {before}
+      <Highlighter action="underline" colorScheme={scheme} triggerOnView>
+        {match}
+      </Highlighter>
+      {after}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Component                                                          */
+/* ------------------------------------------------------------------ */
+
+export default function ContactShapesForm({
+  headline,
+  body,
+  highlightWord,
+  revealHeadline = false,
+  namePlaceholder = "Enter your name",
+  emailPlaceholder = "Enter a valid email address",
+  messagePlaceholder = "Enter your message",
+  submitText,
+  ctaStyle = "default",
+  ctaColorScheme = "primary",
+  mapEmbedUrl,
+  mapImageUrl,
+  mapImageAlt,
+  locationLabel,
+  locationAddress,
+  backgroundVariant,
+  className,
+}: ContactShapesFormProps) {
+  const prefersReducedMotion = useReducedMotion();
+
+  const reveal = prefersReducedMotion
+    ? { initial: false }
+    : {
+        initial: { opacity: 0, y: 16 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, margin: "-100px" },
+        transition: { duration: 0.3, ease: "easeOut" as const },
+      };
+
+  const shapeReveal = prefersReducedMotion
+    ? { initial: false }
+    : {
+        initial: { opacity: 0, scale: 0.96 },
+        whileInView: { opacity: 1, scale: 1 },
+        viewport: { once: true, margin: "-100px" },
+        transition: { duration: 0.3, ease: "easeOut" as const },
+      };
+
+  const useHighlighter = Boolean(highlightWord);
+  const useTextReveal =
+    !useHighlighter && revealHeadline && !prefersReducedMotion;
+
+  return (
+    <section
+      className={cn(
+        "relative isolate w-full overflow-hidden bg-base-100 px-4 py-12 md:px-8 md:py-16 lg:px-12 lg:py-24",
+        className,
+      )}
+    >
+      {/* Motif-echo layer (behind the decorative shapes) */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
+      {/* Decorative shapes layer */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <motion.div
+          {...shapeReveal}
+          className="absolute right-0 top-12 hidden h-[55%] w-1/2 rounded-l-lg bg-base-200 lg:block"
+        />
+        <motion.div
+          {...shapeReveal}
+          transition={{ duration: 0.3, ease: "easeOut", delay: 0.05 }}
+          className="absolute bottom-16 right-12 hidden h-40 w-40 rounded-lg bg-base-300/60 lg:block"
+        />
+        <motion.div
+          {...shapeReveal}
+          className="absolute left-0 right-0 top-0 h-48 bg-base-200 lg:hidden"
+        />
+      </div>
+
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
+        {/* Left column — heading, body, form */}
+        <motion.div {...reveal} className="flex flex-col">
+          <h2 className="text-4xl font-bold leading-tight tracking-tight text-base-content md:text-5xl">
+            {useHighlighter ? (
+              renderHighlightedHeadline(
+                headline,
+                highlightWord as string,
+                ctaColorScheme,
+              )
+            ) : useTextReveal ? (
+              <TextReveal split="word" triggerOnView>
+                {headline}
+              </TextReveal>
+            ) : (
+              headline
+            )}
+          </h2>
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-base-content/70 md:text-lg">
+            {body}
+          </p>
+
+          <form
+            className="mt-10 flex flex-col gap-4"
+            onSubmit={(event) => event.preventDefault()}
+          >
+            <label className="sr-only" htmlFor="contact-shapes-name">
+              {namePlaceholder}
+            </label>
+            <input
+              id="contact-shapes-name"
+              name="name"
+              type="text"
+              required
+              placeholder={namePlaceholder}
+              className="w-full rounded-field border border-base-300 bg-base-100 px-4 py-3 text-base-content placeholder:text-base-content/40 focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+
+            <label className="sr-only" htmlFor="contact-shapes-email">
+              {emailPlaceholder}
+            </label>
+            <input
+              id="contact-shapes-email"
+              name="email"
+              type="email"
+              required
+              placeholder={emailPlaceholder}
+              className="w-full rounded-field border border-base-300 bg-base-100 px-4 py-3 text-base-content placeholder:text-base-content/40 focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+
+            <label className="sr-only" htmlFor="contact-shapes-message">
+              {messagePlaceholder}
+            </label>
+            <textarea
+              id="contact-shapes-message"
+              name="message"
+              required
+              rows={5}
+              placeholder={messagePlaceholder}
+              className="w-full resize-y rounded-field border border-base-300 bg-base-100 px-4 py-3 text-base-content placeholder:text-base-content/40 focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+
+            <div className="mt-2 self-start">
+              <CtaButton
+                variant={ctaStyle}
+                colorScheme={ctaColorScheme}
+                onClick={(event) => event.preventDefault()}
+              >
+                {submitText}
+              </CtaButton>
             </div>
+          </form>
+        </motion.div>
+
+        {/* Right column — map */}
+        <motion.div
+          {...reveal}
+          transition={{ duration: 0.3, ease: "easeOut", delay: 0.1 }}
+          className="relative min-h-[320px] lg:min-h-[480px]"
+        >
+          <div className="relative h-full w-full overflow-hidden rounded-lg border border-base-300 bg-base-200 shadow-sm">
+            {mapEmbedUrl ? (
+              <iframe
+                src={mapEmbedUrl}
+                title={mapImageAlt ?? locationLabel ?? "Location map"}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="absolute inset-0 h-full w-full border-0"
+              />
+            ) : mapImageUrl ? (
+              <img
+                src={mapImageUrl}
+                alt={mapImageAlt ?? locationLabel ?? "Location map"}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-sm text-base-content/40">
+                Map preview unavailable
+              </div>
+            )}
+
+            {locationLabel && (
+              <div className="absolute left-4 top-4 max-w-[70%] rounded-lg bg-base-100 px-4 py-3 shadow-md">
+                <p className="text-sm font-semibold text-base-content">
+                  {locationLabel}
+                </p>
+                {locationAddress && (
+                  <p className="mt-1 text-xs text-base-content/60">
+                    {locationAddress}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+`,
+  "src/components/cta/CtaCollageDuo/index.tsx": `"use client";
+
+import { motion, useReducedMotion } from "motion/react";
+import { cn } from "@/lib/utils";
+import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
+import { Highlighter } from "@/lib/ui/text-decorations/Highlighter";
+import { TextReveal } from "@/lib/ui/text-decorations/TextReveal";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@/lib/ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@/lib/ui/backgrounds/DotPattern";
+import { StripedPattern } from "@/lib/ui/backgrounds/StripedPattern";
+import { GradientBars } from "@/lib/ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@/lib/ui/backgrounds/InteractiveGridPattern";
+
+export interface CtaCollageDuoProps {
+  /** Bold uppercase headline rendered in the brand primary color. */
+  headline: string;
+  /** Supporting body copy beneath the headline. */
+  body: string;
+  /** Primary CTA label. */
+  ctaText: string;
+  /** Primary CTA destination URL. */
+  ctaUrl?: string;
+  /** Primary CTA visual variant. */
+  ctaStyle?: CtaVariant;
+  /** Primary CTA color scheme. */
+  ctaColorScheme?: ColorScheme;
+  /** Foreground image (3:4 portrait) — anchors the top of the collage. */
+  primaryImage: string;
+  /** Alt text for the primary image. */
+  primaryImageAlt: string;
+  /** Secondary image (4:3 landscape) — overlaps the primary image bottom-right. */
+  secondaryImage: string;
+  /** Alt text for the secondary image. */
+  secondaryImageAlt: string;
+  /** Optional attribution prefix shown below the body (e.g. "Images from"). */
+  attributionText?: string;
+  /** Optional attribution link label (e.g. "Freepik"). */
+  attributionLinkText?: string;
+  /** Optional attribution destination URL. */
+  attributionUrl?: string;
+  /** Optional word in the headline to wrap in a Highlighter underline. */
+  highlightWord?: string;
+  /** Wrap the headline in a TextReveal word-by-word entrance. Default off. */
+  revealHeadline?: boolean;
+  /** Optional motif-echo background rendered behind the section content */
+  backgroundVariant?: string;
+  className?: string;
+}
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
+}
+
+function renderHeadline(headline: string, highlightWord?: string) {
+  if (!highlightWord) return headline;
+  const idx = headline.toLowerCase().indexOf(highlightWord.toLowerCase());
+  if (idx === -1) return headline;
+  const before = headline.slice(0, idx);
+  const match = headline.slice(idx, idx + highlightWord.length);
+  const after = headline.slice(idx + highlightWord.length);
+  return (
+    <>
+      {before}
+      <Highlighter action="underline" color="hsl(var(--primary))">
+        {match}
+      </Highlighter>
+      {after}
+    </>
+  );
+}
+
+export default function CtaCollageDuo({
+  headline,
+  body,
+  ctaText,
+  ctaUrl,
+  ctaStyle = "default",
+  ctaColorScheme = "primary",
+  primaryImage,
+  primaryImageAlt,
+  secondaryImage,
+  secondaryImageAlt,
+  attributionText,
+  attributionLinkText,
+  attributionUrl,
+  highlightWord,
+  revealHeadline = false,
+  backgroundVariant,
+  className,
+}: CtaCollageDuoProps) {
+  const prefersReducedMotion = useReducedMotion();
+
+  const fadeUp = {
+    initial: prefersReducedMotion ? false : { opacity: 0, y: 16 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-100px" },
+    transition: { duration: 0.3, ease: "easeOut" as const },
+  };
+
+  const headlineNode = renderHeadline(headline, highlightWord);
+
+  return (
+    <section
+      className={cn(
+        "relative isolate w-full overflow-hidden bg-neutral text-neutral-content py-12 md:py-16 lg:py-24",
+        className,
+      )}
+    >
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
+      <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-10 px-4 md:px-8 lg:grid-cols-12 lg:gap-12 lg:px-12">
+        {/* Left column: paired collage of two images */}
+        <div className="relative lg:col-span-6">
+          <motion.div
+            {...fadeUp}
+            className="relative w-full overflow-hidden rounded-lg shadow-lg"
+          >
+            <img
+              src={primaryImage}
+              alt={primaryImageAlt}
+              className="h-full w-full object-cover"
+              style={{ aspectRatio: "3 / 4" }}
+              loading="lazy"
+            />
+          </motion.div>
+
+          <motion.div
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.3, ease: "easeOut", delay: 0.1 }}
+            className={cn(
+              "relative -mt-12 ml-auto w-[80%] overflow-hidden rounded-lg shadow-xl",
+              "md:-mt-16 md:w-[70%]",
+              "lg:absolute lg:-bottom-12 lg:-right-8 lg:mt-0 lg:w-[68%]",
+            )}
+          >
+            <img
+              src={secondaryImage}
+              alt={secondaryImageAlt}
+              className="h-full w-full object-cover"
+              style={{ aspectRatio: "4 / 3" }}
+              loading="lazy"
+            />
+          </motion.div>
+        </div>
+
+        {/* Right column: headline, body, CTA, attribution */}
+        <div className="flex flex-col gap-6 lg:col-span-6 lg:pt-6">
+          <motion.h2
+            {...fadeUp}
+            className="font-sans text-4xl font-bold uppercase leading-tight tracking-tight text-primary md:text-5xl lg:text-6xl"
+          >
+            {revealHeadline && !prefersReducedMotion ? (
+              <TextReveal split="word">{headline}</TextReveal>
+            ) : (
+              headlineNode
+            )}
+          </motion.h2>
+
+          <motion.p
+            {...fadeUp}
+            className="max-w-xl text-base text-neutral-content/80 md:text-lg"
+          >
+            {body}
+          </motion.p>
+
+          {(attributionText || attributionLinkText) && (
+            <motion.p
+              {...fadeUp}
+              className="text-sm italic text-neutral-content/60 md:text-base"
+            >
+              {attributionText}
+              {attributionText && attributionLinkText ? " " : null}
+              {attributionLinkText && (
+                <a
+                  href={attributionUrl ?? "#"}
+                  className="font-semibold text-primary underline-offset-4 transition-colors hover:underline"
+                  target={attributionUrl ? "_blank" : undefined}
+                  rel={attributionUrl ? "noopener noreferrer" : undefined}
+                >
+                  {attributionLinkText}
+                </a>
+              )}
+            </motion.p>
           )}
+
+          <motion.div
+            {...fadeUp}
+            className="flex flex-wrap items-center gap-4 pt-2"
+          >
+            <CtaButton
+              variant={ctaStyle}
+              colorScheme={ctaColorScheme}
+              href={ctaUrl}
+            >
+              {ctaText}
+            </CtaButton>
+          </motion.div>
         </div>
       </div>
     </section>
   );
 }
 `,
-  "src/components/cta/CtaBanner/index.tsx": `"use client";
+  "src/components/cta/CtaEditorialSplit/index.tsx": `"use client";
 
+import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import {
   CtaButton,
@@ -745,194 +1608,460 @@ import {
   type ColorScheme,
   buttonStyles,
 } from "@/lib/ui/button";
+import { Highlighter } from "@/lib/ui/text-decorations/Highlighter";
+import { TextReveal } from "@/lib/ui/text-decorations/TextReveal";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@/lib/ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@/lib/ui/backgrounds/DotPattern";
+import { StripedPattern } from "@/lib/ui/backgrounds/StripedPattern";
+import { GradientBars } from "@/lib/ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@/lib/ui/backgrounds/InteractiveGridPattern";
 
-/* ------------------------------------------------------------------ */
-/*  Types                                                              */
-/* ------------------------------------------------------------------ */
-
-export interface CtaBannerProps {
-  /** Main headline text */
+export interface CtaEditorialSplitProps {
+  /** Bold callout block text (uppercase headline placed over the primary image). */
+  eyebrowCallout: string;
+  /** Editorial subheadline rendered next to the secondary image. */
   headline: string;
-  /** Supporting text below the headline */
-  subheadline?: string;
-  /** Primary CTA button text */
+  /** Supporting body copy beneath the headline. */
+  body: string;
+  /** Primary CTA label. */
   ctaText: string;
-  /** Primary CTA button URL */
+  /** Primary CTA destination URL. */
   ctaUrl?: string;
-  /** CTA button style */
+  /** Primary CTA visual variant. */
   ctaStyle?: CtaVariant;
-  /** CTA color scheme */
+  /** Primary CTA color scheme. */
   ctaColorScheme?: ColorScheme;
-  /** Secondary CTA button text */
+  /** Optional secondary CTA label (rendered as outline link). */
   secondaryCtaText?: string;
-  /** Secondary CTA button URL */
+  /** Optional secondary CTA destination URL. */
   secondaryCtaUrl?: string;
+  /** Foreground image (3:4 portrait) — appears beneath the callout block. */
+  primaryImage: string;
+  /** Alt text for the primary image. */
+  primaryImageAlt: string;
+  /** Side image (4:5) — appears next to the headline column. */
+  secondaryImage: string;
+  /** Alt text for the secondary image. */
+  secondaryImageAlt: string;
+  /** Optional word in the headline to wrap in a Highlighter underline. */
+  highlightWord?: string;
+  /** Wrap the headline in a TextReveal word-by-word entrance. Default off. */
+  revealHeadline?: boolean;
+  /** Optional motif-echo background rendered behind the section content */
+  backgroundVariant?: string;
   className?: string;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
+}
 
-export default function CtaBanner({
+function renderHeadline(headline: string, highlightWord?: string) {
+  if (!highlightWord) return headline;
+  const idx = headline.toLowerCase().indexOf(highlightWord.toLowerCase());
+  if (idx === -1) return headline;
+  const before = headline.slice(0, idx);
+  const match = headline.slice(idx, idx + highlightWord.length);
+  const after = headline.slice(idx + highlightWord.length);
+  return (
+    <>
+      {before}
+      <Highlighter action="underline" color="hsl(var(--primary))">
+        {match}
+      </Highlighter>
+      {after}
+    </>
+  );
+}
+
+export default function CtaEditorialSplit({
+  eyebrowCallout,
   headline,
-  subheadline,
+  body,
   ctaText,
   ctaUrl,
   ctaStyle = "default",
   ctaColorScheme = "primary",
   secondaryCtaText,
   secondaryCtaUrl,
+  primaryImage,
+  primaryImageAlt,
+  secondaryImage,
+  secondaryImageAlt,
+  highlightWord,
+  revealHeadline = false,
+  backgroundVariant,
   className,
-}: CtaBannerProps) {
+}: CtaEditorialSplitProps) {
+  const prefersReducedMotion = useReducedMotion();
+
+  const fadeUp = {
+    initial: prefersReducedMotion ? false : { opacity: 0, y: 16 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-100px" },
+    transition: { duration: 0.3, ease: "easeOut" as const },
+  };
+
+  const headlineNode = renderHeadline(headline, highlightWord);
+
   return (
     <section
       className={cn(
-        "relative w-full overflow-hidden py-20 md:py-28",
+        "relative isolate w-full overflow-hidden bg-base-100 py-12 md:py-16 lg:py-24",
         className,
       )}
     >
-      <div className="mx-auto max-w-4xl px-6 text-center">
-        <h2 className="text-3xl font-bold tracking-tight md:text-5xl">
-          {headline}
-        </h2>
-        {subheadline && (
-          <p className="mt-4 text-lg opacity-70">{subheadline}</p>
-        )}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-          <CtaButton
-            variant={ctaStyle}
-            colorScheme={ctaColorScheme}
-            href={ctaUrl}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 md:px-8 lg:grid-cols-12 lg:gap-12 lg:px-12">
+        {/* Left column: portrait image + headline + body + CTAs */}
+        <div className="flex flex-col gap-8 lg:col-span-6">
+          <motion.div
+            {...fadeUp}
+            className="relative w-full overflow-hidden rounded-lg"
           >
-            {ctaText}
-          </CtaButton>
-          {secondaryCtaText && secondaryCtaUrl && (
-            <a
-              href={secondaryCtaUrl}
-              className={buttonStyles({ variant: "outline" })}
-            >
-              {secondaryCtaText}
-            </a>
-          )}
+            <img
+              src={primaryImage}
+              alt={primaryImageAlt}
+              className="h-full w-full object-cover"
+              style={{ aspectRatio: "3 / 4" }}
+              loading="lazy"
+            />
+          </motion.div>
+
+          <motion.div {...fadeUp} className="flex flex-col gap-6">
+            <h2 className="font-serif text-3xl font-bold leading-tight text-base-content md:text-4xl lg:text-5xl">
+              {revealHeadline && !prefersReducedMotion ? (
+                <TextReveal split="word">{headline}</TextReveal>
+              ) : (
+                headlineNode
+              )}
+            </h2>
+            <p className="max-w-xl text-base text-base-content/70 md:text-lg">
+              {body}
+            </p>
+            <div className="flex flex-wrap items-center gap-4">
+              <CtaButton
+                variant={ctaStyle}
+                colorScheme={ctaColorScheme}
+                href={ctaUrl}
+              >
+                {ctaText}
+              </CtaButton>
+              {secondaryCtaText && (
+                <a
+                  href={secondaryCtaUrl ?? "#"}
+                  className={buttonStyles({ variant: "outline" })}
+                >
+                  {secondaryCtaText}
+                </a>
+              )}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Right column: tall image with overlaid callout block */}
+        <div className="relative lg:col-span-6">
+          <motion.div
+            {...fadeUp}
+            className="relative w-full overflow-hidden rounded-lg"
+          >
+            <img
+              src={secondaryImage}
+              alt={secondaryImageAlt}
+              className="h-full w-full object-cover"
+              style={{ aspectRatio: "4 / 5" }}
+              loading="lazy"
+            />
+          </motion.div>
+
+          <motion.div
+            initial={prefersReducedMotion ? false : { opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.3, ease: "easeOut", delay: 0.1 }}
+            className={cn(
+              "relative -mt-12 ml-auto w-[88%] bg-neutral px-6 py-6 text-neutral-content shadow-lg",
+              "md:absolute md:top-12 md:-left-10 md:mt-0 md:w-[70%] md:px-10 md:py-8",
+              "lg:top-16 lg:-left-16 lg:w-[78%] lg:px-12 lg:py-10",
+            )}
+          >
+            <p className="font-sans text-2xl font-bold uppercase tracking-tight md:text-3xl lg:text-4xl">
+              {eyebrowCallout}
+            </p>
+          </motion.div>
         </div>
       </div>
     </section>
   );
 }
 `,
-  "src/components/cta/CtaFloating/index.tsx": `"use client";
+  "src/components/cta/CtaImageBackdrop/index.tsx": `"use client";
 
+import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
+import { Highlighter } from "@/lib/ui/text-decorations/Highlighter";
+import { TextReveal } from "@/lib/ui/text-decorations/TextReveal";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@/lib/ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@/lib/ui/backgrounds/DotPattern";
+import { StripedPattern } from "@/lib/ui/backgrounds/StripedPattern";
+import { GradientBars } from "@/lib/ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@/lib/ui/backgrounds/InteractiveGridPattern";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
-export interface CtaFloatingProps {
-  /** CTA button text */
-  ctaText: string;
-  /** CTA button URL */
+export interface CtaImageBackdropProps {
+  /**
+   * Lead-in copy printed above the display word. Use \`\\n\` to insert a
+   * line break — the reference reads "Nosso propósito é\\ntransformar o
+   * seu jeito de" across two lines.
+   */
+  eyebrow: string;
+  /**
+   * Oversized italic punchline rendered beneath the eyebrow (e.g.
+   * "viver bem."). This is the visual centerpiece of the section.
+   */
+  displayWord: string;
+  /** Supporting body copy beneath the display word. */
+  body: string;
+  /** Full-bleed background image URL. */
+  backgroundImage: string;
+  /** Alt text for the background image (used by screen readers via aria-label). */
+  backgroundImageAlt: string;
+  /** Optional CTA label. When omitted, the section renders without a button. */
+  ctaText?: string;
   ctaUrl?: string;
-  /** CTA button style */
   ctaStyle?: CtaVariant;
-  /** CTA color scheme */
   ctaColorScheme?: ColorScheme;
-  /** Position on screen */
-  position?: "bottom-right" | "bottom-center" | "bottom-left";
+  /**
+   * Dark overlay opacity (0–100). Higher = more contrast for the white
+   * text. Defaults to 35 — enough to keep typography legible without
+   * crushing the image.
+   */
+  overlayOpacity?: number;
+  /**
+   * When true, the backdrop uses \`bg-fixed\` so the image stays in place
+   * while the section scrolls (subtle parallax). Defaults to true.
+   */
+  parallax?: boolean;
+  /** Content alignment. Defaults to "left" to match the reference layout. */
+  align?: "left" | "center";
+  /** Minimum viewport height of the section. Defaults to "80vh". */
+  minHeight?: string;
+  /** Optional word in the eyebrow to wrap with a Highlighter underline. */
+  highlightWord?: string;
+  /** Wrap the display word in a TextReveal entrance. Defaults to true. */
+  revealDisplayWord?: boolean;
+  /** Optional motif-echo background rendered behind the image backdrop */
+  backgroundVariant?: string;
   className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
+}
+
+function renderEyebrow(eyebrow: string, highlightWord?: string) {
+  // Split on \\n so the user can stack lines deliberately like the reference.
+  const lines = eyebrow.split("\\n");
+  return lines.map((line, i) => {
+    let node: React.ReactNode = line;
+    if (highlightWord) {
+      const idx = line.toLowerCase().indexOf(highlightWord.toLowerCase());
+      if (idx !== -1) {
+        const before = line.slice(0, idx);
+        const match = line.slice(idx, idx + highlightWord.length);
+        const after = line.slice(idx + highlightWord.length);
+        node = (
+          <>
+            {before}
+            <Highlighter action="underline" color="hsl(var(--primary))">
+              {match}
+            </Highlighter>
+            {after}
+          </>
+        );
+      }
+    }
+    return (
+      <span key={i} className="block">
+        {node}
+      </span>
+    );
+  });
 }
 
 /* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
-const positionClasses = {
-  "bottom-right": "bottom-6 right-6",
-  "bottom-center": "bottom-6 left-1/2 -translate-x-1/2",
-  "bottom-left": "bottom-6 left-6",
-} as const;
-
-export default function CtaFloating({
+export default function CtaImageBackdrop({
+  eyebrow,
+  displayWord,
+  body,
+  backgroundImage,
+  backgroundImageAlt,
   ctaText,
   ctaUrl,
   ctaStyle = "default",
   ctaColorScheme = "primary",
-  position = "bottom-right",
+  overlayOpacity = 35,
+  parallax = true,
+  align = "left",
+  minHeight = "80vh",
+  highlightWord,
+  revealDisplayWord = true,
+  backgroundVariant,
   className,
-}: CtaFloatingProps) {
-  return (
-    <div className={cn("fixed z-50", positionClasses[position], className)}>
-      <CtaButton variant={ctaStyle} colorScheme={ctaColorScheme} href={ctaUrl}>
-        {ctaText}
-      </CtaButton>
-    </div>
-  );
-}
-`,
-  "src/components/cta/CtaInline/index.tsx": `"use client";
+}: CtaImageBackdropProps) {
+  const prefersReducedMotion = useReducedMotion();
 
-import { cn } from "@/lib/utils";
-import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
+  const fadeUp = {
+    initial: prefersReducedMotion ? false : { opacity: 0, y: 16 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-100px" },
+    transition: { duration: 0.3, ease: "easeOut" as const },
+  };
 
-/* ------------------------------------------------------------------ */
-/*  Types                                                              */
-/* ------------------------------------------------------------------ */
+  // Clamp overlay opacity into [0, 100] and convert to a 0–1 range for
+  // inline rgba styling. We drive this via inline style because Tailwind
+  // doesn't support arbitrary opacity values dynamically.
+  const safeOverlay = Math.max(0, Math.min(100, overlayOpacity)) / 100;
 
-export interface CtaInlineProps {
-  /** Main headline text */
-  headline: string;
-  /** Supporting text beside or below the headline */
-  description?: string;
-  /** CTA button text */
-  ctaText: string;
-  /** CTA button URL */
-  ctaUrl?: string;
-  /** CTA button style */
-  ctaStyle?: CtaVariant;
-  /** CTA color scheme */
-  ctaColorScheme?: ColorScheme;
-  className?: string;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
-
-export default function CtaInline({
-  headline,
-  description,
-  ctaText,
-  ctaUrl,
-  ctaStyle = "default",
-  ctaColorScheme = "primary",
-  className,
-}: CtaInlineProps) {
   return (
     <section
       className={cn(
-        "relative w-full overflow-hidden py-16 md:py-20",
+        "relative isolate w-full overflow-hidden text-neutral-content",
         className,
       )}
+      style={{ minHeight }}
     >
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-6 md:flex-row">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
-            {headline}
-          </h2>
-          {description && (
-            <p className="mt-2 text-base opacity-70">{description}</p>
+      {/* Motif-echo layer (behind the image backdrop) */}
+      <div className="pointer-events-none absolute inset-0 -z-20">
+        {renderMotif(backgroundVariant)}
+      </div>
+      {/* Background image layer */}
+      <div
+        aria-label={backgroundImageAlt}
+        role="img"
+        className={cn(
+          "absolute inset-0 -z-10 bg-cover bg-center",
+          parallax && "bg-fixed",
+        )}
+        style={{ backgroundImage: \`url('\${backgroundImage}')\` }}
+      >
+        {/* Darkening overlay — keeps the white text legible regardless
+            of how busy the underlying photograph is. */}
+        <div
+          className="absolute inset-0 bg-neutral"
+          style={{ opacity: safeOverlay }}
+        />
+      </div>
+
+      {/* Content */}
+      <div className="relative flex w-full items-center" style={{ minHeight }}>
+        <div
+          className={cn(
+            "mx-auto w-full max-w-[96rem] px-4 py-16 md:px-8 md:py-24 lg:px-12",
+            align === "center" && "text-center",
           )}
-        </div>
-        <CtaButton
-          variant={ctaStyle}
-          colorScheme={ctaColorScheme}
-          href={ctaUrl}
-          className="shrink-0"
         >
-          {ctaText}
-        </CtaButton>
+          <motion.div
+            {...fadeUp}
+            className={cn(
+              "flex max-w-xl flex-col gap-4 md:max-w-2xl lg:max-w-3xl",
+              align === "center" && "mx-auto items-center",
+            )}
+          >
+            <p
+              className={cn(
+                "font-serif italic font-medium leading-[1.05] text-neutral-content",
+                "text-3xl md:text-4xl lg:text-5xl",
+              )}
+            >
+              {renderEyebrow(eyebrow, highlightWord)}
+            </p>
+
+            <h2
+              className={cn(
+                "font-serif italic font-medium leading-[0.9] text-neutral-content",
+                "text-6xl md:text-8xl lg:text-[8.25rem]",
+              )}
+            >
+              {revealDisplayWord && !prefersReducedMotion ? (
+                <TextReveal split="word">{displayWord}</TextReveal>
+              ) : (
+                displayWord
+              )}
+            </h2>
+
+            <p
+              className={cn(
+                "mt-4 max-w-md text-base leading-relaxed text-neutral-content/90 md:text-lg",
+                align === "center" && "mx-auto",
+              )}
+            >
+              {body}
+            </p>
+
+            {ctaText && (
+              <div
+                className={cn(
+                  "mt-6 flex flex-wrap gap-4",
+                  align === "center" && "justify-center",
+                )}
+              >
+                <CtaButton
+                  variant={ctaStyle}
+                  colorScheme={ctaColorScheme}
+                  href={ctaUrl}
+                >
+                  {ctaText}
+                </CtaButton>
+              </div>
+            )}
+          </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -1948,6 +3077,324 @@ export default function FooterReveal({
         </div>
       </div>
     </footer>
+  );
+}
+`,
+  "src/components/heroes/HeroBoldEditorial/index.tsx": `"use client";
+
+import { motion, useReducedMotion } from "motion/react";
+import { cn } from "@/lib/utils";
+import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
+import { Highlighter } from "@/lib/ui/text-decorations/Highlighter";
+import { TextReveal } from "@/lib/ui/text-decorations/TextReveal";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@/lib/ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@/lib/ui/backgrounds/DotPattern";
+import { StripedPattern } from "@/lib/ui/backgrounds/StripedPattern";
+import { GradientBars } from "@/lib/ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@/lib/ui/backgrounds/InteractiveGridPattern";
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+
+export interface HeroBoldEditorialProps {
+  /** Small intro sentence printed above the display headline */
+  eyebrow?: string;
+  /** Main display headline — rendered with an oversized serif face */
+  headline: string;
+  /** Word inside \`headline\` to wrap with the Highlighter underline. When set, the word-level TextReveal is skipped. */
+  highlightWord?: string;
+  /** Wrap the headline in a word-level TextReveal. Defaults to true. Ignored when \`highlightWord\` is set. */
+  revealHeadline?: boolean;
+  /** Tall portrait image displayed inside the colored accent column */
+  primaryImage: string;
+  primaryImageAlt: string;
+  /** Italic serif word/phrase laid over the primary image (e.g. "good ideas") */
+  primaryImageOverlayText?: string;
+  /** Optional secondary image floated to the bottom-right of the headline column */
+  accentImage?: string;
+  accentImageAlt?: string;
+  /** Primary CTA — when omitted, the section renders headline-only */
+  ctaText?: string;
+  ctaUrl?: string;
+  ctaStyle?: CtaVariant;
+  ctaColorScheme?: ColorScheme;
+  secondaryCtaText?: string;
+  secondaryCtaUrl?: string;
+  secondaryCtaStyle?: CtaVariant;
+  secondaryCtaColorScheme?: ColorScheme;
+  /** Token used for the colored accent column — defaults to "primary" */
+  accentColorScheme?: ColorScheme;
+  /** Optional motif-echo background rendered behind the section content */
+  backgroundVariant?: string;
+  className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Motif renderer                                                     */
+/* ------------------------------------------------------------------ */
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+const ACCENT_BG: Record<ColorScheme, string> = {
+  primary: "bg-primary",
+  secondary: "bg-secondary",
+  accent: "bg-accent",
+  neutral: "bg-neutral",
+};
+
+const ACCENT_CONTENT: Record<ColorScheme, string> = {
+  primary: "text-primary-content",
+  secondary: "text-secondary-content",
+  accent: "text-accent-content",
+  neutral: "text-neutral-content",
+};
+
+function renderHighlightedHeadline(
+  headline: string,
+  highlightWord: string,
+  scheme: ColorScheme,
+) {
+  const idx = headline.toLowerCase().indexOf(highlightWord.toLowerCase());
+  if (idx === -1) return headline;
+  const before = headline.slice(0, idx);
+  const match = headline.slice(idx, idx + highlightWord.length);
+  const after = headline.slice(idx + highlightWord.length);
+  return (
+    <>
+      {before}
+      <Highlighter action="underline" colorScheme={scheme} triggerOnView>
+        {match}
+      </Highlighter>
+      {after}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Animations                                                         */
+/* ------------------------------------------------------------------ */
+
+const container = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.3, ease: "easeOut" as const },
+  },
+};
+
+const imageReveal = {
+  hidden: { opacity: 0, scale: 0.96 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.4, ease: "easeOut" as const },
+  },
+};
+
+const overlayReveal = {
+  hidden: { opacity: 0, y: 12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.3, ease: "easeOut" as const, delay: 0.3 },
+  },
+};
+
+const accentImageReveal = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.35, ease: "easeOut" as const, delay: 0.25 },
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/*  Component                                                          */
+/* ------------------------------------------------------------------ */
+
+export default function HeroBoldEditorial({
+  eyebrow,
+  headline,
+  highlightWord,
+  revealHeadline = true,
+  primaryImage,
+  primaryImageAlt,
+  primaryImageOverlayText,
+  accentImage,
+  accentImageAlt,
+  ctaText,
+  ctaUrl,
+  ctaStyle = "default",
+  ctaColorScheme = "neutral",
+  secondaryCtaText,
+  secondaryCtaUrl,
+  secondaryCtaStyle = "drawOutline",
+  secondaryCtaColorScheme = "neutral",
+  accentColorScheme = "primary",
+  backgroundVariant,
+  className,
+}: HeroBoldEditorialProps) {
+  const prefersReducedMotion = useReducedMotion();
+  const accentBg = ACCENT_BG[accentColorScheme];
+  const accentContent = ACCENT_CONTENT[accentColorScheme];
+
+  const useHighlighter = Boolean(highlightWord);
+  const useTextReveal =
+    !useHighlighter && revealHeadline && !prefersReducedMotion;
+
+  return (
+    <section
+      className={cn(
+        "relative isolate w-full overflow-hidden bg-base-100",
+        className,
+      )}
+    >
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
+      <div className="relative grid min-h-[640px] w-full grid-cols-1 lg:min-h-[720px] lg:grid-cols-12">
+        {/* -- Accent column with primary image -- */}
+        <motion.div
+          variants={container}
+          initial={prefersReducedMotion ? false : "hidden"}
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className={cn(
+            "relative flex items-center justify-center px-6 py-16 md:px-10 lg:col-span-5 lg:px-14 lg:py-24",
+            accentBg,
+            accentContent,
+          )}
+        >
+          <motion.div
+            variants={imageReveal}
+            className="relative aspect-[3/4] w-full max-w-sm overflow-hidden"
+          >
+            <img
+              src={primaryImage}
+              alt={primaryImageAlt}
+              className="h-full w-full object-cover grayscale"
+              loading="eager"
+            />
+
+            {primaryImageOverlayText && (
+              <motion.span
+                variants={overlayReveal}
+                className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 px-4 text-center font-serif text-3xl italic leading-none drop-shadow-md md:text-4xl"
+              >
+                {primaryImageOverlayText}
+              </motion.span>
+            )}
+          </motion.div>
+        </motion.div>
+
+        {/* -- Headline column -- */}
+        <motion.div
+          variants={container}
+          initial={prefersReducedMotion ? false : "hidden"}
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="relative flex flex-col justify-center gap-8 px-6 py-16 md:px-10 lg:col-span-7 lg:px-16 lg:py-24"
+        >
+          {eyebrow && (
+            <motion.p
+              variants={fadeUp}
+              className="max-w-md text-sm leading-relaxed text-base-content/60 md:text-base"
+            >
+              {eyebrow}
+            </motion.p>
+          )}
+
+          <motion.h1
+            variants={fadeUp}
+            className="font-serif text-5xl font-bold leading-[0.95] tracking-tight text-base-content sm:text-6xl md:text-7xl lg:text-8xl"
+          >
+            {useHighlighter ? (
+              renderHighlightedHeadline(
+                headline,
+                highlightWord as string,
+                accentColorScheme,
+              )
+            ) : useTextReveal ? (
+              <TextReveal split="word" triggerOnView>
+                {headline}
+              </TextReveal>
+            ) : (
+              headline
+            )}
+          </motion.h1>
+
+          {(ctaText || secondaryCtaText) && (
+            <motion.div variants={fadeUp} className="flex flex-wrap gap-4">
+              {ctaText && (
+                <CtaButton
+                  variant={ctaStyle}
+                  colorScheme={ctaColorScheme}
+                  href={ctaUrl}
+                >
+                  {ctaText}
+                </CtaButton>
+              )}
+              {secondaryCtaText && (
+                <CtaButton
+                  variant={secondaryCtaStyle}
+                  colorScheme={secondaryCtaColorScheme}
+                  href={secondaryCtaUrl}
+                >
+                  {secondaryCtaText}
+                </CtaButton>
+              )}
+            </motion.div>
+          )}
+
+          {accentImage && (
+            <motion.div
+              variants={accentImageReveal}
+              initial={prefersReducedMotion ? false : "hidden"}
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              className="mt-4 aspect-square w-40 self-end overflow-hidden border border-base-300 shadow-lg sm:w-48 md:w-56"
+            >
+              <img
+                src={accentImage}
+                alt={accentImageAlt ?? ""}
+                className="h-full w-full object-cover grayscale"
+                loading="lazy"
+              />
+            </motion.div>
+          )}
+        </motion.div>
+      </div>
+    </section>
   );
 }
 `,
@@ -3295,16 +4742,17 @@ import type { ComponentType } from "react";
 
 // Carousel
 export { default as CarouselCards } from "./carousel/CarouselCards";
+export { default as CarouselHorizontalScroll } from "./carousel/CarouselHorizontalScroll";
 export { default as CarouselSwipe } from "./carousel/CarouselSwipe";
 
 // Contact
-export { default as ContactForm } from "./contact/ContactForm";
-export { default as ContactMapInfo } from "./contact/ContactMapInfo";
+export { default as ContactLocationsMap } from "./contact/ContactLocationsMap";
+export { default as ContactShapesForm } from "./contact/ContactShapesForm";
 
 // CTA
-export { default as CtaBanner } from "./cta/CtaBanner";
-export { default as CtaFloating } from "./cta/CtaFloating";
-export { default as CtaInline } from "./cta/CtaInline";
+export { default as CtaCollageDuo } from "./cta/CtaCollageDuo";
+export { default as CtaEditorialSplit } from "./cta/CtaEditorialSplit";
+export { default as CtaImageBackdrop } from "./cta/CtaImageBackdrop";
 
 // FAQ
 export { default as FaqAccordion } from "./faq/FaqAccordion";
@@ -3315,6 +4763,7 @@ export { default as FaqSolutions } from "./faq/FaqSolutions";
 export { default as FooterReveal } from "./footers/FooterReveal";
 
 // Heroes
+export { default as HeroBoldEditorial } from "./heroes/HeroBoldEditorial";
 export { default as HeroGeometric } from "./heroes/HeroGeometric";
 export { default as HeroParallaxImages } from "./heroes/HeroParallaxImages";
 export { default as HeroShuffleCards } from "./heroes/HeroShuffleCards";
@@ -3323,20 +4772,22 @@ export { default as HeroSplitImage } from "./heroes/HeroSplitImage";
 // Layouts — grid
 export { default as CardGrid } from "./layouts/grid/CardGrid";
 export { default as SimpleGrid } from "./layouts/grid/SimpleGrid";
-export { default as StaggerFan } from "./layouts/grid/StaggerFan";
-
-// Layouts — scroll
-export { default as InfiniteScroll } from "./layouts/scroll/InfiniteScroll";
-export { default as ParallaxContent } from "./layouts/scroll/ParallaxContent";
-export { default as StickyCards } from "./layouts/scroll/StickyCards";
 
 // Layouts — split
 export { default as AuthorSplit } from "./layouts/split/AuthorSplit";
+export { default as EditorialFramedSplit } from "./layouts/split/EditorialFramedSplit";
 export { default as IconListSplit } from "./layouts/split/IconListSplit";
 export { default as ImageText } from "./layouts/split/ImageText";
-export { default as ShowcaseSplit } from "./layouts/split/ShowcaseSplit";
-export { default as StackedSplit } from "./layouts/split/StackedSplit";
 export { default as StatementSplit } from "./layouts/split/StatementSplit";
+
+// Motion
+export { default as ParallaxContent } from "./motion/ParallaxContent";
+export { default as StickyCards } from "./motion/StickyCards";
+
+// Testimonials
+export { default as InfiniteScroll } from "./testimonials/InfiniteScroll";
+export { default as StackedSplit } from "./testimonials/StackedSplit";
+export { default as StaggerFan } from "./testimonials/StaggerFan";
 
 // Navigation
 export { default as NavbarSticky } from "./navigation/NavbarSticky";
@@ -3348,32 +4799,34 @@ export { default as StatsCountUp } from "./stats/StatsCountUp";
 // (Named exports above are what consumers import; this map is for
 // dynamic lookup by blueprint IDs — used by BlueprintPreview.)
 import CarouselCards from "./carousel/CarouselCards";
+import CarouselHorizontalScroll from "./carousel/CarouselHorizontalScroll";
 import CarouselSwipe from "./carousel/CarouselSwipe";
-import ContactForm from "./contact/ContactForm";
-import ContactMapInfo from "./contact/ContactMapInfo";
-import CtaBanner from "./cta/CtaBanner";
-import CtaFloating from "./cta/CtaFloating";
-import CtaInline from "./cta/CtaInline";
+import ContactLocationsMap from "./contact/ContactLocationsMap";
+import ContactShapesForm from "./contact/ContactShapesForm";
+import CtaCollageDuo from "./cta/CtaCollageDuo";
+import CtaEditorialSplit from "./cta/CtaEditorialSplit";
+import CtaImageBackdrop from "./cta/CtaImageBackdrop";
 import FaqAccordion from "./faq/FaqAccordion";
 import FaqMinimal from "./faq/FaqMinimal";
 import FaqSolutions from "./faq/FaqSolutions";
 import FooterReveal from "./footers/FooterReveal";
+import HeroBoldEditorial from "./heroes/HeroBoldEditorial";
 import HeroGeometric from "./heroes/HeroGeometric";
 import HeroParallaxImages from "./heroes/HeroParallaxImages";
 import HeroShuffleCards from "./heroes/HeroShuffleCards";
 import HeroSplitImage from "./heroes/HeroSplitImage";
 import CardGrid from "./layouts/grid/CardGrid";
 import SimpleGrid from "./layouts/grid/SimpleGrid";
-import StaggerFan from "./layouts/grid/StaggerFan";
-import InfiniteScroll from "./layouts/scroll/InfiniteScroll";
-import ParallaxContent from "./layouts/scroll/ParallaxContent";
-import StickyCards from "./layouts/scroll/StickyCards";
 import AuthorSplit from "./layouts/split/AuthorSplit";
+import EditorialFramedSplit from "./layouts/split/EditorialFramedSplit";
 import IconListSplit from "./layouts/split/IconListSplit";
 import ImageText from "./layouts/split/ImageText";
-import ShowcaseSplit from "./layouts/split/ShowcaseSplit";
-import StackedSplit from "./layouts/split/StackedSplit";
 import StatementSplit from "./layouts/split/StatementSplit";
+import ParallaxContent from "./motion/ParallaxContent";
+import StickyCards from "./motion/StickyCards";
+import InfiniteScroll from "./testimonials/InfiniteScroll";
+import StackedSplit from "./testimonials/StackedSplit";
+import StaggerFan from "./testimonials/StaggerFan";
 import NavbarSticky from "./navigation/NavbarSticky";
 import StatsCountUp from "./stats/StatsCountUp";
 
@@ -3387,16 +4840,18 @@ import StatsCountUp from "./stats/StatsCountUp";
  */
 export const componentsById: Record<string, ComponentType<any>> = {
   "carousel-cards-01": CarouselCards,
+  "carousel-horizontal-scroll-01": CarouselHorizontalScroll,
   "carousel-swipe-01": CarouselSwipe,
-  "contact-form-01": ContactForm,
-  "contact-map-info-01": ContactMapInfo,
-  "cta-banner-01": CtaBanner,
-  "cta-floating-01": CtaFloating,
-  "cta-inline-01": CtaInline,
+  "contact-contact-locations-map-01": ContactLocationsMap,
+  "contact-contact-shapes-form-01": ContactShapesForm,
+  "cta-cta-collage-duo-01": CtaCollageDuo,
+  "cta-cta-editorial-split-01": CtaEditorialSplit,
+  "cta-image-backdrop-01": CtaImageBackdrop,
   "faq-accordion-01": FaqAccordion,
   "faq-minimal-01": FaqMinimal,
   "faq-solutions-01": FaqSolutions,
   "footer-reveal-01": FooterReveal,
+  "hero-hero-bold-editorial-01": HeroBoldEditorial,
   "hero-geometric-01": HeroGeometric,
   "hero-parallax-images-01": HeroParallaxImages,
   "hero-shuffle-cards-01": HeroShuffleCards,
@@ -3408,9 +4863,9 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "layout-parallaxcontent-01": ParallaxContent,
   "layout-stickycards-01": StickyCards,
   "layout-authorsplit-01": AuthorSplit,
+  "layout-editorial-framed-split-01": EditorialFramedSplit,
   "layout-iconlistsplit-01": IconListSplit,
   "layout-imagetext-01": ImageText,
-  "layout-showcasesplit-01": ShowcaseSplit,
   "layout-stackedsplit-01": StackedSplit,
   "layout-statementsplit-01": StatementSplit,
   "navbar-sticky-01": NavbarSticky,
@@ -4133,33 +5588,37 @@ export default function SimpleGrid({
   );
 }
 `,
-  "src/components/layouts/grid/StaggerFan/index.tsx": `"use client";
+  "src/components/layouts/split/AuthorSplit/index.tsx": `"use client";
 
-import { useCallback, useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
-import TestimonialCard, {
-  type TestimonialItem,
-} from "@/lib/ui/cards/TestimonialCard";
+import { containerVariants, fadeUp, imageReveal } from "@/lib/motion-variants";
 import type { StyleKit } from "@/lib/style-kit";
+import { CtaButton } from "@/lib/ui/button";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
-/** Internal type that adds a unique key for reorder animation */
-type InternalTestimonial = TestimonialItem & { _key: number };
-
-export interface StaggerFanProps {
-  /** List of testimonials — displayed as a fan of overlapping cards */
-  testimonials?: TestimonialItem[];
-  /** Height of the section in pixels. Defaults to 600 */
-  sectionHeight?: number;
-  /** Card size on large screens in pixels. Defaults to 365 */
-  cardSizeLg?: number;
-  /** Card size on small screens in pixels. Defaults to 290 */
-  cardSizeSm?: number;
-  /** Site-wide style configuration — accepted for API consistency */
+export interface AuthorSplitProps {
+  /** Large banner image at the top */
+  bannerImage: string;
+  bannerImageAlt: string;
+  /** Author avatar (circular) */
+  authorImage: string;
+  authorImageAlt: string;
+  /** Author name */
+  authorName: string;
+  /** Short tagline or bio displayed below the name */
+  authorTagline: string;
+  /** Main body text */
+  description: string;
+  /** CTA text displayed below the body text */
+  ctaText?: string;
+  /** CTA destination URL */
+  ctaUrl?: string;
+  /** Site-wide style configuration */
   styleKit?: StyleKit;
   /** Informational purpose tag for the section */
   purpose?: string;
@@ -4167,165 +5626,22 @@ export interface StaggerFanProps {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Defaults                                                           */
+/*  Arrow icon (private)                                               */
 /* ------------------------------------------------------------------ */
 
-const DEFAULT_STAGGER_TESTIMONIALS: TestimonialItem[] = [
-  {
-    image: "https://picsum.photos/seed/staggerfan-testimonial-0/80/80",
-    imageAlt: "Sarah Chen",
-    name: "Sarah Chen",
-    title: "Head of Growth at Acme",
-    quote:
-      "We doubled our pipeline in the first quarter. The team was responsive, sharp, and frankly a delight to work with.",
-  },
-  {
-    image: "https://picsum.photos/seed/staggerfan-testimonial-1/80/80",
-    imageAlt: "Marcus Rivera",
-    name: "Marcus Rivera",
-    title: "Founder at BuildFast",
-    quote:
-      "I've worked with a dozen agencies. None of them shipped this quickly without dropping quality. Genuinely impressed.",
-  },
-  {
-    image: "https://picsum.photos/seed/staggerfan-testimonial-2/80/80",
-    imageAlt: "Priya Natarajan",
-    name: "Priya Natarajan",
-    title: "VP Product at Lumen",
-    quote:
-      "The clarity of communication alone was worth the price. We knew where things stood every single week.",
-  },
-  {
-    image: "https://picsum.photos/seed/staggerfan-testimonial-3/80/80",
-    imageAlt: "David Okafor",
-    name: "David Okafor",
-    title: "CTO at Northwind Labs",
-    quote:
-      "Our conversion rate jumped 38% within six weeks. The redesign paid for itself before the next billing cycle.",
-  },
-  {
-    image: "https://picsum.photos/seed/staggerfan-testimonial-4/80/80",
-    imageAlt: "Elena Martinez",
-    name: "Elena Martinez",
-    title: "Marketing Director at Pixelworks",
-    quote:
-      "They didn't just build us a website — they gave us a system we can keep iterating on for years.",
-  },
-];
-
-/* ------------------------------------------------------------------ */
-/*  Constants                                                          */
-/* ------------------------------------------------------------------ */
-
-const ROTATE_DEG = 2.5;
-const STAGGER = 15;
-const CENTER_STAGGER = -65;
-const CORNER_CLIP = 50;
-const BORDER_SIZE = 2;
-const CORNER_LINE_LEN = Math.sqrt(
-  CORNER_CLIP * CORNER_CLIP + CORNER_CLIP * CORNER_CLIP,
-);
-
-/* ------------------------------------------------------------------ */
-/*  Single card                                                        */
-/* ------------------------------------------------------------------ */
-
-function StaggerCard({
-  testimonial,
-  position,
-  cardSize,
-  onMove,
-}: {
-  testimonial: InternalTestimonial;
-  position: number;
-  cardSize: number;
-  onMove: (pos: number) => void;
-}) {
-  const isActive = position === 0;
-
-  return (
-    <motion.div
-      initial={false}
-      onClick={() => onMove(position)}
-      className={cn(
-        "absolute left-1/2 top-1/2 cursor-pointer border-base-content p-8",
-        isActive ? "z-10 bg-primary" : "z-0 bg-base-100",
-      )}
-      style={{
-        borderWidth: BORDER_SIZE,
-        clipPath: \`polygon(\${CORNER_CLIP}px 0%, calc(100% - \${CORNER_CLIP}px) 0%, 100% \${CORNER_CLIP}px, 100% 100%, calc(100% - \${CORNER_CLIP}px) 100%, \${CORNER_CLIP}px 100%, 0 100%, 0 0)\`,
-      }}
-      animate={{
-        width: cardSize,
-        height: cardSize,
-        x: \`calc(-50% + \${position * (cardSize / 1.5)}px)\`,
-        y: \`calc(-50% + \${
-          isActive ? CENTER_STAGGER : position % 2 ? STAGGER : -STAGGER
-        }px)\`,
-        rotate: isActive ? 0 : position % 2 ? ROTATE_DEG : -ROTATE_DEG,
-        boxShadow: isActive
-          ? "0px 8px 0px 4px oklch(var(--color-base-content))"
-          : "0px 0px 0px 0px oklch(var(--color-base-content))",
-      }}
-      transition={{
-        type: "spring",
-        mass: 3,
-        stiffness: 400,
-        damping: 50,
-      }}
-    >
-      {/* Decorative corner line */}
-      <span
-        className="absolute block origin-top-right rotate-45 bg-base-content"
-        style={{
-          right: -BORDER_SIZE,
-          top: CORNER_CLIP - BORDER_SIZE,
-          width: CORNER_LINE_LEN,
-          height: BORDER_SIZE,
-        }}
-      />
-      <TestimonialCard
-        {...testimonial}
-        layout="vertical"
-        inverted={isActive}
-        className={cn(
-          "h-full bg-transparent",
-          isActive ? "text-primary-content" : "text-base-content",
-        )}
-      />
-    </motion.div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Arrow icon                                                         */
-/* ------------------------------------------------------------------ */
-
-function ArrowIcon({ direction }: { direction: "left" | "right" }) {
+function ArrowRight({ className }: { className?: string }) {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
+      strokeWidth={2}
+      className={cn("h-4 w-4", className)}
+      viewBox="0 0 24 24"
       aria-hidden="true"
     >
-      {direction === "left" ? (
-        <>
-          <path d="M19 12H5" />
-          <path d="m12 19-7-7 7-7" />
-        </>
-      ) : (
-        <>
-          <path d="M5 12h14" />
-          <path d="m12 5 7 7-7 7" />
-        </>
-      )}
+      <path d="M5 12h14M12 5l7 7-7 7" />
     </svg>
   );
 }
@@ -4335,126 +5651,367 @@ function ArrowIcon({ direction }: { direction: "left" | "right" }) {
 /* ------------------------------------------------------------------ */
 
 /**
- * StaggerFan -- a fan/carousel of overlapping testimonial cards
- * with a clipped corner design. The active card is centered and highlighted;
- * surrounding cards are fanned out with subtle rotation and stagger.
- *
- * Navigate with left/right arrow buttons or click any card to center it.
+ * AuthorSplit -- a content section with a wide banner image followed
+ * by a split layout: author profile on the left, long-form text on the right.
+ * Great for about pages, founder stories, or team member spotlights.
  */
-export default function StaggerFan({
-  testimonials: testimonialsProp = DEFAULT_STAGGER_TESTIMONIALS,
-  sectionHeight = 600,
-  cardSizeLg = 365,
-  cardSizeSm = 290,
+export default function AuthorSplit({
+  bannerImage,
+  bannerImageAlt,
+  authorImage,
+  authorImageAlt,
+  authorName,
+  authorTagline,
+  description,
+  ctaText,
+  ctaUrl,
   styleKit,
   purpose,
   className,
-}: StaggerFanProps) {
+}: AuthorSplitProps) {
   const shouldReduceMotion = useReducedMotion();
-  const [cardSize, setCardSize] = useState(cardSizeLg);
-
-  /* Assign stable keys for animation identity */
-  const [items, setItems] = useState<InternalTestimonial[]>(() =>
-    testimonialsProp.map((t, i) => ({ ...t, _key: i })),
+  const safeBannerImg = useSafeImageSrc(
+    bannerImage,
+    "layout-authorsplit-01-banner-image",
+    800,
+    256,
   );
-
-  /* Responsive card size */
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 640px)");
-    const update = () => setCardSize(mq.matches ? cardSizeLg : cardSizeSm);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, [cardSizeLg, cardSizeSm]);
-
-  /* Move cards by N positions (positive = forward, negative = back) */
-  const handleMove = useCallback((position: number) => {
-    setItems((prev) => {
-      const copy = [...prev];
-      if (position > 0) {
-        for (let i = 0; i < position; i++) {
-          const first = copy.shift();
-          if (!first) return prev;
-          copy.push({ ...first, _key: Math.random() });
-        }
-      } else {
-        for (let i = 0; i > position; i--) {
-          const last = copy.pop();
-          if (!last) return prev;
-          copy.unshift({ ...last, _key: Math.random() });
-        }
-      }
-      return copy;
-    });
-  }, []);
+  const safeAuthorImg = useSafeImageSrc(
+    authorImage,
+    "layout-authorsplit-01-author-image",
+    80,
+    80,
+  );
 
   return (
     <section
       data-purpose={purpose}
-      data-style-kit={styleKit ? JSON.stringify(styleKit) : undefined}
-      className={cn("relative w-full overflow-hidden bg-base-200", className)}
-      style={{ height: sectionHeight }}
+      className={cn("w-full bg-base-100 py-16 md:py-24", className)}
     >
-      {items.map((t, idx) => {
-        const center =
-          items.length % 2 ? (items.length + 1) / 2 : items.length / 2;
-        const position = idx - center;
-
-        return (
-          <StaggerCard
-            key={t._key}
-            testimonial={t}
-            position={position}
-            cardSize={cardSize}
-            onMove={handleMove}
+      <div className="mx-auto max-w-4xl px-4 md:px-8">
+        {/* Banner image */}
+        <motion.div
+          className="mb-10 h-64 w-full overflow-hidden rounded-lg"
+          variants={imageReveal}
+          initial={shouldReduceMotion ? false : "hidden"}
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <img
+            src={safeBannerImg.src}
+            onError={safeBannerImg.onError}
+            alt={bannerImageAlt}
+            className="h-full w-full object-cover object-center"
+            loading="lazy"
           />
-        );
-      })}
+        </motion.div>
 
-      {/* Navigation arrows */}
-      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-8">
-        <button
-          onClick={() => handleMove(-1)}
-          className="grid h-14 w-14 place-content-center text-3xl text-base-content transition-colors hover:bg-neutral hover:text-neutral-content"
-          aria-label="Previous testimonial"
+        {/* Author + content split */}
+        <motion.div
+          className="flex flex-col gap-10 sm:flex-row"
+          variants={containerVariants}
+          initial={shouldReduceMotion ? false : "hidden"}
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
         >
-          <ArrowIcon direction="left" />
-        </button>
-        <button
-          onClick={() => handleMove(1)}
-          className="grid h-14 w-14 place-content-center text-3xl text-base-content transition-colors hover:bg-neutral hover:text-neutral-content"
-          aria-label="Next testimonial"
-        >
-          <ArrowIcon direction="right" />
-        </button>
+          {/* Author column */}
+          <motion.div
+            variants={fadeUp}
+            className="flex flex-col items-center text-center sm:w-1/3 sm:py-8 sm:pr-8"
+          >
+            <div className="inline-flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-base-200">
+              <img
+                src={safeAuthorImg.src}
+                onError={safeAuthorImg.onError}
+                alt={authorImageAlt}
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <h2 className="mt-4 text-lg font-medium text-base-content">
+              {authorName}
+            </h2>
+            <div className="mt-2 mb-4 h-1 w-12 rounded bg-primary" />
+            <p className="text-base text-base-content/60">{authorTagline}</p>
+          </motion.div>
+
+          {/* Text column */}
+          <motion.div
+            variants={fadeUp}
+            className="border-t border-base-300 pt-4 text-center sm:w-2/3 sm:border-l sm:border-t-0 sm:py-8 sm:pl-8 sm:text-left"
+          >
+            <p className="mb-4 text-lg leading-relaxed text-base-content/70">
+              {description}
+            </p>
+            {ctaText && ctaUrl && (
+              <CtaButton
+                variant={styleKit?.ctaVariant ?? "default"}
+                colorScheme={styleKit?.ctaColorScheme ?? "primary"}
+                href={ctaUrl}
+              >
+                {ctaText}
+                <ArrowRight className="ml-2" />
+              </CtaButton>
+            )}
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
 }
 `,
-  "src/components/layouts/scroll/InfiniteScroll/index.tsx": `"use client";
+  "src/components/layouts/split/EditorialFramedSplit/index.tsx": `"use client";
 
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
-import TestimonialCard, {
-  type TestimonialItem,
-} from "@/lib/ui/cards/TestimonialCard";
-import type { StyleKit } from "@/lib/style-kit";
+import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
+import { Highlighter } from "@/lib/ui/text-decorations/Highlighter";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@/lib/ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@/lib/ui/backgrounds/DotPattern";
+import { StripedPattern } from "@/lib/ui/backgrounds/StripedPattern";
+import { GradientBars } from "@/lib/ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@/lib/ui/backgrounds/InteractiveGridPattern";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
-export interface InfiniteScrollProps {
+export interface EditorialFramedSplitProps {
+  /** Small label rendered above the headline (e.g. "Our Studio"). */
+  eyebrow?: string;
+  /** Lead editorial headline rendered inside a framed card. */
+  headline: string;
+  /** Optional word inside the headline to wrap with a hand-drawn underline. */
+  highlightWord?: string;
+  /** Lead CTA label. */
+  ctaText: string;
+  /** Lead CTA destination URL. */
+  ctaUrl: string;
+  /** Lead image displayed opposite the framed headline card. */
+  leadImage: string;
+  /** Accessible alt text for the lead image. */
+  leadImageAlt: string;
+  /** Secondary image displayed below, opposite the supporting copy. */
+  secondaryImage: string;
+  /** Accessible alt text for the secondary image. */
+  secondaryImageAlt: string;
+  /** Heading for the supporting card below the lead row. */
+  supportingHeadline: string;
+  /** Body copy for the supporting card. */
+  supportingBody: string;
+  /** CTA visual variant. */
+  ctaVariant?: CtaVariant;
+  /** CTA color scheme. */
+  ctaColorScheme?: ColorScheme;
+  /** Optional motif-echo background rendered behind the section content */
+  backgroundVariant?: string;
+  className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Motif renderer                                                     */
+/* ------------------------------------------------------------------ */
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+function renderHeadlineWithHighlight(headline: string, highlightWord?: string) {
+  if (!highlightWord) return headline;
+  const idx = headline.toLowerCase().indexOf(highlightWord.toLowerCase());
+  if (idx === -1) return headline;
+  const before = headline.slice(0, idx);
+  const match = headline.slice(idx, idx + highlightWord.length);
+  const after = headline.slice(idx + highlightWord.length);
+  return (
+    <>
+      {before}
+      <Highlighter action="underline">{match}</Highlighter>
+      {after}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Component                                                          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * EditorialFramedSplit — a two-row, two-column editorial split where a
+ * framed serif headline card sits opposite a tall lead image, with a
+ * supporting image and quiet body card below. Built for studios,
+ * agencies, and craft-led brands telling a story.
+ */
+export default function EditorialFramedSplit({
+  eyebrow,
+  headline,
+  highlightWord,
+  ctaText,
+  ctaUrl,
+  leadImage,
+  leadImageAlt,
+  secondaryImage,
+  secondaryImageAlt,
+  supportingHeadline,
+  supportingBody,
+  ctaVariant = "default",
+  ctaColorScheme = "neutral",
+  backgroundVariant,
+  className,
+}: EditorialFramedSplitProps) {
+  const prefersReducedMotion = useReducedMotion();
+
+  const sharedReveal = {
+    initial: prefersReducedMotion ? false : { opacity: 0, y: 16 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-100px" },
+    transition: { duration: 0.3, ease: "easeOut" as const },
+  };
+
+  return (
+    <section
+      className={cn(
+        "relative isolate w-full overflow-hidden bg-base-100 text-base-content",
+        "px-4 py-12 md:px-8 md:py-16 lg:px-12 lg:py-24",
+        className,
+      )}
+    >
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-10">
+        {/* Row 1 — framed headline card */}
+        <motion.div
+          {...sharedReveal}
+          className={cn(
+            "flex flex-col justify-center",
+            "rounded-lg border border-base-300",
+            "px-6 py-12 md:px-10 md:py-16 lg:px-14 lg:py-20",
+          )}
+        >
+          {eyebrow && (
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-base-content/60">
+              {eyebrow}
+            </p>
+          )}
+          <h2 className="font-serif text-4xl font-bold leading-tight text-base-content md:text-5xl lg:text-6xl">
+            {renderHeadlineWithHighlight(headline, highlightWord)}
+          </h2>
+          <div className="mt-10 flex justify-end">
+            <CtaButton
+              variant={ctaVariant}
+              colorScheme={ctaColorScheme}
+              href={ctaUrl}
+            >
+              {ctaText}
+            </CtaButton>
+          </div>
+        </motion.div>
+
+        {/* Row 1 — lead image */}
+        <motion.div
+          {...sharedReveal}
+          transition={{ ...sharedReveal.transition, delay: 0.08 }}
+          className="overflow-hidden rounded-lg"
+        >
+          <img
+            src={leadImage}
+            alt={leadImageAlt}
+            loading="lazy"
+            className="aspect-[4/5] h-full w-full object-cover"
+          />
+        </motion.div>
+
+        {/* Row 2 — secondary image */}
+        <motion.div {...sharedReveal} className="overflow-hidden rounded-lg">
+          <img
+            src={secondaryImage}
+            alt={secondaryImageAlt}
+            loading="lazy"
+            className="aspect-[4/3] h-full w-full object-cover"
+          />
+        </motion.div>
+
+        {/* Row 2 — supporting body card */}
+        <motion.div
+          {...sharedReveal}
+          transition={{ ...sharedReveal.transition, delay: 0.08 }}
+          className={cn(
+            "flex flex-col justify-center",
+            "rounded-lg bg-base-200",
+            "px-6 py-10 md:px-10 md:py-14 lg:px-12 lg:py-16",
+          )}
+        >
+          <h3 className="font-serif text-2xl font-bold leading-tight text-base-content md:text-3xl">
+            {supportingHeadline}
+          </h3>
+          <p className="mt-4 font-serif text-base italic leading-relaxed text-base-content/70 md:text-lg">
+            {supportingBody}
+          </p>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+`,
+  "src/components/layouts/split/IconListSplit/index.tsx": `"use client";
+
+import { motion, useReducedMotion } from "motion/react";
+import { cn } from "@/lib/utils";
+import { containerVariants, fadeUp, imageReveal } from "@/lib/motion-variants";
+import type { StyleKit } from "@/lib/style-kit";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+
+export interface FeatureIconItem {
+  /** React node for the icon — typically an SVG or emoji */
+  icon: React.ReactNode;
+  /** Feature heading */
+  title: string;
+  /** Feature description */
+  description: string;
+}
+
+export interface LogoItem {
+  /** SVG content or image URL */
+  image: string;
+  imageAlt: string;
+}
+
+export interface IconListSplitProps {
   /** Section headline */
   headline: string;
-  /** Supporting text below the headline */
-  subheadline?: string;
-  /** Three rows of testimonials — each row scrolls independently */
-  rows?: [TestimonialItem[], TestimonialItem[], TestimonialItem[]];
-  /** Duration in seconds for one full scroll cycle per row. Defaults to [125, 75, 275] */
-  durations?: [number, number, number];
-  /** Site-wide style configuration — accepted for API consistency */
+  /** List of features with icons */
+  features?: FeatureIconItem[];
+  /** Optional large image displayed beside the features list on desktop */
+  image?: string;
+  imageAlt?: string;
+  /** Optional row of company/partner logos below the features */
+  logos?: LogoItem[];
+  /** Site-wide style configuration */
   styleKit?: StyleKit;
   /** Informational purpose tag for the section */
   purpose?: string;
@@ -4465,173 +6022,71 @@ export interface InfiniteScrollProps {
 /*  Defaults                                                           */
 /* ------------------------------------------------------------------ */
 
-const DEFAULT_INFINITE_SCROLL_ROWS: [
-  TestimonialItem[],
-  TestimonialItem[],
-  TestimonialItem[],
-] = [
-  [
-    {
-      image: "https://picsum.photos/seed/infinitescroll-r0-0/80/80",
-      imageAlt: "Sarah Chen",
-      name: "Sarah Chen",
-      title: "Head of Growth at Acme",
-      quote:
-        "We doubled our pipeline in the first quarter. The team was responsive, sharp, and a delight to work with.",
-    },
-    {
-      image: "https://picsum.photos/seed/infinitescroll-r0-1/80/80",
-      imageAlt: "Marcus Rivera",
-      name: "Marcus Rivera",
-      title: "Founder at BuildFast",
-      quote:
-        "I've worked with a dozen agencies. None shipped this quickly without dropping quality.",
-    },
-    {
-      image: "https://picsum.photos/seed/infinitescroll-r0-2/80/80",
-      imageAlt: "Priya Natarajan",
-      name: "Priya Natarajan",
-      title: "VP Product at Lumen",
-      quote:
-        "The clarity of communication alone was worth the price. We knew where things stood every week.",
-    },
-    {
-      image: "https://picsum.photos/seed/infinitescroll-r0-3/80/80",
-      imageAlt: "David Okafor",
-      name: "David Okafor",
-      title: "CTO at Northwind Labs",
-      quote:
-        "Our conversion rate jumped 38% within six weeks. The redesign paid for itself.",
-    },
-    {
-      image: "https://picsum.photos/seed/infinitescroll-r0-4/80/80",
-      imageAlt: "Elena Martinez",
-      name: "Elena Martinez",
-      title: "Marketing Director at Pixelworks",
-      quote:
-        "They didn't just build us a website — they gave us a system we can keep iterating on.",
-    },
-  ],
-  [
-    {
-      image: "https://picsum.photos/seed/infinitescroll-r1-0/80/80",
-      imageAlt: "Jordan Patel",
-      name: "Jordan Patel",
-      title: "Director of Engineering at Helix",
-      quote:
-        "Two weeks in and we already had a launch-ready prototype the team could test against.",
-    },
-    {
-      image: "https://picsum.photos/seed/infinitescroll-r1-1/80/80",
-      imageAlt: "Amina Hassan",
-      name: "Amina Hassan",
-      title: "Head of Design at Northwave",
-      quote:
-        "Felt like extending our own team rather than handing things off to a vendor.",
-    },
-    {
-      image: "https://picsum.photos/seed/infinitescroll-r1-2/80/80",
-      imageAlt: "Tom Whitaker",
-      name: "Tom Whitaker",
-      title: "Co-founder at Drift Studio",
-      quote:
-        "Cut our content production time in half. The framework still pays dividends a year later.",
-    },
-    {
-      image: "https://picsum.photos/seed/infinitescroll-r1-3/80/80",
-      imageAlt: "Lin Wei",
-      name: "Lin Wei",
-      title: "VP Operations at Quanta",
-      quote:
-        "The smoothest engagement we've run. Clear deliverables, no scope surprises, results that held up.",
-    },
-    {
-      image: "https://picsum.photos/seed/infinitescroll-r1-4/80/80",
-      imageAlt: "Hannah Schmitt",
-      name: "Hannah Schmitt",
-      title: "Founder at Morrow & Co",
-      quote:
-        "They asked the right uncomfortable questions early. That alone changed the direction of the project.",
-    },
-  ],
-  [
-    {
-      image: "https://picsum.photos/seed/infinitescroll-r2-0/80/80",
-      imageAlt: "Rafael Costa",
-      name: "Rafael Costa",
-      title: "Head of Product at Kinetic",
-      quote:
-        "Three weeks from kickoff to a redesigned site that actually felt like us. Quality I didn't expect at this pace.",
-    },
-    {
-      image: "https://picsum.photos/seed/infinitescroll-r2-1/80/80",
-      imageAlt: "Naomi Wright",
-      name: "Naomi Wright",
-      title: "CEO at Rivermark",
-      quote: "Best money we've spent on a partner this year. Period.",
-    },
-    {
-      image: "https://picsum.photos/seed/infinitescroll-r2-2/80/80",
-      imageAlt: "Yuki Tanaka",
-      name: "Yuki Tanaka",
-      title: "VP Marketing at Glasscube",
-      quote:
-        "We finally have a brand story everyone in the company tells the same way. Worth every cent.",
-    },
-    {
-      image: "https://picsum.photos/seed/infinitescroll-r2-3/80/80",
-      imageAlt: "Felix Brandt",
-      name: "Felix Brandt",
-      title: "COO at Northbeam",
-      quote:
-        "Replaced four different tools with one cleaner workflow. The team adopted it without a single training session.",
-    },
-  ],
+const DEFAULT_ICON_LIST_FEATURES: FeatureIconItem[] = [
+  {
+    icon: "✨",
+    title: "Set up in minutes",
+    description:
+      "Connect your accounts, import your data, and you're live before lunch — no migration project required.",
+  },
+  {
+    icon: "📈",
+    title: "Insights that matter",
+    description:
+      "Skip the dashboard archaeology. We surface the three trends you should care about each week.",
+  },
+  {
+    icon: "🤝",
+    title: "Built for teams",
+    description:
+      "Granular permissions, shared workspaces, and audit trails — even on the smallest plan.",
+  },
+  {
+    icon: "🔒",
+    title: "Security you can audit",
+    description:
+      "SOC 2 Type II, encryption at rest and in transit, and a data residency option in three regions.",
+  },
 ];
 
 /* ------------------------------------------------------------------ */
-/*  Marquee row                                                        */
+/*  Decorative underline (private)                                     */
 /* ------------------------------------------------------------------ */
 
-function MarqueeRow({
-  items,
-  duration,
-  reverse,
-  shouldReduceMotion,
-}: {
-  items: TestimonialItem[];
-  duration: number;
-  reverse?: boolean;
-  shouldReduceMotion: boolean | null;
-}) {
-  /* Triple the items to create seamless loop */
-  const repeats = [0, 1, 2];
-
+function AccentUnderline() {
   return (
-    <div className="flex items-center">
-      {repeats.map((r) => (
-        <motion.div
-          key={r}
-          className="flex gap-4 px-2"
-          initial={{ translateX: reverse ? "-100%" : "0%" }}
-          animate={{ translateX: reverse ? "0%" : "-100%" }}
-          transition={
-            shouldReduceMotion
-              ? { duration: 0 }
-              : { duration, repeat: Infinity, ease: "linear" }
-          }
-        >
-          {items.map((t, i) => (
-            <TestimonialCard
-              key={\`\${r}-\${i}\`}
-              {...t}
-              layout="horizontal"
-              className="w-[290px] sm:w-[500px]"
-            />
-          ))}
-        </motion.div>
-      ))}
+    <div className="mt-2" aria-hidden="true">
+      <span className="inline-block h-1 w-40 rounded-full bg-primary" />
+      <span className="ml-1 inline-block h-1 w-3 rounded-full bg-primary" />
+      <span className="ml-1 inline-block h-1 w-1 rounded-full bg-primary" />
     </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Logo image (private, calls hook per item)                          */
+/* ------------------------------------------------------------------ */
+
+interface LogoImageProps {
+  logo: LogoItem;
+  index: number;
+}
+
+function LogoImage({ logo, index }: LogoImageProps) {
+  const safeImg = useSafeImageSrc(
+    logo.image,
+    \`layout-iconlistsplit-01-logo-image-\${index}\`,
+    140,
+    32,
+  );
+  return (
+    <img
+      src={safeImg.src}
+      onError={safeImg.onError}
+      alt={logo.imageAlt}
+      className="h-8 max-w-[140px] object-contain opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0"
+      loading="lazy"
+    />
   );
 }
 
@@ -4640,77 +6095,459 @@ function MarqueeRow({
 /* ------------------------------------------------------------------ */
 
 /**
- * InfiniteScroll -- three infinite-scrolling marquee rows of
- * testimonial cards, each moving at a different speed and direction.
- *
- * Edge gradients fade cards in/out at the viewport edges for a polished
- * overflow feel.
+ * IconListSplit -- a split layout with icon-prefixed feature items on
+ * the left and an optional large image on the right. An optional logo bar
+ * appears below, separated by a divider. Ideal for product feature pages,
+ * service overviews, or partner showcases.
  */
-export default function InfiniteScroll({
+export default function IconListSplit({
   headline,
-  subheadline,
-  rows = DEFAULT_INFINITE_SCROLL_ROWS,
-  durations = [125, 75, 275],
+  features = DEFAULT_ICON_LIST_FEATURES,
+  image,
+  imageAlt,
+  logos,
   styleKit,
   purpose,
   className,
-}: InfiniteScrollProps) {
+}: IconListSplitProps) {
+  // styleKit accepted for downstream propagation; no CTA in this component
+  void styleKit;
   const shouldReduceMotion = useReducedMotion();
+  const safeMainImg = useSafeImageSrc(
+    image,
+    "layout-iconlistsplit-01-image",
+    600,
+    544,
+  );
 
   return (
     <section
       data-purpose={purpose}
-      data-style-kit={styleKit ? JSON.stringify(styleKit) : undefined}
-      className={cn("w-full bg-neutral py-12 md:py-16 lg:py-24", className)}
+      className={cn("w-full bg-base-100 py-12 md:py-16", className)}
     >
-      {/* Header */}
-      <div className="mb-8 px-4">
-        <h2 className="text-center text-3xl font-semibold text-neutral-content sm:text-4xl">
-          {headline}
-        </h2>
-        {subheadline && (
-          <p className="mx-auto mt-2 max-w-lg text-center text-sm text-neutral-content/60">
-            {subheadline}
-          </p>
+      <div className="mx-auto max-w-7xl px-4 md:px-8">
+        {/* Main content — features + image */}
+        <div className="lg:flex lg:items-center">
+          {/* Features list */}
+          <motion.div
+            className="w-full space-y-12 lg:w-1/2"
+            variants={containerVariants}
+            initial={shouldReduceMotion ? false : "hidden"}
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            {/* Headline + accent underline */}
+            <motion.div variants={fadeUp}>
+              <h2 className="text-2xl font-semibold text-base-content lg:text-3xl">
+                {headline}
+              </h2>
+              <AccentUnderline />
+            </motion.div>
+
+            {/* Feature items */}
+            {features.map((feature, i) => (
+              <motion.div
+                key={i}
+                variants={fadeUp}
+                className="flex items-start gap-4"
+              >
+                <span className="inline-flex shrink-0 items-center justify-center rounded-xl bg-primary/10 p-2 text-primary">
+                  {feature.icon}
+                </span>
+                <div>
+                  <h3 className="text-xl font-semibold text-base-content">
+                    {feature.title}
+                  </h3>
+                  <p className="mt-3 text-base-content/60">
+                    {feature.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Image */}
+          {image && (
+            <motion.div
+              className="mt-12 hidden lg:mt-0 lg:flex lg:w-1/2 lg:items-center lg:justify-center"
+              variants={imageReveal}
+              initial={shouldReduceMotion ? false : "hidden"}
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <img
+                src={safeMainImg.src}
+                onError={safeMainImg.onError}
+                alt={imageAlt ?? ""}
+                className="h-[28rem] w-[28rem] rounded-full object-cover xl:h-[34rem] xl:w-[34rem]"
+                loading="lazy"
+              />
+            </motion.div>
+          )}
+        </div>
+
+        {/* Logo bar */}
+        {logos && logos.length > 0 && (
+          <>
+            <hr className="my-12 border-base-300" />
+            <motion.div
+              className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5"
+              variants={containerVariants}
+              initial={shouldReduceMotion ? false : "hidden"}
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              {logos.map((logo, i) => (
+                <motion.div
+                  key={i}
+                  variants={fadeUp}
+                  className="flex items-center justify-center"
+                >
+                  <LogoImage logo={logo} index={i} />
+                </motion.div>
+              ))}
+            </motion.div>
+          </>
         )}
-      </div>
-
-      {/* Marquee area */}
-      <div className="relative overflow-x-hidden p-4">
-        {/* Left fade */}
-        <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-24 bg-gradient-to-r from-neutral to-transparent" />
-
-        <div className="mb-4 flex items-center">
-          <MarqueeRow
-            items={rows[0]}
-            duration={durations[0]}
-            shouldReduceMotion={shouldReduceMotion}
-          />
-        </div>
-        <div className="mb-4 flex items-center">
-          <MarqueeRow
-            items={rows[1]}
-            duration={durations[1]}
-            reverse
-            shouldReduceMotion={shouldReduceMotion}
-          />
-        </div>
-        <div className="flex items-center">
-          <MarqueeRow
-            items={rows[2]}
-            duration={durations[2]}
-            shouldReduceMotion={shouldReduceMotion}
-          />
-        </div>
-
-        {/* Right fade */}
-        <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-24 bg-gradient-to-l from-neutral to-transparent" />
       </div>
     </section>
   );
 }
 `,
-  "src/components/layouts/scroll/ParallaxContent/index.tsx": `"use client";
+  "src/components/layouts/split/ImageText/index.tsx": `"use client";
+
+import { motion, useReducedMotion } from "motion/react";
+import { cn } from "@/lib/utils";
+import { CtaButton } from "@/lib/ui/button";
+import { containerVariants, fadeUp, imageReveal } from "@/lib/motion-variants";
+import type { StyleKit } from "@/lib/style-kit";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+
+export interface ImageTextProps {
+  /** Section heading — large display text */
+  headline: string;
+  /** Body text below the heading */
+  description: string;
+  /** CTA button text */
+  ctaText: string;
+  /** CTA destination URL */
+  ctaUrl: string;
+  /** Site-wide style configuration — provides ctaVariant and ctaColorScheme */
+  styleKit?: StyleKit;
+  /** Section image */
+  image: string;
+  imageAlt: string;
+  /** Small label displayed above the headline */
+  label?: string;
+  /** Whether image appears on the left (default) or right */
+  imagePosition?: "left" | "right";
+  /** Background color scheme */
+  colorScheme?: "light" | "dark";
+  /** Informational purpose tag for the section */
+  purpose?: string;
+  className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Component                                                          */
+/* ------------------------------------------------------------------ */
+
+export default function ImageText({
+  headline,
+  description,
+  ctaText,
+  ctaUrl,
+  styleKit,
+  image,
+  imageAlt,
+  label,
+  imagePosition = "left",
+  colorScheme = "light",
+  purpose,
+  className,
+}: ImageTextProps) {
+  const shouldReduceMotion = useReducedMotion();
+  const safeImg = useSafeImageSrc(image, "layout-imagetext-01-image", 600, 400);
+
+  const isDark = colorScheme === "dark";
+  const isReversed = imagePosition === "right";
+
+  return (
+    <section
+      data-purpose={purpose}
+      className={cn(
+        "relative w-full overflow-hidden",
+        isDark
+          ? "bg-neutral text-neutral-content"
+          : "bg-base-100 text-base-content",
+        className,
+      )}
+    >
+      <div
+        className={cn(
+          "mx-auto flex max-w-7xl flex-col gap-12 px-4 py-16 md:px-8 md:py-24 lg:flex-row lg:items-center",
+          isReversed && "lg:flex-row-reverse",
+        )}
+      >
+        {/* Image column */}
+        <motion.div
+          className="relative w-full lg:w-[45%]"
+          variants={imageReveal}
+          initial={shouldReduceMotion ? false : "hidden"}
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <img
+            src={safeImg.src}
+            onError={safeImg.onError}
+            alt={imageAlt}
+            className="h-auto w-full object-cover"
+            loading="lazy"
+          />
+        </motion.div>
+
+        {/* Text column */}
+        <motion.div
+          className="w-full space-y-6 lg:w-[55%]"
+          variants={containerVariants}
+          initial={shouldReduceMotion ? false : "hidden"}
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          {label && (
+            <motion.p
+              variants={fadeUp}
+              className={cn(
+                "text-sm font-semibold uppercase tracking-widest",
+                isDark ? "text-primary" : "text-primary",
+              )}
+            >
+              {label}
+            </motion.p>
+          )}
+
+          <motion.h2
+            variants={fadeUp}
+            className={cn(
+              "font-serif italic font-semibold text-4xl leading-[0.95] md:text-5xl lg:text-7xl",
+              isDark ? "text-neutral-content" : "text-base-content",
+            )}
+          >
+            {headline}
+          </motion.h2>
+
+          <motion.p
+            variants={fadeUp}
+            className={cn(
+              "max-w-xl text-base leading-relaxed md:text-lg",
+              isDark ? "text-neutral-content/70" : "text-base-content/70",
+            )}
+          >
+            {description}
+          </motion.p>
+
+          <motion.div variants={fadeUp} className="pt-2">
+            <CtaButton
+              variant={styleKit?.ctaVariant ?? "default"}
+              colorScheme={styleKit?.ctaColorScheme ?? "primary"}
+              href={ctaUrl}
+            >
+              {ctaText}
+            </CtaButton>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+`,
+  "src/components/layouts/split/StatementSplit/index.tsx": `"use client";
+
+import { motion, useReducedMotion } from "motion/react";
+import { cn } from "@/lib/utils";
+import {
+  containerVariants,
+  fadeUp,
+  imageReveal,
+  accentReveal,
+} from "@/lib/motion-variants";
+import type { StyleKit } from "@/lib/style-kit";
+import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+
+export interface StatementSplitProps {
+  /** Large statement headline — rendered in italic display font */
+  headline: string;
+  /** Main body text — supports line breaks via \\n */
+  description: string;
+  /** Bold closing line appended to the description */
+  descriptionEmphasis?: string;
+  /** Primary section image */
+  image: string;
+  imageAlt: string;
+  /** Floating accent image — smaller overlay in the corner of the main image */
+  accentImage?: string;
+  accentImageAlt?: string;
+  /** Background color scheme */
+  colorScheme?: "dark" | "light";
+  /** Whether the headline appears on the left (default) or right */
+  headlinePosition?: "left" | "right";
+  /** Site-wide style configuration */
+  styleKit?: StyleKit;
+  /** Informational purpose tag for the section */
+  purpose?: string;
+  className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Component                                                          */
+/* ------------------------------------------------------------------ */
+
+export default function StatementSplit({
+  headline,
+  description,
+  descriptionEmphasis,
+  image,
+  imageAlt,
+  accentImage,
+  accentImageAlt,
+  colorScheme = "dark",
+  headlinePosition = "left",
+  styleKit,
+  purpose,
+  className,
+}: StatementSplitProps) {
+  // styleKit accepted for downstream propagation; no CTA in this component
+  void styleKit;
+  const shouldReduceMotion = useReducedMotion();
+  const safeImg = useSafeImageSrc(
+    image,
+    "layout-statementsplit-01-image",
+    800,
+    520,
+  );
+  const safeAccentImg = useSafeImageSrc(
+    accentImage,
+    "layout-statementsplit-01-accent-image",
+    224,
+    224,
+  );
+
+  const isDark = colorScheme === "dark";
+  const isReversed = headlinePosition === "right";
+
+  return (
+    <section
+      data-purpose={purpose}
+      className={cn(
+        "relative w-full min-h-screen",
+        isDark
+          ? "bg-neutral text-neutral-content"
+          : "bg-base-100 text-base-content",
+        className,
+      )}
+    >
+      <div className="mx-auto flex w-full max-w-7xl items-center px-4 py-16 md:px-8 md:py-0 md:min-h-screen">
+        <motion.div
+          className={cn(
+            "flex w-full flex-col gap-10 lg:gap-12",
+            isReversed
+              ? "lg:flex-row-reverse lg:items-end"
+              : "lg:flex-row lg:items-end",
+          )}
+          variants={containerVariants}
+          initial={shouldReduceMotion ? false : "hidden"}
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          {/* Headline column */}
+          <motion.div
+            variants={fadeUp}
+            className={cn(
+              "max-w-xl lg:flex-none lg:self-start lg:pt-10 lg:z-10",
+              isReversed ? "lg:-ml-24" : "lg:-mr-24",
+            )}
+          >
+            <h2
+              className={cn(
+                "font-serif italic font-medium text-4xl leading-tight md:text-5xl lg:text-7xl",
+                isDark ? "text-neutral-content" : "text-base-content",
+              )}
+            >
+              {headline}
+            </h2>
+          </motion.div>
+
+          {/* Image column */}
+          <div className="relative lg:basis-[70%]">
+            <motion.div
+              variants={imageReveal}
+              className="h-[260px] w-full overflow-hidden md:h-[380px] lg:h-[520px]"
+            >
+              <img
+                src={safeImg.src}
+                onError={safeImg.onError}
+                alt={imageAlt}
+                className="h-full w-full max-w-none object-cover"
+                loading="lazy"
+              />
+            </motion.div>
+
+            {/* Floating accent image */}
+            {accentImage && (
+              <motion.div
+                variants={accentReveal}
+                className="absolute -left-10 -bottom-10 hidden h-40 w-40 overflow-hidden md:block lg:h-56 lg:w-56"
+              >
+                <img
+                  src={safeAccentImg.src}
+                  onError={safeAccentImg.onError}
+                  alt={accentImageAlt ?? ""}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              </motion.div>
+            )}
+          </div>
+
+          {/* Description column */}
+          <motion.div
+            variants={fadeUp}
+            className={cn(
+              "max-w-sm",
+              isReversed ? "lg:self-start" : "lg:self-end",
+            )}
+          >
+            <p
+              className={cn(
+                "text-base leading-relaxed md:text-lg",
+                isDark ? "text-neutral-content/80" : "text-base-content/70",
+              )}
+            >
+              {description}
+              {descriptionEmphasis && (
+                <>
+                  <br />
+                  <br />
+                  <span className="font-semibold">{descriptionEmphasis}</span>
+                </>
+              )}
+            </p>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+`,
+  "src/components/motion/ParallaxContent/index.tsx": `"use client";
 
 import { useRef } from "react";
 import {
@@ -4998,7 +6835,7 @@ export default function ParallaxContent({
   );
 }
 `,
-  "src/components/layouts/scroll/StickyCards/index.tsx": `"use client";
+  "src/components/motion/StickyCards/index.tsx": `"use client";
 
 import { useRef } from "react";
 import {
@@ -5274,1253 +7111,6 @@ export default function StickyCards({
             index={idx}
           />
         ))}
-      </div>
-    </section>
-  );
-}
-`,
-  "src/components/layouts/split/AuthorSplit/index.tsx": `"use client";
-
-import { motion, useReducedMotion } from "motion/react";
-import { cn } from "@/lib/utils";
-import { containerVariants, fadeUp, imageReveal } from "@/lib/motion-variants";
-import type { StyleKit } from "@/lib/style-kit";
-import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
-
-/* ------------------------------------------------------------------ */
-/*  Types                                                              */
-/* ------------------------------------------------------------------ */
-
-export interface AuthorSplitProps {
-  /** Large banner image at the top */
-  bannerImage: string;
-  bannerImageAlt: string;
-  /** Author avatar (circular) */
-  authorImage: string;
-  authorImageAlt: string;
-  /** Author name */
-  authorName: string;
-  /** Short tagline or bio displayed below the name */
-  authorTagline: string;
-  /** Main body text */
-  description: string;
-  /** CTA text displayed below the body text */
-  ctaText?: string;
-  /** CTA destination URL */
-  ctaUrl?: string;
-  /** Site-wide style configuration */
-  styleKit?: StyleKit;
-  /** Informational purpose tag for the section */
-  purpose?: string;
-  className?: string;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Arrow icon (private)                                               */
-/* ------------------------------------------------------------------ */
-
-function ArrowRight({ className }: { className?: string }) {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      className={cn("h-4 w-4", className)}
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <path d="M5 12h14M12 5l7 7-7 7" />
-    </svg>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
-
-/**
- * AuthorSplit -- a content section with a wide banner image followed
- * by a split layout: author profile on the left, long-form text on the right.
- * Great for about pages, founder stories, or team member spotlights.
- */
-export default function AuthorSplit({
-  bannerImage,
-  bannerImageAlt,
-  authorImage,
-  authorImageAlt,
-  authorName,
-  authorTagline,
-  description,
-  ctaText,
-  ctaUrl,
-  styleKit: _styleKit,
-  purpose,
-  className,
-}: AuthorSplitProps) {
-  const shouldReduceMotion = useReducedMotion();
-  const safeBannerImg = useSafeImageSrc(
-    bannerImage,
-    "layout-authorsplit-01-banner-image",
-    800,
-    256,
-  );
-  const safeAuthorImg = useSafeImageSrc(
-    authorImage,
-    "layout-authorsplit-01-author-image",
-    80,
-    80,
-  );
-
-  return (
-    <section
-      data-purpose={purpose}
-      className={cn("w-full bg-base-100 py-16 md:py-24", className)}
-    >
-      <div className="mx-auto max-w-4xl px-4 md:px-8">
-        {/* Banner image */}
-        <motion.div
-          className="mb-10 h-64 w-full overflow-hidden rounded-lg"
-          variants={imageReveal}
-          initial={shouldReduceMotion ? false : "hidden"}
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <img
-            src={safeBannerImg.src}
-            onError={safeBannerImg.onError}
-            alt={bannerImageAlt}
-            className="h-full w-full object-cover object-center"
-            loading="lazy"
-          />
-        </motion.div>
-
-        {/* Author + content split */}
-        <motion.div
-          className="flex flex-col gap-10 sm:flex-row"
-          variants={containerVariants}
-          initial={shouldReduceMotion ? false : "hidden"}
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          {/* Author column */}
-          <motion.div
-            variants={fadeUp}
-            className="flex flex-col items-center text-center sm:w-1/3 sm:py-8 sm:pr-8"
-          >
-            <div className="inline-flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-base-200">
-              <img
-                src={safeAuthorImg.src}
-                onError={safeAuthorImg.onError}
-                alt={authorImageAlt}
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <h2 className="mt-4 text-lg font-medium text-base-content">
-              {authorName}
-            </h2>
-            <div className="mt-2 mb-4 h-1 w-12 rounded bg-primary" />
-            <p className="text-base text-base-content/60">{authorTagline}</p>
-          </motion.div>
-
-          {/* Text column */}
-          <motion.div
-            variants={fadeUp}
-            className="border-t border-base-300 pt-4 text-center sm:w-2/3 sm:border-l sm:border-t-0 sm:py-8 sm:pl-8 sm:text-left"
-          >
-            <p className="mb-4 text-lg leading-relaxed text-base-content/70">
-              {description}
-            </p>
-            {ctaText && ctaUrl && (
-              <a
-                href={ctaUrl}
-                className="inline-flex items-center text-primary transition-colors hover:text-primary/80"
-              >
-                {ctaText}
-                <ArrowRight className="ml-2" />
-              </a>
-            )}
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-`,
-  "src/components/layouts/split/IconListSplit/index.tsx": `"use client";
-
-import { motion, useReducedMotion } from "motion/react";
-import { cn } from "@/lib/utils";
-import { containerVariants, fadeUp, imageReveal } from "@/lib/motion-variants";
-import type { StyleKit } from "@/lib/style-kit";
-import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
-
-/* ------------------------------------------------------------------ */
-/*  Types                                                              */
-/* ------------------------------------------------------------------ */
-
-export interface FeatureIconItem {
-  /** React node for the icon — typically an SVG or emoji */
-  icon: React.ReactNode;
-  /** Feature heading */
-  title: string;
-  /** Feature description */
-  description: string;
-}
-
-export interface LogoItem {
-  /** SVG content or image URL */
-  image: string;
-  imageAlt: string;
-}
-
-export interface IconListSplitProps {
-  /** Section headline */
-  headline: string;
-  /** List of features with icons */
-  features?: FeatureIconItem[];
-  /** Optional large image displayed beside the features list on desktop */
-  image?: string;
-  imageAlt?: string;
-  /** Optional row of company/partner logos below the features */
-  logos?: LogoItem[];
-  /** Site-wide style configuration */
-  styleKit?: StyleKit;
-  /** Informational purpose tag for the section */
-  purpose?: string;
-  className?: string;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Defaults                                                           */
-/* ------------------------------------------------------------------ */
-
-const DEFAULT_ICON_LIST_FEATURES: FeatureIconItem[] = [
-  {
-    icon: "✨",
-    title: "Set up in minutes",
-    description:
-      "Connect your accounts, import your data, and you're live before lunch — no migration project required.",
-  },
-  {
-    icon: "📈",
-    title: "Insights that matter",
-    description:
-      "Skip the dashboard archaeology. We surface the three trends you should care about each week.",
-  },
-  {
-    icon: "🤝",
-    title: "Built for teams",
-    description:
-      "Granular permissions, shared workspaces, and audit trails — even on the smallest plan.",
-  },
-  {
-    icon: "🔒",
-    title: "Security you can audit",
-    description:
-      "SOC 2 Type II, encryption at rest and in transit, and a data residency option in three regions.",
-  },
-];
-
-/* ------------------------------------------------------------------ */
-/*  Decorative underline (private)                                     */
-/* ------------------------------------------------------------------ */
-
-function AccentUnderline() {
-  return (
-    <div className="mt-2" aria-hidden="true">
-      <span className="inline-block h-1 w-40 rounded-full bg-primary" />
-      <span className="ml-1 inline-block h-1 w-3 rounded-full bg-primary" />
-      <span className="ml-1 inline-block h-1 w-1 rounded-full bg-primary" />
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Logo image (private, calls hook per item)                          */
-/* ------------------------------------------------------------------ */
-
-interface LogoImageProps {
-  logo: LogoItem;
-  index: number;
-}
-
-function LogoImage({ logo, index }: LogoImageProps) {
-  const safeImg = useSafeImageSrc(
-    logo.image,
-    \`layout-iconlistsplit-01-logo-image-\${index}\`,
-    140,
-    32,
-  );
-  return (
-    <img
-      src={safeImg.src}
-      onError={safeImg.onError}
-      alt={logo.imageAlt}
-      className="h-8 max-w-[140px] object-contain opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0"
-      loading="lazy"
-    />
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
-
-/**
- * IconListSplit -- a split layout with icon-prefixed feature items on
- * the left and an optional large image on the right. An optional logo bar
- * appears below, separated by a divider. Ideal for product feature pages,
- * service overviews, or partner showcases.
- */
-export default function IconListSplit({
-  headline,
-  features = DEFAULT_ICON_LIST_FEATURES,
-  image,
-  imageAlt,
-  logos,
-  styleKit: _styleKit,
-  purpose,
-  className,
-}: IconListSplitProps) {
-  const shouldReduceMotion = useReducedMotion();
-  const safeMainImg = useSafeImageSrc(
-    image,
-    "layout-iconlistsplit-01-image",
-    600,
-    544,
-  );
-
-  return (
-    <section
-      data-purpose={purpose}
-      className={cn("w-full bg-base-100 py-12 md:py-16", className)}
-    >
-      <div className="mx-auto max-w-7xl px-4 md:px-8">
-        {/* Main content — features + image */}
-        <div className="lg:flex lg:items-center">
-          {/* Features list */}
-          <motion.div
-            className="w-full space-y-12 lg:w-1/2"
-            variants={containerVariants}
-            initial={shouldReduceMotion ? false : "hidden"}
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            {/* Headline + accent underline */}
-            <motion.div variants={fadeUp}>
-              <h2 className="text-2xl font-semibold text-base-content lg:text-3xl">
-                {headline}
-              </h2>
-              <AccentUnderline />
-            </motion.div>
-
-            {/* Feature items */}
-            {features.map((feature, i) => (
-              <motion.div
-                key={i}
-                variants={fadeUp}
-                className="flex items-start gap-4"
-              >
-                <span className="inline-flex shrink-0 items-center justify-center rounded-xl bg-primary/10 p-2 text-primary">
-                  {feature.icon}
-                </span>
-                <div>
-                  <h3 className="text-xl font-semibold text-base-content">
-                    {feature.title}
-                  </h3>
-                  <p className="mt-3 text-base-content/60">
-                    {feature.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Image */}
-          {image && (
-            <motion.div
-              className="mt-12 hidden lg:mt-0 lg:flex lg:w-1/2 lg:items-center lg:justify-center"
-              variants={imageReveal}
-              initial={shouldReduceMotion ? false : "hidden"}
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-            >
-              <img
-                src={safeMainImg.src}
-                onError={safeMainImg.onError}
-                alt={imageAlt ?? ""}
-                className="h-[28rem] w-[28rem] rounded-full object-cover xl:h-[34rem] xl:w-[34rem]"
-                loading="lazy"
-              />
-            </motion.div>
-          )}
-        </div>
-
-        {/* Logo bar */}
-        {logos && logos.length > 0 && (
-          <>
-            <hr className="my-12 border-base-300" />
-            <motion.div
-              className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5"
-              variants={containerVariants}
-              initial={shouldReduceMotion ? false : "hidden"}
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-            >
-              {logos.map((logo, i) => (
-                <motion.div
-                  key={i}
-                  variants={fadeUp}
-                  className="flex items-center justify-center"
-                >
-                  <LogoImage logo={logo} index={i} />
-                </motion.div>
-              ))}
-            </motion.div>
-          </>
-        )}
-      </div>
-    </section>
-  );
-}
-`,
-  "src/components/layouts/split/ImageText/index.tsx": `"use client";
-
-import { motion, useReducedMotion } from "motion/react";
-import { cn } from "@/lib/utils";
-import { CtaButton } from "@/lib/ui/button";
-import { containerVariants, fadeUp, imageReveal } from "@/lib/motion-variants";
-import type { StyleKit } from "@/lib/style-kit";
-import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
-
-/* ------------------------------------------------------------------ */
-/*  Types                                                              */
-/* ------------------------------------------------------------------ */
-
-export interface ImageTextProps {
-  /** Section heading — large display text */
-  headline: string;
-  /** Body text below the heading */
-  description: string;
-  /** CTA button text */
-  ctaText: string;
-  /** CTA destination URL */
-  ctaUrl: string;
-  /** Site-wide style configuration — provides ctaVariant and ctaColorScheme */
-  styleKit?: StyleKit;
-  /** Section image */
-  image: string;
-  imageAlt: string;
-  /** Small label displayed above the headline */
-  label?: string;
-  /** Whether image appears on the left (default) or right */
-  imagePosition?: "left" | "right";
-  /** Background color scheme */
-  colorScheme?: "light" | "dark";
-  /** Informational purpose tag for the section */
-  purpose?: string;
-  className?: string;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
-
-export default function ImageText({
-  headline,
-  description,
-  ctaText,
-  ctaUrl,
-  styleKit,
-  image,
-  imageAlt,
-  label,
-  imagePosition = "left",
-  colorScheme = "light",
-  purpose,
-  className,
-}: ImageTextProps) {
-  const shouldReduceMotion = useReducedMotion();
-  const safeImg = useSafeImageSrc(image, "layout-imagetext-01-image", 600, 400);
-
-  const isDark = colorScheme === "dark";
-  const isReversed = imagePosition === "right";
-
-  return (
-    <section
-      data-purpose={purpose}
-      className={cn(
-        "relative w-full overflow-hidden",
-        isDark
-          ? "bg-neutral text-neutral-content"
-          : "bg-base-100 text-base-content",
-        className,
-      )}
-    >
-      <div
-        className={cn(
-          "mx-auto flex max-w-7xl flex-col gap-12 px-4 py-16 md:px-8 md:py-24 lg:flex-row lg:items-center",
-          isReversed && "lg:flex-row-reverse",
-        )}
-      >
-        {/* Image column */}
-        <motion.div
-          className="relative w-full lg:w-[45%]"
-          variants={imageReveal}
-          initial={shouldReduceMotion ? false : "hidden"}
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <img
-            src={safeImg.src}
-            onError={safeImg.onError}
-            alt={imageAlt}
-            className="h-auto w-full object-cover"
-            loading="lazy"
-          />
-        </motion.div>
-
-        {/* Text column */}
-        <motion.div
-          className="w-full space-y-6 lg:w-[55%]"
-          variants={containerVariants}
-          initial={shouldReduceMotion ? false : "hidden"}
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          {label && (
-            <motion.p
-              variants={fadeUp}
-              className={cn(
-                "text-sm font-semibold uppercase tracking-widest",
-                isDark ? "text-primary" : "text-primary",
-              )}
-            >
-              {label}
-            </motion.p>
-          )}
-
-          <motion.h2
-            variants={fadeUp}
-            className={cn(
-              "font-serif italic font-semibold text-4xl leading-[0.95] md:text-5xl lg:text-7xl",
-              isDark ? "text-neutral-content" : "text-base-content",
-            )}
-          >
-            {headline}
-          </motion.h2>
-
-          <motion.p
-            variants={fadeUp}
-            className={cn(
-              "max-w-xl text-base leading-relaxed md:text-lg",
-              isDark ? "text-neutral-content/70" : "text-base-content/70",
-            )}
-          >
-            {description}
-          </motion.p>
-
-          <motion.div variants={fadeUp} className="pt-2">
-            <CtaButton
-              variant={styleKit?.ctaVariant ?? "default"}
-              colorScheme={styleKit?.ctaColorScheme ?? "primary"}
-              href={ctaUrl}
-            >
-              {ctaText}
-            </CtaButton>
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-`,
-  "src/components/layouts/split/ShowcaseSplit/index.tsx": `"use client";
-
-import { useState, useCallback } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { cn } from "@/lib/utils";
-import type { StyleKit } from "@/lib/style-kit";
-import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
-
-/* ------------------------------------------------------------------ */
-/*  Types                                                              */
-/* ------------------------------------------------------------------ */
-
-export interface ShowcaseItem {
-  /** Large photo of the showcase author */
-  image: string;
-  imageAlt: string;
-  /** Author name */
-  name: string;
-  /** Author role / company */
-  title: string;
-  /** Quote text */
-  quote: string;
-}
-
-export interface ShowcaseSplitProps {
-  /** Small label displayed above the headline */
-  label?: string;
-  /** Section headline */
-  headline: string;
-  /** List of showcase items */
-  testimonials?: ShowcaseItem[];
-  /** Site-wide style configuration -- accepted for API consistency */
-  styleKit?: StyleKit;
-  /** Informational purpose tag for the section */
-  purpose?: string;
-  className?: string;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Defaults                                                           */
-/* ------------------------------------------------------------------ */
-
-const DEFAULT_SHOWCASE_ITEMS: ShowcaseItem[] = [
-  {
-    image: "https://picsum.photos/seed/showcasesplit-item-0/416/576",
-    imageAlt: "Sarah Chen",
-    name: "Sarah Chen",
-    title: "Head of Growth at Acme",
-    quote:
-      "We doubled our pipeline in the first quarter. The team was responsive, sharp, and frankly a delight to work with.",
-  },
-  {
-    image: "https://picsum.photos/seed/showcasesplit-item-1/416/576",
-    imageAlt: "Marcus Rivera",
-    name: "Marcus Rivera",
-    title: "Founder at BuildFast",
-    quote:
-      "I've worked with a dozen agencies. None shipped this quickly without dropping quality. Genuinely impressed.",
-  },
-  {
-    image: "https://picsum.photos/seed/showcasesplit-item-2/416/576",
-    imageAlt: "Priya Natarajan",
-    name: "Priya Natarajan",
-    title: "VP Product at Lumen",
-    quote:
-      "The clarity of communication alone was worth the price. We knew where things stood every single week.",
-  },
-];
-
-/* ------------------------------------------------------------------ */
-/*  Animation variants                                                 */
-/* ------------------------------------------------------------------ */
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.3, ease: "easeOut" as const },
-  },
-};
-
-const slideVariants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? 60 : -60,
-    opacity: 0,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-  },
-  exit: (direction: number) => ({
-    x: direction > 0 ? -60 : 60,
-    opacity: 0,
-  }),
-};
-
-/* ------------------------------------------------------------------ */
-/*  Navigation arrows (private)                                        */
-/* ------------------------------------------------------------------ */
-
-function NavArrow({
-  direction,
-  onClick,
-  label,
-}: {
-  direction: "prev" | "next";
-  onClick: () => void;
-  label: string;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      aria-label={label}
-      className="rounded-full border border-primary-content/30 p-2 text-primary-content transition-colors duration-200 hover:bg-primary/60"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
-        aria-hidden="true"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d={direction === "prev" ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"}
-        />
-      </svg>
-    </button>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
-
-/**
- * ShowcaseSplit -- a bold split-layout section with a large author photo
- * alongside the quote text, wrapped in a colored background card.
- * Previous/next navigation arrows cycle through items with a sliding
- * transition.
- */
-export default function ShowcaseSplit({
-  label,
-  headline,
-  testimonials = DEFAULT_SHOWCASE_ITEMS,
-  styleKit,
-  purpose,
-  className,
-}: ShowcaseSplitProps) {
-  const [[activeIndex, direction], setActive] = useState([0, 0]);
-  const shouldReduceMotion = useReducedMotion();
-
-  const paginate = useCallback(
-    (newDirection: number) => {
-      setActive(([prev]) => {
-        const next =
-          (prev + newDirection + testimonials.length) % testimonials.length;
-        return [next, newDirection];
-      });
-    },
-    [testimonials.length],
-  );
-
-  if (!testimonials.length) return null;
-
-  const current = testimonials[activeIndex];
-  const safeImg = useSafeImageSrc(
-    current.image,
-    \`layout-showcasesplit-01-image-\${activeIndex}\`,
-    416,
-    576,
-  );
-
-  return (
-    <section
-      data-purpose={purpose}
-      data-style-kit={styleKit ? JSON.stringify(styleKit) : undefined}
-      className={cn("w-full bg-base-100 py-12 md:py-16", className)}
-    >
-      <div className="mx-auto max-w-6xl px-4 md:px-8">
-        {/* Header */}
-        <motion.div
-          className="mb-8"
-          initial={shouldReduceMotion ? false : "hidden"}
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={fadeUp}
-        >
-          {label && (
-            <p className="mb-2 text-xl font-medium text-primary">{label}</p>
-          )}
-          <h2 className="text-2xl font-semibold text-base-content lg:text-3xl">
-            {headline}
-          </h2>
-        </motion.div>
-
-        {/* Showcase card */}
-        <div className="relative w-full overflow-hidden rounded-2xl bg-primary">
-          <div className="flex w-full flex-col items-center p-6 md:flex-row md:items-center md:justify-evenly md:p-0 lg:px-12">
-            {/* Author image */}
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.img
-                key={\`image-\${activeIndex}\`}
-                src={safeImg.src}
-                onError={safeImg.onError}
-                alt={current.imageAlt}
-                className="h-24 w-24 rounded-full object-cover shadow-md md:mx-6 md:h-[32rem] md:w-80 md:rounded-2xl lg:h-[36rem] lg:w-[26rem]"
-                loading="lazy"
-                custom={direction}
-                variants={shouldReduceMotion ? undefined : slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.3, ease: "easeOut" }}
-              />
-            </AnimatePresence>
-
-            {/* Text + navigation */}
-            <div className="mt-4 md:mx-6 md:mt-0">
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={\`text-\${activeIndex}\`}
-                  custom={direction}
-                  variants={shouldReduceMotion ? undefined : slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                >
-                  <p className="text-xl font-medium tracking-tight text-primary-content">
-                    {current.name}
-                  </p>
-                  <p className="text-primary-content/60">{current.title}</p>
-                  <p className="mt-4 text-lg leading-relaxed text-primary-content md:text-xl">
-                    &ldquo;{current.quote}&rdquo;
-                  </p>
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Navigation */}
-              {testimonials.length > 1 && (
-                <div className="mt-6 flex items-center gap-4 md:justify-start">
-                  <NavArrow
-                    direction="prev"
-                    onClick={() => paginate(-1)}
-                    label="Previous testimonial"
-                  />
-                  <NavArrow
-                    direction="next"
-                    onClick={() => paginate(1)}
-                    label="Next testimonial"
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-`,
-  "src/components/layouts/split/StackedSplit/index.tsx": `"use client";
-
-import { Dispatch, SetStateAction, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
-import { cn } from "@/lib/utils";
-import TestimonialCard, {
-  type TestimonialItem,
-} from "@/lib/ui/cards/TestimonialCard";
-import type { StyleKit } from "@/lib/style-kit";
-
-/* ------------------------------------------------------------------ */
-/*  Types                                                              */
-/* ------------------------------------------------------------------ */
-
-export interface StackedSplitProps {
-  /** Section headline */
-  headline: string;
-  /** Supporting text below the headline */
-  subheadline?: string;
-  /** List of testimonials rendered as stacked cards */
-  testimonials?: TestimonialItem[];
-  /** Auto-advance duration in seconds per card. Defaults to 5 */
-  autoAdvanceDuration?: number;
-  /** Site-wide style configuration — accepted for API consistency */
-  styleKit?: StyleKit;
-  /** Informational purpose tag for the section */
-  purpose?: string;
-  className?: string;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Defaults                                                           */
-/* ------------------------------------------------------------------ */
-
-const DEFAULT_STACKED_TESTIMONIALS: TestimonialItem[] = [
-  {
-    image: "https://picsum.photos/seed/stackedsplit-testimonial-0/80/80",
-    imageAlt: "Jordan Patel",
-    name: "Jordan Patel",
-    title: "Director of Engineering at Helix",
-    quote:
-      "The pace of execution was unreal. Two weeks in and we already had a launch-ready prototype the team could test against.",
-  },
-  {
-    image: "https://picsum.photos/seed/stackedsplit-testimonial-1/80/80",
-    imageAlt: "Amina Hassan",
-    name: "Amina Hassan",
-    title: "Head of Design at Northwave",
-    quote:
-      "I've never seen a vendor get our brand voice this quickly. Felt like extending our own team rather than handing things off.",
-  },
-  {
-    image: "https://picsum.photos/seed/stackedsplit-testimonial-2/80/80",
-    imageAlt: "Tom Whitaker",
-    name: "Tom Whitaker",
-    title: "Co-founder at Drift Studio",
-    quote:
-      "Cut our content production time in half. The framework they set up is still paying dividends a year later.",
-  },
-  {
-    image: "https://picsum.photos/seed/stackedsplit-testimonial-3/80/80",
-    imageAlt: "Lin Wei",
-    name: "Lin Wei",
-    title: "VP Operations at Quanta",
-    quote:
-      "Genuinely the smoothest engagement we've run. Clear deliverables, no surprise scopes, results that held up.",
-  },
-];
-
-/* ------------------------------------------------------------------ */
-/*  Progress bar                                                       */
-/* ------------------------------------------------------------------ */
-
-function ProgressBar({
-  total,
-  selected,
-  setSelected,
-  autoAdvanceDuration,
-  shouldReduceMotion,
-}: {
-  total: number;
-  selected: number;
-  setSelected: Dispatch<SetStateAction<number>>;
-  autoAdvanceDuration: number;
-  shouldReduceMotion: boolean | null;
-}) {
-  return (
-    <div
-      className="mt-8 flex gap-1"
-      role="tablist"
-      aria-label="Testimonial navigation"
-    >
-      {Array.from({ length: total }, (_, n) => (
-        <button
-          key={n}
-          onClick={() => setSelected(n)}
-          className="relative h-1.5 w-full bg-base-300"
-          role="tab"
-          aria-selected={selected === n}
-          aria-label={\`Testimonial \${n + 1}\`}
-        >
-          {selected === n ? (
-            <motion.span
-              className="absolute bottom-0 left-0 top-0 bg-base-content"
-              initial={{ width: "0%" }}
-              animate={{ width: "100%" }}
-              transition={
-                shouldReduceMotion
-                  ? { duration: 0 }
-                  : { duration: autoAdvanceDuration }
-              }
-              onAnimationComplete={() => {
-                setSelected(selected === total - 1 ? 0 : selected + 1);
-              }}
-            />
-          ) : (
-            <span
-              className="absolute bottom-0 left-0 top-0 bg-base-content"
-              style={{ width: selected > n ? "100%" : "0%" }}
-            />
-          )}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Stacked cards                                                      */
-/* ------------------------------------------------------------------ */
-
-function StackedCards({
-  testimonials,
-  selected,
-  setSelected,
-}: {
-  testimonials: TestimonialItem[];
-  selected: number;
-  setSelected: Dispatch<SetStateAction<number>>;
-}) {
-  return (
-    <div className="relative h-[450px] shadow-xl lg:h-[500px]">
-      {testimonials.map((t, i) => {
-        const scale = i <= selected ? 1 : 1 + 0.015 * (i - selected);
-        const offset = i <= selected ? 0 : 95 + (i - selected) * 3;
-        const isInverted = i % 2 === 1;
-
-        return (
-          <motion.div
-            key={i}
-            initial={false}
-            style={{
-              zIndex: i,
-              transformOrigin: "left bottom",
-            }}
-            animate={{
-              x: \`\${offset}%\`,
-              scale,
-            }}
-            whileHover={{
-              translateX: i === selected ? 0 : -3,
-            }}
-            transition={{
-              duration: 0.25,
-              ease: "easeOut",
-            }}
-            onClick={() => setSelected(i)}
-            className="absolute left-0 top-0 h-full w-full"
-          >
-            <TestimonialCard
-              {...t}
-              layout="compact"
-              inverted={isInverted}
-              className="h-full"
-            />
-          </motion.div>
-        );
-      })}
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
-
-/**
- * StackedSplit -- a split-layout testimonial section where cards
- * are stacked with a subtle offset. The active card is fully visible;
- * inactive cards peek from the right edge. Auto-advances with an animated
- * progress bar.
- */
-export default function StackedSplit({
-  headline,
-  subheadline,
-  testimonials = DEFAULT_STACKED_TESTIMONIALS,
-  autoAdvanceDuration = 5,
-  styleKit,
-  purpose,
-  className,
-}: StackedSplitProps) {
-  const [selected, setSelected] = useState(0);
-  const shouldReduceMotion = useReducedMotion();
-
-  return (
-    <section
-      data-purpose={purpose}
-      data-style-kit={styleKit ? JSON.stringify(styleKit) : undefined}
-      className={cn(
-        "w-full overflow-hidden bg-base-100 px-4 py-16 md:py-24 lg:px-8",
-        className,
-      )}
-    >
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-4">
-        {/* Text side */}
-        <div className="p-4">
-          <h2 className="text-4xl font-semibold text-base-content sm:text-5xl">
-            {headline}
-          </h2>
-          {subheadline && (
-            <p className="my-4 text-base-content/60">{subheadline}</p>
-          )}
-          <ProgressBar
-            total={testimonials.length}
-            selected={selected}
-            setSelected={setSelected}
-            autoAdvanceDuration={autoAdvanceDuration}
-            shouldReduceMotion={shouldReduceMotion}
-          />
-        </div>
-
-        {/* Cards side */}
-        <StackedCards
-          testimonials={testimonials}
-          selected={selected}
-          setSelected={setSelected}
-        />
-      </div>
-    </section>
-  );
-}
-`,
-  "src/components/layouts/split/StatementSplit/index.tsx": `"use client";
-
-import { motion, useReducedMotion } from "motion/react";
-import { cn } from "@/lib/utils";
-import {
-  containerVariants,
-  fadeUp,
-  imageReveal,
-  accentReveal,
-} from "@/lib/motion-variants";
-import type { StyleKit } from "@/lib/style-kit";
-import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
-
-/* ------------------------------------------------------------------ */
-/*  Types                                                              */
-/* ------------------------------------------------------------------ */
-
-export interface StatementSplitProps {
-  /** Large statement headline — rendered in italic display font */
-  headline: string;
-  /** Main body text — supports line breaks via \\n */
-  description: string;
-  /** Bold closing line appended to the description */
-  descriptionEmphasis?: string;
-  /** Primary section image */
-  image: string;
-  imageAlt: string;
-  /** Floating accent image — smaller overlay in the corner of the main image */
-  accentImage?: string;
-  accentImageAlt?: string;
-  /** Background color scheme */
-  colorScheme?: "dark" | "light";
-  /** Whether the headline appears on the left (default) or right */
-  headlinePosition?: "left" | "right";
-  /** Site-wide style configuration */
-  styleKit?: StyleKit;
-  /** Informational purpose tag for the section */
-  purpose?: string;
-  className?: string;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
-
-export default function StatementSplit({
-  headline,
-  description,
-  descriptionEmphasis,
-  image,
-  imageAlt,
-  accentImage,
-  accentImageAlt,
-  colorScheme = "dark",
-  headlinePosition = "left",
-  styleKit: _styleKit,
-  purpose,
-  className,
-}: StatementSplitProps) {
-  const shouldReduceMotion = useReducedMotion();
-  const safeImg = useSafeImageSrc(
-    image,
-    "layout-statementsplit-01-image",
-    800,
-    520,
-  );
-  const safeAccentImg = useSafeImageSrc(
-    accentImage,
-    "layout-statementsplit-01-accent-image",
-    224,
-    224,
-  );
-
-  const isDark = colorScheme === "dark";
-  const isReversed = headlinePosition === "right";
-
-  return (
-    <section
-      data-purpose={purpose}
-      className={cn(
-        "relative w-full min-h-screen",
-        isDark
-          ? "bg-neutral text-neutral-content"
-          : "bg-base-100 text-base-content",
-        className,
-      )}
-    >
-      <div className="mx-auto flex w-full max-w-7xl items-center px-4 py-16 md:px-8 md:py-0 md:min-h-screen">
-        <motion.div
-          className={cn(
-            "flex w-full flex-col gap-10 lg:gap-12",
-            isReversed
-              ? "lg:flex-row-reverse lg:items-end"
-              : "lg:flex-row lg:items-end",
-          )}
-          variants={containerVariants}
-          initial={shouldReduceMotion ? false : "hidden"}
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          {/* Headline column */}
-          <motion.div
-            variants={fadeUp}
-            className={cn(
-              "max-w-xl lg:flex-none lg:self-start lg:pt-10 lg:z-10",
-              isReversed ? "lg:-ml-24" : "lg:-mr-24",
-            )}
-          >
-            <h2
-              className={cn(
-                "font-serif italic font-medium text-4xl leading-tight md:text-5xl lg:text-7xl",
-                isDark ? "text-neutral-content" : "text-base-content",
-              )}
-            >
-              {headline}
-            </h2>
-          </motion.div>
-
-          {/* Image column */}
-          <div className="relative lg:basis-[70%]">
-            <motion.div
-              variants={imageReveal}
-              className="h-[260px] w-full overflow-hidden md:h-[380px] lg:h-[520px]"
-            >
-              <img
-                src={safeImg.src}
-                onError={safeImg.onError}
-                alt={imageAlt}
-                className="h-full w-full max-w-none object-cover"
-                loading="lazy"
-              />
-            </motion.div>
-
-            {/* Floating accent image */}
-            {accentImage && (
-              <motion.div
-                variants={accentReveal}
-                className="absolute -left-10 -bottom-10 hidden h-40 w-40 overflow-hidden md:block lg:h-56 lg:w-56"
-              >
-                <img
-                  src={safeAccentImg.src}
-                  onError={safeAccentImg.onError}
-                  alt={accentImageAlt ?? ""}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                />
-              </motion.div>
-            )}
-          </div>
-
-          {/* Description column */}
-          <motion.div
-            variants={fadeUp}
-            className={cn(
-              "max-w-sm",
-              isReversed ? "lg:self-start" : "lg:self-end",
-            )}
-          >
-            <p
-              className={cn(
-                "text-base leading-relaxed md:text-lg",
-                isDark ? "text-neutral-content/80" : "text-base-content/70",
-              )}
-            >
-              {description}
-              {descriptionEmphasis && (
-                <>
-                  <br />
-                  <br />
-                  <span className="font-semibold">{descriptionEmphasis}</span>
-                </>
-              )}
-            </p>
-          </motion.div>
-        </motion.div>
       </div>
     </section>
   );
@@ -7056,6 +7646,825 @@ export default function StatsCountUp({
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+`,
+  "src/components/testimonials/InfiniteScroll/index.tsx": `"use client";
+
+import { motion, useReducedMotion } from "motion/react";
+import { cn } from "@/lib/utils";
+import TestimonialCard, {
+  type TestimonialItem,
+} from "@/lib/ui/cards/TestimonialCard";
+import type { StyleKit } from "@/lib/style-kit";
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+
+export interface InfiniteScrollProps {
+  /** Section headline */
+  headline: string;
+  /** Supporting text below the headline */
+  subheadline?: string;
+  /** Three rows of testimonials — each row scrolls independently */
+  rows?: [TestimonialItem[], TestimonialItem[], TestimonialItem[]];
+  /** Duration in seconds for one full scroll cycle per row. Defaults to [125, 75, 275] */
+  durations?: [number, number, number];
+  /** Site-wide style configuration — accepted for API consistency */
+  styleKit?: StyleKit;
+  /** Informational purpose tag for the section */
+  purpose?: string;
+  className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_INFINITE_SCROLL_ROWS: [
+  TestimonialItem[],
+  TestimonialItem[],
+  TestimonialItem[],
+] = [
+  [
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r0-0/80/80",
+      imageAlt: "Sarah Chen",
+      name: "Sarah Chen",
+      title: "Head of Growth at Acme",
+      quote:
+        "We doubled our pipeline in the first quarter. The team was responsive, sharp, and a delight to work with.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r0-1/80/80",
+      imageAlt: "Marcus Rivera",
+      name: "Marcus Rivera",
+      title: "Founder at BuildFast",
+      quote:
+        "I've worked with a dozen agencies. None shipped this quickly without dropping quality.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r0-2/80/80",
+      imageAlt: "Priya Natarajan",
+      name: "Priya Natarajan",
+      title: "VP Product at Lumen",
+      quote:
+        "The clarity of communication alone was worth the price. We knew where things stood every week.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r0-3/80/80",
+      imageAlt: "David Okafor",
+      name: "David Okafor",
+      title: "CTO at Northwind Labs",
+      quote:
+        "Our conversion rate jumped 38% within six weeks. The redesign paid for itself.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r0-4/80/80",
+      imageAlt: "Elena Martinez",
+      name: "Elena Martinez",
+      title: "Marketing Director at Pixelworks",
+      quote:
+        "They didn't just build us a website — they gave us a system we can keep iterating on.",
+    },
+  ],
+  [
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r1-0/80/80",
+      imageAlt: "Jordan Patel",
+      name: "Jordan Patel",
+      title: "Director of Engineering at Helix",
+      quote:
+        "Two weeks in and we already had a launch-ready prototype the team could test against.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r1-1/80/80",
+      imageAlt: "Amina Hassan",
+      name: "Amina Hassan",
+      title: "Head of Design at Northwave",
+      quote:
+        "Felt like extending our own team rather than handing things off to a vendor.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r1-2/80/80",
+      imageAlt: "Tom Whitaker",
+      name: "Tom Whitaker",
+      title: "Co-founder at Drift Studio",
+      quote:
+        "Cut our content production time in half. The framework still pays dividends a year later.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r1-3/80/80",
+      imageAlt: "Lin Wei",
+      name: "Lin Wei",
+      title: "VP Operations at Quanta",
+      quote:
+        "The smoothest engagement we've run. Clear deliverables, no scope surprises, results that held up.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r1-4/80/80",
+      imageAlt: "Hannah Schmitt",
+      name: "Hannah Schmitt",
+      title: "Founder at Morrow & Co",
+      quote:
+        "They asked the right uncomfortable questions early. That alone changed the direction of the project.",
+    },
+  ],
+  [
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r2-0/80/80",
+      imageAlt: "Rafael Costa",
+      name: "Rafael Costa",
+      title: "Head of Product at Kinetic",
+      quote:
+        "Three weeks from kickoff to a redesigned site that actually felt like us. Quality I didn't expect at this pace.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r2-1/80/80",
+      imageAlt: "Naomi Wright",
+      name: "Naomi Wright",
+      title: "CEO at Rivermark",
+      quote: "Best money we've spent on a partner this year. Period.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r2-2/80/80",
+      imageAlt: "Yuki Tanaka",
+      name: "Yuki Tanaka",
+      title: "VP Marketing at Glasscube",
+      quote:
+        "We finally have a brand story everyone in the company tells the same way. Worth every cent.",
+    },
+    {
+      image: "https://picsum.photos/seed/infinitescroll-r2-3/80/80",
+      imageAlt: "Felix Brandt",
+      name: "Felix Brandt",
+      title: "COO at Northbeam",
+      quote:
+        "Replaced four different tools with one cleaner workflow. The team adopted it without a single training session.",
+    },
+  ],
+];
+
+/* ------------------------------------------------------------------ */
+/*  Marquee row                                                        */
+/* ------------------------------------------------------------------ */
+
+function MarqueeRow({
+  items,
+  duration,
+  reverse,
+  shouldReduceMotion,
+}: {
+  items: TestimonialItem[];
+  duration: number;
+  reverse?: boolean;
+  shouldReduceMotion: boolean | null;
+}) {
+  /* Triple the items to create seamless loop */
+  const repeats = [0, 1, 2];
+
+  return (
+    <div className="flex items-center">
+      {repeats.map((r) => (
+        <motion.div
+          key={r}
+          className="flex gap-4 px-2"
+          initial={{ translateX: reverse ? "-100%" : "0%" }}
+          animate={{ translateX: reverse ? "0%" : "-100%" }}
+          transition={
+            shouldReduceMotion
+              ? { duration: 0 }
+              : { duration, repeat: Infinity, ease: "linear" }
+          }
+        >
+          {items.map((t, i) => (
+            <TestimonialCard
+              key={\`\${r}-\${i}\`}
+              {...t}
+              layout="horizontal"
+              className="w-[290px] sm:w-[500px]"
+            />
+          ))}
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Component                                                          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * InfiniteScroll -- three infinite-scrolling marquee rows of
+ * testimonial cards, each moving at a different speed and direction.
+ *
+ * Edge gradients fade cards in/out at the viewport edges for a polished
+ * overflow feel.
+ */
+export default function InfiniteScroll({
+  headline,
+  subheadline,
+  rows = DEFAULT_INFINITE_SCROLL_ROWS,
+  durations = [125, 75, 275],
+  styleKit,
+  purpose,
+  className,
+}: InfiniteScrollProps) {
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <section
+      data-purpose={purpose}
+      data-style-kit={styleKit ? JSON.stringify(styleKit) : undefined}
+      className={cn("w-full bg-neutral py-12 md:py-16 lg:py-24", className)}
+    >
+      {/* Header */}
+      <div className="mb-8 px-4">
+        <h2 className="text-center text-3xl font-semibold text-neutral-content sm:text-4xl">
+          {headline}
+        </h2>
+        {subheadline && (
+          <p className="mx-auto mt-2 max-w-lg text-center text-sm text-neutral-content/60">
+            {subheadline}
+          </p>
+        )}
+      </div>
+
+      {/* Marquee area */}
+      <div className="relative overflow-x-hidden p-4">
+        {/* Left fade */}
+        <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-24 bg-gradient-to-r from-neutral to-transparent" />
+
+        <div className="mb-4 flex items-center">
+          <MarqueeRow
+            items={rows[0]}
+            duration={durations[0]}
+            shouldReduceMotion={shouldReduceMotion}
+          />
+        </div>
+        <div className="mb-4 flex items-center">
+          <MarqueeRow
+            items={rows[1]}
+            duration={durations[1]}
+            reverse
+            shouldReduceMotion={shouldReduceMotion}
+          />
+        </div>
+        <div className="flex items-center">
+          <MarqueeRow
+            items={rows[2]}
+            duration={durations[2]}
+            shouldReduceMotion={shouldReduceMotion}
+          />
+        </div>
+
+        {/* Right fade */}
+        <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-24 bg-gradient-to-l from-neutral to-transparent" />
+      </div>
+    </section>
+  );
+}
+`,
+  "src/components/testimonials/StackedSplit/index.tsx": `"use client";
+
+import { Dispatch, SetStateAction, useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import { cn } from "@/lib/utils";
+import TestimonialCard, {
+  type TestimonialItem,
+} from "@/lib/ui/cards/TestimonialCard";
+import type { StyleKit } from "@/lib/style-kit";
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+
+export interface StackedSplitProps {
+  /** Section headline */
+  headline: string;
+  /** Supporting text below the headline */
+  subheadline?: string;
+  /** List of testimonials rendered as stacked cards */
+  testimonials?: TestimonialItem[];
+  /** Auto-advance duration in seconds per card. Defaults to 5 */
+  autoAdvanceDuration?: number;
+  /** Site-wide style configuration — accepted for API consistency */
+  styleKit?: StyleKit;
+  /** Informational purpose tag for the section */
+  purpose?: string;
+  className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_STACKED_TESTIMONIALS: TestimonialItem[] = [
+  {
+    image: "https://picsum.photos/seed/stackedsplit-testimonial-0/80/80",
+    imageAlt: "Jordan Patel",
+    name: "Jordan Patel",
+    title: "Director of Engineering at Helix",
+    quote:
+      "The pace of execution was unreal. Two weeks in and we already had a launch-ready prototype the team could test against.",
+  },
+  {
+    image: "https://picsum.photos/seed/stackedsplit-testimonial-1/80/80",
+    imageAlt: "Amina Hassan",
+    name: "Amina Hassan",
+    title: "Head of Design at Northwave",
+    quote:
+      "I've never seen a vendor get our brand voice this quickly. Felt like extending our own team rather than handing things off.",
+  },
+  {
+    image: "https://picsum.photos/seed/stackedsplit-testimonial-2/80/80",
+    imageAlt: "Tom Whitaker",
+    name: "Tom Whitaker",
+    title: "Co-founder at Drift Studio",
+    quote:
+      "Cut our content production time in half. The framework they set up is still paying dividends a year later.",
+  },
+  {
+    image: "https://picsum.photos/seed/stackedsplit-testimonial-3/80/80",
+    imageAlt: "Lin Wei",
+    name: "Lin Wei",
+    title: "VP Operations at Quanta",
+    quote:
+      "Genuinely the smoothest engagement we've run. Clear deliverables, no surprise scopes, results that held up.",
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Progress bar                                                       */
+/* ------------------------------------------------------------------ */
+
+function ProgressBar({
+  total,
+  selected,
+  setSelected,
+  autoAdvanceDuration,
+  shouldReduceMotion,
+}: {
+  total: number;
+  selected: number;
+  setSelected: Dispatch<SetStateAction<number>>;
+  autoAdvanceDuration: number;
+  shouldReduceMotion: boolean | null;
+}) {
+  return (
+    <div
+      className="mt-8 flex gap-1"
+      role="tablist"
+      aria-label="Testimonial navigation"
+    >
+      {Array.from({ length: total }, (_, n) => (
+        <button
+          key={n}
+          onClick={() => setSelected(n)}
+          className="relative h-1.5 w-full bg-base-300"
+          role="tab"
+          aria-selected={selected === n}
+          aria-label={\`Testimonial \${n + 1}\`}
+        >
+          {selected === n ? (
+            <motion.span
+              className="absolute bottom-0 left-0 top-0 bg-base-content"
+              initial={{ width: "0%" }}
+              animate={{ width: "100%" }}
+              transition={
+                shouldReduceMotion
+                  ? { duration: 0 }
+                  : { duration: autoAdvanceDuration }
+              }
+              onAnimationComplete={() => {
+                setSelected(selected === total - 1 ? 0 : selected + 1);
+              }}
+            />
+          ) : (
+            <span
+              className="absolute bottom-0 left-0 top-0 bg-base-content"
+              style={{ width: selected > n ? "100%" : "0%" }}
+            />
+          )}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Stacked cards                                                      */
+/* ------------------------------------------------------------------ */
+
+function StackedCards({
+  testimonials,
+  selected,
+  setSelected,
+}: {
+  testimonials: TestimonialItem[];
+  selected: number;
+  setSelected: Dispatch<SetStateAction<number>>;
+}) {
+  return (
+    <div className="relative h-[450px] shadow-xl lg:h-[500px]">
+      {testimonials.map((t, i) => {
+        const scale = i <= selected ? 1 : 1 + 0.015 * (i - selected);
+        const offset = i <= selected ? 0 : 95 + (i - selected) * 3;
+        const isInverted = i % 2 === 1;
+
+        return (
+          <motion.div
+            key={i}
+            initial={false}
+            style={{
+              zIndex: i,
+              transformOrigin: "left bottom",
+            }}
+            animate={{
+              x: \`\${offset}%\`,
+              scale,
+            }}
+            whileHover={{
+              translateX: i === selected ? 0 : -3,
+            }}
+            transition={{
+              duration: 0.25,
+              ease: "easeOut",
+            }}
+            onClick={() => setSelected(i)}
+            className="absolute left-0 top-0 h-full w-full"
+          >
+            <TestimonialCard
+              {...t}
+              layout="compact"
+              inverted={isInverted}
+              className="h-full"
+            />
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Component                                                          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * StackedSplit -- a split-layout testimonial section where cards
+ * are stacked with a subtle offset. The active card is fully visible;
+ * inactive cards peek from the right edge. Auto-advances with an animated
+ * progress bar.
+ */
+export default function StackedSplit({
+  headline,
+  subheadline,
+  testimonials = DEFAULT_STACKED_TESTIMONIALS,
+  autoAdvanceDuration = 5,
+  styleKit,
+  purpose,
+  className,
+}: StackedSplitProps) {
+  const [selected, setSelected] = useState(0);
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <section
+      data-purpose={purpose}
+      data-style-kit={styleKit ? JSON.stringify(styleKit) : undefined}
+      className={cn(
+        "w-full overflow-hidden bg-base-100 px-4 py-16 md:py-24 lg:px-8",
+        className,
+      )}
+    >
+      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-4">
+        {/* Text side */}
+        <div className="p-4">
+          <h2 className="text-4xl font-semibold text-base-content sm:text-5xl">
+            {headline}
+          </h2>
+          {subheadline && (
+            <p className="my-4 text-base-content/60">{subheadline}</p>
+          )}
+          <ProgressBar
+            total={testimonials.length}
+            selected={selected}
+            setSelected={setSelected}
+            autoAdvanceDuration={autoAdvanceDuration}
+            shouldReduceMotion={shouldReduceMotion}
+          />
+        </div>
+
+        {/* Cards side */}
+        <StackedCards
+          testimonials={testimonials}
+          selected={selected}
+          setSelected={setSelected}
+        />
+      </div>
+    </section>
+  );
+}
+`,
+  "src/components/testimonials/StaggerFan/index.tsx": `"use client";
+
+import { useCallback, useEffect, useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import { cn } from "@/lib/utils";
+import TestimonialCard, {
+  type TestimonialItem,
+} from "@/lib/ui/cards/TestimonialCard";
+import type { StyleKit } from "@/lib/style-kit";
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+
+/** Internal type that adds a unique key for reorder animation */
+type InternalTestimonial = TestimonialItem & { _key: number };
+
+export interface StaggerFanProps {
+  /** List of testimonials — displayed as a fan of overlapping cards */
+  testimonials?: TestimonialItem[];
+  /** Height of the section in pixels. Defaults to 600 */
+  sectionHeight?: number;
+  /** Card size on large screens in pixels. Defaults to 365 */
+  cardSizeLg?: number;
+  /** Card size on small screens in pixels. Defaults to 290 */
+  cardSizeSm?: number;
+  /** Site-wide style configuration — accepted for API consistency */
+  styleKit?: StyleKit;
+  /** Informational purpose tag for the section */
+  purpose?: string;
+  className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_STAGGER_TESTIMONIALS: TestimonialItem[] = [
+  {
+    image: "https://picsum.photos/seed/staggerfan-testimonial-0/80/80",
+    imageAlt: "Sarah Chen",
+    name: "Sarah Chen",
+    title: "Head of Growth at Acme",
+    quote:
+      "We doubled our pipeline in the first quarter. The team was responsive, sharp, and frankly a delight to work with.",
+  },
+  {
+    image: "https://picsum.photos/seed/staggerfan-testimonial-1/80/80",
+    imageAlt: "Marcus Rivera",
+    name: "Marcus Rivera",
+    title: "Founder at BuildFast",
+    quote:
+      "I've worked with a dozen agencies. None of them shipped this quickly without dropping quality. Genuinely impressed.",
+  },
+  {
+    image: "https://picsum.photos/seed/staggerfan-testimonial-2/80/80",
+    imageAlt: "Priya Natarajan",
+    name: "Priya Natarajan",
+    title: "VP Product at Lumen",
+    quote:
+      "The clarity of communication alone was worth the price. We knew where things stood every single week.",
+  },
+  {
+    image: "https://picsum.photos/seed/staggerfan-testimonial-3/80/80",
+    imageAlt: "David Okafor",
+    name: "David Okafor",
+    title: "CTO at Northwind Labs",
+    quote:
+      "Our conversion rate jumped 38% within six weeks. The redesign paid for itself before the next billing cycle.",
+  },
+  {
+    image: "https://picsum.photos/seed/staggerfan-testimonial-4/80/80",
+    imageAlt: "Elena Martinez",
+    name: "Elena Martinez",
+    title: "Marketing Director at Pixelworks",
+    quote:
+      "They didn't just build us a website — they gave us a system we can keep iterating on for years.",
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Constants                                                          */
+/* ------------------------------------------------------------------ */
+
+const ROTATE_DEG = 2.5;
+const STAGGER = 15;
+const CENTER_STAGGER = -65;
+const CORNER_CLIP = 50;
+const BORDER_SIZE = 2;
+const CORNER_LINE_LEN = Math.sqrt(
+  CORNER_CLIP * CORNER_CLIP + CORNER_CLIP * CORNER_CLIP,
+);
+
+/* ------------------------------------------------------------------ */
+/*  Single card                                                        */
+/* ------------------------------------------------------------------ */
+
+function StaggerCard({
+  testimonial,
+  position,
+  cardSize,
+  onMove,
+}: {
+  testimonial: InternalTestimonial;
+  position: number;
+  cardSize: number;
+  onMove: (pos: number) => void;
+}) {
+  const isActive = position === 0;
+
+  return (
+    <motion.div
+      initial={false}
+      onClick={() => onMove(position)}
+      className={cn(
+        "absolute left-1/2 top-1/2 cursor-pointer border-base-content p-8",
+        isActive ? "z-10 bg-primary" : "z-0 bg-base-100",
+      )}
+      style={{
+        borderWidth: BORDER_SIZE,
+        clipPath: \`polygon(\${CORNER_CLIP}px 0%, calc(100% - \${CORNER_CLIP}px) 0%, 100% \${CORNER_CLIP}px, 100% 100%, calc(100% - \${CORNER_CLIP}px) 100%, \${CORNER_CLIP}px 100%, 0 100%, 0 0)\`,
+      }}
+      animate={{
+        width: cardSize,
+        height: cardSize,
+        x: \`calc(-50% + \${position * (cardSize / 1.5)}px)\`,
+        y: \`calc(-50% + \${
+          isActive ? CENTER_STAGGER : position % 2 ? STAGGER : -STAGGER
+        }px)\`,
+        rotate: isActive ? 0 : position % 2 ? ROTATE_DEG : -ROTATE_DEG,
+        boxShadow: isActive
+          ? "0px 8px 0px 4px oklch(var(--color-base-content))"
+          : "0px 0px 0px 0px oklch(var(--color-base-content))",
+      }}
+      transition={{
+        type: "spring",
+        mass: 3,
+        stiffness: 400,
+        damping: 50,
+      }}
+    >
+      {/* Decorative corner line */}
+      <span
+        className="absolute block origin-top-right rotate-45 bg-base-content"
+        style={{
+          right: -BORDER_SIZE,
+          top: CORNER_CLIP - BORDER_SIZE,
+          width: CORNER_LINE_LEN,
+          height: BORDER_SIZE,
+        }}
+      />
+      <TestimonialCard
+        {...testimonial}
+        layout="vertical"
+        inverted={isActive}
+        className={cn(
+          "h-full bg-transparent",
+          isActive ? "text-primary-content" : "text-base-content",
+        )}
+      />
+    </motion.div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Arrow icon                                                         */
+/* ------------------------------------------------------------------ */
+
+function ArrowIcon({ direction }: { direction: "left" | "right" }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {direction === "left" ? (
+        <>
+          <path d="M19 12H5" />
+          <path d="m12 19-7-7 7-7" />
+        </>
+      ) : (
+        <>
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </>
+      )}
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Component                                                          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * StaggerFan -- a fan/carousel of overlapping testimonial cards
+ * with a clipped corner design. The active card is centered and highlighted;
+ * surrounding cards are fanned out with subtle rotation and stagger.
+ *
+ * Navigate with left/right arrow buttons or click any card to center it.
+ */
+export default function StaggerFan({
+  testimonials: testimonialsProp = DEFAULT_STAGGER_TESTIMONIALS,
+  sectionHeight = 600,
+  cardSizeLg = 365,
+  cardSizeSm = 290,
+  styleKit,
+  purpose,
+  className,
+}: StaggerFanProps) {
+  const shouldReduceMotion = useReducedMotion();
+  const [cardSize, setCardSize] = useState(cardSizeLg);
+
+  /* Assign stable keys for animation identity */
+  const [items, setItems] = useState<InternalTestimonial[]>(() =>
+    testimonialsProp.map((t, i) => ({ ...t, _key: i })),
+  );
+
+  /* Responsive card size */
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 640px)");
+    const update = () => setCardSize(mq.matches ? cardSizeLg : cardSizeSm);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, [cardSizeLg, cardSizeSm]);
+
+  /* Move cards by N positions (positive = forward, negative = back) */
+  const handleMove = useCallback((position: number) => {
+    setItems((prev) => {
+      const copy = [...prev];
+      if (position > 0) {
+        for (let i = 0; i < position; i++) {
+          const first = copy.shift();
+          if (!first) return prev;
+          copy.push({ ...first, _key: Math.random() });
+        }
+      } else {
+        for (let i = 0; i > position; i--) {
+          const last = copy.pop();
+          if (!last) return prev;
+          copy.unshift({ ...last, _key: Math.random() });
+        }
+      }
+      return copy;
+    });
+  }, []);
+
+  return (
+    <section
+      data-purpose={purpose}
+      data-style-kit={styleKit ? JSON.stringify(styleKit) : undefined}
+      className={cn("relative w-full overflow-hidden bg-base-200", className)}
+      style={{ height: sectionHeight }}
+    >
+      {items.map((t, idx) => {
+        const center =
+          items.length % 2 ? (items.length + 1) / 2 : items.length / 2;
+        const position = idx - center;
+
+        return (
+          <StaggerCard
+            key={t._key}
+            testimonial={t}
+            position={position}
+            cardSize={cardSize}
+            onMove={handleMove}
+          />
+        );
+      })}
+
+      {/* Navigation arrows */}
+      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-8">
+        <button
+          onClick={() => handleMove(-1)}
+          className="grid h-14 w-14 place-content-center text-3xl text-base-content transition-colors hover:bg-neutral hover:text-neutral-content"
+          aria-label="Previous testimonial"
+        >
+          <ArrowIcon direction="left" />
+        </button>
+        <button
+          onClick={() => handleMove(1)}
+          className="grid h-14 w-14 place-content-center text-3xl text-base-content transition-colors hover:bg-neutral hover:text-neutral-content"
+          aria-label="Next testimonial"
+        >
+          <ArrowIcon direction="right" />
+        </button>
       </div>
     </section>
   );
@@ -10668,68 +12077,72 @@ export function useCursorPosition(): CursorPosition {
  */
 export const COMPONENT_ID_TO_PATH: Record<string, string> = {
   "carousel-cards-01": "src/components/carousel/CarouselCards",
+  "carousel-horizontal-scroll-01": "src/components/carousel/CarouselHorizontalScroll",
   "carousel-swipe-01": "src/components/carousel/CarouselSwipe",
-  "contact-form-01": "src/components/contact/ContactForm",
-  "contact-map-info-01": "src/components/contact/ContactMapInfo",
-  "cta-banner-01": "src/components/cta/CtaBanner",
-  "cta-floating-01": "src/components/cta/CtaFloating",
-  "cta-inline-01": "src/components/cta/CtaInline",
+  "contact-contact-locations-map-01": "src/components/contact/ContactLocationsMap",
+  "contact-contact-shapes-form-01": "src/components/contact/ContactShapesForm",
+  "cta-cta-collage-duo-01": "src/components/cta/CtaCollageDuo",
+  "cta-cta-editorial-split-01": "src/components/cta/CtaEditorialSplit",
+  "cta-image-backdrop-01": "src/components/cta/CtaImageBackdrop",
   "faq-accordion-01": "src/components/faq/FaqAccordion",
   "faq-minimal-01": "src/components/faq/FaqMinimal",
   "faq-solutions-01": "src/components/faq/FaqSolutions",
   "footer-reveal-01": "src/components/footers/FooterReveal",
+  "hero-hero-bold-editorial-01": "src/components/heroes/HeroBoldEditorial",
   "hero-geometric-01": "src/components/heroes/HeroGeometric",
   "hero-parallax-images-01": "src/components/heroes/HeroParallaxImages",
   "hero-shuffle-cards-01": "src/components/heroes/HeroShuffleCards",
   "hero-split-image-01": "src/components/heroes/HeroSplitImage",
   "layout-cardgrid-01": "src/components/layouts/grid/CardGrid",
   "layout-simplegrid-01": "src/components/layouts/grid/SimpleGrid",
-  "layout-staggerfan-01": "src/components/layouts/grid/StaggerFan",
-  "layout-infinitescroll-01": "src/components/layouts/scroll/InfiniteScroll",
-  "layout-parallaxcontent-01": "src/components/layouts/scroll/ParallaxContent",
-  "layout-stickycards-01": "src/components/layouts/scroll/StickyCards",
   "layout-authorsplit-01": "src/components/layouts/split/AuthorSplit",
+  "layout-editorial-framed-split-01": "src/components/layouts/split/EditorialFramedSplit",
   "layout-iconlistsplit-01": "src/components/layouts/split/IconListSplit",
   "layout-imagetext-01": "src/components/layouts/split/ImageText",
-  "layout-showcasesplit-01": "src/components/layouts/split/ShowcaseSplit",
-  "layout-stackedsplit-01": "src/components/layouts/split/StackedSplit",
   "layout-statementsplit-01": "src/components/layouts/split/StatementSplit",
+  "layout-parallaxcontent-01": "src/components/motion/ParallaxContent",
+  "layout-stickycards-01": "src/components/motion/StickyCards",
   "navbar-sticky-01": "src/components/navigation/NavbarSticky",
   "stats-count-up-01": "src/components/stats/StatsCountUp",
+  "layout-infinitescroll-01": "src/components/testimonials/InfiniteScroll",
+  "layout-stackedsplit-01": "src/components/testimonials/StackedSplit",
+  "layout-staggerfan-01": "src/components/testimonials/StaggerFan",
 };
 
 /**
  * Map of component metadata IDs to their parsed slot definitions.
  * Used by the Assembler for enum clamping and by the QA Agent for structural validation.
  */
-export const COMPONENT_METADATA: Record<string, { slots: unknown[] }> = {
-  "carousel-cards-01": {"slots":[{"name":"headline","type":"text","maxLength":60},{"name":"cards","type":"list","maxItems":12,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"tag","type":"text","maxLength":30},{"name":"title","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":160}]}}]},
-  "carousel-swipe-01": {"slots":[{"name":"items","type":"list","maxItems":10,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120}]}}]},
-  "contact-form-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"submitText","type":"text","maxLength":30},{"name":"submitVariant","type":"text","optional":true},{"name":"submitSize","type":"text","optional":true},{"name":"fields","type":"list","maxItems":6,"itemSchema":{"type":"object","fields":[{"name":"name","type":"text","maxLength":30},{"name":"label","type":"text","maxLength":50},{"name":"type","type":"text","maxLength":10}]}}]},
-  "contact-map-info-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"address","type":"text","maxLength":200},{"name":"phone","type":"text","maxLength":20},{"name":"email","type":"text","maxLength":60},{"name":"hours","type":"text","maxLength":100},{"name":"mapEmbedUrl","type":"url","optional":true}]},
-  "cta-banner-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true},{"name":"ctaColorScheme","type":"text","optional":true},{"name":"secondaryCtaText","type":"text","maxLength":30,"optional":true},{"name":"secondaryCtaUrl","type":"url","optional":true}]},
-  "cta-floating-01": {"slots":[{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true},{"name":"ctaColorScheme","type":"text","optional":true}]},
-  "cta-inline-01": {"slots":[{"name":"headline","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":120},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true},{"name":"ctaColorScheme","type":"text","optional":true}]},
-  "faq-accordion-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":10,"itemSchema":{"type":"object","fields":[{"name":"question","type":"text","maxLength":120},{"name":"answer","type":"text","maxLength":500}]}}]},
-  "faq-minimal-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"question","type":"text","maxLength":120},{"name":"answer","type":"text","maxLength":500}]}}]},
-  "faq-solutions-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"title","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":300},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"},{"name":"image","type":"image","aspectRatio":"4:3"},{"name":"imageAlt","type":"text","maxLength":120}]}},{"name":"ctaStyle","type":"text","optional":true},{"name":"ctaColorScheme","type":"text","optional":true}]},
-  "footer-reveal-01": {"slots":[{"name":"logo","type":"image","aspectRatio":"auto","optional":true},{"name":"whatsappUrl","type":"url","optional":true},{"name":"whatsappText","type":"text","maxLength":30},{"name":"phoneUrl","type":"url","optional":true},{"name":"phoneText","type":"text","maxLength":30},{"name":"emailUrl","type":"url","optional":true},{"name":"emailText","type":"text","maxLength":60},{"name":"addressText","type":"text","maxLength":120},{"name":"addressMapsUrl","type":"url","optional":true},{"name":"hoursText","type":"text","maxLength":60,"optional":true},{"name":"navColumns","type":"list","maxItems":4,"itemSchema":{"title":{"type":"text","maxLength":30},"links":{"type":"list","maxItems":6,"itemSchema":{"text":{"type":"text","maxLength":30},"href":{"type":"url"}}}}},{"name":"socialLinks","type":"list","maxItems":6,"itemSchema":{"network":{"type":"text","maxLength":20,"enum":["instagram","linkedin","facebook","whatsapp","twitter","youtube","tiktok","google","pinterest","telegram"]},"url":{"type":"url"},"label":{"type":"text","maxLength":60}}},{"name":"companyName","type":"text","maxLength":60},{"name":"ctaText","type":"text","maxLength":40,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"height","type":"number","optional":true,"enum":[350,400,450,500,550]}]},
-  "hero-geometric-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"image","type":"image","aspectRatio":"4:5","optional":true},{"name":"imageAlt","type":"text","maxLength":120},{"name":"socialProofAvatars","type":"list","optional":true,"maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"1:1"},{"name":"imageAlt","type":"text","maxLength":60}]}},{"name":"socialProofLabel","type":"text","optional":true,"maxLength":60}]},
-  "hero-parallax-images-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"centerImage","type":"image","aspectRatio":"16:9","optional":true},{"name":"centerImageAlt","type":"text","maxLength":120},{"name":"parallaxImages","type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"src","type":"image","aspectRatio":"16:9"},{"name":"alt","type":"text","maxLength":120},{"name":"start","type":"number","optional":true},{"name":"end","type":"number","optional":true},{"name":"widthClass","type":"text","optional":true,"maxLength":20},{"name":"alignClass","type":"text","optional":true,"maxLength":20}]}},{"name":"scrollHeight","type":"number","optional":true}]},
-  "hero-shuffle-cards-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline"]},{"name":"emailPlaceholder","type":"text","optional":true,"maxLength":50},{"name":"cards","type":"list","maxItems":3,"itemSchema":{"image":{"type":"image","aspectRatio":"1:1"},"imageAlt":{"type":"text","maxLength":120},"quote":{"type":"text","maxLength":200},"author":{"type":"text","maxLength":60}}}]},
-  "hero-split-image-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineAccent","type":"text","optional":true,"maxLength":40},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"whatsappUrl","type":"url","optional":true},{"name":"whatsappLabel","type":"text","optional":true,"maxLength":40},{"name":"image","type":"image","aspectRatio":"1:1","optional":true},{"name":"imageAlt","type":"text","maxLength":120},{"name":"badgeHeadline","type":"text","optional":true,"maxLength":40},{"name":"badgeDescription","type":"text","optional":true,"maxLength":100},{"name":"rotatingBadgeText","type":"text","optional":true,"maxLength":60},{"name":"featuredItems","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"4:3"},{"name":"imageAlt","type":"text","maxLength":80},{"name":"title","type":"text","maxLength":40},{"name":"price","type":"text","optional":true,"maxLength":20},{"name":"discountPrice","type":"text","optional":true,"maxLength":20}]}},{"name":"featuredItemsLabel","type":"text","optional":true,"maxLength":40},{"name":"featuredItemsLinkText","type":"text","optional":true,"maxLength":30},{"name":"featuredItemsLinkUrl","type":"url","optional":true},{"name":"gridBackground","type":"boolean","optional":true}]},
-  "layout-cardgrid-01": {"slots":[{"name":"headline","type":"text","maxLength":80,"optional":true},{"name":"subheadline","type":"text","maxLength":160,"optional":true},{"name":"columns","type":"number","enum":[2,3,4],"optional":true},{"name":"cards","type":"list","itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"title","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30,"optional":true},{"name":"ctaUrl","type":"url","optional":true}]}}]},
-  "layout-simplegrid-01": {"slots":[{"name":"label","type":"text","maxLength":60,"optional":true},{"name":"headline","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":200,"optional":true},{"name":"features","type":"list","itemSchema":{"type":"object","fields":[{"name":"title","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30,"optional":true},{"name":"ctaUrl","type":"url","optional":true}]}},{"name":"ctaText","type":"text","maxLength":30,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"columns","type":"number","enum":[2,3,4],"optional":true}]},
-  "layout-staggerfan-01": {"slots":[{"name":"testimonials","type":"list","maxItems":12,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"3:4"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"name","type":"text","maxLength":40},{"name":"title","type":"text","maxLength":60},{"name":"quote","type":"text","maxLength":200}]}},{"name":"sectionHeight","type":"number","optional":true}]},
-  "layout-infinitescroll-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":200,"optional":true},{"name":"rows","type":"list","maxItems":3,"itemSchema":{"type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"1:1"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"name","type":"text","maxLength":40},{"name":"title","type":"text","maxLength":60},{"name":"quote","type":"text","maxLength":200}]}}}]},
-  "layout-parallaxcontent-01": {"slots":[{"name":"sections","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"label","type":"text","maxLength":40},{"name":"heading","type":"text","maxLength":60},{"name":"content","type":"object","fields":[{"name":"contentHeadline","type":"text","maxLength":80},{"name":"contentDescription","type":"text","maxLength":300},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"}]}]}},{"name":"imagePadding","type":"number","optional":true}]},
-  "layout-stickycards-01": {"slots":[{"name":"headline","type":"text","maxLength":80,"optional":true},{"name":"subheadline","type":"text","maxLength":200,"optional":true},{"name":"cards","type":"list","maxItems":6,"itemSchema":{"type":"object","fields":[{"name":"icon","type":"text","maxLength":10,"optional":true},{"name":"image","type":"image","aspectRatio":"4:3","optional":true},{"name":"imageAlt","type":"text","maxLength":120,"optional":true},{"name":"title","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"}]}},{"name":"cardHeight","type":"number","optional":true}]},
-  "layout-authorsplit-01": {"slots":[{"name":"bannerImage","type":"image","aspectRatio":"2:1","optional":true},{"name":"bannerImageAlt","type":"text","maxLength":120},{"name":"authorImage","type":"image","aspectRatio":"1:1","optional":true},{"name":"authorImageAlt","type":"text","maxLength":120},{"name":"authorName","type":"text","maxLength":60},{"name":"authorTagline","type":"text","maxLength":200},{"name":"description","type":"text","maxLength":600},{"name":"ctaText","type":"text","maxLength":30,"optional":true},{"name":"ctaUrl","type":"url","optional":true}]},
-  "layout-iconlistsplit-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"features","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"icon","type":"text","maxLength":10},{"name":"title","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":200}]}},{"name":"image","type":"image","aspectRatio":"1:1","optional":true},{"name":"imageAlt","type":"text","maxLength":120,"optional":true},{"name":"logos","type":"list","optional":true,"maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image"},{"name":"imageAlt","type":"text","maxLength":60}]}}]},
-  "layout-imagetext-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":300},{"name":"ctaText","type":"text","maxLength":30,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"image","type":"image","aspectRatio":"16:9","optional":true},{"name":"imageAlt","type":"text","maxLength":120},{"name":"label","type":"text","maxLength":60,"optional":true},{"name":"imagePosition","type":"text","enum":["left","right"],"optional":true},{"name":"colorScheme","type":"text","enum":["light","dark"],"optional":true}]},
-  "layout-showcasesplit-01": {"slots":[{"name":"label","type":"text","maxLength":40,"optional":true},{"name":"headline","type":"text","maxLength":60},{"name":"testimonials","type":"list","maxItems":6,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"3:4"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"name","type":"text","maxLength":60},{"name":"title","type":"text","maxLength":80},{"name":"quote","type":"text","maxLength":300}]}}]},
-  "layout-stackedsplit-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":200,"optional":true},{"name":"testimonials","type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"1:1"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"name","type":"text","maxLength":40},{"name":"title","type":"text","maxLength":60},{"name":"quote","type":"text","maxLength":200}]}},{"name":"autoAdvanceDuration","type":"number","optional":true}]},
-  "layout-statementsplit-01": {"slots":[{"name":"headline","type":"text","maxLength":120},{"name":"description","type":"text","maxLength":400},{"name":"descriptionEmphasis","type":"text","maxLength":80,"optional":true},{"name":"image","type":"image","aspectRatio":"16:9","optional":true},{"name":"imageAlt","type":"text","maxLength":120},{"name":"accentImage","type":"image","aspectRatio":"1:1","optional":true},{"name":"accentImageAlt","type":"text","maxLength":120,"optional":true},{"name":"colorScheme","type":"text","enum":["dark","light"],"optional":true},{"name":"headlinePosition","type":"text","enum":["left","right"],"optional":true}]},
-  "navbar-sticky-01": {"slots":[{"name":"logo","type":"image","aspectRatio":"auto","optional":true},{"name":"links","type":"list","maxItems":6,"itemSchema":{"text":{"type":"text","maxLength":30},"href":{"type":"url"}}},{"name":"ctaText","type":"text","maxLength":20},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline"]}]},
-  "stats-count-up-01": {"slots":[{"name":"headline","type":"text","optional":true,"maxLength":120},{"name":"headlineHighlight","type":"text","optional":true,"maxLength":60},{"name":"stats","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"value","type":"number"},{"name":"decimals","type":"number","optional":true},{"name":"prefix","type":"text","optional":true,"maxLength":5},{"name":"suffix","type":"text","optional":true,"maxLength":10},{"name":"label","type":"text","maxLength":80}]}}]},
+export const COMPONENT_METADATA: Record<string, { slots: unknown[]; acceptsStyleKit: { card?: boolean; background?: boolean; textDecoration?: boolean; button?: boolean }; pairsWell: string[]; pairsPoorly: string[]; category: string; nativeMotif: string | null }> = {
+  "carousel-cards-01": {"slots":[{"name":"headline","type":"text","maxLength":60},{"name":"highlightWord","type":"text","optional":true,"maxLength":30},{"name":"highlightColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"revealHeadline","type":"boolean","optional":true},{"name":"subheadline","type":"text","optional":true,"maxLength":200},{"name":"ctaText","type":"text","optional":true,"maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"cards","type":"list","maxItems":12,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"tag","type":"text","maxLength":30},{"name":"title","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":160}]}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":true,"button":true},"pairsWell":[],"pairsPoorly":["carousel-swipe-01"],"category":"carousel","nativeMotif":null},
+  "carousel-horizontal-scroll-01": {"slots":[{"name":"headline","type":"text","optional":true,"maxLength":80},{"name":"subheadline","type":"text","optional":true,"maxLength":160},{"name":"scrollHintBefore","type":"text","optional":true,"maxLength":40},{"name":"scrollHintAfter","type":"text","optional":true,"maxLength":40},{"name":"items","type":"list","maxItems":12,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"1:1"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"title","type":"text","optional":true,"maxLength":30}]}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":["footer-reveal-01"],"pairsPoorly":["carousel-cards-01","carousel-swipe-01"],"category":"carousel","nativeMotif":null},
+  "carousel-swipe-01": {"slots":[{"name":"items","type":"list","maxItems":10,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120}]}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":[],"pairsPoorly":["carousel-cards-01"],"category":"carousel","nativeMotif":null},
+  "contact-contact-locations-map-01": {"slots":[{"name":"headline","type":"text","optional":true,"maxLength":80},{"name":"subheadline","type":"text","optional":true,"maxLength":200},{"name":"highlightWord","type":"text","optional":true,"maxLength":30},{"name":"featuredImage","type":"image","aspectRatio":"16:9"},{"name":"featuredImageAlt","type":"text","maxLength":160},{"name":"locations","type":"list","maxItems":6,"itemSchema":[{"name":"city","type":"text","maxLength":40},{"name":"address","type":"text","maxLength":160},{"name":"phone","type":"text","maxLength":30,"optional":true},{"name":"email","type":"text","maxLength":80,"optional":true},{"name":"hours","type":"text","maxLength":80,"optional":true}]},{"name":"mapEmbedUrl","type":"url","optional":true}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":false},"pairsWell":["faq-minimal-01","footer-reveal-01","navbar-sticky-01"],"pairsPoorly":[],"category":"contact","nativeMotif":null},
+  "contact-contact-shapes-form-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"body","type":"text","maxLength":320},{"name":"highlightWord","type":"text","optional":true,"maxLength":30},{"name":"revealHeadline","type":"boolean","optional":true},{"name":"namePlaceholder","type":"text","optional":true,"maxLength":40},{"name":"emailPlaceholder","type":"text","optional":true,"maxLength":40},{"name":"messagePlaceholder","type":"text","optional":true,"maxLength":60},{"name":"submitText","type":"text","maxLength":30},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"mapEmbedUrl","type":"url","optional":true},{"name":"mapImageUrl","type":"url","optional":true},{"name":"mapImageAlt","type":"text","optional":true,"maxLength":120},{"name":"locationLabel","type":"text","optional":true,"maxLength":60},{"name":"locationAddress","type":"text","optional":true,"maxLength":160}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":["faq-accordion-01","footer-reveal-01","stats-countup-01"],"pairsPoorly":[],"category":"contact","nativeMotif":null},
+  "cta-cta-collage-duo-01": {"slots":[{"name":"headline","type":"text","maxLength":60},{"name":"body","type":"text","maxLength":320},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"primaryImage","type":"image","aspectRatio":"3:4"},{"name":"primaryImageAlt","type":"text","maxLength":160},{"name":"secondaryImage","type":"image","aspectRatio":"4:3"},{"name":"secondaryImageAlt","type":"text","maxLength":160},{"name":"attributionText","type":"text","optional":true,"maxLength":80},{"name":"attributionLinkText","type":"text","optional":true,"maxLength":40},{"name":"attributionUrl","type":"url","optional":true},{"name":"highlightWord","type":"text","optional":true,"maxLength":30},{"name":"revealHeadline","type":"boolean","optional":true},{"name":"className","type":"text","optional":true}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":["hero-modern-split-01","features-icon-grid-01","testimonial-carousel-01","footer-multi-column-01"],"pairsPoorly":["cta-editorial-split-01"],"category":"cta","nativeMotif":null},
+  "cta-cta-editorial-split-01": {"slots":[{"name":"eyebrowCallout","type":"text","maxLength":60},{"name":"headline","type":"text","maxLength":80},{"name":"body","type":"text","maxLength":240},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"primaryImage","type":"image","aspectRatio":"3:4"},{"name":"primaryImageAlt","type":"text","maxLength":160},{"name":"secondaryImage","type":"image","aspectRatio":"4:5"},{"name":"secondaryImageAlt","type":"text","maxLength":160},{"name":"highlightWord","type":"text","optional":true,"maxLength":30},{"name":"revealHeadline","type":"boolean","optional":true}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":["footer-reveal-01","faq-accordion-01","carousel-cards-01"],"pairsPoorly":[],"category":"cta","nativeMotif":null},
+  "cta-image-backdrop-01": {"slots":[{"name":"eyebrow","type":"text","maxLength":120},{"name":"displayWord","type":"text","maxLength":30},{"name":"body","type":"text","maxLength":240},{"name":"backgroundImage","type":"image","aspectRatio":"16:9"},{"name":"backgroundImageAlt","type":"text","maxLength":160},{"name":"ctaText","type":"text","optional":true,"maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"overlayOpacity","type":"number","optional":true},{"name":"parallax","type":"boolean","optional":true},{"name":"align","type":"text","optional":true,"enum":["left","center"]},{"name":"minHeight","type":"text","optional":true},{"name":"highlightWord","type":"text","optional":true,"maxLength":30},{"name":"revealDisplayWord","type":"boolean","optional":true}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":["features-icon-grid-01","testimonial-carousel-01","faq-accordion-01","footer-multi-column-01"],"pairsPoorly":["cta-cta-editorial-split-01","cta-cta-collage-duo-01"],"category":"cta","nativeMotif":null},
+  "faq-accordion-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":10,"itemSchema":{"type":"object","fields":[{"name":"question","type":"text","maxLength":120},{"name":"answer","type":"text","maxLength":500}]}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":[],"pairsPoorly":["faq-minimal-01","faq-solutions-01"],"category":"faq","nativeMotif":null},
+  "faq-minimal-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"question","type":"text","maxLength":120},{"name":"answer","type":"text","maxLength":500}]}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":[],"pairsPoorly":["faq-accordion-01","faq-solutions-01"],"category":"faq","nativeMotif":null},
+  "faq-solutions-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"title","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":300},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"},{"name":"image","type":"image","aspectRatio":"4:3"},{"name":"imageAlt","type":"text","maxLength":120}]}},{"name":"ctaStyle","type":"text","optional":true},{"name":"ctaColorScheme","type":"text","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":[],"pairsPoorly":["faq-accordion-01","faq-minimal-01"],"category":"faq","nativeMotif":null},
+  "footer-reveal-01": {"slots":[{"name":"logo","type":"image","aspectRatio":"auto","optional":true},{"name":"whatsappUrl","type":"url","optional":true},{"name":"whatsappText","type":"text","maxLength":30},{"name":"phoneUrl","type":"url","optional":true},{"name":"phoneText","type":"text","maxLength":30},{"name":"emailUrl","type":"url","optional":true},{"name":"emailText","type":"text","maxLength":60},{"name":"addressText","type":"text","maxLength":120},{"name":"addressMapsUrl","type":"url","optional":true},{"name":"hoursText","type":"text","maxLength":60,"optional":true},{"name":"navColumns","type":"list","maxItems":4,"itemSchema":{"title":{"type":"text","maxLength":30},"links":{"type":"list","maxItems":6,"itemSchema":{"text":{"type":"text","maxLength":30},"href":{"type":"url"}}}}},{"name":"socialLinks","type":"list","maxItems":6,"itemSchema":{"network":{"type":"text","maxLength":20,"enum":["instagram","linkedin","facebook","whatsapp","twitter","youtube","tiktok","google","pinterest","telegram"]},"url":{"type":"url"},"label":{"type":"text","maxLength":60}}},{"name":"companyName","type":"text","maxLength":60},{"name":"ctaText","type":"text","maxLength":40,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"height","type":"number","optional":true,"enum":[350,400,450,500,550]}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["faq-accordion-01"],"pairsPoorly":[],"category":"footers","nativeMotif":null},
+  "hero-hero-bold-editorial-01": {"slots":[{"name":"eyebrow","type":"text","optional":true,"maxLength":160},{"name":"headline","type":"text","maxLength":60},{"name":"highlightWord","type":"text","optional":true,"maxLength":20},{"name":"revealHeadline","type":"boolean","optional":true},{"name":"primaryImage","type":"image","aspectRatio":"3:4"},{"name":"primaryImageAlt","type":"text","maxLength":120},{"name":"primaryImageOverlayText","type":"text","optional":true,"maxLength":30},{"name":"accentImage","type":"image","optional":true,"aspectRatio":"1:1"},{"name":"accentImageAlt","type":"text","optional":true,"maxLength":120},{"name":"ctaText","type":"text","optional":true,"maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"accentColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":["layout-statementsplit-01","layout-imagetext-01","stats-count-up-01"],"pairsPoorly":["hero-split-image-01","hero-geometric-01","hero-shuffle-cards-01","hero-parallax-images-01"],"category":"hero","nativeMotif":null},
+  "hero-geometric-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"image","type":"image","aspectRatio":"4:5","optional":true},{"name":"imageAlt","type":"text","maxLength":120},{"name":"socialProofAvatars","type":"list","optional":true,"maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"1:1"},{"name":"imageAlt","type":"text","maxLength":60}]}},{"name":"socialProofLabel","type":"text","optional":true,"maxLength":60}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":["layout-cardgrid-01","layout-infinitescroll-01"],"pairsPoorly":["hero-split-image-01","hero-parallax-images-01"],"category":"hero","nativeMotif":"animated-svg"},
+  "hero-parallax-images-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"centerImage","type":"image","aspectRatio":"16:9","optional":true},{"name":"centerImageAlt","type":"text","maxLength":120},{"name":"parallaxImages","type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"src","type":"image","aspectRatio":"16:9"},{"name":"alt","type":"text","maxLength":120},{"name":"start","type":"number","optional":true},{"name":"end","type":"number","optional":true},{"name":"widthClass","type":"text","optional":true,"maxLength":20},{"name":"alignClass","type":"text","optional":true,"maxLength":20}]}},{"name":"scrollHeight","type":"number","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":true,"button":true},"pairsWell":["layout-cardgrid-01","layout-infinitescroll-01"],"pairsPoorly":["hero-shuffle-cards-01","hero-split-image-01"],"category":"hero","nativeMotif":null},
+  "hero-shuffle-cards-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline"]},{"name":"emailPlaceholder","type":"text","optional":true,"maxLength":50},{"name":"cards","type":"list","maxItems":3,"itemSchema":{"image":{"type":"image","aspectRatio":"1:1"},"imageAlt":{"type":"text","maxLength":120},"quote":{"type":"text","maxLength":200},"author":{"type":"text","maxLength":60}}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":true,"button":true},"pairsWell":["layout-cardgrid-01","layout-infinitescroll-01"],"pairsPoorly":[],"category":"hero","nativeMotif":null},
+  "hero-split-image-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineAccent","type":"text","optional":true,"maxLength":40},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"whatsappUrl","type":"url","optional":true},{"name":"whatsappLabel","type":"text","optional":true,"maxLength":40},{"name":"image","type":"image","aspectRatio":"1:1","optional":true},{"name":"imageAlt","type":"text","maxLength":120},{"name":"badgeHeadline","type":"text","optional":true,"maxLength":40},{"name":"badgeDescription","type":"text","optional":true,"maxLength":100},{"name":"rotatingBadgeText","type":"text","optional":true,"maxLength":60},{"name":"featuredItems","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"4:3"},{"name":"imageAlt","type":"text","maxLength":80},{"name":"title","type":"text","maxLength":40},{"name":"price","type":"text","optional":true,"maxLength":20},{"name":"discountPrice","type":"text","optional":true,"maxLength":20}]}},{"name":"featuredItemsLabel","type":"text","optional":true,"maxLength":40},{"name":"featuredItemsLinkText","type":"text","optional":true,"maxLength":30},{"name":"featuredItemsLinkUrl","type":"url","optional":true},{"name":"gridBackground","type":"boolean","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":true,"button":true},"pairsWell":["layout-cardgrid-01","layout-infinitescroll-01"],"pairsPoorly":["hero-shuffle-cards-01"],"category":"hero","nativeMotif":null},
+  "layout-cardgrid-01": {"slots":[{"name":"headline","type":"text","maxLength":80,"optional":true},{"name":"subheadline","type":"text","maxLength":160,"optional":true},{"name":"columns","type":"number","enum":[2,3,4],"optional":true},{"name":"cards","type":"list","itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"title","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30,"optional":true},{"name":"ctaUrl","type":"url","optional":true}]}}],"acceptsStyleKit":{"card":true,"background":false,"textDecoration":false,"button":true},"pairsWell":["layout-simplegrid-01","layout-stickycards-01","hero-geometric-01"],"pairsPoorly":["layout-staggerfan-01"],"category":"layout/grid","nativeMotif":null},
+  "layout-simplegrid-01": {"slots":[{"name":"label","type":"text","maxLength":60,"optional":true},{"name":"headline","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":200,"optional":true},{"name":"features","type":"list","itemSchema":{"type":"object","fields":[{"name":"title","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30,"optional":true},{"name":"ctaUrl","type":"url","optional":true}]}},{"name":"ctaText","type":"text","maxLength":30,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"columns","type":"number","enum":[2,3,4],"optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["layout-cardgrid-01","layout-imagetext-01","hero-split-image-01"],"pairsPoorly":["layout-simplegrid-01"],"category":"layout/grid","nativeMotif":null},
+  "layout-authorsplit-01": {"slots":[{"name":"bannerImage","type":"image","aspectRatio":"2:1","optional":true},{"name":"bannerImageAlt","type":"text","maxLength":120},{"name":"authorImage","type":"image","aspectRatio":"1:1","optional":true},{"name":"authorImageAlt","type":"text","maxLength":120},{"name":"authorName","type":"text","maxLength":60},{"name":"authorTagline","type":"text","maxLength":200},{"name":"description","type":"text","maxLength":600},{"name":"ctaText","type":"text","maxLength":30,"optional":true},{"name":"ctaUrl","type":"url","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":["hero-geometric-01","layout-infinitescroll-01","layout-simplegrid-01","stats-count-up-01"],"pairsPoorly":["layout-statementsplit-01"],"category":"layout/split","nativeMotif":null},
+  "layout-editorial-framed-split-01": {"slots":[{"name":"eyebrow","type":"text","optional":true,"maxLength":60},{"name":"headline","type":"text","maxLength":80},{"name":"highlightWord","type":"text","optional":true,"maxLength":30},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"},{"name":"leadImage","type":"image","aspectRatio":"4:5"},{"name":"leadImageAlt","type":"text","maxLength":120},{"name":"secondaryImage","type":"image","aspectRatio":"4:3"},{"name":"secondaryImageAlt","type":"text","maxLength":120},{"name":"supportingHeadline","type":"text","maxLength":80},{"name":"supportingBody","type":"text","maxLength":320},{"name":"ctaVariant","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]}],"acceptsStyleKit":{"card":true,"background":true,"textDecoration":true,"button":true},"pairsWell":["hero-split-image-01","layout-imagetext-01","layout-cardgrid-01","footer-reveal-01"],"pairsPoorly":["layout-statementsplit-01","layout-authorsplit-01"],"category":"layout/split","nativeMotif":null},
+  "layout-iconlistsplit-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"features","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"icon","type":"text","maxLength":10},{"name":"title","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":200}]}},{"name":"image","type":"image","aspectRatio":"1:1","optional":true},{"name":"imageAlt","type":"text","maxLength":120,"optional":true},{"name":"logos","type":"list","optional":true,"maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image"},{"name":"imageAlt","type":"text","maxLength":60}]}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":["hero-split-image-01","layout-authorsplit-01"],"pairsPoorly":["layout-cardgrid-01"],"category":"layout/split","nativeMotif":null},
+  "layout-imagetext-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":300},{"name":"ctaText","type":"text","maxLength":30,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"image","type":"image","aspectRatio":"16:9","optional":true},{"name":"imageAlt","type":"text","maxLength":120},{"name":"label","type":"text","maxLength":60,"optional":true},{"name":"imagePosition","type":"text","enum":["left","right"],"optional":true},{"name":"colorScheme","type":"text","enum":["light","dark"],"optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["layout-cardgrid-01","layout-statementsplit-01","hero-split-image-01"],"pairsPoorly":["layout-authorsplit-01"],"category":"layout/split","nativeMotif":null},
+  "layout-statementsplit-01": {"slots":[{"name":"headline","type":"text","maxLength":120},{"name":"description","type":"text","maxLength":400},{"name":"descriptionEmphasis","type":"text","maxLength":80,"optional":true},{"name":"image","type":"image","aspectRatio":"16:9","optional":true},{"name":"imageAlt","type":"text","maxLength":120},{"name":"accentImage","type":"image","aspectRatio":"1:1","optional":true},{"name":"accentImageAlt","type":"text","maxLength":120,"optional":true},{"name":"colorScheme","type":"text","enum":["dark","light"],"optional":true},{"name":"headlinePosition","type":"text","enum":["left","right"],"optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":["layout-stickycards-01","layout-imagetext-01","stats-count-up-01","layout-infinitescroll-01"],"pairsPoorly":["hero-geometric-01"],"category":"layout/split","nativeMotif":null},
+  "layout-parallaxcontent-01": {"slots":[{"name":"sections","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"label","type":"text","maxLength":40},{"name":"heading","type":"text","maxLength":60},{"name":"content","type":"object","fields":[{"name":"contentHeadline","type":"text","maxLength":80},{"name":"contentDescription","type":"text","maxLength":300},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"}]}]}},{"name":"imagePadding","type":"number","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["hero-geometric-01","hero-split-image-01","footer-reveal-01"],"pairsPoorly":["layout-stickycards-01","hero-parallax-images-01"],"category":"motion","nativeMotif":null},
+  "layout-stickycards-01": {"slots":[{"name":"headline","type":"text","maxLength":80,"optional":true},{"name":"subheadline","type":"text","maxLength":200,"optional":true},{"name":"cards","type":"list","maxItems":6,"itemSchema":{"type":"object","fields":[{"name":"icon","type":"text","maxLength":10,"optional":true},{"name":"image","type":"image","aspectRatio":"4:3","optional":true},{"name":"imageAlt","type":"text","maxLength":120,"optional":true},{"name":"title","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"}]}},{"name":"cardHeight","type":"number","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["hero-geometric-01","hero-split-image-01"],"pairsPoorly":["layout-cardgrid-01"],"category":"motion","nativeMotif":null},
+  "navbar-sticky-01": {"slots":[{"name":"logo","type":"image","aspectRatio":"auto","optional":true},{"name":"links","type":"list","maxItems":6,"itemSchema":{"text":{"type":"text","maxLength":30},"href":{"type":"url"}}},{"name":"ctaText","type":"text","maxLength":20},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline"]}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":[],"pairsPoorly":[],"category":"navigation","nativeMotif":null},
+  "stats-count-up-01": {"slots":[{"name":"headline","type":"text","optional":true,"maxLength":120},{"name":"headlineHighlight","type":"text","optional":true,"maxLength":60},{"name":"stats","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"value","type":"number"},{"name":"decimals","type":"number","optional":true},{"name":"prefix","type":"text","optional":true,"maxLength":5},{"name":"suffix","type":"text","optional":true,"maxLength":10},{"name":"label","type":"text","maxLength":80}]}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":["hero-geometric-01","hero-split-image-01","layout-stickycards-01"],"pairsPoorly":[],"category":"stats","nativeMotif":null},
+  "layout-infinitescroll-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":200,"optional":true},{"name":"rows","type":"list","maxItems":3,"itemSchema":{"type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"1:1"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"name","type":"text","maxLength":40},{"name":"title","type":"text","maxLength":60},{"name":"quote","type":"text","maxLength":200}]}}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":["hero-geometric-01","hero-split-image-01","layout-cardgrid-01"],"pairsPoorly":["layout-stackedsplit-01","layout-staggerfan-01"],"category":"testimonial","nativeMotif":null},
+  "layout-stackedsplit-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":200,"optional":true},{"name":"testimonials","type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"1:1"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"name","type":"text","maxLength":40},{"name":"title","type":"text","maxLength":60},{"name":"quote","type":"text","maxLength":200}]}},{"name":"autoAdvanceDuration","type":"number","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":["hero-split-image-01","layout-stickycards-01","footer-reveal-01"],"pairsPoorly":["layout-infinitescroll-01","layout-staggerfan-01"],"category":"testimonial","nativeMotif":null},
+  "layout-staggerfan-01": {"slots":[{"name":"testimonials","type":"list","maxItems":12,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"3:4"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"name","type":"text","maxLength":40},{"name":"title","type":"text","maxLength":60},{"name":"quote","type":"text","maxLength":200}]}},{"name":"sectionHeight","type":"number","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":["hero-geometric-01","hero-parallax-images-01","layout-cardgrid-01"],"pairsPoorly":["layout-infinitescroll-01","layout-stackedsplit-01"],"category":"testimonial","nativeMotif":null},
 };

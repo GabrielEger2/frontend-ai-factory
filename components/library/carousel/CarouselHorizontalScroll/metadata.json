@@ -13,6 +13,7 @@
   "mood": ["energetic", "elegant"],
   "layout": "stacked",
   "density": "medium",
+  "imageWeight": 0.0,
   "slots": [
     {
       "name": "headline",
@@ -66,6 +67,6 @@
     }
   ],
   "mobileBehavior": "scroll",
-  "pairsWell": ["cta-banner-01", "footer-reveal-01"],
+  "pairsWell": ["footer-reveal-01"],
   "pairsPoorly": ["carousel-cards-01", "carousel-swipe-01"]
 }

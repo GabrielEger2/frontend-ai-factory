@@ -120,10 +120,34 @@ function escapeForTemplateLiteral(str: string): string {
 /*  Main                                                               */
 /* ------------------------------------------------------------------ */
 
+interface MetadataJson {
+  id?: string;
+  slots?: unknown[];
+  acceptsStyleKit?: {
+    card?: boolean;
+    background?: boolean;
+    textDecoration?: boolean;
+    button?: boolean;
+  };
+  pairsWell?: string[];
+  pairsPoorly?: string[];
+  category?: string;
+  nativeMotif?: string | null;
+}
+
+interface MetadataEntry {
+  slots: unknown[];
+  acceptsStyleKit: NonNullable<MetadataJson["acceptsStyleKit"]>;
+  pairsWell: string[];
+  pairsPoorly: string[];
+  category: string;
+  nativeMotif: string | null;
+}
+
 function main() {
   const sources: Record<string, string> = {};
   const idToPath: Record<string, string> = {};
-  const metadataMap: Record<string, { slots: unknown[] }> = {};
+  const metadataMap: Record<string, MetadataEntry> = {};
 
   // 1. Walk components/library/
   const libraryFiles = walkDir(LIBRARY_DIR);
@@ -171,7 +195,7 @@ function main() {
     .filter((f) => fs.existsSync(f));
 
   for (const metaPath of metadataFiles) {
-    const meta = JSON.parse(fs.readFileSync(metaPath, "utf-8"));
+    const meta: MetadataJson = JSON.parse(fs.readFileSync(metaPath, "utf-8"));
     if (meta.id) {
       const indexPath = path.join(path.dirname(metaPath), "index.tsx");
       const sitePath = toGeneratedSitePath(
@@ -182,7 +206,14 @@ function main() {
       // Strip the /index.tsx suffix for the import path
       const importDir = sitePath.replace(/\/index\.tsx$/, "");
       idToPath[meta.id] = importDir;
-      metadataMap[meta.id] = { slots: meta.slots ?? [] };
+      metadataMap[meta.id] = {
+        slots: meta.slots ?? [],
+        acceptsStyleKit: meta.acceptsStyleKit ?? {},
+        pairsWell: meta.pairsWell ?? [],
+        pairsPoorly: meta.pairsPoorly ?? [],
+        category: meta.category ?? "",
+        nativeMotif: meta.nativeMotif ?? null,
+      };
     }
   }
 
@@ -231,7 +262,7 @@ function main() {
   );
   lines.push(" */");
   lines.push(
-    "export const COMPONENT_METADATA: Record<string, { slots: unknown[] }> = {",
+    "export const COMPONENT_METADATA: Record<string, { slots: unknown[]; acceptsStyleKit: { card?: boolean; background?: boolean; textDecoration?: boolean; button?: boolean }; pairsWell: string[]; pairsPoorly: string[]; category: string; nativeMotif: string | null }> = {",
   );
 
   for (const [id, meta] of Object.entries(metadataMap)) {

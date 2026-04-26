@@ -1,11 +1,12 @@
 {
   "id": "layout-stickycards-01",
   "name": "Sticky Cards",
-  "category": "layout/scroll",
+  "category": "motion",
   "style": ["modern", "bold", "editorial"],
   "mood": ["professional", "energetic", "trustworthy"],
   "layout": "stacked",
   "density": "low",
+  "imageWeight": 0.08,
   "purpose": ["features", "services", "process"],
   "acceptsStyleKit": {
     "card": false,
@@ -51,6 +52,6 @@
     { "name": "cardHeight", "type": "number", "optional": true }
   ],
   "mobileBehavior": "scroll",
-  "pairsWell": ["hero-geometric-01", "hero-split-image-01", "cta-banner-01"],
+  "pairsWell": ["hero-geometric-01", "hero-split-image-01"],
   "pairsPoorly": ["layout-cardgrid-01"]
 }

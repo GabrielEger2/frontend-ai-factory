@@ -13,6 +13,7 @@
   "mood": ["professional", "trustworthy"],
   "layout": "horizontal",
   "density": "low",
+  "imageWeight": 0.0,
   "slots": [
     { "name": "headline", "type": "text", "optional": true, "maxLength": 120 },
     {
@@ -51,7 +52,6 @@
   "pairsWell": [
     "hero-geometric-01",
     "hero-split-image-01",
-    "cta-banner-01",
     "layout-stickycards-01"
   ],
   "pairsPoorly": []

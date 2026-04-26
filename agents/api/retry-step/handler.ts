@@ -4,6 +4,7 @@ import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
 
 import type { PipelineState, ProjectItem } from "../../shared/types";
+import { PipelineStateSchema } from "../../shared/types";
 import { requireSellerId } from "../shared/seller-guard";
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
@@ -104,21 +105,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       };
     }
 
-    const pipelineState: PipelineState = {
-      projectId: item.projectId,
-      status: item.status,
-      companyName: item.companyName,
-      segment: item.segment,
-      description: item.description,
-      sellerId: item.sellerId,
-      researchOutput: item.researchOutput,
-      styleOutput: item.styleOutput,
-      contentOutput: item.contentOutput,
-      humanizerOutput: item.humanizerOutput,
-      assemblerOutput: item.assemblerOutput,
-      qaOutput: item.qaOutput,
-      previewUrl: item.previewUrl,
-    };
+    // Use PipelineStateSchema.parse to rebuild full state — null-seeded
+    // intake fields (desiredSections, brandToneKeywords, ...) need to be
+    // present (defaulted to null) for downstream agents and any future
+    // SFN-resume path. Same pattern as approve-style / approve-layout.
+    const pipelineState: PipelineState = PipelineStateSchema.parse(item);
 
     // Merge optional inputOverride from request body
     if (event.body) {

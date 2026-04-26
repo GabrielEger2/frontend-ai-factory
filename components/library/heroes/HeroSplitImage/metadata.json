@@ -13,6 +13,7 @@
   "mood": ["professional", "elegant"],
   "layout": "split",
   "density": "medium",
+  "imageWeight": 0.15,
   "slots": [
     { "name": "headline", "type": "text", "maxLength": 80 },
     {
@@ -140,11 +141,7 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "layout-cardgrid-01",
-    "cta-banner-01",
-    "layout-infinitescroll-01"
-  ],
+  "pairsWell": ["layout-cardgrid-01", "layout-infinitescroll-01"],
   "pairsPoorly": ["hero-shuffle-cards-01"],
   "variants": [
     {

@@ -130,10 +130,12 @@ export default function IconListSplit({
   image,
   imageAlt,
   logos,
-  styleKit: _styleKit,
+  styleKit,
   purpose,
   className,
 }: IconListSplitProps) {
+  // styleKit accepted for downstream propagation; no CTA in this component
+  void styleKit;
   const shouldReduceMotion = useReducedMotion();
   const safeMainImg = useSafeImageSrc(
     image,

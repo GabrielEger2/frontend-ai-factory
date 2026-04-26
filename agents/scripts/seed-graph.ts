@@ -77,6 +77,7 @@ interface MetadataJson {
   acceptsStyleKit: Record<string, boolean>;
   layout: string;
   density: string;
+  imageWeight?: number;
   slots: unknown[];
   mobileBehavior: string;
   pairsWell: string[];
@@ -255,13 +256,15 @@ async function seedComponents(
        SET c.name = $name,
            c.category = $category,
            c.density = $density,
-           c.layout = $layout`,
+           c.layout = $layout,
+           c.imageWeight = $imageWeight`,
       {
         id: comp.id,
         name: comp.name,
         category: comp.category,
         density: comp.density,
         layout: comp.layout,
+        imageWeight: comp.imageWeight ?? 0,
       },
     );
   }

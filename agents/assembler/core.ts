@@ -4,6 +4,11 @@ import {
   COMPONENT_ID_TO_PATH,
   COMPONENT_METADATA,
 } from "./component-sources.generated";
+import {
+  injectStyleKitIntoSlots,
+  SLOT_PATTERN_MAP,
+  StyleKit,
+} from "./style-kit-injector";
 
 /* ------------------------------------------------------------------ */
 /*  File Generators (deterministic string concatenation)               */
@@ -129,16 +134,28 @@ function serializeSlotValue(value: unknown): string {
 export function buildPageSlots(
   componentId: string,
   slots: Record<string, unknown>,
+  styleKit?: StyleKit,
 ): string {
   const name = toComponentName(componentId);
-  const propsEntries = Object.entries(slots);
+  const injected = injectStyleKitIntoSlots(componentId, { ...slots }, styleKit);
+  const propsEntries = Object.entries(injected);
 
   if (propsEntries.length === 0) {
     return `      <${name} />`;
   }
 
   // Look up component slot definitions for enum clamping (including nested itemSchema)
-  const componentMeta = COMPONENT_METADATA[componentId];
+  const componentMeta = COMPONENT_METADATA[componentId] as
+    | {
+        slots?: unknown[];
+        acceptsStyleKit?: {
+          card?: boolean;
+          background?: boolean;
+          textDecoration?: boolean;
+          button?: boolean;
+        };
+      }
+    | undefined;
   const slotDefs = (componentMeta?.slots ?? []) as Array<{
     name?: string;
     enum?: unknown[];
@@ -156,7 +173,22 @@ export function buildPageSlots(
     })
     .join("\n");
 
-  return `      <${name}\n${propsStr}\n      />`;
+  // Prop-pattern components (not in SLOT_PATTERN_MAP) that accept styleKit
+  // receive it as a JSX prop. Slot-pattern components consume styleKit via
+  // injectStyleKitIntoSlots above, so they don't get the prop here.
+  const acceptsStyleKit = componentMeta?.acceptsStyleKit ?? {};
+  const wantsStyleKitProp =
+    !SLOT_PATTERN_MAP[componentId] &&
+    (acceptsStyleKit.card ||
+      acceptsStyleKit.background ||
+      acceptsStyleKit.textDecoration ||
+      acceptsStyleKit.button);
+  const styleKitProp =
+    wantsStyleKitProp && styleKit
+      ? `\n        styleKit={${JSON.stringify(styleKit)}}`
+      : "";
+
+  return `      <${name}\n${propsStr}${styleKitProp}\n      />`;
 }
 
 /**
@@ -167,6 +199,7 @@ export function buildPageSlots(
  */
 export function generatePageClientTsx(
   humanizerOutput: HumanizerOutput,
+  styleKit?: StyleKit,
 ): string {
   const imports = humanizerOutput.components
     .map((c) => {
@@ -184,7 +217,7 @@ export function generatePageClientTsx(
     .join("\n");
 
   const sections = humanizerOutput.components
-    .map((c) => buildPageSlots(c.componentId, c.slots))
+    .map((c) => buildPageSlots(c.componentId, c.slots, styleKit))
     .join("\n");
 
   return `"use client";
@@ -603,6 +636,7 @@ export function generateSiteFiles(
   humanizerOutput: HumanizerOutput,
   palette: Palette,
   typography: Typography,
+  styleKit?: StyleKit,
 ): Record<string, string> {
   const files: Record<string, string> = {};
 
@@ -620,7 +654,10 @@ export function generateSiteFiles(
   files["src/app/globals.css"] = generateGlobalsCss(palette, typography);
   files["src/app/layout.tsx"] = generateLayoutTsx();
   files["src/app/page.tsx"] = generatePageTsx();
-  files["src/app/PageClient.tsx"] = generatePageClientTsx(humanizerOutput);
+  files["src/app/PageClient.tsx"] = generatePageClientTsx(
+    humanizerOutput,
+    styleKit,
+  );
 
   // Only bundle component sources actually used in the page + shared libs.
   // Component paths start with "src/components/", shared libs with "src/lib/".

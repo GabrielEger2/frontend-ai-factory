@@ -13,6 +13,7 @@
   "mood": ["professional", "friendly", "trustworthy"],
   "layout": "split",
   "density": "medium",
+  "imageWeight": 0.0,
   "slots": [
     {
       "name": "headline",
@@ -100,11 +101,6 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "faq-accordion-01",
-    "footer-reveal-01",
-    "cta-banner-01",
-    "stats-countup-01"
-  ],
-  "pairsPoorly": ["contact-form-01", "contact-map-info-01"]
+  "pairsWell": ["faq-accordion-01", "footer-reveal-01", "stats-countup-01"],
+  "pairsPoorly": []
 }

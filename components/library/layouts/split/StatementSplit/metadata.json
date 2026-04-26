@@ -6,6 +6,7 @@
   "mood": ["elegant", "professional", "calm"],
   "layout": "asymmetric",
   "density": "low",
+  "imageWeight": 0.2,
   "purpose": ["about", "features", "services"],
   "acceptsStyleKit": {
     "card": false,

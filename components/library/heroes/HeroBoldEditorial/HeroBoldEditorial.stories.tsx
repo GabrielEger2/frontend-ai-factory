@@ -36,7 +36,8 @@ export const FashionMagazine: Story = {
     highlightWord: "Concept",
     revealHeadline: true,
     primaryImage: "https://placehold.co/600x800",
-    primaryImageAlt: "Black-and-white close-up of garden roses in soft afternoon light",
+    primaryImageAlt:
+      "Black-and-white close-up of garden roses in soft afternoon light",
     primaryImageOverlayText: "good ideas",
     accentImage: "https://placehold.co/600x600",
     accentImageAlt: "Portrait of a model wearing oversized hoop earrings",
@@ -82,16 +83,17 @@ export const PerfumeBrand: Story = {
     highlightWord: "Bottled",
     revealHeadline: true,
     primaryImage: "https://placehold.co/600x800",
-    primaryImageAlt: "Amber glass perfume bottle on a marble shelf at golden hour",
+    primaryImageAlt:
+      "Amber glass perfume bottle on a marble shelf at golden hour",
     primaryImageOverlayText: "4:17 pm",
     accentImage: "https://placehold.co/600x600",
-    accentImageAlt: "Ingredient flatlay with iris root, vetiver, and dried citrus peel",
+    accentImageAlt:
+      "Ingredient flatlay with iris root, vetiver, and dried citrus peel",
     ctaText: "Shop the Edition",
     ctaUrl: "#shop",
     ctaStyle: "glow",
     ctaColorScheme: "neutral",
     accentColorScheme: "secondary",
-    revealHeadline: true,
   },
 };
 
@@ -123,10 +125,12 @@ export const ContemporaryGallery: Story = {
     highlightWord: "Light",
     revealHeadline: true,
     primaryImage: "https://placehold.co/600x800",
-    primaryImageAlt: "Visitor looking at a large oil painting in a white-walled gallery",
+    primaryImageAlt:
+      "Visitor looking at a large oil painting in a white-walled gallery",
     primaryImageOverlayText: "on view",
     accentImage: "https://placehold.co/600x600",
-    accentImageAlt: "Detail of an oil painting showing thick brushwork in cobalt and bone white",
+    accentImageAlt:
+      "Detail of an oil painting showing thick brushwork in cobalt and bone white",
     ctaText: "Plan Your Visit",
     ctaUrl: "#visit",
     ctaStyle: "dotExpand",

@@ -6,6 +6,7 @@
   "mood": ["professional", "energetic", "friendly", "trustworthy"],
   "layout": "grid",
   "density": "high",
+  "imageWeight": 0.1,
   "purpose": ["features", "products", "team", "services"],
   "acceptsStyleKit": {
     "card": true,

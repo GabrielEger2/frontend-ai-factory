@@ -53,10 +53,12 @@ export default function StatementSplit({
   accentImageAlt,
   colorScheme = "dark",
   headlinePosition = "left",
-  styleKit: _styleKit,
+  styleKit,
   purpose,
   className,
 }: StatementSplitProps) {
+  // styleKit accepted for downstream propagation; no CTA in this component
+  void styleKit;
   const shouldReduceMotion = useReducedMotion();
   const safeImg = useSafeImageSrc(
     image,

@@ -13,18 +13,11 @@
     "textDecoration": true,
     "button": false
   },
-  "style": [
-    "modern",
-    "corporate",
-    "editorial"
-  ],
-  "mood": [
-    "professional",
-    "trustworthy",
-    "elegant"
-  ],
+  "style": ["modern", "corporate", "editorial"],
+  "mood": ["professional", "trustworthy", "elegant"],
   "layout": "grid",
   "density": "medium",
+  "imageWeight": 0.18,
   "slots": [
     {
       "name": "headline",
@@ -96,14 +89,6 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "cta-inline-01",
-    "faq-minimal-01",
-    "footer-reveal-01",
-    "navbar-sticky-01"
-  ],
-  "pairsPoorly": [
-    "contact-form-01",
-    "contact-map-info-01"
-  ]
+  "pairsWell": ["faq-minimal-01", "footer-reveal-01", "navbar-sticky-01"],
+  "pairsPoorly": []
 }

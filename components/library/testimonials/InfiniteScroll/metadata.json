@@ -1,11 +1,12 @@
 {
   "id": "layout-infinitescroll-01",
   "name": "Infinite Scroll",
-  "category": "layout/scroll",
+  "category": "testimonial",
   "style": ["modern", "bold"],
   "mood": ["energetic", "trustworthy"],
   "layout": "stacked",
   "density": "high",
+  "imageWeight": 0.0,
   "purpose": ["testimonials"],
   "acceptsStyleKit": {
     "card": false,
@@ -45,7 +46,6 @@
   "pairsWell": [
     "hero-geometric-01",
     "hero-split-image-01",
-    "cta-banner-01",
     "layout-cardgrid-01"
   ],
   "pairsPoorly": ["layout-stackedsplit-01", "layout-staggerfan-01"]

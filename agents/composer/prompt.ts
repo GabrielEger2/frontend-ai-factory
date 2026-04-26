@@ -13,6 +13,7 @@ export interface CandidateComponent {
   moodHits: number;
   styleHits: number;
   avgPairScore: number;
+  imageWeight?: number;
   variants?: Array<{
     id: string;
     name: string;
