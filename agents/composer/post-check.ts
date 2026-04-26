@@ -3,7 +3,7 @@
 /* ------------------------------------------------------------------ */
 
 /**
- * Deterministic post-LLM passes on the selected layout. Four passes:
+ * Deterministic post-LLM passes on the selected layout. Five passes:
  *
  *   1. Sequence — navigation must be at index 0; footers at last index.
  *   2. Same-category adjacency — adjacent components with the same category
@@ -15,6 +15,12 @@
  *   4. Motion budget — at most one motion-heavy component per page. Any
  *      additional heavy occurrences are swapped for a non-heavy same-category
  *      candidate, or dropped when no candidate is available.
+ *   5. Required categories — when `desiredSections` includes "contact", make
+ *      sure the lineup contains at least one CTA-category and one
+ *      Contact-category component. Missing categories are filled by
+ *      injecting the best-fit candidate; the inserts respect the
+ *      navigation/footer book-ends from `enforceSequence` (CTA before
+ *      Contact, both before footer).
  *
  * Applied only to `output.layouts[output.selectedLayout].components`. Pure
  * functions — no throws, no mutation of inputs.
@@ -47,6 +53,7 @@ export function runPairPostCheck(
   output: ComposerOutput,
   candidates: CandidateComponent[],
   metaLookup: typeof COMPONENT_METADATA = COMPONENT_METADATA,
+  desiredSections: string[] = [],
 ): PostCheckResult {
   const warnings: string[] = [];
   const layouts = output.layouts.map((layout, idx) => {
@@ -72,6 +79,17 @@ export function runPairPostCheck(
       components,
       candidates,
       metaLookup,
+      warnings,
+    );
+
+    // Step 5: required categories — backfill CTA + Contact when the buyer
+    // asked for a contact section. Runs after motion-budget so any drops
+    // in step 4 can still be filled here.
+    components = enforceRequiredCategories(
+      components,
+      candidates,
+      metaLookup,
+      desiredSections,
       warnings,
     );
 
@@ -232,4 +250,111 @@ function enforceMotionBudget(
     }
   }
   return result;
+}
+
+function enforceRequiredCategories(
+  components: string[],
+  candidates: CandidateComponent[],
+  metaLookup: typeof COMPONENT_METADATA,
+  desiredSections: string[],
+  warnings: string[],
+): string[] {
+  // Only intervene when the buyer asked for a contact section. The
+  // `enforceDesiredSections` validator in handler.ts already throws if any
+  // desired category is entirely missing; this pass is the gentler twin —
+  // it specifically guarantees the CTA + Contact pairing that the user-side
+  // brief calls out, by injecting fallbacks rather than rejecting.
+  const wantsContact = desiredSections.some(
+    (s) => s.toLowerCase() === "contact",
+  );
+  if (!wantsContact) return components;
+
+  const result = [...components];
+  const requiredCategories: Array<"cta" | "contact"> = ["cta", "contact"];
+
+  for (const category of requiredCategories) {
+    const hasCategory = result.some(
+      (id) => metaLookup[id]?.category === category,
+    );
+    if (hasCategory) continue;
+
+    const replacement = pickBestCandidate(category, result, candidates);
+    if (!replacement) {
+      warnings.push(
+        `composer fallback: no candidate available to inject category "${category}" (desiredSections requires it)`,
+      );
+      continue;
+    }
+
+    const insertIdx = chooseInsertIndex(category, result, metaLookup);
+    result.splice(insertIdx, 0, replacement.id);
+    warnings.push(
+      `composer fallback: injected ${replacement.id} (category=${category}) because desiredSections requires it`,
+    );
+  }
+
+  return result;
+}
+
+/**
+ * Pick the candidate from `pool` whose mood/style overlap with the rest of
+ * the lineup is highest. We approximate "fit" with the candidate's own
+ * moodHits + styleHits scores (already segment-relative because they were
+ * produced by the graph or fallback ranker against this run's segment).
+ */
+function pickBestCandidate(
+  category: string,
+  current: string[],
+  candidates: CandidateComponent[],
+): CandidateComponent | undefined {
+  const eligible = candidates.filter(
+    (c) => c.category === category && !current.includes(c.id),
+  );
+  if (eligible.length === 0) return undefined;
+  // Highest moodHits + styleHits wins; ties broken by avgPairScore.
+  return [...eligible].sort((a, b) => {
+    const fitA = a.moodHits + a.styleHits;
+    const fitB = b.moodHits + b.styleHits;
+    if (fitA !== fitB) return fitB - fitA;
+    return b.avgPairScore - a.avgPairScore;
+  })[0];
+}
+
+/**
+ * Insert position respects the navbar/footer book-ends already enforced by
+ * `enforceSequence`:
+ *   - CTA goes near the end but before any contact + footer.
+ *   - Contact goes after CTA but before the footer.
+ *
+ * If no footer is present, insert at end.
+ */
+function chooseInsertIndex(
+  category: "cta" | "contact",
+  components: string[],
+  metaLookup: typeof COMPONENT_METADATA,
+): number {
+  const footerIdx = components.findIndex(
+    (id) => metaLookup[id]?.category === "footers",
+  );
+  const lastSafeIdx = footerIdx >= 0 ? footerIdx : components.length;
+
+  if (category === "cta") {
+    // Place CTA right before any existing contact, else right before the
+    // footer (or at end).
+    const contactIdx = components.findIndex(
+      (id) => metaLookup[id]?.category === "contact",
+    );
+    if (contactIdx >= 0) return contactIdx;
+    return lastSafeIdx;
+  }
+
+  // category === "contact" — sit after the CTA when one exists, else just
+  // before the footer.
+  const ctaIdx = components.findIndex(
+    (id) => metaLookup[id]?.category === "cta",
+  );
+  if (ctaIdx >= 0) {
+    return Math.min(ctaIdx + 1, lastSafeIdx);
+  }
+  return lastSafeIdx;
 }

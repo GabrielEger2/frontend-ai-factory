@@ -107,6 +107,7 @@ Return EXACTLY 3 layouts ranked by overall score (highest first). Output ONLY va
 5. Component IDs in the output must exactly match the IDs from the candidate list.
 6. Never invent component IDs that are not in the candidate list.
 7. Return exactly 3 layouts.
+8. If desiredSections includes 'contact', include at least one CTA component and one Contact component in the lineup.
 
 ## Variant Selection
 
