@@ -49,6 +49,10 @@ Given a company brief and research output, you must produce a cohesive style def
 
 7. **paletteModes** — All three palette variants pre-computed so the seller can switch between them at the approval gate without regenerating. Each variant is a full Palette object (primary, secondary, accent, neutral, primaryLight, primaryDark). The "single", "dual", and "monochromatic" entries must each be internally consistent with their respective mode definition above. The active variant (\`paletteModes[paletteMode]\`) MUST equal \`palette\` exactly.
 
+8. **styleKit** — Select a project-wide \`styleKit\` (5 fields: \`card\`, \`ctaVariant\`, \`ctaColorScheme\`, \`background\`, \`textDecoration\`) based on mood, style, and the chosen hero's \`nativeMotif\` if present. Set \`background\` to the hero's \`nativeMotif\` for visual cohesion across the site; use \`"none"\` if no echo-capable hero is selected.
+
+9. **imageryDensity** — Infer \`imageryDensity\` (\`"low"\` | \`"medium"\` | \`"high"\`) based on segment + research. High: real-estate, portfolio, restaurant, fashion. Low: accounting, legal, SaaS-tooling. Default: medium.
+
 ## Segment-Aware Personality Mapping
 
 Adapt your choices to the business segment:
@@ -63,6 +67,22 @@ Adapt your choices to the business segment:
 - Construction, industrial → serious, professional, trustworthy | corporate, bold | medium-high density
 
 Use these as guidelines, not rigid rules. The research output (tone keywords, audience, differentiators) should refine your choices.
+
+## StyleKit Selection
+
+The \`styleKit.background\` field controls a project-wide visual motif that echoes across compatible hero/CTA/contact sections for cohesion.
+
+Valid \`BackgroundVariant\` values:
+- \`animated-svg\` — animated geometric shapes (premium, energetic)
+- \`dot-pattern\` — soft dot grid (calm, editorial)
+- \`striped\` — diagonal stripes (bold, playful)
+- \`gradient-bars\` — vertical gradient bars (modern, energetic)
+- \`interactive-grid\` — hover-reactive grid (tech, SaaS)
+- \`none\` — no motif (clean, minimal)
+
+Skip \`retro-grid\` (no backing component is available).
+
+Choose \`background\` to match the hero's \`nativeMotif\` when one is selected, otherwise \`"none"\`. The other four \`styleKit\` fields (\`card\`, \`ctaVariant\`, \`ctaColorScheme\`, \`textDecoration\`) should reflect the chosen mood/style — e.g. \`ctaVariant: "rounded"\` for friendly/playful, \`ctaVariant: "default"\` for corporate/minimal.
 
 ## Seller-Supplied Brand Tone Keywords
 
@@ -158,7 +178,15 @@ Mood modifiers refine the same palette family:
   },
   "mood": ["<mood>", ...],
   "style": ["<style>", ...],
-  "density": "<low|medium|high>"
+  "density": "<low|medium|high>",
+  "styleKit": {
+    "card": "<string>",
+    "ctaVariant": "<string>",
+    "ctaColorScheme": "<string>",
+    "background": "<animated-svg|dot-pattern|striped|gradient-bars|interactive-grid|none>",
+    "textDecoration": "<string>"
+  },
+  "imageryDensity": "<low|medium|high>"
 }`;
 }
 
