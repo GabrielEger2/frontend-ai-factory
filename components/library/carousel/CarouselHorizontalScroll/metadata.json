@@ -13,6 +13,7 @@
   "mood": ["energetic", "elegant"],
   "layout": "stacked",
   "density": "medium",
+  "imageWeight": 0.0,
   "slots": [
     {
       "name": "headline",

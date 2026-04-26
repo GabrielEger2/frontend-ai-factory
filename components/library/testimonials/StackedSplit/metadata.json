@@ -6,6 +6,7 @@
   "mood": ["professional", "elegant"],
   "layout": "split",
   "density": "medium",
+  "imageWeight": 0.0,
   "purpose": ["testimonials"],
   "acceptsStyleKit": {
     "card": false,

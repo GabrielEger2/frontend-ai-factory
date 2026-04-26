@@ -6,6 +6,7 @@
   "mood": ["energetic", "fun"],
   "layout": "centered",
   "density": "medium",
+  "imageWeight": 0.08,
   "purpose": ["testimonials"],
   "acceptsStyleKit": {
     "card": false,

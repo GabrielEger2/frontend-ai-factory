@@ -13,18 +13,11 @@
     "textDecoration": true,
     "button": true
   },
-  "style": [
-    "editorial",
-    "bold",
-    "modern"
-  ],
-  "mood": [
-    "energetic",
-    "friendly",
-    "trustworthy"
-  ],
+  "style": ["editorial", "bold", "modern"],
+  "mood": ["energetic", "friendly", "trustworthy"],
   "layout": "asymmetric",
   "density": "medium",
+  "imageWeight": 0.15,
   "slots": [
     {
       "name": "headline",
@@ -50,24 +43,13 @@
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "default",
-        "slide",
-        "dotExpand",
-        "drawOutline",
-        "glow"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
     },
     {
       "name": "ctaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "accent",
-        "neutral"
-      ]
+      "enum": ["primary", "secondary", "accent", "neutral"]
     },
     {
       "name": "primaryImage",
@@ -130,9 +112,5 @@
     "testimonial-carousel-01",
     "footer-multi-column-01"
   ],
-  "pairsPoorly": [
-    "cta-editorial-split-01",
-    "cta-banner-01",
-    "cta-floating-01"
-  ]
+  "pairsPoorly": ["cta-editorial-split-01", "cta-banner-01", "cta-floating-01"]
 }

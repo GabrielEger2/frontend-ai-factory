@@ -17,6 +17,7 @@
   "mood": ["elegant", "calm", "trustworthy"],
   "layout": "stacked",
   "density": "low",
+  "imageWeight": 0.1,
   "slots": [
     {
       "name": "eyebrow",

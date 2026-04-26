@@ -6,6 +6,7 @@
   "mood": ["energetic", "trustworthy"],
   "layout": "stacked",
   "density": "high",
+  "imageWeight": 0.0,
   "purpose": ["testimonials"],
   "acceptsStyleKit": {
     "card": false,

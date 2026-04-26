@@ -6,6 +6,7 @@
   "mood": ["professional", "energetic", "trustworthy"],
   "layout": "stacked",
   "density": "low",
+  "imageWeight": 0.08,
   "purpose": ["features", "services", "process"],
   "acceptsStyleKit": {
     "card": false,
