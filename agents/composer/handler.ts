@@ -172,7 +172,10 @@ async function getClaudeApiKey(): Promise<string> {
 /*  Neo4j graph query for candidate components                         */
 /* ------------------------------------------------------------------ */
 
-async function getGraphCandidates(segment: string): Promise<{
+async function getGraphCandidates(
+  segment: string,
+  imageryDensityScale: number,
+): Promise<{
   candidates: CandidateComponent[];
   pairMatrix: PairMatrixEntry[];
 }> {
@@ -201,12 +204,13 @@ async function getGraphCandidates(segment: string): Promise<{
         avg(pw.score) AS avgPairScore
       RETURN c.id AS id, c.name AS name, c.category AS category,
              c.density AS density, c.layout AS layout,
+             c.imageWeight AS imageWeight,
              moodHits, styleHits,
              coalesce(avgPairScore, 0.5) AS avgPairScore
-      ORDER BY (moodHits * 2 + styleHits + avgPairScore) DESC
+      ORDER BY (moodHits * 2 + styleHits + avgPairScore + coalesce(c.imageWeight, 0) * $imageryDensityScale) DESC
       LIMIT 20
       `,
-      { segmentId: segment },
+      { segmentId: segment, imageryDensityScale },
     );
 
     const candidates: CandidateComponent[] = result.records.map((record) => ({
@@ -227,6 +231,14 @@ async function getGraphCandidates(segment: string): Promise<{
         typeof record.get("avgPairScore") === "object"
           ? (record.get("avgPairScore") as { toNumber(): number }).toNumber()
           : (record.get("avgPairScore") as number),
+      imageWeight: (() => {
+        const raw = record.get("imageWeight");
+        if (raw === null || raw === undefined) return undefined;
+        if (typeof raw === "object" && raw !== null && "toNumber" in raw) {
+          return (raw as { toNumber(): number }).toNumber();
+        }
+        return raw as number;
+      })(),
     }));
 
     const candidateIds = candidates.map((c) => c.id);
@@ -263,6 +275,7 @@ async function getGraphCandidates(segment: string): Promise<{
 
 async function getDynamoFallbackCandidates(
   styleOutput: StyleOutput,
+  imageryDensityScale: number,
 ): Promise<CandidateComponent[]> {
   const tableName = process.env.COMPONENTS_TABLE_NAME;
   if (!tableName) {
@@ -301,6 +314,7 @@ async function getDynamoFallbackCandidates(
         moodHits,
         styleHits,
         avgPairScore,
+        imageWeight: item.imageWeight,
       };
     })
     .filter((c) => c.moodHits > 0 || c.styleHits > 0)
@@ -308,8 +322,12 @@ async function getDynamoFallbackCandidates(
       (a, b) =>
         b.moodHits * 2 +
         b.styleHits +
-        b.avgPairScore -
-        (a.moodHits * 2 + a.styleHits + a.avgPairScore),
+        b.avgPairScore +
+        (b.imageWeight ?? 0) * imageryDensityScale -
+        (a.moodHits * 2 +
+          a.styleHits +
+          a.avgPairScore +
+          (a.imageWeight ?? 0) * imageryDensityScale),
     )
     .slice(0, 20);
 
@@ -525,8 +543,19 @@ export const handler: Handler<
   let source: "graph" | "fallback";
   let pairMatrix: PairMatrixEntry[] = [];
 
+  // Compute imageryDensityScale to bias candidate scoring by visual density.
+  // Negative scale demotes image-heavy components (e.g. SaaS-tooling),
+  // positive scale promotes them (e.g. real-estate, portfolio, fashion).
+  const imageryDensityScale =
+    { low: -1, medium: 0, high: 2 }[
+      input.styleOutput?.imageryDensity ?? "medium"
+    ] ?? 0;
+
   try {
-    const graphResult = await getGraphCandidates(input.segment);
+    const graphResult = await getGraphCandidates(
+      input.segment,
+      imageryDensityScale,
+    );
     candidates = graphResult.candidates;
     pairMatrix = graphResult.pairMatrix;
     source = "graph";
@@ -548,7 +577,10 @@ export const handler: Handler<
       }),
     );
     emitNeo4jQueryError("composer");
-    candidates = await getDynamoFallbackCandidates(input.styleOutput);
+    candidates = await getDynamoFallbackCandidates(
+      input.styleOutput,
+      imageryDensityScale,
+    );
     source = "fallback";
     console.log(
       JSON.stringify({
