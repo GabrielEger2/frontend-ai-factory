@@ -84,13 +84,16 @@ interface MetadataJson {
  * all map to the same flow position.
  */
 const FLOW_ORDER: string[] = [
-  "navigation",
   "hero",
-  "layout",
-  "stats",
-  "carousel",
+  "navigation",
   "cta",
+  "testimonial",
+  "layout/grid",
+  "layout/split",
+  "motion",
+  "carousel",
   "faq",
+  "stats",
   "contact",
   "footers",
 ];
