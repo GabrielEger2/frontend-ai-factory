@@ -2,9 +2,22 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@lib/utils";
-import { CtaButton, type CtaVariant, type ColorScheme, buttonStyles } from "@ui/button";
+import {
+  CtaButton,
+  type CtaVariant,
+  type ColorScheme,
+  buttonStyles,
+} from "@ui/button";
 import { Highlighter } from "@ui/text-decorations/Highlighter";
 import { TextReveal } from "@ui/text-decorations/TextReveal";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@ui/backgrounds/DotPattern";
+import { StripedPattern } from "@ui/backgrounds/StripedPattern";
+import { GradientBars } from "@ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@ui/backgrounds/InteractiveGridPattern";
 
 export interface CtaEditorialSplitProps {
   /** Bold callout block text (uppercase headline placed over the primary image). */
@@ -37,7 +50,26 @@ export interface CtaEditorialSplitProps {
   highlightWord?: string;
   /** Wrap the headline in a TextReveal word-by-word entrance. Default off. */
   revealHeadline?: boolean;
+  /** Optional motif-echo background rendered behind the section content */
+  backgroundVariant?: string;
   className?: string;
+}
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
 }
 
 function renderHeadline(headline: string, highlightWord?: string) {
@@ -74,6 +106,7 @@ export default function CtaEditorialSplit({
   secondaryImageAlt,
   highlightWord,
   revealHeadline = false,
+  backgroundVariant,
   className,
 }: CtaEditorialSplitProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -90,10 +123,13 @@ export default function CtaEditorialSplit({
   return (
     <section
       className={cn(
-        "relative w-full bg-base-100 py-12 md:py-16 lg:py-24",
+        "relative isolate w-full overflow-hidden bg-base-100 py-12 md:py-16 lg:py-24",
         className,
       )}
     >
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {renderMotif(backgroundVariant)}
+      </div>
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 md:px-8 lg:grid-cols-12 lg:gap-12 lg:px-12">
         {/* Left column: portrait image + headline + body + CTAs */}
         <div className="flex flex-col gap-8 lg:col-span-6">

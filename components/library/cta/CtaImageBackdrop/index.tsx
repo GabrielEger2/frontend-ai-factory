@@ -5,6 +5,14 @@ import { cn } from "@lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
 import { Highlighter } from "@ui/text-decorations/Highlighter";
 import { TextReveal } from "@ui/text-decorations/TextReveal";
+import {
+  AnimatedSvgBackground,
+  GEOMETRIC_SHAPES,
+} from "@ui/backgrounds/AnimatedSvgBackground";
+import { DotPattern } from "@ui/backgrounds/DotPattern";
+import { StripedPattern } from "@ui/backgrounds/StripedPattern";
+import { GradientBars } from "@ui/backgrounds/GradientBars";
+import { InteractiveGridPattern } from "@ui/backgrounds/InteractiveGridPattern";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -52,12 +60,31 @@ export interface CtaImageBackdropProps {
   highlightWord?: string;
   /** Wrap the display word in a TextReveal entrance. Defaults to true. */
   revealDisplayWord?: boolean;
+  /** Optional motif-echo background rendered behind the image backdrop */
+  backgroundVariant?: string;
   className?: string;
 }
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
+
+function renderMotif(bg?: string) {
+  switch (bg) {
+    case "animated-svg":
+      return <AnimatedSvgBackground shapes={GEOMETRIC_SHAPES} />;
+    case "dot-pattern":
+      return <DotPattern />;
+    case "striped":
+      return <StripedPattern />;
+    case "gradient-bars":
+      return <GradientBars />;
+    case "interactive-grid":
+      return <InteractiveGridPattern />;
+    default:
+      return null;
+  }
+}
 
 function renderEyebrow(eyebrow: string, highlightWord?: string) {
   // Split on \n so the user can stack lines deliberately like the reference.
@@ -109,6 +136,7 @@ export default function CtaImageBackdrop({
   minHeight = "80vh",
   highlightWord,
   revealDisplayWord = true,
+  backgroundVariant,
   className,
 }: CtaImageBackdropProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -128,11 +156,15 @@ export default function CtaImageBackdrop({
   return (
     <section
       className={cn(
-        "relative w-full overflow-hidden text-neutral-content",
+        "relative isolate w-full overflow-hidden text-neutral-content",
         className,
       )}
       style={{ minHeight }}
     >
+      {/* Motif-echo layer (behind the image backdrop) */}
+      <div className="pointer-events-none absolute inset-0 -z-20">
+        {renderMotif(backgroundVariant)}
+      </div>
       {/* Background image layer */}
       <div
         aria-label={backgroundImageAlt}
