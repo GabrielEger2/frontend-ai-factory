@@ -1,0 +1,122 @@
+{
+  "id": "layout-editorial-framed-split-01",
+  "name": "Editorial Framed Split",
+  "category": "layout/split",
+  "purpose": [
+    "features",
+    "about",
+    "services",
+    "story"
+  ],
+  "acceptsStyleKit": {
+    "card": true,
+    "background": true,
+    "textDecoration": true,
+    "button": true
+  },
+  "style": [
+    "editorial",
+    "classic",
+    "minimal"
+  ],
+  "mood": [
+    "professional",
+    "elegant",
+    "trustworthy"
+  ],
+  "layout": "split",
+  "density": "medium",
+  "slots": [
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
+    {
+      "name": "highlightWord",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 30
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url"
+    },
+    {
+      "name": "leadImage",
+      "type": "image",
+      "aspectRatio": "4:5"
+    },
+    {
+      "name": "leadImageAlt",
+      "type": "text",
+      "maxLength": 120
+    },
+    {
+      "name": "secondaryImage",
+      "type": "image",
+      "aspectRatio": "4:3"
+    },
+    {
+      "name": "secondaryImageAlt",
+      "type": "text",
+      "maxLength": 120
+    },
+    {
+      "name": "supportingHeadline",
+      "type": "text",
+      "maxLength": 80
+    },
+    {
+      "name": "supportingBody",
+      "type": "text",
+      "maxLength": 320
+    },
+    {
+      "name": "ctaVariant",
+      "type": "text",
+      "optional": true,
+      "enum": [
+        "default",
+        "slide",
+        "dotExpand",
+        "drawOutline",
+        "glow"
+      ]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": [
+        "primary",
+        "secondary",
+        "accent",
+        "neutral"
+      ]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-split-image-01",
+    "layout-imagetext-01",
+    "layout-cardgrid-01",
+    "cta-banner-01",
+    "footer-reveal-01"
+  ],
+  "pairsPoorly": [
+    "layout-statementsplit-01",
+    "layout-authorsplit-01"
+  ]
+}
