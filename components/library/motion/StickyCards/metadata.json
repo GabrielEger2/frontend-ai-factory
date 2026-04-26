@@ -1,7 +1,7 @@
 {
   "id": "layout-stickycards-01",
   "name": "Sticky Cards",
-  "category": "layout/scroll",
+  "category": "motion",
   "style": ["modern", "bold", "editorial"],
   "mood": ["professional", "energetic", "trustworthy"],
   "layout": "stacked",

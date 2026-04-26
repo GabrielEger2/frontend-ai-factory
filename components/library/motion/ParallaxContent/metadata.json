@@ -1,7 +1,7 @@
 {
   "id": "layout-parallaxcontent-01",
   "name": "Parallax Content",
-  "category": "layout/scroll",
+  "category": "motion",
   "style": ["modern", "editorial", "bold"],
   "mood": ["professional", "elegant", "energetic"],
   "layout": "stacked",
