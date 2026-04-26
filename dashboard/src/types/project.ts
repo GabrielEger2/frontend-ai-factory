@@ -1,4 +1,4 @@
-// Source of truth: agents/shared/segment-presets.ts — keep in sync
+// Segment values must match agents/shared/constants.ts SUPPORTED_SEGMENTS
 export const SUPPORTED_SEGMENTS = [
   "pet-shop",
   "law-firm",
