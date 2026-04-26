@@ -13,6 +13,7 @@
   "mood": ["professional", "elegant"],
   "layout": "multi-column",
   "density": "medium",
+  "imageWeight": 0.08,
   "slots": [
     {
       "name": "logo",

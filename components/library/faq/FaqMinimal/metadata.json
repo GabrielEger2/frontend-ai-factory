@@ -13,6 +13,7 @@
   "mood": ["calm", "professional"],
   "layout": "centered",
   "density": "low",
+  "imageWeight": 0.0,
   "slots": [
     { "name": "headline", "type": "text", "maxLength": 80 },
     { "name": "subheadline", "type": "text", "maxLength": 160 },

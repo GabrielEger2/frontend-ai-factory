@@ -13,6 +13,7 @@
   "mood": ["professional", "trustworthy"],
   "layout": "horizontal",
   "density": "low",
+  "imageWeight": 0.0,
   "slots": [
     { "name": "headline", "type": "text", "optional": true, "maxLength": 120 },
     {
