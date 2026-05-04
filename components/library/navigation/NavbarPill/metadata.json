@@ -1,0 +1,45 @@
+{
+  "id": "navbar-pill-01",
+  "name": "Pill Glass Navbar",
+  "category": "navigation",
+  "purpose": ["navigation"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "minimal", "editorial"],
+  "mood": ["professional", "elegant", "trustworthy"],
+  "layout": "horizontal",
+  "density": "low",
+  "imageWeight": 0.0,
+  "slots": [
+    {
+      "name": "logo",
+      "type": "image",
+      "aspectRatio": "auto",
+      "optional": true
+    },
+    {
+      "name": "links",
+      "type": "list",
+      "maxItems": 6,
+      "itemSchema": {
+        "text": { "type": "text", "maxLength": 30 },
+        "href": { "type": "url" }
+      }
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 20, "optional": true },
+    { "name": "ctaUrl", "type": "url", "optional": true },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["arrow", "default", "slide", "dotExpand", "drawOutline", "glow"]
+    }
+  ],
+  "mobileBehavior": "collapse",
+  "pairsWell": ["footer-pulse-01", "footer-reveal-01"],
+  "pairsPoorly": []
+}

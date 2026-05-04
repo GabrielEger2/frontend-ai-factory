@@ -8,6 +8,7 @@ import { InteractiveGridPattern } from "./InteractiveGridPattern";
 import { DotPattern } from "./DotPattern";
 import { StripedPattern } from "./StripedPattern";
 import { GradientBars } from "./GradientBars";
+import { GlowOrbs } from "./GlowOrbs";
 import { ReactLenis } from "lenis/react";
 
 const meta: Meta = {
@@ -402,6 +403,88 @@ export const GradientBarsCustomColors: Story = {
           More bars with the secondary color create a denser, more saturated
           backdrop. The wave animation becomes more visible with additional
           columns.
+        </p>
+      </div>
+    </div>
+  ),
+};
+
+/* ------------------------------------------------------------------ */
+/*  GlowOrbs — Animated radial blobs with mouse parallax               */
+/* ------------------------------------------------------------------ */
+
+export const GlowOrbsTheme: Story = {
+  render: () => (
+    <div className="relative isolate flex min-h-screen items-center justify-center overflow-hidden bg-base-300">
+      <GlowOrbs palette="theme" />
+      <div className="relative z-10 max-w-2xl px-8 text-center">
+        <h1 className="text-4xl font-bold text-base-content md:text-6xl">
+          Glow Orbs
+        </h1>
+        <p className="mt-4 text-lg text-base-content/70">
+          Soft radial blobs drift across the canvas and react to the cursor with
+          subtle parallax. The default palette pulls from the OKLCH theme tokens
+          so it follows the active brand colors.
+        </p>
+      </div>
+    </div>
+  ),
+};
+
+export const GlowOrbsAurora: Story = {
+  render: () => (
+    <div className="relative isolate flex min-h-screen items-center justify-center overflow-hidden">
+      <GlowOrbs palette="aurora" showStars />
+      <div className="relative z-10 max-w-2xl px-8 text-center text-white">
+        <h1 className="text-4xl font-bold md:text-6xl">Aurora</h1>
+        <p className="mt-4 text-lg text-white/70">
+          Magenta, violet, and cyan orbs over a deep navy gradient. Stars
+          enabled for a cinematic night-sky feel.
+        </p>
+      </div>
+    </div>
+  ),
+};
+
+export const GlowOrbsEmber: Story = {
+  render: () => (
+    <div className="relative isolate flex min-h-screen items-center justify-center overflow-hidden">
+      <GlowOrbs palette="ember" orbCount={6} blur={140} />
+      <div className="relative z-10 max-w-2xl px-8 text-center text-white">
+        <h1 className="text-4xl font-bold md:text-6xl">Ember</h1>
+        <p className="mt-4 text-lg text-white/70">
+          Warm orange, red, and amber orbs with a heavier blur for a smouldering
+          backdrop. Six orbs add density.
+        </p>
+      </div>
+    </div>
+  ),
+};
+
+export const GlowOrbsForest: Story = {
+  render: () => (
+    <div className="relative isolate flex min-h-screen items-center justify-center overflow-hidden">
+      <GlowOrbs palette="forest" speed={0.6} />
+      <div className="relative z-10 max-w-2xl px-8 text-center text-white">
+        <h1 className="text-4xl font-bold md:text-6xl">Forest</h1>
+        <p className="mt-4 text-lg text-white/70">
+          Cool greens, teals, and limes drifting at a slower speed. Reads as
+          calm and organic.
+        </p>
+      </div>
+    </div>
+  ),
+};
+
+export const GlowOrbsMonoStatic: Story = {
+  render: () => (
+    <div className="relative isolate flex min-h-screen items-center justify-center overflow-hidden">
+      <GlowOrbs palette="mono" speed={0} interactive={false} vignette={false} />
+      <div className="relative z-10 max-w-2xl px-8 text-center text-white">
+        <h1 className="text-4xl font-bold md:text-6xl">Monochrome</h1>
+        <p className="mt-4 text-lg text-white/70">
+          Static, non-interactive grayscale variant — useful when motion would
+          distract from foreground content. Vignette removed for a flatter look.
         </p>
       </div>
     </div>
