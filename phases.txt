@@ -1,258 +1,160 @@
-  SiteGen — AI-Powered Website Generator
+SiteGen — RAG / Vector DB / Chunking Rollout Plan
+===================================================
 
-  What It Is
-
-  A product layer on top of your CRM. Sellers input a company's info, AI generates a complete, SEO-optimized website in minutes, seller demos it to the client, deploys with
-  one click. Also serves as an AI portfolio piece.
-  Core Insight
-
-  AI handles subjective decisions (what mood fits this brand, what copy to write). The graph handles structured knowledge (what components pair well, what styles fit what
-  segments). The assembler is deterministic (slots content into pre-designed components). None of them do each other's job.
-
-  Tech Stack
-
-  ┌────────────────────────┬─────────────────────┬──────────────────────────────────────────────────────────────────┐
-  │         Layer          │       Choice        │                               Why                                │
-  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
-  │ Infra as Code          │ CDK                 │ You already built 15 stacks with it — no reason to switch to SST │
-  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
-  │ Orchestration          │ Step Functions      │ Visual debugging, built-in retry, right scale for this product   │
-  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
-  │ Entry buffer           │ SQS                 │ Seller submits → instant response → pipeline runs async          │
-  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
-  │ Auth                   │ None new            │ Sellers auth through your CRM, generated sites are public        │
-  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
-  │ Project data           │ MongoDB or DynamoDB │ Projects, content, deployments                                   │
-  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
-  │ Component intelligence │ Neo4j (later)       │ Component compatibility, mood/style/segment graph                │
-  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
-  │ AI agents              │ Claude/GPT API      │ Specialized prompts per agent, not one monolithic call           │
-  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
-  │ Generated sites        │ Vercel API deploy   │ Best Next.js support, edge network, programmatic deploys         │
-  ├────────────────────────┼─────────────────────┼──────────────────────────────────────────────────────────────────┤
-  │ Seller dashboard       │ Next.js on AWS      │ Your OpenNext pattern from Codex Arcana                          │
-  └────────────────────────┴─────────────────────┴──────────────────────────────────────────────────────────────────┘
-
-  Agent Pipeline (Step Functions)
-
-  SQS → Step Function:
-    1. Research Agent      → searches company, competitors, segment
-    2. Style Agent         → selects palette, typography, mood tags
-    3. Composer Agent      → queries graph, picks + chains components
-    4. ┌ Content Agent     → generates copy per component slot
-       └ SEO Agent         → JSON-LD, meta tags, Open Graph, sitemap
-         (parallel)
-    5. Humanizer Agent     → adapts pt-BR tone to brand personality
-    6. Assembler           → deterministic: blueprint + tokens + content → Next.js
-    7. QA Agent            → responsive, TS, accessibility, Lighthouse
-    8. Choice: QA passed?
-       → yes: Deploy to Vercel → notify seller via WebSocket
-       → no:  Flag issues → notify seller
-
-  Graph DB Model
-
-  Nodes: Segment, Mood, Style, Component, ColorPalette, Font, Layout, Project
-
-  Key relationships:
-  - Segment -[:NATURALLY_FEELS]-> Mood — pet shops feel fun, law firms feel serious
-  - Mood -[:EXPRESSED_AS]-> Style — elegant expresses as editorial/luxury
-  - Component -[:HAS_STYLE]-> Style — tags each component
-  - Component -[:PAIRS_WITH {score}]-> Component — the core intelligence — which components look good together
-  - Mood -[:SUGGESTS_PALETTE]-> ColorPalette — mood-to-color mapping
-  - Project -[:CLIENT_APPROVED]-> Layout — learning loop data
-
-  The Composer Agent traverses: segment → moods → styles → components → chain by PAIRS_WITH score to produce full page compositions ranked by compatibility.
-
-  Component Library
-
-  ~50 pre-designed components tagged with metadata:
-
-  15 heroes | 10 features | 8 CTAs | 6 testimonials
-  5 contact | 4 pricing | 4 FAQ | 3 footers
-
-  Each tagged with: style[], mood[], category, layout, density, slots[], mobileBehavior, and PAIRS_WITH scores against other components.
-
-  CDK Stacks
-
-  infra/
-  ├── stacks/
-  │   ├── ApiStack.ts            ← API Gateway + CRM JWT/API key validation
-  │   ├── PipelineStack.ts       ← Step Functions + SQS + agent Lambdas
-  │   ├── DatabaseStack.ts       ← DynamoDB tables
-  │   ├── GraphStack.ts          ← Neo4j EC2 or Aura connection
-  │   ├── SiteDeployStack.ts     ← Vercel deployment Lambda
-  │   └── DashboardStack.ts      ← Seller dashboard (OpenNext pattern)
-  ├── constructs/
-  │   ├── AgentLambda.ts         ← reusable construct per AI agent
-  │   └── AgentPipeline.ts       ← Step Function definition
-  └── common/
-      └── lambda-defaults.ts
-
-  ---
-  Phases
-
-  Phase 1 — Foundation (2-3 weeks)
-
-  Component Library v1
-  ├── Design 16 components across 5 categories
-  │   (5 heroes, 4 features, 3 CTAs, 2 contact, 2 footers)
-  ├── Tag each: style[], mood[], category, slots[]
-  └── Store in DynamoDB (no graph yet)
-
-  CDK Infrastructure
-  ├── Scaffold monorepo: infra/ + agents/ + dashboard/ + components/
-  ├── ApiStack — API Gateway with API key auth
-  ├── DatabaseStack — DynamoDB (projects, components)
-  ├── PipelineStack — Step Function with one agent (Content)
-  ├── SiteDeployStack — Lambda that calls Vercel API
-  └── Reuse lambda-defaults, construct patterns from Codex Arcana
-
-  Agent v1 — Content Only
-  ├── Single Lambda: business info → generates all copy
-  ├── Hardcoded component selection (no graph)
-  ├── Deterministic assembler: template + content → Next.js files
-  └── Auto-deploy to Vercel
-
-  Seller UI v1
-  ├── Simple form: company name, segment, description
-  ├── Calls API → SQS → Step Function → returns project ID
-  └── Polls for completion → redirects to preview URL
-
-  Milestone: form → deployed site in 2-3 minutes
-
-  Phase 2 — Full Pipeline (2-3 weeks)
-
-  All Agents Online
-  ├── Research Agent — web search for company/competitors
-  ├── Style Agent — palette, typography, density
-  ├── Composer Agent — mood/style matching (DynamoDB queries)
-  ├── Content Agent — copy per slot
-  ├── Assembler — deterministic render
-  └── QA Agent — TS check, responsive, basic SEO
-
-  Step Functions Orchestration
-  ├── Full 7-step pipeline wired up
-  ├── Parallel branch for Content + SEO
-  ├── QA choice gate (pass/fail)
-  ├── Each step writes output to DynamoDB project doc
-  └── Error handling + retry per step
-
-  Real-Time Progress
-  ├── WebSocket API for seller dashboard
-  ├── Each step pushes status update
-  └── "Researching..." → "Styling..." → "Writing..." → "Deploying..."
-
-  Milestone: full pipeline, seller watches progress live
-
-  Phase 3 — Graph Intelligence (3-4 weeks)
-
-  Neo4j Setup
-  ├── Neo4j Aura (managed) or self-hosted EC2
-  ├── Seed nodes: 15-20 segments, 8-10 moods, 6-8 styles
-  ├── Migrate component metadata from DynamoDB → Neo4j nodes
-  ├── Manually score PAIRS_WITH relationships
-  └── Add NATURALLY_FEELS, EXPRESSED_AS, SUGGESTS_PALETTE edges
-
-  Composer Agent v2
-  ├── Rewire to query Neo4j
-  ├── Multi-hop: segment → mood → style → components → chain
-  ├── Returns top 3 layouts ranked by PAIRS_WITH scores
-  └── Fallback to DynamoDB if Neo4j is down
-
-  Component Library v2
-  ├── PAIRS_WITH scores for every component pair
-  └── Variant support (same component, different density/color mode)
+Task: Multi-stage rollout of RAG, vector DB, embeddings, semantic chunking, and ref-site ingestion across the SiteGen pipeline.
+Created: 2026-05-04
+Status: ready-for-planning
 
 
-  Milestone: "Pet Shop em Porto Alegre" and "Advocacia em SP"
-  produce visually and tonally different sites automatically
+TASK BOUNDARY
+-------------
 
-  
-  Phase 4 — Graph Intelligence (remaining work)
+In scope: Sequencing and shape of a multi-stage rollout that introduces vector retrieval, embeddings, semantic chunking, ref-site scraping, and an LLM-as-judge eval loop into the SiteGen pipeline. Each stage is a self-contained shippable chapter with its own resume narrative.
 
-  Neo4j Aura Provisioning
-  ├── Provision Neo4j Aura instance
-  ├── Populate SSM parameters (URI + password)
-  ├── Run seed-graph.ts against live instance
-  └── Verify Composer uses graph source in a real pipeline run
+Out of scope (this discussion):
+- Per-stage implementation details (those are decided in /plan per stage)
+- Choosing specific Playwright vs Puppeteer, specific anti-bot strategy, specific eval rubric design — captured at planning time for the relevant stage
+- Rolling out RAG to Style / Research / SEO agents (deferred — could happen post-Stage-4 if value warrants)
+- Multi-modal CLIP embeddings (deferred — not needed for the current chapter set)
+- Ingestion Lambda (DDB Stream → re-embed) — deferred until component metadata churn justifies it
 
-  SUGGESTS_PALETTE Edges
-  ├── Add palette data to graph-seed.json
-  ├── Update seed-graph.ts to create Style → Palette edges
-  └── (Optional) Wire into Style Agent for palette recommendations
 
-  Composer Query Improvements
-  ├── Add HAS_MOOD path (UNION or combined match)
-  ├── Pairwise PAIRS_WITH scoring between candidate pairs
-  └── Return contextual pair scores, not just global avg
+IMPLEMENTATION DECISIONS (LOCKED)
+---------------------------------
 
-  PAIRS_WITH Completeness
-  ├── Score all 406 component pairs (29×28/2)
-  ├── Use continuous 0-1 scale, not binary 0.85/0.15
-  └── Update seed-graph.ts + metadata.json with granular scores
+Decision 1 — Foundation-first staging philosophy
+Stage 1 is pure infrastructure and tooling. No agent or UI changes. The user explicitly chose foundation first and narrative first over visible product velocity. Each stage maps to one clean resume chapter.
 
-  Component Variants
-  ├── Define variant schema (metadata.json + Neo4j representation)
-  ├── Build 2-3 variants for Phase 1 heroes as proof of concept
-  └── Update Composer to consider variants as separate candidates
+Decision 2 — Stage cadence
+Medium stages (~1-2 weeks each), ~4-5 stages total. One coherent feature slice per stage. Each stage is deployable on its own and produces a demoable artifact.
 
-  Observability
-  ├── Dashboard indicator: graph vs fallback per project
-  └── CloudWatch metric for Neo4j query latency + fallback rate
+Decision 3 — Vector DB technology: Qdrant Cloud
+Managed SaaS. Free tier covers current scale. Resume keyword "Qdrant" lands cleanly without absorbing weeks of self-hosted ops work. Credentials and endpoint live in SSM, accessed via a thin client in agents/shared/.
 
-  Phase 5 — Seller Experience (2-3 weeks)
+Decision 4 — Embedding API: OpenAI text-embedding-3-small
+1536 dimensions, ~$0.02/M tokens. Industry default. Adds OpenAI as a second LLM vendor (the project currently only uses Anthropic) — API key stored in SSM following the existing /sitegen/dev/claude-api-key pattern.
 
-  Seller Dashboard v2
-  ├── Project list with status
-  ├── Visual editor: reorder sections, swap variants, edit copy
-  ├── Component picker: "see 3 alternative heroes"
-  ├── Color palette switcher
-  ├── Client preview: shareable URL with feedback form
-  └── Version history + revert
+Decision 5 — First RAG target: Composer Agent
+Highest-impact integration point. The Composer's buildUserPrompt already accepts a candidates array — RAG context layers in as a 3rd retrieval source alongside Neo4j graph candidates and DynamoDB fallback candidates. The agent becomes a hybrid graph + vector retriever.
 
-  Editing Agent
-  ├── Takes client feedback ("make hero bigger", "add WhatsApp button")
-  ├── Maps natural language → component swaps or content changes
-  └── Applies edits without full regeneration
+Decision 6 — What gets embedded for Composer RAG
+Both:
+- Component metadata — joined text of style[] + mood[] + purpose[] + slot text per component
+- LLM-generated semantic descriptions — one-shot Claude call per component producing a 1-2 sentence description ("This split hero suits luxury brands needing strong photography"). Generated and embedded in Stage 1's seed script. Resume signal: "used LLMs to enrich component metadata for retrieval."
 
-  SEO Agent v2
-  ├── JSON-LD (LocalBusiness, Product, FAQ)
-  ├── Auto sitemap.xml
-  ├── Open Graph + Twitter cards
-  ├── Lighthouse target: 90+ performance, 95+ SEO
-  └── Brazilian SEO: .com.br, hreflang pt-BR
+Decision 7 — Stage 2 success metric: ship-and-watch
+No formal eval harness in Stage 2. Watch live generations, tune prompts iteratively. Formal LLM-as-judge eval is the centerpiece of Stage 4, not Stage 2 — keeping it for the final chapter makes Stage 4 a meaningful narrative beat.
 
-  Milestone: generate → edit → share with client → deploy, one flow
+Decision 8 — Stage 3 bundles visual + structural scraping
+Form field + Playwright Lambda + visual extraction (palette/fonts/screenshot) + HTML semantic chunking + chunk embeddings + RAG retrieval all ship together. ~3 weeks. One resume chapter: "reference-site ingestion with semantic HTML chunking." User accepted the scope risk knowingly.
 
-  Phase 6 — Learning Loop (2-3 weeks)
+Fallback if Stage 3 slips: split into Stage 3a (visual only → Style Agent) and Stage 3b (chunking + structural → Composer). Decision made at planning time, not pre-committed.
 
-  Graph Learning
-  ├── Track which layouts get client approval
-  ├── Track which components sellers swap out (= bad fit)
-  ├── Auto-adjust PAIRS_WITH scores from real data
-  │   approved together → score up
-  │   frequently swapped → score down
-  └── New query: "what works for this segment?" backed by data
+Decision 9 — Chunking strategy: semantic section chunking (HTML-aware)
+Walk the scraped DOM, chunk by <section>, <header>, <main>, semantic block boundaries. One chunk = one logical site section. Most defensible interview answer ("I chunk reference pages by semantic structure to match against component categories"). Lives in agents/shared/chunking.ts. Stage 3 only — no token-window fallback yet (add only if real scraped pages prove unparseable).
 
-  Analytics
-  ├── Inject Plausible/Umami into generated sites
-  ├── Track bounce rate, time on page, CTA clicks per component
-  ├── Components with low engagement → lower graph scores
-  └── Monthly seller report: traffic + performance
+Decision 10 — End-state stage: learning loop + LLM-as-judge eval
+Stage 4 closes the resume narrative as the "AI engineer" chapter. Tracks seller approve/edit signals, builds an LLM-as-judge rubric pipeline, uses the eval signal to tune retrieval ranking and prompt iterations. ~2-3 weeks.
 
-  A/B Composition
-  ├── Generate 2 layout variants per brief
-  ├── Split traffic, auto-pick winner
-  └── Feed results back into graph
+Decision 11 — Stage 0 added: component metadata audit + enrichment
+Inserted before Stage 1. Audit existing 34 component metadata files for gaps and inconsistencies in mood[] / style[] / purpose[]. Enrich where signal is thin. ~3-5 days. Protects every downstream stage — embeddings can only be as good as the underlying tags.
 
-  Milestone: system recommends based on what converts, not just what looks good
 
-  Phase 7 — Production Scale (ongoing)
+FINAL STAGED ROLLOUT
+--------------------
 
-  ├── Multi-tenant isolation per CRM client
-  ├── Custom domain support (.com.br) + SSL provisioning
-  ├── Rate limiting + cost monitoring per generation
-  ├── Pricing tiers (X generations/month)
-  ├── White-label (seller branding)
-  ├── Bulk generation ("generate for all 50 clients")
-  └── Template marketplace (sellers favorite/save layouts)
+Stage 0 — Component metadata audit
+  Duration:  3-5 days
+  Deliverable: Audited + enriched metadata across all components; manifest regenerated
+  Resume chapter: (foundation prep, no chapter)
+
+Stage 1 — Vector retrieval foundation
+  Duration:  1-2 weeks
+  Deliverable: VectorStack (Qdrant Cloud), agents/shared/embeddings.ts, seed script that
+               generates LLM descriptions and embeds all components
+  Resume chapter: "Designed and deployed a vector retrieval layer on AWS with Qdrant + OpenAI embeddings"
+
+Stage 2 — Composer RAG
+  Duration:  1-2 weeks
+  Deliverable: Composer queries Qdrant for top-K semantically aligned components; hybrid
+               retrieval alongside Neo4j and DDB fallback
+  Resume chapter: "Hybrid graph + vector RAG composer in a Step Functions agent pipeline"
+
+Stage 3 — Reference-site ingestion (bundled)
+  Duration:  ~3 weeks
+  Deliverable: Form field for ref-site URLs; Playwright-on-Lambda scraper; visual signals
+               → Style Agent; HTML-aware semantic chunking → embedded chunks → Composer
+               retrieval
+  Resume chapter: "Reference-site ingestion with semantic HTML chunking and multi-source RAG"
+
+Stage 4 — Learning loop + LLM eval
+  Duration:  2-3 weeks
+  Deliverable: Approval/edit tracking; LLM-as-judge eval harness; signal-driven retrieval
+               tuning
+  Resume chapter: "Feedback loop with LLM-as-judge eval pipeline"
+
+Total runway: ~7-11 weeks of focused work. Each stage is independently shippable and each
+has a clean narrative beat.
+
+
+CLAUDE'S DISCRETION
+-------------------
+
+- Stage 1 scope composition — User said "decide based on the phases needs." Locked Stage 1 to: VectorStack + embeddings utility + seed script (with LLM description generation folded in). Ingestion Lambda deferred. Chunking helper deferred to Stage 3 (yagni until scraping lands).
+- CDK stack placement — VectorStack slots into MainStage between GraphStack and PipelineStack (provides SSM-stored creds that pipeline agents consume). ScraperStack (Stage 3) likely a sibling of PipelineStack or sub-resource depending on whether it's invoked synchronously or via SQS.
+- SFN payload field additions — PipelineStack.ts payload blocks for styleStep and composerStep will need updating in Stages 2 and 3 to pass new fields (refSiteUrls, scrapedContext, etc.). Standard chore.
+- Embedding cache layer — Stage 1's agents/shared/embeddings.ts will cache by content hash (DDB or S3). Avoid recomputing embeddings on every invocation. Implementation specifics decided at Stage 1 planning.
+- Deferred decisions — Local model on Lambda for embeddings (Bedrock Titan, Voyage AI, all-MiniLM) explicitly considered and rejected for Stage 1; can revisit post-Stage-4 if cost or latency becomes a problem.
+
+
+EXISTING CODE INSIGHTS
+----------------------
+
+From scout findings (.claude/work/scout.md):
+
+Greenfield zones (zero existing infra to integrate with):
+- No AWS Bedrock usage, no embedding calls, no vector DB references anywhere in the codebase. The only "intelligence layer" beyond LLMs is the Neo4j graph (already live).
+- No web scraping libraries, no chunking utilities. Stage 3 is fully greenfield.
+
+Clean RAG injection points (no refactor needed):
+- agents/composer/prompt.ts::buildUserPrompt already takes a candidates array as a discrete parameter — adding a ragContext?: string parameter is non-breaking. Composer already does retrieval (Neo4j → DDB fallback), so RAG fits as a third source rather than a replacement.
+- agents/content/prompt.ts::buildSystemPrompt is a plain string-returning function. Adding ragExamples?: string is a clean extension when Content gets RAG (post-Stage-4).
+- Content Agent currently doesn't even consume researchOutput despite it being in PipelineStateSchema — there's a free-win opportunity for whichever stage touches Content.
+
+Pipeline contract surface:
+- ProjectBriefSchema (agents/pipeline-starter/types.ts) — authoritative SQS contract. Add refSiteUrls?: string[] here in Stage 3.
+- PipelineStateSchema (agents/shared/types.ts) — full accumulated state. Add refSiteUrls, scrapedContext (visual signals), and ragRetrievals (per-agent retrieved chunks) at relevant stages.
+- PipelineStack.ts styleStep and composerStep payload blocks enumerate fields by name — adding any new optional field requires updating both the pipeline-starter null-seed block AND those payload objects.
+
+Component data:
+- 34 component metadata files in components/library/<category>/<ComponentName>/metadata.json
+- Aggregated manifest at components/library/manifest.json
+- Seeded into DDB via agents/scripts/seed-components.ts — Stage 0 enrichment regenerates this; Stage 1 seed script consumes it as input.
+- ComponentItem DDB shape has no embedding or vector field. Stage 1 stores embeddings in Qdrant only — DDB stays metadata-only. Embeddings keyed in Qdrant by componentId.
+
+CDK pattern:
+- MainStage.ts orchestrates DatabaseStack → GraphStack → PipelineStack → ApiStack → DashboardStack. New stacks slot in via string-prop wiring (SSM paths, ARNs, URLs). VectorStack between GraphStack and PipelineStack. ScraperStack (Stage 3) likely between PipelineStack and ApiStack or as a co-resource of pipeline.
+- AgentLambda construct (infra/constructs/AgentLambda.ts) is the standard pattern for any new agent or scraper Lambda.
+
+
+SPECIFIC IDEAS
+--------------
+
+- Stage 1 demo artifact: running the seed script end-to-end and dumping a Qdrant query result to a markdown file ("show top 5 components for a brief about a luxury bakery"). Proof of life before Stage 2 starts.
+- LLM-generated component descriptions — generated once in Stage 1 by Claude with a structured prompt; stored alongside metadata so they're auditable and re-runnable. Not generated at runtime.
+- Hybrid retrieval blending in Stage 2 — Composer prompt should make it clear to the LLM where each candidate came from ("from graph: X, Y, Z; from vector retrieval: A, B"). Lets the model weigh signals; supports the "hybrid retrieval" interview narrative.
+- Anti-bot reality check for Stage 3 — assume 30-50% of submitted URLs will fail (Cloudflare/Vercel block headless browsers aggressively). Stage 3 needs graceful failure UX in the dashboard ("we couldn't read this URL, paste a different reference?").
+- Legal posture for ref sites — UX should frame as "we extract style cues from this site," not "we copy this site." Domain blocklist for major brands (Nike, Apple, etc.) considered for Stage 3.
+- Eval rubric direction for Stage 4 — score on (a) brief alignment, (b) component coherence, (c) copy quality. Drives both retrieval ranking improvements and prompt tuning. Specifics decided at Stage 4 planning.
+
+
+DEFERRED IDEAS
+--------------
+
+- CLIP / multi-modal embeddings — visual similarity matching between scraped screenshots and component preview images. Could become a "Stage 5" if the resume needs more weight, but the user chose the learning loop as the strongest closer.
+- RAG retrofit to Style / Research / SEO agents — natural follow-up after Stage 4 if the retrieval infrastructure proves valuable. Not in current rollout.
+- Past-project embeddings — embedding completed projects (brief → final layout) so Composer can do "past projects similar to this brief used these components." Requires a corpus of completed projects; could be revisited post-Stage-2 once production data accumulates.
+- Storybook story scenario embeddings — embed each component story (RealEstate, SaasOnboarding, etc.) as a separate retrieval target. Considered, deferred — start with metadata + LLM descriptions; add stories only if retrieval quality plateaus.
+- DDB Streams ingestion Lambda for re-embedding — automatic re-embed when components change. Not needed while you're hand-editing metadata. Add when component churn justifies it (probably post-Stage-4).
+- Token-window chunking fallback — only add if real scraped pages prove too messy for semantic chunking. Decided at Stage 3 implementation, not now.
+- Local embedding model on Lambda — considered (resume signal), rejected for Stage 1 (cold-start + artifact size pain not worth it). Revisit only if OpenAI cost/latency becomes a problem.
