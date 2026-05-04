@@ -1,7 +1,7 @@
 {
   "id": "footer-pulse-01",
   "name": "Pulse Editorial Footer",
-  "category": "footers",
+  "category": "footer",
   "purpose": ["footer"],
   "acceptsStyleKit": {
     "card": false,
@@ -90,6 +90,6 @@
     { "name": "timezone", "type": "text", "maxLength": 60, "optional": true }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["faq-accordion-01", "navbar-pill-01", "cta-banner-01"],
+  "pairsWell": ["faq-accordion-01", "navbar-pill-01"],
   "pairsPoorly": []
 }
