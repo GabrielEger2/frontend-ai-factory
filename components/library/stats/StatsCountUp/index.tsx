@@ -129,7 +129,7 @@ export default function StatsCountUp({
 
   return (
     <section className={cn("bg-base-100 px-4 py-20 md:py-24", className)}>
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-7xl">
         {renderedHeadline && (
           <motion.h2
             className="mb-8 text-center text-base font-semibold uppercase tracking-wide text-base-content sm:text-lg md:mb-16"

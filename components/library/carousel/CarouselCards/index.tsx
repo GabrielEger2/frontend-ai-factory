@@ -293,7 +293,7 @@ export default function CarouselCards({
       aria-label={headline}
     >
       <div className="relative overflow-hidden p-4">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-7xl">
           {/* Header + navigation */}
           <div className="mb-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">

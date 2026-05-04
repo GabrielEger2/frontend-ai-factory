@@ -98,7 +98,7 @@ export default function AuthorSplit({
       data-purpose={purpose}
       className={cn("w-full bg-base-100 py-16 md:py-24", className)}
     >
-      <div className="mx-auto max-w-4xl px-4 md:px-8">
+      <div className="mx-auto max-w-7xl px-4 md:px-8">
         {/* Banner image */}
         <motion.div
           className="mb-10 h-64 w-full overflow-hidden rounded-lg"

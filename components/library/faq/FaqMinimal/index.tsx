@@ -173,7 +173,7 @@ export default function FaqMinimal({
     <section
       className={cn("w-full bg-base-100 py-12 md:py-16 lg:py-24", className)}
     >
-      <div className="mx-auto max-w-3xl px-4 md:px-8">
+      <div className="mx-auto max-w-7xl px-4 md:px-8">
         {/* Header */}
         <div className="mb-6 text-center">
           <h2 className="text-3xl font-semibold leading-tight text-base-content md:text-4xl">

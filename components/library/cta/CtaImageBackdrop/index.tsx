@@ -187,7 +187,7 @@ export default function CtaImageBackdrop({
       <div className="relative flex w-full items-center" style={{ minHeight }}>
         <div
           className={cn(
-            "mx-auto w-full max-w-[96rem] px-4 py-16 md:px-8 md:py-24 lg:px-12",
+            "mx-auto w-full max-w-7xl px-4 py-16 md:px-8 md:py-24 lg:px-12",
             align === "center" && "text-center",
           )}
         >

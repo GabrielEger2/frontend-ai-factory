@@ -223,7 +223,7 @@ export default function FaqSolutions({
     <section
       className={cn("w-full bg-base-100 py-12 md:py-16 lg:py-24", className)}
     >
-      <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-8 px-4 md:px-8 lg:grid-cols-[1fr_350px]">
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-8 px-4 md:px-8 lg:grid-cols-[1fr_350px]">
         <div>
           {/* Header */}
           <h2 className="mb-2 text-3xl font-bold leading-tight text-base-content md:text-4xl">
