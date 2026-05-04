@@ -12,7 +12,7 @@
     "card": false,
     "background": false,
     "textDecoration": false,
-    "button": true
+    "button": false
   },
   "slots": [
     {
@@ -28,17 +28,8 @@
           { "name": "heading", "type": "text", "maxLength": 60 },
           {
             "name": "content",
-            "type": "object",
-            "fields": [
-              { "name": "contentHeadline", "type": "text", "maxLength": 80 },
-              {
-                "name": "contentDescription",
-                "type": "text",
-                "maxLength": 300
-              },
-              { "name": "ctaText", "type": "text", "maxLength": 30 },
-              { "name": "ctaUrl", "type": "url" }
-            ]
+            "type": "component",
+            "description": "Below-fold content for this section. Composer nests another component here (e.g. ImageText, CardGrid, IconListSplit) — content is not a text/image slot."
           }
         ]
       }

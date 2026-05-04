@@ -9,22 +9,10 @@ import {
 } from "motion/react";
 import { cn } from "@lib/utils";
 import type { StyleKit } from "@lib/style-kit";
-import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
-
-export interface ContentSection {
-  /** Heading displayed in the below-fold content area */
-  contentHeadline: string;
-  /** Body text for the below-fold content area */
-  contentDescription: string;
-  /** CTA button text */
-  ctaText: string;
-  /** CTA destination URL */
-  ctaUrl: string;
-}
 
 export interface ParallaxSection {
   /** Background image URL for the sticky parallax panel */
@@ -34,12 +22,12 @@ export interface ParallaxSection {
   label: string;
   /** Large heading displayed on the parallax overlay */
   heading: string;
-  /** Below-fold content block rendered after the parallax panel */
-  content: ContentSection;
+  /** Below-fold content rendered after the parallax panel — any React node */
+  content: React.ReactNode;
 }
 
 export interface ParallaxContentProps {
-  /** Array of parallax sections — each renders a sticky image, overlay text, and content block */
+  /** Array of parallax sections — each renders a sticky image, overlay text, and content node */
   sections?: ParallaxSection[];
   /** Site-wide style kit threaded by the Assembler */
   styleKit?: StyleKit;
@@ -60,39 +48,54 @@ const DEFAULT_PARALLAX_SECTIONS: ParallaxSection[] = [
     imageAlt: "Aerial view of a coastal city at sunset",
     label: "Discovery",
     heading: "Start where you are",
-    content: {
-      contentHeadline: "Map the terrain before you build",
-      contentDescription:
-        "We spend the first two weeks on the ground with your team — interviews, audits, and quiet listening — so the plan we deliver actually fits the company you have, not the one a deck imagines.",
-      ctaText: "Read the playbook",
-      ctaUrl: "#",
-    },
+    content: (
+      <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 pb-24 pt-12 md:grid-cols-12 md:px-8">
+        <h3 className="col-span-1 text-3xl font-bold text-base-content md:col-span-4">
+          Map the terrain before you build
+        </h3>
+        <p className="col-span-1 text-xl text-base-content/60 md:col-span-8 md:text-2xl">
+          We spend the first two weeks on the ground with your team —
+          interviews, audits, and quiet listening — so the plan we deliver
+          actually fits the company you have, not the one a deck imagines.
+        </p>
+      </div>
+    ),
   },
   {
     image: "https://picsum.photos/seed/parallaxcontent-section-1/800/600",
     imageAlt: "Architect sketching plans in a sunlit studio",
     label: "Design",
     heading: "Decide what to build",
-    content: {
-      contentHeadline: "Tradeoffs made deliberate",
-      contentDescription:
-        "Every design choice gets paired with the cost it carries — engineering hours, support load, runway. The result is a plan you can defend in any room without flinching.",
-      ctaText: "See an example brief",
-      ctaUrl: "#",
-    },
+    content: (
+      <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 pb-24 pt-12 md:grid-cols-12 md:px-8">
+        <h3 className="col-span-1 text-3xl font-bold text-base-content md:col-span-4">
+          Tradeoffs made deliberate
+        </h3>
+        <p className="col-span-1 text-xl text-base-content/60 md:col-span-8 md:text-2xl">
+          Every design choice gets paired with the cost it carries — engineering
+          hours, support load, runway. The result is a plan you can defend in
+          any room without flinching.
+        </p>
+      </div>
+    ),
   },
   {
     image: "https://picsum.photos/seed/parallaxcontent-section-2/800/600",
     imageAlt: "Team celebrating a launch in a modern office",
     label: "Ship",
     heading: "Launch in weeks, not quarters",
-    content: {
-      contentHeadline: "Built to be handed off cleanly",
-      contentDescription:
-        "We document, demo, and stay on call through the first month live. By the time we're gone, your team owns the system end-to-end — and we mean it.",
-      ctaText: "Book a kickoff",
-      ctaUrl: "#",
-    },
+    content: (
+      <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 pb-24 pt-12 md:grid-cols-12 md:px-8">
+        <h3 className="col-span-1 text-3xl font-bold text-base-content md:col-span-4">
+          Built to be handed off cleanly
+        </h3>
+        <p className="col-span-1 text-xl text-base-content/60 md:col-span-8 md:text-2xl">
+          We document, demo, and stay on call through the first month live. By
+          the time we&apos;re gone, your team owns the system end-to-end — and
+          we mean it.
+        </p>
+      </div>
+    ),
   },
 ];
 
@@ -189,41 +192,19 @@ function OverlayCopy({ label, heading, shouldReduceMotion }: OverlayCopyProps) {
 }
 
 interface ContentBlockProps {
-  content: ContentSection;
-  ctaStyle: CtaVariant;
-  ctaColorScheme: ColorScheme;
+  content: React.ReactNode;
   shouldReduceMotion: boolean | null;
 }
 
-function ContentBlock({
-  content,
-  ctaStyle,
-  ctaColorScheme,
-  shouldReduceMotion,
-}: ContentBlockProps) {
+function ContentBlock({ content, shouldReduceMotion }: ContentBlockProps) {
   return (
     <motion.div
-      className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 pb-24 pt-12 md:grid-cols-12 md:px-8"
       initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
-      <h3 className="col-span-1 text-3xl font-bold text-base-content md:col-span-4">
-        {content.contentHeadline}
-      </h3>
-      <div className="col-span-1 md:col-span-8">
-        <p className="mb-8 text-xl text-base-content/60 md:text-2xl">
-          {content.contentDescription}
-        </p>
-        <CtaButton
-          variant={ctaStyle}
-          colorScheme={ctaColorScheme}
-          href={content.ctaUrl}
-        >
-          {content.ctaText}
-        </CtaButton>
-      </div>
+      {content}
     </motion.div>
   );
 }
@@ -234,15 +215,12 @@ function ContentBlock({
 
 export default function ParallaxContent({
   sections = DEFAULT_PARALLAX_SECTIONS,
-  styleKit,
+  styleKit: _styleKit,
   imagePadding = DEFAULT_IMAGE_PADDING,
   purpose,
   className,
 }: ParallaxContentProps) {
   const shouldReduceMotion = useReducedMotion();
-
-  const ctaStyle: CtaVariant = styleKit?.ctaVariant ?? "default";
-  const ctaColorScheme: ColorScheme = styleKit?.ctaColorScheme ?? "primary";
 
   return (
     <section
@@ -273,11 +251,9 @@ export default function ParallaxContent({
             </div>
           </div>
 
-          {/* Below-fold content block */}
+          {/* Below-fold content node */}
           <ContentBlock
             content={section.content}
-            ctaStyle={ctaStyle}
-            ctaColorScheme={ctaColorScheme}
             shouldReduceMotion={shouldReduceMotion}
           />
         </div>
