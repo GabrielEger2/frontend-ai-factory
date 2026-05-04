@@ -16,11 +16,13 @@
     },
     "style": [
       "modern",
-      "corporate"
+      "corporate",
+      "editorial"
     ],
     "mood": [
       "professional",
-      "trustworthy"
+      "trustworthy",
+      "friendly"
     ],
     "layout": "stacked",
     "density": "medium",
@@ -158,7 +160,8 @@
     ],
     "mood": [
       "energetic",
-      "elegant"
+      "elegant",
+      "professional"
     ],
     "layout": "stacked",
     "density": "medium",
@@ -241,11 +244,13 @@
     },
     "style": [
       "modern",
-      "minimal"
+      "minimal",
+      "editorial"
     ],
     "mood": [
       "professional",
-      "calm"
+      "calm",
+      "friendly"
     ],
     "layout": "centered",
     "density": "low",
@@ -283,9 +288,8 @@
     "name": "Contact Locations with Map",
     "category": "contact",
     "purpose": [
-      "showcase multiple office or store locations",
-      "provide contact details per city",
-      "visually anchor locations on a shared map"
+      "contact",
+      "location-display"
     ],
     "acceptsStyleKit": {
       "card": false,
@@ -401,7 +405,8 @@
     },
     "style": [
       "modern",
-      "editorial"
+      "editorial",
+      "corporate"
     ],
     "mood": [
       "professional",
@@ -512,7 +517,7 @@
     "pairsWell": [
       "faq-accordion-01",
       "footer-reveal-01",
-      "stats-countup-01"
+      "stats-count-up-01"
     ],
     "pairsPoorly": []
   },
@@ -521,9 +526,9 @@
     "name": "CTA Collage Duo",
     "category": "cta",
     "purpose": [
-      "Promote a club, program, or community offering with paired lifestyle imagery",
-      "Anchor an editorial about-style section with a bold uppercase headline and supporting copy",
-      "Drive enrollment, signup, or membership intent with a confident image-led pitch"
+      "cta",
+      "brand-statement",
+      "lead-capture"
     ],
     "acceptsStyleKit": {
       "card": false,
@@ -643,14 +648,9 @@
       }
     ],
     "mobileBehavior": "stack",
-    "pairsWell": [
-      "hero-modern-split-01",
-      "features-icon-grid-01",
-      "testimonial-carousel-01",
-      "footer-multi-column-01"
-    ],
+    "pairsWell": [],
     "pairsPoorly": [
-      "cta-editorial-split-01"
+      "cta-cta-editorial-split-01"
     ]
   },
   {
@@ -659,8 +659,7 @@
     "category": "cta",
     "purpose": [
       "cta",
-      "brand storytelling",
-      "editorial conversion"
+      "brand-statement"
     ],
     "acceptsStyleKit": {
       "card": false,
@@ -786,9 +785,9 @@
     "name": "CTA Image Backdrop",
     "category": "cta",
     "purpose": [
-      "Anchor a brand purpose, manifesto, or values statement over an evocative photograph",
-      "Convert with a single emotional pitch tied to a hero-scale image (lifestyle, product hero, place)",
-      "Punctuate a long page with a full-bleed editorial pause before the next section"
+      "cta",
+      "brand-statement",
+      "story"
     ],
     "acceptsStyleKit": {
       "card": false,
@@ -907,10 +906,7 @@
     ],
     "mobileBehavior": "stack",
     "pairsWell": [
-      "features-icon-grid-01",
-      "testimonial-carousel-01",
-      "faq-accordion-01",
-      "footer-multi-column-01"
+      "faq-accordion-01"
     ],
     "pairsPoorly": [
       "cta-cta-editorial-split-01",
@@ -932,11 +928,13 @@
     },
     "style": [
       "modern",
-      "minimal"
+      "minimal",
+      "corporate"
     ],
     "mood": [
       "professional",
-      "trustworthy"
+      "trustworthy",
+      "friendly"
     ],
     "layout": "centered",
     "density": "medium",
@@ -995,11 +993,13 @@
     },
     "style": [
       "minimal",
-      "editorial"
+      "editorial",
+      "corporate"
     ],
     "mood": [
       "calm",
-      "professional"
+      "professional",
+      "trustworthy"
     ],
     "layout": "centered",
     "density": "low",
@@ -1058,11 +1058,13 @@
     },
     "style": [
       "modern",
-      "bold"
+      "bold",
+      "editorial"
     ],
     "mood": [
       "professional",
-      "energetic"
+      "energetic",
+      "trustworthy"
     ],
     "layout": "split",
     "density": "medium",
@@ -1136,9 +1138,9 @@
     ]
   },
   {
-    "id": "footer-reveal-01",
-    "name": "Sticky Reveal Footer",
-    "category": "footers",
+    "id": "footer-pulse-01",
+    "name": "Pulse Editorial Footer",
+    "category": "footer",
     "purpose": [
       "footer"
     ],
@@ -1150,11 +1152,200 @@
     },
     "style": [
       "modern",
-      "editorial"
+      "editorial",
+      "minimal"
     ],
     "mood": [
       "professional",
-      "elegant"
+      "elegant",
+      "trustworthy"
+    ],
+    "layout": "multi-column",
+    "density": "medium",
+    "imageWeight": 0.05,
+    "slots": [
+      {
+        "name": "logo",
+        "type": "image",
+        "aspectRatio": "auto",
+        "optional": true
+      },
+      {
+        "name": "tagline",
+        "type": "text",
+        "maxLength": 120,
+        "optional": true
+      },
+      {
+        "name": "whatsappUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "whatsappText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "phoneUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "phoneText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "emailUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "emailText",
+        "type": "text",
+        "maxLength": 60
+      },
+      {
+        "name": "addressText",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "addressMapsUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "hoursText",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      },
+      {
+        "name": "navColumns",
+        "type": "list",
+        "maxItems": 4,
+        "itemSchema": {
+          "title": {
+            "type": "text",
+            "maxLength": 30
+          },
+          "links": {
+            "type": "list",
+            "maxItems": 6,
+            "itemSchema": {
+              "text": {
+                "type": "text",
+                "maxLength": 30
+              },
+              "href": {
+                "type": "url"
+              }
+            }
+          }
+        }
+      },
+      {
+        "name": "socialLinks",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "network": {
+            "type": "text",
+            "maxLength": 20,
+            "enum": [
+              "instagram",
+              "linkedin",
+              "facebook",
+              "whatsapp",
+              "twitter",
+              "youtube",
+              "tiktok",
+              "google",
+              "pinterest",
+              "telegram"
+            ]
+          },
+          "url": {
+            "type": "url"
+          },
+          "label": {
+            "type": "text",
+            "maxLength": 60
+          }
+        }
+      },
+      {
+        "name": "companyName",
+        "type": "text",
+        "maxLength": 60
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow"
+        ]
+      },
+      {
+        "name": "locationLabel",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "timezone",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "faq-accordion-01",
+      "navbar-pill-01"
+    ],
+    "pairsPoorly": []
+  },
+  {
+    "id": "footer-reveal-01",
+    "name": "Sticky Reveal Footer",
+    "category": "footer",
+    "purpose": [
+      "footer"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "editorial",
+      "minimal"
+    ],
+    "mood": [
+      "professional",
+      "elegant",
+      "trustworthy"
     ],
     "layout": "multi-column",
     "density": "medium",
@@ -1891,11 +2082,13 @@
     },
     "style": [
       "modern",
-      "bold"
+      "bold",
+      "editorial"
     ],
     "mood": [
       "energetic",
-      "professional"
+      "professional",
+      "friendly"
     ],
     "layout": "split",
     "density": "medium",
@@ -2016,11 +2209,13 @@
     },
     "style": [
       "modern",
-      "editorial"
+      "editorial",
+      "corporate"
     ],
     "mood": [
       "professional",
-      "elegant"
+      "elegant",
+      "trustworthy"
     ],
     "layout": "split",
     "density": "medium",
@@ -2997,7 +3192,7 @@
       "card": false,
       "background": false,
       "textDecoration": false,
-      "button": true
+      "button": false
     },
     "slots": [
       {
@@ -3029,28 +3224,8 @@
             },
             {
               "name": "content",
-              "type": "object",
-              "fields": [
-                {
-                  "name": "contentHeadline",
-                  "type": "text",
-                  "maxLength": 80
-                },
-                {
-                  "name": "contentDescription",
-                  "type": "text",
-                  "maxLength": 300
-                },
-                {
-                  "name": "ctaText",
-                  "type": "text",
-                  "maxLength": 30
-                },
-                {
-                  "name": "ctaUrl",
-                  "type": "url"
-                }
-              ]
+              "type": "component",
+              "description": "Below-fold content for this section. Composer nests another component here (e.g. ImageText, CardGrid, IconListSplit) — content is not a text/image slot."
             }
           ]
         }
@@ -3098,7 +3273,7 @@
       "card": false,
       "background": false,
       "textDecoration": false,
-      "button": true
+      "button": false
     },
     "slots": [
       {
@@ -3121,41 +3296,9 @@
           "type": "object",
           "fields": [
             {
-              "name": "icon",
-              "type": "text",
-              "maxLength": 10,
-              "optional": true
-            },
-            {
-              "name": "image",
-              "type": "image",
-              "aspectRatio": "4:3",
-              "optional": true
-            },
-            {
-              "name": "imageAlt",
-              "type": "text",
-              "maxLength": 120,
-              "optional": true
-            },
-            {
-              "name": "title",
-              "type": "text",
-              "maxLength": 60
-            },
-            {
-              "name": "description",
-              "type": "text",
-              "maxLength": 200
-            },
-            {
-              "name": "ctaText",
-              "type": "text",
-              "maxLength": 30
-            },
-            {
-              "name": "ctaUrl",
-              "type": "url"
+              "name": "content",
+              "type": "component",
+              "description": "Card body. Composer nests another component here (e.g. ImageText, CardGrid, IconListSplit) — content is not a text/image slot."
             }
           ]
         }
@@ -3176,6 +3319,85 @@
     ]
   },
   {
+    "id": "navbar-pill-01",
+    "name": "Pill Glass Navbar",
+    "category": "navigation",
+    "purpose": [
+      "navigation"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "minimal",
+      "editorial"
+    ],
+    "mood": [
+      "professional",
+      "elegant",
+      "trustworthy"
+    ],
+    "layout": "horizontal",
+    "density": "low",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "logo",
+        "type": "image",
+        "aspectRatio": "auto",
+        "optional": true
+      },
+      {
+        "name": "links",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "text": {
+            "type": "text",
+            "maxLength": 30
+          },
+          "href": {
+            "type": "url"
+          }
+        }
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 20,
+        "optional": true
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "arrow",
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow"
+        ]
+      }
+    ],
+    "mobileBehavior": "collapse",
+    "pairsWell": [
+      "footer-pulse-01",
+      "footer-reveal-01"
+    ],
+    "pairsPoorly": []
+  },
+  {
     "id": "navbar-sticky-01",
     "name": "Sticky Navbar",
     "category": "navigation",
@@ -3190,11 +3412,13 @@
     },
     "style": [
       "modern",
-      "minimal"
+      "minimal",
+      "corporate"
     ],
     "mood": [
       "professional",
-      "trustworthy"
+      "trustworthy",
+      "friendly"
     ],
     "layout": "horizontal",
     "density": "low",
@@ -3266,7 +3490,8 @@
     ],
     "mood": [
       "professional",
-      "trustworthy"
+      "trustworthy",
+      "serious"
     ],
     "layout": "horizontal",
     "density": "low",
@@ -3335,11 +3560,13 @@
     "category": "testimonial",
     "style": [
       "modern",
-      "bold"
+      "bold",
+      "editorial"
     ],
     "mood": [
       "energetic",
-      "trustworthy"
+      "trustworthy",
+      "professional"
     ],
     "layout": "stacked",
     "density": "high",
@@ -3422,11 +3649,13 @@
     "category": "testimonial",
     "style": [
       "modern",
-      "editorial"
+      "editorial",
+      "corporate"
     ],
     "mood": [
       "professional",
-      "elegant"
+      "elegant",
+      "trustworthy"
     ],
     "layout": "split",
     "density": "medium",
@@ -3510,11 +3739,13 @@
     "category": "testimonial",
     "style": [
       "bold",
-      "playful"
+      "playful",
+      "modern"
     ],
     "mood": [
       "energetic",
-      "fun"
+      "fun",
+      "friendly"
     ],
     "layout": "centered",
     "density": "medium",
