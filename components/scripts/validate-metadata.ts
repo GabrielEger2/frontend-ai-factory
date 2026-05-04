@@ -428,15 +428,15 @@ function main(): void {
  * Vitest suite imports the canonical constants from this module, we must
  * NOT execute the CLI side-effects (which would call process.exit(1) on
  * any failure and crash the test runner).
+ *
+ * The check compares the basename of process.argv[1] against this file's
+ * basename — works under both CommonJS (`__filename` available) and ESM
+ * (where `__filename` is undefined under ts-node).
  */
 const INVOKED_AS_SCRIPT = (() => {
   const entry = process.argv[1];
   if (!entry) return false;
-  try {
-    return path.resolve(entry) === path.resolve(__filename);
-  } catch {
-    return false;
-  }
+  return path.basename(entry).startsWith("validate-metadata");
 })();
 
 if (INVOKED_AS_SCRIPT) {
