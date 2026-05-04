@@ -423,4 +423,22 @@ function main(): void {
   console.log("[validate-metadata] all metadata.json files pass.");
 }
 
-main();
+/**
+ * Only run main() when this file is invoked as the entry point. When the
+ * Vitest suite imports the canonical constants from this module, we must
+ * NOT execute the CLI side-effects (which would call process.exit(1) on
+ * any failure and crash the test runner).
+ */
+const INVOKED_AS_SCRIPT = (() => {
+  const entry = process.argv[1];
+  if (!entry) return false;
+  try {
+    return path.resolve(entry) === path.resolve(__filename);
+  } catch {
+    return false;
+  }
+})();
+
+if (INVOKED_AS_SCRIPT) {
+  main();
+}
