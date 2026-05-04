@@ -2,7 +2,7 @@
   "id": "cta-cta-editorial-split-01",
   "name": "Editorial Split CTA",
   "category": "cta",
-  "purpose": ["cta", "brand storytelling", "editorial conversion"],
+  "purpose": ["cta", "brand-statement"],
   "acceptsStyleKit": {
     "card": false,
     "background": true,

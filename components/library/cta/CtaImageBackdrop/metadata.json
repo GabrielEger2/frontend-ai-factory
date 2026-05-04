@@ -2,11 +2,7 @@
   "id": "cta-image-backdrop-01",
   "name": "CTA Image Backdrop",
   "category": "cta",
-  "purpose": [
-    "Anchor a brand purpose, manifesto, or values statement over an evocative photograph",
-    "Convert with a single emotional pitch tied to a hero-scale image (lifestyle, product hero, place)",
-    "Punctuate a long page with a full-bleed editorial pause before the next section"
-  ],
+  "purpose": ["cta", "brand-statement", "story"],
   "acceptsStyleKit": {
     "card": false,
     "background": true,
@@ -101,11 +97,6 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "features-icon-grid-01",
-    "testimonial-carousel-01",
-    "faq-accordion-01",
-    "footer-multi-column-01"
-  ],
+  "pairsWell": ["faq-accordion-01"],
   "pairsPoorly": ["cta-cta-editorial-split-01", "cta-cta-collage-duo-01"]
 }
