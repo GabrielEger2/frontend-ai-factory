@@ -95,7 +95,7 @@ const FLOW_ORDER: string[] = [
   "faq",
   "stats",
   "contact",
-  "footers",
+  "footer",
 ];
 
 /**

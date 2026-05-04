@@ -9,7 +9,7 @@
     "textDecoration": true,
     "button": true
   },
-  "style": ["modern", "editorial"],
+  "style": ["modern", "editorial", "corporate"],
   "mood": ["professional", "friendly", "trustworthy"],
   "layout": "split",
   "density": "medium",
@@ -101,6 +101,6 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["faq-accordion-01", "footer-reveal-01", "stats-countup-01"],
+  "pairsWell": ["faq-accordion-01", "footer-reveal-01", "stats-count-up-01"],
   "pairsPoorly": []
 }

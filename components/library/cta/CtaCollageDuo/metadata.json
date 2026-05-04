@@ -2,11 +2,7 @@
   "id": "cta-cta-collage-duo-01",
   "name": "CTA Collage Duo",
   "category": "cta",
-  "purpose": [
-    "Promote a club, program, or community offering with paired lifestyle imagery",
-    "Anchor an editorial about-style section with a bold uppercase headline and supporting copy",
-    "Drive enrollment, signup, or membership intent with a confident image-led pitch"
-  ],
+  "purpose": ["cta", "brand-statement", "lead-capture"],
   "acceptsStyleKit": {
     "card": false,
     "background": true,
@@ -106,11 +102,6 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "hero-modern-split-01",
-    "features-icon-grid-01",
-    "testimonial-carousel-01",
-    "footer-multi-column-01"
-  ],
-  "pairsPoorly": ["cta-editorial-split-01"]
+  "pairsWell": [],
+  "pairsPoorly": ["cta-cta-editorial-split-01"]
 }

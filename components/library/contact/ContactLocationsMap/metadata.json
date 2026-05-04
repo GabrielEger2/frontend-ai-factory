@@ -2,11 +2,7 @@
   "id": "contact-contact-locations-map-01",
   "name": "Contact Locations with Map",
   "category": "contact",
-  "purpose": [
-    "showcase multiple office or store locations",
-    "provide contact details per city",
-    "visually anchor locations on a shared map"
-  ],
+  "purpose": ["contact", "location-display"],
   "acceptsStyleKit": {
     "card": false,
     "background": true,

@@ -9,8 +9,8 @@
     "textDecoration": false,
     "button": false
   },
-  "style": ["modern", "minimal"],
-  "mood": ["professional", "calm"],
+  "style": ["modern", "minimal", "editorial"],
+  "mood": ["professional", "calm", "friendly"],
   "layout": "centered",
   "density": "low",
   "imageWeight": 0.0,

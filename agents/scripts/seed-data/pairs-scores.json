@@ -1,62 +1,67 @@
 {
-  "generatedAt": "2026-04-26T18:00:12.550Z",
-  "componentCount": 31,
-  "pairCount": 465,
+  "generatedAt": "2026-05-04T23:33:39.954Z",
+  "componentCount": 33,
+  "pairCount": 528,
   "pairs": [
     {
       "a": "carousel-cards-01",
       "b": "carousel-horizontal-scroll-01",
-      "score": 0.22
+      "score": 0.33
     },
     {
       "a": "carousel-cards-01",
       "b": "carousel-swipe-01",
-      "score": 0.43
+      "score": 0.48
     },
     {
       "a": "carousel-cards-01",
       "b": "contact-contact-locations-map-01",
+      "score": 0.54
+    },
+    {
+      "a": "carousel-cards-01",
+      "b": "contact-contact-shapes-form-01",
+      "score": 0.59
+    },
+    {
+      "a": "carousel-cards-01",
+      "b": "cta-cta-collage-duo-01",
+      "score": 0.41
+    },
+    {
+      "a": "carousel-cards-01",
+      "b": "cta-cta-editorial-split-01",
+      "score": 0.38
+    },
+    {
+      "a": "carousel-cards-01",
+      "b": "cta-image-backdrop-01",
+      "score": 0.34
+    },
+    {
+      "a": "carousel-cards-01",
+      "b": "faq-accordion-01",
+      "score": 0.7
+    },
+    {
+      "a": "carousel-cards-01",
+      "b": "faq-minimal-01",
+      "score": 0.69
+    },
+    {
+      "a": "carousel-cards-01",
+      "b": "faq-solutions-01",
+      "score": 0.65
+    },
+    {
+      "a": "carousel-cards-01",
+      "b": "footer-pulse-01",
       "score": 0.49
     },
     {
       "a": "carousel-cards-01",
-      "b": "contact-contact-shapes-form-01",
-      "score": 0.47
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "cta-cta-collage-duo-01",
-      "score": 0.31
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "cta-cta-editorial-split-01",
-      "score": 0.33
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "cta-image-backdrop-01",
-      "score": 0.29
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "faq-accordion-01",
-      "score": 0.68
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "faq-minimal-01",
-      "score": 0.57
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "faq-solutions-01",
-      "score": 0.6
-    },
-    {
-      "a": "carousel-cards-01",
       "b": "footer-reveal-01",
-      "score": 0.44
+      "score": 0.49
     },
     {
       "a": "carousel-cards-01",
@@ -66,37 +71,37 @@
     {
       "a": "carousel-cards-01",
       "b": "hero-hero-bold-editorial-01",
-      "score": 0.3
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "hero-parallax-images-01",
       "score": 0.35
     },
     {
       "a": "carousel-cards-01",
-      "b": "hero-shuffle-cards-01",
-      "score": 0.36
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "hero-split-image-01",
-      "score": 0.36
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "layout-authorsplit-01",
-      "score": 0.51
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "layout-cardgrid-01",
+      "b": "hero-parallax-images-01",
       "score": 0.4
     },
     {
       "a": "carousel-cards-01",
+      "b": "hero-shuffle-cards-01",
+      "score": 0.41
+    },
+    {
+      "a": "carousel-cards-01",
+      "b": "hero-split-image-01",
+      "score": 0.46
+    },
+    {
+      "a": "carousel-cards-01",
+      "b": "layout-authorsplit-01",
+      "score": 0.61
+    },
+    {
+      "a": "carousel-cards-01",
+      "b": "layout-cardgrid-01",
+      "score": 0.44
+    },
+    {
+      "a": "carousel-cards-01",
       "b": "layout-editorial-framed-split-01",
-      "score": 0.47
+      "score": 0.52
     },
     {
       "a": "carousel-cards-01",
@@ -106,17 +111,17 @@
     {
       "a": "carousel-cards-01",
       "b": "layout-imagetext-01",
-      "score": 0.57
+      "score": 0.67
     },
     {
       "a": "carousel-cards-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.34
+      "score": 0.39
     },
     {
       "a": "carousel-cards-01",
       "b": "layout-parallaxcontent-01",
-      "score": 0.53
+      "score": 0.58
     },
     {
       "a": "carousel-cards-01",
@@ -126,47 +131,52 @@
     {
       "a": "carousel-cards-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.36
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "layout-staggerfan-01",
-      "score": 0.21
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "layout-statementsplit-01",
       "score": 0.46
     },
     {
       "a": "carousel-cards-01",
+      "b": "layout-staggerfan-01",
+      "score": 0.31
+    },
+    {
+      "a": "carousel-cards-01",
+      "b": "layout-statementsplit-01",
+      "score": 0.51
+    },
+    {
+      "a": "carousel-cards-01",
       "b": "layout-stickycards-01",
-      "score": 0.58
+      "score": 0.63
+    },
+    {
+      "a": "carousel-cards-01",
+      "b": "navbar-pill-01",
+      "score": 0.45
     },
     {
       "a": "carousel-cards-01",
       "b": "navbar-sticky-01",
-      "score": 0.48
+      "score": 0.5
     },
     {
       "a": "carousel-cards-01",
       "b": "stats-count-up-01",
-      "score": 0.66
+      "score": 0.61
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "carousel-swipe-01",
-      "score": 0.33
+      "score": 0.43
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "contact-contact-locations-map-01",
-      "score": 0.44
+      "score": 0.49
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "contact-contact-shapes-form-01",
-      "score": 0.39
+      "score": 0.44
     },
     {
       "a": "carousel-horizontal-scroll-01",
@@ -186,27 +196,32 @@
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "faq-accordion-01",
-      "score": 0.5
+      "score": 0.55
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "faq-minimal-01",
-      "score": 0.54
+      "score": 0.59
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "faq-solutions-01",
-      "score": 0.63
+      "score": 0.7
+    },
+    {
+      "a": "carousel-horizontal-scroll-01",
+      "b": "footer-pulse-01",
+      "score": 0.49
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "footer-reveal-01",
-      "score": 0.48
+      "score": 0.51
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "hero-geometric-01",
-      "score": 0.26
+      "score": 0.31
     },
     {
       "a": "carousel-horizontal-scroll-01",
@@ -216,172 +231,182 @@
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "hero-parallax-images-01",
-      "score": 0.5
+      "score": 0.55
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "hero-shuffle-cards-01",
-      "score": 0.39
+      "score": 0.46
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "hero-split-image-01",
-      "score": 0.39
+      "score": 0.41
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "layout-authorsplit-01",
-      "score": 0.56
+      "score": 0.61
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "layout-cardgrid-01",
-      "score": 0.36
+      "score": 0.4
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "layout-editorial-framed-split-01",
-      "score": 0.47
+      "score": 0.52
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "layout-iconlistsplit-01",
-      "score": 0.42
-    },
-    {
-      "a": "carousel-horizontal-scroll-01",
-      "b": "layout-imagetext-01",
       "score": 0.47
     },
     {
       "a": "carousel-horizontal-scroll-01",
+      "b": "layout-imagetext-01",
+      "score": 0.52
+    },
+    {
+      "a": "carousel-horizontal-scroll-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.37
+      "score": 0.44
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "layout-parallaxcontent-01",
-      "score": 0.68
+      "score": 0.73
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "layout-simplegrid-01",
-      "score": 0.26
+      "score": 0.31
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.39
+      "score": 0.41
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "layout-staggerfan-01",
-      "score": 0.34
+      "score": 0.36
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "layout-statementsplit-01",
-      "score": 0.51
+      "score": 0.56
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "layout-stickycards-01",
-      "score": 0.63
+      "score": 0.68
+    },
+    {
+      "a": "carousel-horizontal-scroll-01",
+      "b": "navbar-pill-01",
+      "score": 0.45
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "navbar-sticky-01",
-      "score": 0.3
+      "score": 0.35
     },
     {
       "a": "carousel-horizontal-scroll-01",
       "b": "stats-count-up-01",
-      "score": 0.46
+      "score": 0.51
     },
     {
       "a": "carousel-swipe-01",
       "b": "contact-contact-locations-map-01",
-      "score": 0.43
+      "score": 0.48
     },
     {
       "a": "carousel-swipe-01",
       "b": "contact-contact-shapes-form-01",
-      "score": 0.46
+      "score": 0.53
     },
     {
       "a": "carousel-swipe-01",
       "b": "cta-cta-collage-duo-01",
-      "score": 0.3
+      "score": 0.4
     },
     {
       "a": "carousel-swipe-01",
       "b": "cta-cta-editorial-split-01",
-      "score": 0.3
+      "score": 0.35
     },
     {
       "a": "carousel-swipe-01",
       "b": "cta-image-backdrop-01",
-      "score": 0.31
+      "score": 0.36
     },
     {
       "a": "carousel-swipe-01",
       "b": "faq-accordion-01",
-      "score": 0.66
+      "score": 0.63
     },
     {
       "a": "carousel-swipe-01",
       "b": "faq-minimal-01",
+      "score": 0.59
+    },
+    {
+      "a": "carousel-swipe-01",
+      "b": "faq-solutions-01",
+      "score": 0.64
+    },
+    {
+      "a": "carousel-swipe-01",
+      "b": "footer-pulse-01",
+      "score": 0.53
+    },
+    {
+      "a": "carousel-swipe-01",
+      "b": "footer-reveal-01",
+      "score": 0.53
+    },
+    {
+      "a": "carousel-swipe-01",
+      "b": "hero-geometric-01",
+      "score": 0.45
+    },
+    {
+      "a": "carousel-swipe-01",
+      "b": "hero-hero-bold-editorial-01",
+      "score": 0.26
+    },
+    {
+      "a": "carousel-swipe-01",
+      "b": "hero-parallax-images-01",
+      "score": 0.34
+    },
+    {
+      "a": "carousel-swipe-01",
+      "b": "hero-shuffle-cards-01",
+      "score": 0.45
+    },
+    {
+      "a": "carousel-swipe-01",
+      "b": "hero-split-image-01",
+      "score": 0.4
+    },
+    {
+      "a": "carousel-swipe-01",
+      "b": "layout-authorsplit-01",
       "score": 0.62
     },
     {
       "a": "carousel-swipe-01",
-      "b": "faq-solutions-01",
-      "score": 0.64
-    },
-    {
-      "a": "carousel-swipe-01",
-      "b": "footer-reveal-01",
-      "score": 0.48
-    },
-    {
-      "a": "carousel-swipe-01",
-      "b": "hero-geometric-01",
-      "score": 0.45
-    },
-    {
-      "a": "carousel-swipe-01",
-      "b": "hero-hero-bold-editorial-01",
-      "score": 0.21
-    },
-    {
-      "a": "carousel-swipe-01",
-      "b": "hero-parallax-images-01",
-      "score": 0.29
-    },
-    {
-      "a": "carousel-swipe-01",
-      "b": "hero-shuffle-cards-01",
-      "score": 0.4
-    },
-    {
-      "a": "carousel-swipe-01",
-      "b": "hero-split-image-01",
-      "score": 0.4
-    },
-    {
-      "a": "carousel-swipe-01",
-      "b": "layout-authorsplit-01",
-      "score": 0.52
-    },
-    {
-      "a": "carousel-swipe-01",
       "b": "layout-cardgrid-01",
-      "score": 0.33
+      "score": 0.36
     },
     {
       "a": "carousel-swipe-01",
       "b": "layout-editorial-framed-split-01",
-      "score": 0.51
+      "score": 0.56
     },
     {
       "a": "carousel-swipe-01",
@@ -391,17 +416,17 @@
     {
       "a": "carousel-swipe-01",
       "b": "layout-imagetext-01",
-      "score": 0.51
+      "score": 0.61
     },
     {
       "a": "carousel-swipe-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.33
+      "score": 0.4
     },
     {
       "a": "carousel-swipe-01",
       "b": "layout-parallaxcontent-01",
-      "score": 0.55
+      "score": 0.6
     },
     {
       "a": "carousel-swipe-01",
@@ -416,32 +441,37 @@
     {
       "a": "carousel-swipe-01",
       "b": "layout-staggerfan-01",
-      "score": 0.19
+      "score": 0.29
     },
     {
       "a": "carousel-swipe-01",
       "b": "layout-statementsplit-01",
-      "score": 0.52
+      "score": 0.57
     },
     {
       "a": "carousel-swipe-01",
       "b": "layout-stickycards-01",
-      "score": 0.55
+      "score": 0.6
+    },
+    {
+      "a": "carousel-swipe-01",
+      "b": "navbar-pill-01",
+      "score": 0.41
     },
     {
       "a": "carousel-swipe-01",
       "b": "navbar-sticky-01",
-      "score": 0.44
+      "score": 0.41
     },
     {
       "a": "carousel-swipe-01",
       "b": "stats-count-up-01",
-      "score": 0.54
+      "score": 0.52
     },
     {
       "a": "contact-contact-locations-map-01",
       "b": "contact-contact-shapes-form-01",
-      "score": 0.45
+      "score": 0.5
     },
     {
       "a": "contact-contact-locations-map-01",
@@ -461,22 +491,27 @@
     {
       "a": "contact-contact-locations-map-01",
       "b": "faq-accordion-01",
-      "score": 0.52
+      "score": 0.57
     },
     {
       "a": "contact-contact-locations-map-01",
       "b": "faq-minimal-01",
-      "score": 0.53
+      "score": 0.63
     },
     {
       "a": "contact-contact-locations-map-01",
       "b": "faq-solutions-01",
-      "score": 0.47
+      "score": 0.57
+    },
+    {
+      "a": "contact-contact-locations-map-01",
+      "b": "footer-pulse-01",
+      "score": 0.7
     },
     {
       "a": "contact-contact-locations-map-01",
       "b": "footer-reveal-01",
-      "score": 0.67
+      "score": 0.72
     },
     {
       "a": "contact-contact-locations-map-01",
@@ -496,12 +531,12 @@
     {
       "a": "contact-contact-locations-map-01",
       "b": "hero-shuffle-cards-01",
-      "score": 0.31
+      "score": 0.36
     },
     {
       "a": "contact-contact-locations-map-01",
       "b": "hero-split-image-01",
-      "score": 0.41
+      "score": 0.51
     },
     {
       "a": "contact-contact-locations-map-01",
@@ -531,7 +566,7 @@
     {
       "a": "contact-contact-locations-map-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.35
+      "score": 0.45
     },
     {
       "a": "contact-contact-locations-map-01",
@@ -546,12 +581,12 @@
     {
       "a": "contact-contact-locations-map-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.41
+      "score": 0.51
     },
     {
       "a": "contact-contact-locations-map-01",
       "b": "layout-staggerfan-01",
-      "score": 0.21
+      "score": 0.26
     },
     {
       "a": "contact-contact-locations-map-01",
@@ -565,8 +600,13 @@
     },
     {
       "a": "contact-contact-locations-map-01",
+      "b": "navbar-pill-01",
+      "score": 0.5
+    },
+    {
+      "a": "contact-contact-locations-map-01",
       "b": "navbar-sticky-01",
-      "score": 0.42
+      "score": 0.47
     },
     {
       "a": "contact-contact-locations-map-01",
@@ -591,17 +631,22 @@
     {
       "a": "contact-contact-shapes-form-01",
       "b": "faq-accordion-01",
-      "score": 0.56
+      "score": 0.64
     },
     {
       "a": "contact-contact-shapes-form-01",
       "b": "faq-minimal-01",
-      "score": 0.54
+      "score": 0.61
     },
     {
       "a": "contact-contact-shapes-form-01",
       "b": "faq-solutions-01",
-      "score": 0.44
+      "score": 0.51
+    },
+    {
+      "a": "contact-contact-shapes-form-01",
+      "b": "footer-pulse-01",
+      "score": 0.65
     },
     {
       "a": "contact-contact-shapes-form-01",
@@ -611,7 +656,7 @@
     {
       "a": "contact-contact-shapes-form-01",
       "b": "hero-geometric-01",
-      "score": 0.3
+      "score": 0.35
     },
     {
       "a": "contact-contact-shapes-form-01",
@@ -626,12 +671,12 @@
     {
       "a": "contact-contact-shapes-form-01",
       "b": "hero-shuffle-cards-01",
-      "score": 0.28
+      "score": 0.35
     },
     {
       "a": "contact-contact-shapes-form-01",
       "b": "hero-split-image-01",
-      "score": 0.35
+      "score": 0.4
     },
     {
       "a": "contact-contact-shapes-form-01",
@@ -641,7 +686,7 @@
     {
       "a": "contact-contact-shapes-form-01",
       "b": "layout-cardgrid-01",
-      "score": 0.4
+      "score": 0.44
     },
     {
       "a": "contact-contact-shapes-form-01",
@@ -651,17 +696,17 @@
     {
       "a": "contact-contact-shapes-form-01",
       "b": "layout-iconlistsplit-01",
-      "score": 0.3
+      "score": 0.35
     },
     {
       "a": "contact-contact-shapes-form-01",
       "b": "layout-imagetext-01",
-      "score": 0.4
+      "score": 0.45
     },
     {
       "a": "contact-contact-shapes-form-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.38
+      "score": 0.45
     },
     {
       "a": "contact-contact-shapes-form-01",
@@ -671,17 +716,17 @@
     {
       "a": "contact-contact-shapes-form-01",
       "b": "layout-simplegrid-01",
-      "score": 0.36
+      "score": 0.41
     },
     {
       "a": "contact-contact-shapes-form-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.35
+      "score": 0.4
     },
     {
       "a": "contact-contact-shapes-form-01",
       "b": "layout-staggerfan-01",
-      "score": 0.21
+      "score": 0.31
     },
     {
       "a": "contact-contact-shapes-form-01",
@@ -695,18 +740,23 @@
     },
     {
       "a": "contact-contact-shapes-form-01",
+      "b": "navbar-pill-01",
+      "score": 0.45
+    },
+    {
+      "a": "contact-contact-shapes-form-01",
       "b": "navbar-sticky-01",
-      "score": 0.43
+      "score": 0.5
     },
     {
       "a": "contact-contact-shapes-form-01",
       "b": "stats-count-up-01",
-      "score": 0.64
+      "score": 0.71
     },
     {
       "a": "cta-cta-collage-duo-01",
       "b": "cta-cta-editorial-split-01",
-      "score": 0.44
+      "score": 0.43
     },
     {
       "a": "cta-cta-collage-duo-01",
@@ -716,22 +766,27 @@
     {
       "a": "cta-cta-collage-duo-01",
       "b": "faq-accordion-01",
-      "score": 0.39
+      "score": 0.44
     },
     {
       "a": "cta-cta-collage-duo-01",
       "b": "faq-minimal-01",
-      "score": 0.38
+      "score": 0.43
     },
     {
       "a": "cta-cta-collage-duo-01",
       "b": "faq-solutions-01",
+      "score": 0.54
+    },
+    {
+      "a": "cta-cta-collage-duo-01",
+      "b": "footer-pulse-01",
       "score": 0.44
     },
     {
       "a": "cta-cta-collage-duo-01",
       "b": "footer-reveal-01",
-      "score": 0.39
+      "score": 0.44
     },
     {
       "a": "cta-cta-collage-duo-01",
@@ -751,12 +806,12 @@
     {
       "a": "cta-cta-collage-duo-01",
       "b": "hero-shuffle-cards-01",
-      "score": 0.52
+      "score": 0.62
     },
     {
       "a": "cta-cta-collage-duo-01",
       "b": "hero-split-image-01",
-      "score": 0.47
+      "score": 0.52
     },
     {
       "a": "cta-cta-collage-duo-01",
@@ -786,7 +841,7 @@
     {
       "a": "cta-cta-collage-duo-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.69
+      "score": 0.74
     },
     {
       "a": "cta-cta-collage-duo-01",
@@ -801,12 +856,12 @@
     {
       "a": "cta-cta-collage-duo-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.55
+      "score": 0.6
     },
     {
       "a": "cta-cta-collage-duo-01",
       "b": "layout-staggerfan-01",
-      "score": 0.55
+      "score": 0.65
     },
     {
       "a": "cta-cta-collage-duo-01",
@@ -820,8 +875,13 @@
     },
     {
       "a": "cta-cta-collage-duo-01",
+      "b": "navbar-pill-01",
+      "score": 0.64
+    },
+    {
+      "a": "cta-cta-collage-duo-01",
       "b": "navbar-sticky-01",
-      "score": 0.59
+      "score": 0.64
     },
     {
       "a": "cta-cta-collage-duo-01",
@@ -841,17 +901,22 @@
     {
       "a": "cta-cta-editorial-split-01",
       "b": "faq-minimal-01",
-      "score": 0.38
+      "score": 0.43
     },
     {
       "a": "cta-cta-editorial-split-01",
       "b": "faq-solutions-01",
+      "score": 0.54
+    },
+    {
+      "a": "cta-cta-editorial-split-01",
+      "b": "footer-pulse-01",
       "score": 0.44
     },
     {
       "a": "cta-cta-editorial-split-01",
       "b": "footer-reveal-01",
-      "score": 0.41
+      "score": 0.46
     },
     {
       "a": "cta-cta-editorial-split-01",
@@ -871,12 +936,12 @@
     {
       "a": "cta-cta-editorial-split-01",
       "b": "hero-shuffle-cards-01",
-      "score": 0.52
+      "score": 0.57
     },
     {
       "a": "cta-cta-editorial-split-01",
       "b": "hero-split-image-01",
-      "score": 0.47
+      "score": 0.52
     },
     {
       "a": "cta-cta-editorial-split-01",
@@ -906,7 +971,7 @@
     {
       "a": "cta-cta-editorial-split-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.69
+      "score": 0.74
     },
     {
       "a": "cta-cta-editorial-split-01",
@@ -921,12 +986,12 @@
     {
       "a": "cta-cta-editorial-split-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.55
+      "score": 0.6
     },
     {
       "a": "cta-cta-editorial-split-01",
       "b": "layout-staggerfan-01",
-      "score": 0.55
+      "score": 0.6
     },
     {
       "a": "cta-cta-editorial-split-01",
@@ -940,13 +1005,18 @@
     },
     {
       "a": "cta-cta-editorial-split-01",
+      "b": "navbar-pill-01",
+      "score": 0.64
+    },
+    {
+      "a": "cta-cta-editorial-split-01",
       "b": "navbar-sticky-01",
       "score": 0.59
     },
     {
       "a": "cta-cta-editorial-split-01",
       "b": "stats-count-up-01",
-      "score": 0.43
+      "score": 0.48
     },
     {
       "a": "cta-image-backdrop-01",
@@ -956,17 +1026,22 @@
     {
       "a": "cta-image-backdrop-01",
       "b": "faq-minimal-01",
-      "score": 0.39
+      "score": 0.44
     },
     {
       "a": "cta-image-backdrop-01",
       "b": "faq-solutions-01",
-      "score": 0.38
+      "score": 0.48
+    },
+    {
+      "a": "cta-image-backdrop-01",
+      "b": "footer-pulse-01",
+      "score": 0.53
     },
     {
       "a": "cta-image-backdrop-01",
       "b": "footer-reveal-01",
-      "score": 0.48
+      "score": 0.53
     },
     {
       "a": "cta-image-backdrop-01",
@@ -986,12 +1061,12 @@
     {
       "a": "cta-image-backdrop-01",
       "b": "hero-shuffle-cards-01",
-      "score": 0.46
+      "score": 0.51
     },
     {
       "a": "cta-image-backdrop-01",
       "b": "hero-split-image-01",
-      "score": 0.56
+      "score": 0.61
     },
     {
       "a": "cta-image-backdrop-01",
@@ -1021,7 +1096,7 @@
     {
       "a": "cta-image-backdrop-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.53
+      "score": 0.58
     },
     {
       "a": "cta-image-backdrop-01",
@@ -1036,12 +1111,12 @@
     {
       "a": "cta-image-backdrop-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.64
+      "score": 0.69
     },
     {
       "a": "cta-image-backdrop-01",
       "b": "layout-staggerfan-01",
-      "score": 0.49
+      "score": 0.54
     },
     {
       "a": "cta-image-backdrop-01",
@@ -1052,6 +1127,11 @@
       "a": "cta-image-backdrop-01",
       "b": "layout-stickycards-01",
       "score": 0.38
+    },
+    {
+      "a": "cta-image-backdrop-01",
+      "b": "navbar-pill-01",
+      "score": 0.65
     },
     {
       "a": "cta-image-backdrop-01",
@@ -1066,7 +1146,7 @@
     {
       "a": "faq-accordion-01",
       "b": "faq-minimal-01",
-      "score": 0.37
+      "score": 0.41
     },
     {
       "a": "faq-accordion-01",
@@ -1075,13 +1155,18 @@
     },
     {
       "a": "faq-accordion-01",
+      "b": "footer-pulse-01",
+      "score": 0.51
+    },
+    {
+      "a": "faq-accordion-01",
       "b": "footer-reveal-01",
-      "score": 0.46
+      "score": 0.51
     },
     {
       "a": "faq-accordion-01",
       "b": "hero-geometric-01",
-      "score": 0.41
+      "score": 0.46
     },
     {
       "a": "faq-accordion-01",
@@ -1101,17 +1186,17 @@
     {
       "a": "faq-accordion-01",
       "b": "hero-split-image-01",
-      "score": 0.36
+      "score": 0.41
     },
     {
       "a": "faq-accordion-01",
       "b": "layout-authorsplit-01",
-      "score": 0.4
+      "score": 0.45
     },
     {
       "a": "faq-accordion-01",
       "b": "layout-cardgrid-01",
-      "score": 0.36
+      "score": 0.44
     },
     {
       "a": "faq-accordion-01",
@@ -1121,12 +1206,12 @@
     {
       "a": "faq-accordion-01",
       "b": "layout-iconlistsplit-01",
-      "score": 0.41
+      "score": 0.46
     },
     {
       "a": "faq-accordion-01",
       "b": "layout-imagetext-01",
-      "score": 0.36
+      "score": 0.46
     },
     {
       "a": "faq-accordion-01",
@@ -1141,17 +1226,17 @@
     {
       "a": "faq-accordion-01",
       "b": "layout-simplegrid-01",
-      "score": 0.41
+      "score": 0.46
     },
     {
       "a": "faq-accordion-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.36
+      "score": 0.41
     },
     {
       "a": "faq-accordion-01",
       "b": "layout-staggerfan-01",
-      "score": 0.15
+      "score": 0.25
     },
     {
       "a": "faq-accordion-01",
@@ -1162,6 +1247,11 @@
       "a": "faq-accordion-01",
       "b": "layout-stickycards-01",
       "score": 0.56
+    },
+    {
+      "a": "faq-accordion-01",
+      "b": "navbar-pill-01",
+      "score": 0.45
     },
     {
       "a": "faq-accordion-01",
@@ -1176,22 +1266,27 @@
     {
       "a": "faq-minimal-01",
       "b": "faq-solutions-01",
-      "score": 0.35
+      "score": 0.43
+    },
+    {
+      "a": "faq-minimal-01",
+      "b": "footer-pulse-01",
+      "score": 0.53
     },
     {
       "a": "faq-minimal-01",
       "b": "footer-reveal-01",
-      "score": 0.48
+      "score": 0.53
     },
     {
       "a": "faq-minimal-01",
       "b": "hero-geometric-01",
-      "score": 0.4
+      "score": 0.5
     },
     {
       "a": "faq-minimal-01",
       "b": "hero-hero-bold-editorial-01",
-      "score": 0.26
+      "score": 0.31
     },
     {
       "a": "faq-minimal-01",
@@ -1201,12 +1296,12 @@
     {
       "a": "faq-minimal-01",
       "b": "hero-shuffle-cards-01",
-      "score": 0.33
+      "score": 0.35
     },
     {
       "a": "faq-minimal-01",
       "b": "hero-split-image-01",
-      "score": 0.4
+      "score": 0.45
     },
     {
       "a": "faq-minimal-01",
@@ -1216,27 +1311,27 @@
     {
       "a": "faq-minimal-01",
       "b": "layout-cardgrid-01",
-      "score": 0.29
+      "score": 0.36
     },
     {
       "a": "faq-minimal-01",
       "b": "layout-editorial-framed-split-01",
-      "score": 0.4
+      "score": 0.45
     },
     {
       "a": "faq-minimal-01",
       "b": "layout-iconlistsplit-01",
-      "score": 0.4
+      "score": 0.5
     },
     {
       "a": "faq-minimal-01",
       "b": "layout-imagetext-01",
-      "score": 0.35
+      "score": 0.45
     },
     {
       "a": "faq-minimal-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.25
+      "score": 0.4
     },
     {
       "a": "faq-minimal-01",
@@ -1246,12 +1341,12 @@
     {
       "a": "faq-minimal-01",
       "b": "layout-simplegrid-01",
-      "score": 0.4
+      "score": 0.5
     },
     {
       "a": "faq-minimal-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.4
+      "score": 0.45
     },
     {
       "a": "faq-minimal-01",
@@ -1266,92 +1361,102 @@
     {
       "a": "faq-minimal-01",
       "b": "layout-stickycards-01",
-      "score": 0.47
+      "score": 0.52
+    },
+    {
+      "a": "faq-minimal-01",
+      "b": "navbar-pill-01",
+      "score": 0.41
     },
     {
       "a": "faq-minimal-01",
       "b": "navbar-sticky-01",
-      "score": 0.36
+      "score": 0.41
     },
     {
       "a": "faq-minimal-01",
       "b": "stats-count-up-01",
-      "score": 0.58
+      "score": 0.65
+    },
+    {
+      "a": "faq-solutions-01",
+      "b": "footer-pulse-01",
+      "score": 0.49
     },
     {
       "a": "faq-solutions-01",
       "b": "footer-reveal-01",
-      "score": 0.44
+      "score": 0.49
     },
     {
       "a": "faq-solutions-01",
       "b": "hero-geometric-01",
-      "score": 0.25
+      "score": 0.3
     },
     {
       "a": "faq-solutions-01",
       "b": "hero-hero-bold-editorial-01",
-      "score": 0.3
-    },
-    {
-      "a": "faq-solutions-01",
-      "b": "hero-parallax-images-01",
-      "score": 0.45
-    },
-    {
-      "a": "faq-solutions-01",
-      "b": "hero-shuffle-cards-01",
-      "score": 0.45
-    },
-    {
-      "a": "faq-solutions-01",
-      "b": "hero-split-image-01",
-      "score": 0.3
-    },
-    {
-      "a": "faq-solutions-01",
-      "b": "layout-authorsplit-01",
-      "score": 0.29
-    },
-    {
-      "a": "faq-solutions-01",
-      "b": "layout-cardgrid-01",
       "score": 0.4
     },
     {
       "a": "faq-solutions-01",
+      "b": "hero-parallax-images-01",
+      "score": 0.5
+    },
+    {
+      "a": "faq-solutions-01",
+      "b": "hero-shuffle-cards-01",
+      "score": 0.4
+    },
+    {
+      "a": "faq-solutions-01",
+      "b": "hero-split-image-01",
+      "score": 0.35
+    },
+    {
+      "a": "faq-solutions-01",
+      "b": "layout-authorsplit-01",
+      "score": 0.34
+    },
+    {
+      "a": "faq-solutions-01",
+      "b": "layout-cardgrid-01",
+      "score": 0.44
+    },
+    {
+      "a": "faq-solutions-01",
       "b": "layout-editorial-framed-split-01",
-      "score": 0.2
+      "score": 0.3
     },
     {
       "a": "faq-solutions-01",
       "b": "layout-iconlistsplit-01",
-      "score": 0.25
+      "score": 0.3
     },
     {
       "a": "faq-solutions-01",
       "b": "layout-imagetext-01",
-      "score": 0.25
+      "score": 0.35
     },
     {
       "a": "faq-solutions-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.48
+      "score": 0.55
     },
     {
       "a": "faq-solutions-01",
       "b": "layout-parallaxcontent-01",
-      "score": 0.61
+      "score": 0.66
     },
     {
       "a": "faq-solutions-01",
       "b": "layout-simplegrid-01",
-      "score": 0.31
+      "score": 0.36
     },
     {
       "a": "faq-solutions-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.3
+      "score": 0.35
     },
     {
       "a": "faq-solutions-01",
@@ -1361,12 +1466,17 @@
     {
       "a": "faq-solutions-01",
       "b": "layout-statementsplit-01",
-      "score": 0.3
+      "score": 0.35
     },
     {
       "a": "faq-solutions-01",
       "b": "layout-stickycards-01",
-      "score": 0.61
+      "score": 0.71
+    },
+    {
+      "a": "faq-solutions-01",
+      "b": "navbar-pill-01",
+      "score": 0.45
     },
     {
       "a": "faq-solutions-01",
@@ -1376,17 +1486,122 @@
     {
       "a": "faq-solutions-01",
       "b": "stats-count-up-01",
-      "score": 0.62
+      "score": 0.64
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "footer-reveal-01",
+      "score": 0.49
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "hero-geometric-01",
+      "score": 0.41
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "hero-hero-bold-editorial-01",
+      "score": 0.4
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "hero-parallax-images-01",
+      "score": 0.45
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "hero-shuffle-cards-01",
+      "score": 0.36
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "hero-split-image-01",
+      "score": 0.46
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "layout-authorsplit-01",
+      "score": 0.5
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "layout-cardgrid-01",
+      "score": 0.36
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "layout-editorial-framed-split-01",
+      "score": 0.46
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "layout-iconlistsplit-01",
+      "score": 0.41
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "layout-imagetext-01",
+      "score": 0.41
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "layout-infinitescroll-01",
+      "score": 0.45
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "layout-parallaxcontent-01",
+      "score": 0.45
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "layout-simplegrid-01",
+      "score": 0.41
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "layout-stackedsplit-01",
+      "score": 0.46
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "layout-staggerfan-01",
+      "score": 0.26
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "layout-statementsplit-01",
+      "score": 0.45
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "layout-stickycards-01",
+      "score": 0.45
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "navbar-pill-01",
+      "score": 0.57
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "navbar-sticky-01",
+      "score": 0.45
+    },
+    {
+      "a": "footer-pulse-01",
+      "b": "stats-count-up-01",
+      "score": 0.61
     },
     {
       "a": "footer-reveal-01",
       "b": "hero-geometric-01",
-      "score": 0.31
+      "score": 0.41
     },
     {
       "a": "footer-reveal-01",
       "b": "hero-hero-bold-editorial-01",
-      "score": 0.35
+      "score": 0.4
     },
     {
       "a": "footer-reveal-01",
@@ -1401,37 +1616,37 @@
     {
       "a": "footer-reveal-01",
       "b": "hero-split-image-01",
-      "score": 0.51
+      "score": 0.46
     },
     {
       "a": "footer-reveal-01",
       "b": "layout-authorsplit-01",
-      "score": 0.45
+      "score": 0.5
     },
     {
       "a": "footer-reveal-01",
       "b": "layout-cardgrid-01",
-      "score": 0.33
-    },
-    {
-      "a": "footer-reveal-01",
-      "b": "layout-editorial-framed-split-01",
-      "score": 0.38
-    },
-    {
-      "a": "footer-reveal-01",
-      "b": "layout-iconlistsplit-01",
-      "score": 0.31
-    },
-    {
-      "a": "footer-reveal-01",
-      "b": "layout-imagetext-01",
       "score": 0.36
     },
     {
       "a": "footer-reveal-01",
+      "b": "layout-editorial-framed-split-01",
+      "score": 0.48
+    },
+    {
+      "a": "footer-reveal-01",
+      "b": "layout-iconlistsplit-01",
+      "score": 0.41
+    },
+    {
+      "a": "footer-reveal-01",
+      "b": "layout-imagetext-01",
+      "score": 0.41
+    },
+    {
+      "a": "footer-reveal-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.33
+      "score": 0.45
     },
     {
       "a": "footer-reveal-01",
@@ -1441,37 +1656,42 @@
     {
       "a": "footer-reveal-01",
       "b": "layout-simplegrid-01",
-      "score": 0.31
+      "score": 0.41
     },
     {
       "a": "footer-reveal-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.53
+      "score": 0.48
     },
     {
       "a": "footer-reveal-01",
       "b": "layout-staggerfan-01",
-      "score": 0.21
+      "score": 0.26
     },
     {
       "a": "footer-reveal-01",
       "b": "layout-statementsplit-01",
-      "score": 0.4
+      "score": 0.45
     },
     {
       "a": "footer-reveal-01",
       "b": "layout-stickycards-01",
-      "score": 0.4
+      "score": 0.45
+    },
+    {
+      "a": "footer-reveal-01",
+      "b": "navbar-pill-01",
+      "score": 0.57
     },
     {
       "a": "footer-reveal-01",
       "b": "navbar-sticky-01",
-      "score": 0.4
+      "score": 0.45
     },
     {
       "a": "footer-reveal-01",
       "b": "stats-count-up-01",
-      "score": 0.54
+      "score": 0.61
     },
     {
       "a": "hero-geometric-01",
@@ -1491,7 +1711,7 @@
     {
       "a": "hero-geometric-01",
       "b": "hero-split-image-01",
-      "score": 0.27
+      "score": 0.37
     },
     {
       "a": "hero-geometric-01",
@@ -1521,7 +1741,7 @@
     {
       "a": "hero-geometric-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.45
+      "score": 0.5
     },
     {
       "a": "hero-geometric-01",
@@ -1536,12 +1756,12 @@
     {
       "a": "hero-geometric-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.33
+      "score": 0.43
     },
     {
       "a": "hero-geometric-01",
       "b": "layout-staggerfan-01",
-      "score": 0.31
+      "score": 0.36
     },
     {
       "a": "hero-geometric-01",
@@ -1555,8 +1775,13 @@
     },
     {
       "a": "hero-geometric-01",
-      "b": "navbar-sticky-01",
+      "b": "navbar-pill-01",
       "score": 0.69
+    },
+    {
+      "a": "hero-geometric-01",
+      "b": "navbar-sticky-01",
+      "score": 0.74
     },
     {
       "a": "hero-geometric-01",
@@ -1571,12 +1796,12 @@
     {
       "a": "hero-hero-bold-editorial-01",
       "b": "hero-shuffle-cards-01",
-      "score": 0.33
+      "score": 0.38
     },
     {
       "a": "hero-hero-bold-editorial-01",
       "b": "hero-split-image-01",
-      "score": 0.38
+      "score": 0.43
     },
     {
       "a": "hero-hero-bold-editorial-01",
@@ -1606,7 +1831,7 @@
     {
       "a": "hero-hero-bold-editorial-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.43
+      "score": 0.48
     },
     {
       "a": "hero-hero-bold-editorial-01",
@@ -1621,7 +1846,7 @@
     {
       "a": "hero-hero-bold-editorial-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.43
+      "score": 0.48
     },
     {
       "a": "hero-hero-bold-editorial-01",
@@ -1640,18 +1865,23 @@
     },
     {
       "a": "hero-hero-bold-editorial-01",
+      "b": "navbar-pill-01",
+      "score": 0.6
+    },
+    {
+      "a": "hero-hero-bold-editorial-01",
       "b": "navbar-sticky-01",
       "score": 0.5
     },
     {
       "a": "hero-hero-bold-editorial-01",
       "b": "stats-count-up-01",
-      "score": 0.36
+      "score": 0.41
     },
     {
       "a": "hero-parallax-images-01",
       "b": "hero-shuffle-cards-01",
-      "score": 0.48
+      "score": 0.53
     },
     {
       "a": "hero-parallax-images-01",
@@ -1686,7 +1916,7 @@
     {
       "a": "hero-parallax-images-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.46
+      "score": 0.56
     },
     {
       "a": "hero-parallax-images-01",
@@ -1706,7 +1936,7 @@
     {
       "a": "hero-parallax-images-01",
       "b": "layout-staggerfan-01",
-      "score": 0.39
+      "score": 0.44
     },
     {
       "a": "hero-parallax-images-01",
@@ -1720,6 +1950,11 @@
     },
     {
       "a": "hero-parallax-images-01",
+      "b": "navbar-pill-01",
+      "score": 0.69
+    },
+    {
+      "a": "hero-parallax-images-01",
       "b": "navbar-sticky-01",
       "score": 0.59
     },
@@ -1736,17 +1971,17 @@
     {
       "a": "hero-shuffle-cards-01",
       "b": "layout-authorsplit-01",
-      "score": 0.37
+      "score": 0.47
     },
     {
       "a": "hero-shuffle-cards-01",
       "b": "layout-cardgrid-01",
-      "score": 0.5
+      "score": 0.53
     },
     {
       "a": "hero-shuffle-cards-01",
       "b": "layout-editorial-framed-split-01",
-      "score": 0.28
+      "score": 0.33
     },
     {
       "a": "hero-shuffle-cards-01",
@@ -1756,17 +1991,17 @@
     {
       "a": "hero-shuffle-cards-01",
       "b": "layout-imagetext-01",
-      "score": 0.33
+      "score": 0.43
     },
     {
       "a": "hero-shuffle-cards-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.57
+      "score": 0.6
     },
     {
       "a": "hero-shuffle-cards-01",
       "b": "layout-parallaxcontent-01",
-      "score": 0.53
+      "score": 0.58
     },
     {
       "a": "hero-shuffle-cards-01",
@@ -1781,17 +2016,22 @@
     {
       "a": "hero-shuffle-cards-01",
       "b": "layout-staggerfan-01",
-      "score": 0.44
+      "score": 0.49
     },
     {
       "a": "hero-shuffle-cards-01",
       "b": "layout-statementsplit-01",
-      "score": 0.38
+      "score": 0.43
     },
     {
       "a": "hero-shuffle-cards-01",
       "b": "layout-stickycards-01",
-      "score": 0.53
+      "score": 0.58
+    },
+    {
+      "a": "hero-shuffle-cards-01",
+      "b": "navbar-pill-01",
+      "score": 0.64
     },
     {
       "a": "hero-shuffle-cards-01",
@@ -1801,7 +2041,7 @@
     {
       "a": "hero-shuffle-cards-01",
       "b": "stats-count-up-01",
-      "score": 0.46
+      "score": 0.43
     },
     {
       "a": "hero-split-image-01",
@@ -1811,27 +2051,27 @@
     {
       "a": "hero-split-image-01",
       "b": "layout-cardgrid-01",
-      "score": 0.42
+      "score": 0.5
     },
     {
       "a": "hero-split-image-01",
       "b": "layout-editorial-framed-split-01",
-      "score": 0.4
+      "score": 0.45
     },
     {
       "a": "hero-split-image-01",
       "b": "layout-iconlistsplit-01",
-      "score": 0.35
+      "score": 0.45
     },
     {
       "a": "hero-split-image-01",
       "b": "layout-imagetext-01",
-      "score": 0.4
+      "score": 0.5
     },
     {
       "a": "hero-split-image-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.42
+      "score": 0.55
     },
     {
       "a": "hero-split-image-01",
@@ -1841,7 +2081,7 @@
     {
       "a": "hero-split-image-01",
       "b": "layout-simplegrid-01",
-      "score": 0.41
+      "score": 0.51
     },
     {
       "a": "hero-split-image-01",
@@ -1851,7 +2091,7 @@
     {
       "a": "hero-split-image-01",
       "b": "layout-staggerfan-01",
-      "score": 0.29
+      "score": 0.34
     },
     {
       "a": "hero-split-image-01",
@@ -1861,17 +2101,22 @@
     {
       "a": "hero-split-image-01",
       "b": "layout-stickycards-01",
-      "score": 0.5
+      "score": 0.55
+    },
+    {
+      "a": "hero-split-image-01",
+      "b": "navbar-pill-01",
+      "score": 0.74
     },
     {
       "a": "hero-split-image-01",
       "b": "navbar-sticky-01",
-      "score": 0.64
+      "score": 0.69
     },
     {
       "a": "hero-split-image-01",
       "b": "stats-count-up-01",
-      "score": 0.47
+      "score": 0.55
     },
     {
       "a": "layout-authorsplit-01",
@@ -1896,7 +2141,7 @@
     {
       "a": "layout-authorsplit-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.48
+      "score": 0.58
     },
     {
       "a": "layout-authorsplit-01",
@@ -1916,7 +2161,7 @@
     {
       "a": "layout-authorsplit-01",
       "b": "layout-staggerfan-01",
-      "score": 0.41
+      "score": 0.51
     },
     {
       "a": "layout-authorsplit-01",
@@ -1930,8 +2175,13 @@
     },
     {
       "a": "layout-authorsplit-01",
+      "b": "navbar-pill-01",
+      "score": 0.46
+    },
+    {
+      "a": "layout-authorsplit-01",
       "b": "navbar-sticky-01",
-      "score": 0.36
+      "score": 0.41
     },
     {
       "a": "layout-authorsplit-01",
@@ -1956,7 +2206,7 @@
     {
       "a": "layout-cardgrid-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.62
+      "score": 0.65
     },
     {
       "a": "layout-cardgrid-01",
@@ -1971,12 +2221,12 @@
     {
       "a": "layout-cardgrid-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.57
+      "score": 0.64
     },
     {
       "a": "layout-cardgrid-01",
       "b": "layout-staggerfan-01",
-      "score": 0.6
+      "score": 0.68
     },
     {
       "a": "layout-cardgrid-01",
@@ -1990,8 +2240,13 @@
     },
     {
       "a": "layout-cardgrid-01",
-      "b": "navbar-sticky-01",
+      "b": "navbar-pill-01",
       "score": 0.36
+    },
+    {
+      "a": "layout-cardgrid-01",
+      "b": "navbar-sticky-01",
+      "score": 0.44
     },
     {
       "a": "layout-cardgrid-01",
@@ -2011,7 +2266,7 @@
     {
       "a": "layout-editorial-framed-split-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.46
+      "score": 0.56
     },
     {
       "a": "layout-editorial-framed-split-01",
@@ -2026,7 +2281,7 @@
     {
       "a": "layout-editorial-framed-split-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.46
+      "score": 0.51
     },
     {
       "a": "layout-editorial-framed-split-01",
@@ -2042,6 +2297,11 @@
       "a": "layout-editorial-framed-split-01",
       "b": "layout-stickycards-01",
       "score": 0.64
+    },
+    {
+      "a": "layout-editorial-framed-split-01",
+      "b": "navbar-pill-01",
+      "score": 0.5
     },
     {
       "a": "layout-editorial-framed-split-01",
@@ -2061,7 +2321,7 @@
     {
       "a": "layout-iconlistsplit-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.51
+      "score": 0.56
     },
     {
       "a": "layout-iconlistsplit-01",
@@ -2076,12 +2336,12 @@
     {
       "a": "layout-iconlistsplit-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.41
+      "score": 0.51
     },
     {
       "a": "layout-iconlistsplit-01",
       "b": "layout-staggerfan-01",
-      "score": 0.37
+      "score": 0.42
     },
     {
       "a": "layout-iconlistsplit-01",
@@ -2095,8 +2355,13 @@
     },
     {
       "a": "layout-iconlistsplit-01",
-      "b": "navbar-sticky-01",
+      "b": "navbar-pill-01",
       "score": 0.45
+    },
+    {
+      "a": "layout-iconlistsplit-01",
+      "b": "navbar-sticky-01",
+      "score": 0.5
     },
     {
       "a": "layout-iconlistsplit-01",
@@ -2106,7 +2371,7 @@
     {
       "a": "layout-imagetext-01",
       "b": "layout-infinitescroll-01",
-      "score": 0.51
+      "score": 0.61
     },
     {
       "a": "layout-imagetext-01",
@@ -2121,12 +2386,12 @@
     {
       "a": "layout-imagetext-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.46
+      "score": 0.56
     },
     {
       "a": "layout-imagetext-01",
       "b": "layout-staggerfan-01",
-      "score": 0.37
+      "score": 0.47
     },
     {
       "a": "layout-imagetext-01",
@@ -2140,8 +2405,13 @@
     },
     {
       "a": "layout-imagetext-01",
+      "b": "navbar-pill-01",
+      "score": 0.45
+    },
+    {
+      "a": "layout-imagetext-01",
       "b": "navbar-sticky-01",
-      "score": 0.4
+      "score": 0.5
     },
     {
       "a": "layout-imagetext-01",
@@ -2151,17 +2421,17 @@
     {
       "a": "layout-infinitescroll-01",
       "b": "layout-parallaxcontent-01",
-      "score": 0.42
+      "score": 0.52
     },
     {
       "a": "layout-infinitescroll-01",
       "b": "layout-simplegrid-01",
-      "score": 0.59
+      "score": 0.64
     },
     {
       "a": "layout-infinitescroll-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.35
+      "score": 0.48
     },
     {
       "a": "layout-infinitescroll-01",
@@ -2171,12 +2441,17 @@
     {
       "a": "layout-infinitescroll-01",
       "b": "layout-statementsplit-01",
-      "score": 0.43
+      "score": 0.53
     },
     {
       "a": "layout-infinitescroll-01",
       "b": "layout-stickycards-01",
-      "score": 0.47
+      "score": 0.57
+    },
+    {
+      "a": "layout-infinitescroll-01",
+      "b": "navbar-pill-01",
+      "score": 0.61
     },
     {
       "a": "layout-infinitescroll-01",
@@ -2186,7 +2461,7 @@
     {
       "a": "layout-infinitescroll-01",
       "b": "stats-count-up-01",
-      "score": 0.46
+      "score": 0.48
     },
     {
       "a": "layout-parallaxcontent-01",
@@ -2201,7 +2476,7 @@
     {
       "a": "layout-parallaxcontent-01",
       "b": "layout-staggerfan-01",
-      "score": 0.35
+      "score": 0.4
     },
     {
       "a": "layout-parallaxcontent-01",
@@ -2212,6 +2487,11 @@
       "a": "layout-parallaxcontent-01",
       "b": "layout-stickycards-01",
       "score": 0.43
+    },
+    {
+      "a": "layout-parallaxcontent-01",
+      "b": "navbar-pill-01",
+      "score": 0.41
     },
     {
       "a": "layout-parallaxcontent-01",
@@ -2226,12 +2506,12 @@
     {
       "a": "layout-simplegrid-01",
       "b": "layout-stackedsplit-01",
-      "score": 0.55
+      "score": 0.65
     },
     {
       "a": "layout-simplegrid-01",
       "b": "layout-staggerfan-01",
-      "score": 0.45
+      "score": 0.5
     },
     {
       "a": "layout-simplegrid-01",
@@ -2245,8 +2525,13 @@
     },
     {
       "a": "layout-simplegrid-01",
-      "b": "navbar-sticky-01",
+      "b": "navbar-pill-01",
       "score": 0.45
+    },
+    {
+      "a": "layout-simplegrid-01",
+      "b": "navbar-sticky-01",
+      "score": 0.5
     },
     {
       "a": "layout-simplegrid-01",
@@ -2256,7 +2541,7 @@
     {
       "a": "layout-stackedsplit-01",
       "b": "layout-staggerfan-01",
-      "score": 0.24
+      "score": 0.28
     },
     {
       "a": "layout-stackedsplit-01",
@@ -2266,42 +2551,57 @@
     {
       "a": "layout-stackedsplit-01",
       "b": "layout-stickycards-01",
-      "score": 0.5
+      "score": 0.55
+    },
+    {
+      "a": "layout-stackedsplit-01",
+      "b": "navbar-pill-01",
+      "score": 0.66
     },
     {
       "a": "layout-stackedsplit-01",
       "b": "navbar-sticky-01",
-      "score": 0.56
+      "score": 0.61
     },
     {
       "a": "layout-stackedsplit-01",
       "b": "stats-count-up-01",
+      "score": 0.53
+    },
+    {
+      "a": "layout-staggerfan-01",
+      "b": "layout-statementsplit-01",
+      "score": 0.41
+    },
+    {
+      "a": "layout-staggerfan-01",
+      "b": "layout-stickycards-01",
+      "score": 0.48
+    },
+    {
+      "a": "layout-staggerfan-01",
+      "b": "navbar-pill-01",
       "score": 0.46
     },
     {
       "a": "layout-staggerfan-01",
-      "b": "layout-statementsplit-01",
-      "score": 0.41
-    },
-    {
-      "a": "layout-staggerfan-01",
-      "b": "layout-stickycards-01",
-      "score": 0.43
-    },
-    {
-      "a": "layout-staggerfan-01",
       "b": "navbar-sticky-01",
-      "score": 0.41
+      "score": 0.51
     },
     {
       "a": "layout-staggerfan-01",
       "b": "stats-count-up-01",
-      "score": 0.33
+      "score": 0.38
     },
     {
       "a": "layout-statementsplit-01",
       "b": "layout-stickycards-01",
       "score": 0.57
+    },
+    {
+      "a": "layout-statementsplit-01",
+      "b": "navbar-pill-01",
+      "score": 0.41
     },
     {
       "a": "layout-statementsplit-01",
@@ -2315,6 +2615,11 @@
     },
     {
       "a": "layout-stickycards-01",
+      "b": "navbar-pill-01",
+      "score": 0.41
+    },
+    {
+      "a": "layout-stickycards-01",
       "b": "navbar-sticky-01",
       "score": 0.36
     },
@@ -2322,6 +2627,16 @@
       "a": "layout-stickycards-01",
       "b": "stats-count-up-01",
       "score": 0.46
+    },
+    {
+      "a": "navbar-pill-01",
+      "b": "navbar-sticky-01",
+      "score": 0.39
+    },
+    {
+      "a": "navbar-pill-01",
+      "b": "stats-count-up-01",
+      "score": 0.43
     },
     {
       "a": "navbar-sticky-01",

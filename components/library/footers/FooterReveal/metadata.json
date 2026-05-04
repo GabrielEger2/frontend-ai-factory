@@ -1,7 +1,7 @@
 {
   "id": "footer-reveal-01",
   "name": "Sticky Reveal Footer",
-  "category": "footers",
+  "category": "footer",
   "purpose": ["footer"],
   "acceptsStyleKit": {
     "card": false,
@@ -9,8 +9,8 @@
     "textDecoration": false,
     "button": true
   },
-  "style": ["modern", "editorial"],
-  "mood": ["professional", "elegant"],
+  "style": ["modern", "editorial", "minimal"],
+  "mood": ["professional", "elegant", "trustworthy"],
   "layout": "multi-column",
   "density": "medium",
   "imageWeight": 0.08,
