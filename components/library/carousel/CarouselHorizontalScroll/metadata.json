@@ -10,7 +10,7 @@
     "button": false
   },
   "style": ["modern", "editorial", "bold"],
-  "mood": ["energetic", "elegant"],
+  "mood": ["energetic", "elegant", "professional"],
   "layout": "stacked",
   "density": "medium",
   "imageWeight": 0.0,

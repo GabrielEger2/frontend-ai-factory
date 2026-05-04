@@ -10,7 +10,7 @@
     "button": false
   },
   "style": ["modern", "minimal", "corporate"],
-  "mood": ["professional", "trustworthy"],
+  "mood": ["professional", "trustworthy", "serious"],
   "layout": "horizontal",
   "density": "low",
   "imageWeight": 0.0,
