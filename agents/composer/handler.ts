@@ -26,7 +26,7 @@ import {
 } from "./prompt";
 import { runPairPostCheck } from "./post-check";
 import { COMPONENT_METADATA } from "../assembler/component-sources.generated";
-import { DEFAULT_SKELETON } from "./defaultSkeleton";
+import { planSkeleton } from "./skeletonPlanner";
 
 /* ------------------------------------------------------------------ */
 /*  Layout constraint violation                                        */
@@ -507,11 +507,18 @@ export const handler: Handler<
   // 2. Mark project as "composing" before processing
   await markComposingStarted(input.projectId);
 
+  // Phase B: LLM-driven skeleton planner.
+  // planSkeleton uses safeParse and never throws — LLM/validation failures fall
+  // back to DEFAULT_SKELETON automatically. Do not wrap in extra try/catch.
+  const apiKey = await getClaudeApiKey();
+  const skeleton = await planSkeleton(input, apiKey);
+
   // 3. Per-slot category-filtered vector search with greedy PAIRS_WITH
-  //    re-ranking. Each slot in DEFAULT_SKELETON drives one OpenAI embedding
-  //    call and one Qdrant search restricted to that category. Picks are
-  //    taken left-to-right; previously picked components bias subsequent
-  //    rankings via metadata-native pairsWell / pairsPoorly arrays.
+  //    re-ranking. Each slot in the planner-derived `skeleton` drives one
+  //    OpenAI embedding call and one Qdrant search restricted to that
+  //    category. Picks are taken left-to-right; previously picked components
+  //    bias subsequent rankings via metadata-native pairsWell / pairsPoorly
+  //    arrays.
   let allCandidates: CandidateComponent[] = [];
   let source: "vector" | "fallback" = "vector";
   const pickedIds: string[] = [];
@@ -519,7 +526,7 @@ export const handler: Handler<
   const SLOT_TOP_K = 5;
 
   let qdrantHadAnySuccess = false;
-  for (const slot of DEFAULT_SKELETON) {
+  for (const slot of skeleton) {
     const slotQuery = `${slot.category} for ${input.companyName}; mood: ${moodTags}; needs: ${slot.purpose}`;
     let slotQueryVector: number[];
     try {
