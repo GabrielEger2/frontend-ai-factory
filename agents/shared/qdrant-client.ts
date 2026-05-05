@@ -120,4 +120,13 @@ export async function recreateCollectionMultiVector(
       audienceFit: { size: 1536, distance: "Cosine" },
     },
   });
+
+  // Qdrant rejects `match` filters on payload fields without a payload index.
+  // The Composer slot loop and query-vectors demo both filter by `category`,
+  // so the index must exist before any search runs.
+  await client.createPayloadIndex(collectionName, {
+    field_name: "category",
+    field_schema: "keyword",
+    wait: true,
+  });
 }
