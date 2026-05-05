@@ -16,6 +16,11 @@ export interface CandidateComponent {
   imageWeight?: number;
   source?: "vector" | "fallback";
   vectorScore?: number;
+  vectorScoresByAxis?: {
+    descriptive: number;
+    usage: number;
+    audienceFit: number;
+  };
   variants?: Array<{
     id: string;
     name: string;
