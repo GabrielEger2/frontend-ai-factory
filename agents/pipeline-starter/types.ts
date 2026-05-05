@@ -23,6 +23,9 @@ export const ProjectBriefSchema = z.object({
   socialLinks: z
     .array(z.object({ platform: z.string(), url: z.string() }))
     .optional(),
+  pageType: z
+    .enum(["landing", "store", "portfolio", "services", "about"])
+    .optional(),
   // Optional override for the SFN execution name. Used by restart-pipeline
   // to start a fresh execution on a previously-failed project (the original
   // execution name is the projectId, which would collide). When omitted,
