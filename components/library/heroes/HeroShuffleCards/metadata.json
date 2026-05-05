@@ -2,25 +2,15 @@
   "id": "hero-shuffle-cards-01",
   "name": "Shuffle Cards Hero",
   "category": "hero",
-  "purpose": [
-    "hero"
-  ],
+  "purpose": ["hero"],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
     "textDecoration": true,
     "button": true
   },
-  "style": [
-    "modern",
-    "bold",
-    "editorial"
-  ],
-  "mood": [
-    "energetic",
-    "professional",
-    "friendly"
-  ],
+  "style": ["modern", "bold", "editorial"],
+  "mood": ["energetic", "professional", "friendly"],
   "layout": "split",
   "density": "medium",
   "imageWeight": 0.15,
@@ -29,6 +19,17 @@
       "name": "headline",
       "type": "text",
       "maxLength": 80
+    },
+    {
+      "name": "highlightWord",
+      "type": "text",
+      "optional": true,
+      "maxLength": 20
+    },
+    {
+      "name": "revealHeadline",
+      "type": "boolean",
+      "optional": true
     },
     {
       "name": "headlineRotatingWords",
@@ -59,12 +60,7 @@
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "default",
-        "slide",
-        "dotExpand",
-        "drawOutline"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline"]
     },
     {
       "name": "emailPlaceholder",
@@ -97,10 +93,7 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "layout-cardgrid-01",
-    "layout-infinitescroll-01"
-  ],
+  "pairsWell": ["layout-cardgrid-01", "layout-infinitescroll-01"],
   "pairsPoorly": [],
   "variants": [
     {
@@ -108,20 +101,14 @@
       "name": "Dense Dark",
       "density": "high",
       "colorMode": "dark",
-      "styleOverrides": [
-        "bold",
-        "modern"
-      ]
+      "styleOverrides": ["bold", "modern"]
     },
     {
       "id": "hero-shuffle-cards-01-airy",
       "name": "Airy Light",
       "density": "low",
       "colorMode": "light",
-      "styleOverrides": [
-        "modern",
-        "minimal"
-      ]
+      "styleOverrides": ["modern", "minimal"]
     }
   ],
   "description": "A dynamic hero section featuring animated card elements that shuffle or rotate to showcase multiple key messages or services. Perfect for creative agencies, tech startups, and innovative businesses that want to demonstrate versatility and capture attention with interactive visual storytelling.",
