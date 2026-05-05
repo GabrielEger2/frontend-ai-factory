@@ -591,6 +591,25 @@ export const handler: Handler<
       const top = ranked[0];
       if (top) {
         pickedCandidates.push(top);
+        const debug = (top as any)._rerankDebug;
+        console.log(
+          JSON.stringify({
+            agent: "composer",
+            projectId: input.projectId,
+            event: "slot_reranked",
+            slot: slot.category,
+            pickedId: top.id,
+            pickedName: top.name,
+            vectorScore: top.vectorScore,
+            rerankScore: debug?.rerankScore,
+            signals: {
+              pairsWithScore: debug?.pairsWithScore,
+              styleScore: debug?.styleScore,
+              diversityPenalty: debug?.diversityPenalty,
+              densityPenalty: debug?.densityPenalty,
+            },
+          }),
+        );
         allCandidates.push(...ranked);
         qdrantHadAnySuccess = true;
       }
