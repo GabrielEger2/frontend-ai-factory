@@ -27,6 +27,7 @@ import {
 import { runPairPostCheck } from "./post-check";
 import { COMPONENT_METADATA } from "../assembler/component-sources.generated";
 import { planSkeleton } from "./skeletonPlanner";
+import { rerankCandidates, DEFAULT_RERANK_WEIGHTS } from "./rerank";
 
 /* ------------------------------------------------------------------ */
 /*  Layout constraint violation                                        */
@@ -347,11 +348,12 @@ async function getVectorCandidatesForSlot(
       entry.scoresByAxis.usage,
       entry.scoresByAxis.audienceFit,
     );
+    const meta = COMPONENT_METADATA[id];
     candidates.push({
       id,
       name: entry.payload.name ?? "",
       category: entry.payload.category ?? category,
-      density: "medium",
+      density: meta?.density ?? "medium",
       layout: "full",
       moodHits: 0,
       styleHits: 0,
@@ -360,48 +362,15 @@ async function getVectorCandidatesForSlot(
       avgPairScore: maxScore,
       vectorScore: maxScore,
       vectorScoresByAxis: entry.scoresByAxis,
+      imageWeight: meta?.imageWeight,
+      style: meta?.style,
+      mood: meta?.mood,
       source: "vector" as const,
     });
   }
 
   candidates.sort((a, b) => b.vectorScore! - a.vectorScore!);
   return candidates.slice(0, topK);
-}
-
-/**
- * Greedy left-to-right re-ranker: for each candidate, scan every previously
- * picked component's `pairsWell` / `pairsPoorly` arrays. A hit in `pairsWell`
- * applies a +0.3 boost to the candidate's `avgPairScore`; a hit in
- * `pairsPoorly` applies a -0.3 demotion. Adjustments are clamped to [0, 1].
- *
- * Pure function — does not mutate input. Returns a freshly sorted array
- * (descending by adjusted `avgPairScore`).
- *
- * Phase A boost values are intentionally simple and uniform; Phase D will
- * replace this with a calibrated model that weights pair distance, slot
- * category, and seller feedback.
- */
-function reRankByPairsWell(
-  candidates: CandidateComponent[],
-  pickedIds: string[],
-): CandidateComponent[] {
-  const BOOST = 0.3;
-  const DEMOTE = 0.3;
-
-  return [...candidates]
-    .map((c) => {
-      let adjustment = 0;
-      for (const pickedId of pickedIds) {
-        const pickedMeta = COMPONENT_METADATA[pickedId];
-        const pairsWell = pickedMeta?.pairsWell ?? [];
-        const pairsPoorly = pickedMeta?.pairsPoorly ?? [];
-        if (pairsWell.includes(c.id)) adjustment += BOOST;
-        if (pairsPoorly.includes(c.id)) adjustment -= DEMOTE;
-      }
-      const adjusted = Math.max(0, Math.min(1, c.avgPairScore + adjustment));
-      return { ...c, avgPairScore: adjusted };
-    })
-    .sort((a, b) => b.avgPairScore - a.avgPairScore);
 }
 
 /* ------------------------------------------------------------------ */
@@ -586,7 +555,7 @@ export const handler: Handler<
   //    arrays.
   let allCandidates: CandidateComponent[] = [];
   let source: "vector" | "fallback" = "vector";
-  const pickedIds: string[] = [];
+  const pickedCandidates: CandidateComponent[] = [];
   const moodTags = (input.styleOutput.mood ?? []).join(", ");
   const SLOT_TOP_K = 5;
 
@@ -613,10 +582,15 @@ export const handler: Handler<
         SLOT_TOP_K,
         slot.category,
       );
-      const ranked = reRankByPairsWell(slotCandidates, pickedIds);
+      const ranked = rerankCandidates(
+        slotCandidates,
+        pickedCandidates,
+        input.styleOutput,
+        DEFAULT_RERANK_WEIGHTS,
+      );
       const top = ranked[0];
       if (top) {
-        pickedIds.push(top.id);
+        pickedCandidates.push(top);
         allCandidates.push(...ranked);
         qdrantHadAnySuccess = true;
       }
@@ -663,7 +637,7 @@ export const handler: Handler<
         projectId: input.projectId,
         candidateSource: "vector",
         candidateCount: allCandidates.length,
-        pickedSlots: pickedIds.length,
+        pickedSlots: pickedCandidates.length,
       }),
     );
   }
@@ -676,7 +650,7 @@ export const handler: Handler<
 
   // 4. Call Claude to compose layouts from candidates. `pairMatrix` is
   //    always [] in Phase A — graph-derived pair scores are gone, and
-  //    metadata-native pairsWell/pairsPoorly are applied via reRankByPairsWell
+  //    metadata-native pairsWell/pairsPoorly are applied via rerankCandidates
   //    above (not as a separate matrix passed to the LLM). The empty matrix
   //    parameter is preserved on `composeLayouts` for forward compatibility
   //    with Phase D scoring; the prompt's matrix block silently renders nothing
