@@ -14,6 +14,8 @@ export interface CandidateComponent {
   styleHits: number;
   avgPairScore: number;
   imageWeight?: number;
+  style?: string[];
+  mood?: string[];
   source?: "vector" | "fallback";
   vectorScore?: number;
   vectorScoresByAxis?: {
@@ -97,7 +99,7 @@ Rate each layout on a 0-1 scale based on:
 
 ## Retrieval Sources
 
-All candidates are retrieved via vector search filtered by the slot category they are intended for. Higher \`avgPairScore\` indicates stronger cosine similarity to the slot query. For "vector" rows, Density and Layout show sentinel defaults ("medium" / "full") — they do not reflect measured component values. Weigh component fit primarily by category and \`avgPairScore\`.
+All candidates are retrieved via vector search filtered by the slot category they are intended for. Higher \`avgPairScore\` indicates stronger cosine similarity to the slot query. Density values in the candidate table reflect real component metadata. Layout remains "full" for vector-sourced candidates. Weight component fit by category, \`avgPairScore\`, and Density when making adjacency decisions.
 
 ## Output Format
 

@@ -16,11 +16,21 @@
  * by componentId taking the max axis score, and prints the top-3 hits per
  * slot as a markdown table. Mirrors the per-slot loop the Composer handler
  * runs in production.
+ *
+ * After printing the top-3 table, the script also runs the deterministic
+ * Phase D `rerankCandidates` four-signal combiner (PAIRS_WITH + style
+ * overlap + diversity + density) and prints a per-signal score breakdown
+ * for the winning candidate per slot. This enables empirical weight
+ * tuning for Stage 4 of the composer eval loop.
  */
 
 import { getEmbedding } from "../shared/embeddings";
 import { getQdrantClient } from "../shared/qdrant-client";
 import { DEFAULT_SKELETON } from "../composer/defaultSkeleton";
+import { rerankCandidates, DEFAULT_RERANK_WEIGHTS } from "../composer/rerank";
+import { COMPONENT_METADATA } from "../assembler/component-sources.generated";
+import type { CandidateComponent } from "../composer/prompt";
+import type { StyleOutput } from "../shared/types";
 
 /* ------------------------------------------------------------------ */
 /*  Resolve query brief                                                */
@@ -64,6 +74,25 @@ interface ComponentPayload {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Mock StyleOutput for the re-ranker                                 */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Debug approximation only. The real composer pipeline feeds the Style
+ * Agent's StyleOutput into rerankCandidates; this script lacks an upstream
+ * style run, so we hand-roll a minimal object with just the fields the
+ * style-overlap scorer actually reads (`style`, `mood`). Other StyleOutput
+ * fields (palette, typography, etc.) are unused by rerank.ts, so we cast
+ * through `unknown` rather than fabricate plausible values. Stage 4 will
+ * thread real StyleOutput from a captured pipeline run.
+ */
+const MOCK_STYLE_OUTPUT = {
+  mood: ["professional"],
+  style: ["modern"],
+  density: "medium",
+} as unknown as StyleOutput;
+
+/* ------------------------------------------------------------------ */
 /*  Main                                                               */
 /* ------------------------------------------------------------------ */
 
@@ -80,6 +109,10 @@ async function main(): Promise<void> {
 
   const axes = ["descriptive", "usage", "audienceFit"] as const;
   type Axis = (typeof axes)[number];
+
+  // Track picked candidates across slots so the diversity / density signals
+  // see real prior picks (mirrors the handler's greedy loop).
+  const pickedCandidates: CandidateComponent[] = [];
 
   for (const slot of DEFAULT_SKELETON) {
     const slotQuery = `${slot.category} for ${queryText}; needs: ${slot.purpose}`;
@@ -179,6 +212,83 @@ async function main(): Promise<void> {
         `| ${idx + 1} | ${row.id} | ${row.name} | ${score} | ${row.axis} |`,
       );
     });
+
+    /* -------------------------------------------------------------- */
+    /*  Phase D: build CandidateComponent[] and re-rank                */
+    /* -------------------------------------------------------------- */
+
+    // Backfill density / imageWeight / style / mood from COMPONENT_METADATA
+    // so the re-ranker signals operate on real values rather than sentinels.
+    // Mirrors handler.ts::getVectorCandidatesForSlot.
+    const slotCandidates: CandidateComponent[] = [];
+    for (const [id, entry] of merged) {
+      const maxScore = Math.max(
+        entry.scoresByAxis.descriptive,
+        entry.scoresByAxis.usage,
+        entry.scoresByAxis.audienceFit,
+      );
+      const meta = COMPONENT_METADATA[id];
+      slotCandidates.push({
+        id,
+        name: entry.payload.name ?? "",
+        category: entry.payload.category ?? slot.category,
+        density: meta?.density ?? "medium",
+        layout: "full",
+        moodHits: 0,
+        styleHits: 0,
+        avgPairScore: maxScore,
+        vectorScore: maxScore,
+        vectorScoresByAxis: entry.scoresByAxis,
+        imageWeight: meta?.imageWeight,
+        style: meta?.style,
+        mood: meta?.mood,
+        source: "vector" as const,
+      });
+    }
+
+    if (slotCandidates.length === 0) continue;
+
+    const reranked = rerankCandidates(
+      slotCandidates,
+      pickedCandidates,
+      MOCK_STYLE_OUTPUT,
+      DEFAULT_RERANK_WEIGHTS,
+    );
+    const top = reranked[0];
+    if (!top) continue;
+
+    // _rerankDebug is attached via a type cast inside rerank.ts so it does
+    // not leak into the LLM-facing CandidateComponent interface.
+    const debug = (
+      top as unknown as {
+        _rerankDebug?: {
+          pairsWithScore: number;
+          styleScore: number;
+          diversityPenalty: number;
+          densityPenalty: number;
+          rerankScore: number;
+        };
+      }
+    )._rerankDebug;
+
+    const fmt = (n: number | undefined): string =>
+      typeof n === "number" ? n.toFixed(3) : "—";
+
+    console.log();
+    console.log(
+      `### Re-rank winner: ${top.id}${top.name ? ` — ${top.name}` : ""}`,
+    );
+    console.log();
+    console.log("| Signal           | Score |");
+    console.log("|---|---|");
+    console.log(`| vectorScore      | ${fmt(top.vectorScore)} |`);
+    console.log(`| pairsWithScore   | ${fmt(debug?.pairsWithScore)} |`);
+    console.log(`| styleScore       | ${fmt(debug?.styleScore)} |`);
+    console.log(`| diversityPenalty | ${fmt(debug?.diversityPenalty)} |`);
+    console.log(`| densityPenalty   | ${fmt(debug?.densityPenalty)} |`);
+    console.log(`| rerankScore      | ${fmt(debug?.rerankScore)} |`);
+
+    pickedCandidates.push(top);
   }
 }
 

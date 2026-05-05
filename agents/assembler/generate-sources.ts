@@ -133,6 +133,10 @@ interface MetadataJson {
   pairsPoorly?: string[];
   category?: string;
   nativeMotif?: string | null;
+  density?: string;
+  imageWeight?: number;
+  style?: string[];
+  mood?: string[];
 }
 
 interface MetadataEntry {
@@ -142,6 +146,10 @@ interface MetadataEntry {
   pairsPoorly: string[];
   category: string;
   nativeMotif: string | null;
+  density: string;
+  imageWeight: number;
+  style: string[];
+  mood: string[];
 }
 
 function main() {
@@ -213,6 +221,10 @@ function main() {
         pairsPoorly: meta.pairsPoorly ?? [],
         category: meta.category ?? "",
         nativeMotif: meta.nativeMotif ?? null,
+        density: meta.density ?? "medium",
+        imageWeight: meta.imageWeight ?? 0,
+        style: meta.style ?? [],
+        mood: meta.mood ?? [],
       };
     }
   }
@@ -262,7 +274,7 @@ function main() {
   );
   lines.push(" */");
   lines.push(
-    "export const COMPONENT_METADATA: Record<string, { slots: unknown[]; acceptsStyleKit: { card?: boolean; background?: boolean; textDecoration?: boolean; button?: boolean }; pairsWell: string[]; pairsPoorly: string[]; category: string; nativeMotif: string | null }> = {",
+    "export const COMPONENT_METADATA: Record<string, { slots: unknown[]; acceptsStyleKit: { card?: boolean; background?: boolean; textDecoration?: boolean; button?: boolean }; pairsWell: string[]; pairsPoorly: string[]; category: string; nativeMotif: string | null; density: string; imageWeight: number; style: string[]; mood: string[] }> = {",
   );
 
   for (const [id, meta] of Object.entries(metadataMap)) {
