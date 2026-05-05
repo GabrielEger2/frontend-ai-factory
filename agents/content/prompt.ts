@@ -21,6 +21,11 @@ Sua tarefa: gerar conteudo para cada slot de cada componente de um website.
    - Dentro de listas, slots do tipo "image" tambem devem ser null.
    - Dentro de listas, slots do tipo "url" devem ser preenchidos com ancoras internas relevantes (ex: "#servicos", "#sobre", "#contato", "#pacotes"). Esses sao links de navegacao, nao URLs externos.
 6. Para slots do tipo "boolean", retorne true ou false conforme faca sentido para o negocio.
+6.5. Para slots com o nome "highlightWord": retorne UMA UNICA palavra substantiva ou adjetiva que:
+     - esteja presente literalmente no slot "headline" do mesmo componente (mesma grafia, sem alterar acentuacao),
+     - seja semanticamente central para a mensagem (substantivo ou adjetivo, nunca verbo no imperativo, nunca preposicao ou artigo),
+     - tenha no maximo 20 caracteres.
+     Se o headline nao contiver nenhuma palavra adequada, omita o slot "highlightWord" completamente (nao inclua a chave).
 7. Para slots do tipo "number", retorne um numero apropriado dentre as opcoes do enum, se houver.
 8. Para slots com "enum" (no nivel raiz OU dentro de campos no itemSchema), use EXATAMENTE um dos valores listados. Respeite a caixa (maiuscula/minuscula) — ex: se o enum diz "facebook", NAO escreva "Facebook".
 9. Slots marcados como "optional": true podem ser incluidos ou omitidos conforme relevancia.
