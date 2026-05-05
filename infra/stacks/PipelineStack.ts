@@ -30,6 +30,9 @@ export interface PipelineStackProps extends StackProps {
   readonly neo4jPasswordSsmPath: string;
   readonly neo4jUsernameSsmPath: string;
   readonly neo4jDatabaseSsmPath: string;
+  readonly qdrantEndpointSsmPath: string;
+  readonly qdrantApiKeySsmPath: string;
+  readonly openAiApiKeySsmPath: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -265,6 +268,9 @@ export class PipelineStack extends Stack {
         NEO4J_PASSWORD_SSM_PATH: props.neo4jPasswordSsmPath,
         NEO4J_USERNAME_SSM_PATH: props.neo4jUsernameSsmPath,
         NEO4J_DATABASE_SSM_PATH: props.neo4jDatabaseSsmPath,
+        QDRANT_ENDPOINT_SSM_PATH: props.qdrantEndpointSsmPath,
+        QDRANT_API_KEY_SSM_PATH: props.qdrantApiKeySsmPath,
+        OPENAI_API_KEY_SSM_PATH: props.openAiApiKeySsmPath,
       },
     });
 
@@ -280,6 +286,9 @@ export class PipelineStack extends Stack {
           `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.neo4jPasswordSsmPath}`,
           `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.neo4jUsernameSsmPath}`,
           `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.neo4jDatabaseSsmPath}`,
+          `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.qdrantEndpointSsmPath}`,
+          `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.qdrantApiKeySsmPath}`,
+          `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.openAiApiKeySsmPath}`,
         ],
       }),
     );
