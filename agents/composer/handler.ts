@@ -15,7 +15,9 @@ import {
   StyleOutput,
 } from "../shared/types";
 import { getDriver, getNeo4jDatabase } from "../shared/neo4j-client";
-import { emitNeo4jQueryError } from "../shared/metrics";
+import { getEmbedding } from "../shared/embeddings";
+import { getQdrantClient } from "../shared/qdrant-client";
+import { emitNeo4jQueryError, emitQdrantQueryError } from "../shared/metrics";
 import { ComposerAgentInput, ComposerAgentInputSchema } from "./types";
 import {
   buildSystemPrompt,
@@ -362,6 +364,53 @@ async function markComposingStarted(projectId: string): Promise<void> {
       },
     }),
   );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Vector retrieval helpers (Qdrant semantic search)                  */
+/* ------------------------------------------------------------------ */
+
+function buildVectorSearchQuery(input: ComposerAgentInput): string {
+  const parts: string[] = [
+    input.segment,
+    input.description,
+    input.researchOutput?.companySummary ?? "",
+    input.researchOutput?.targetAudience ?? "",
+    ...(input.styleOutput?.mood ?? []),
+    ...(input.styleOutput?.style ?? []),
+  ];
+  return parts.filter(Boolean).join(" ");
+}
+
+async function getVectorCandidates(
+  queryVector: number[],
+  topK: number,
+): Promise<CandidateComponent[]> {
+  const client = await getQdrantClient();
+  const hits = await client.search("components", {
+    vector: queryVector,
+    limit: topK,
+    with_payload: true,
+  });
+  return hits.map((hit) => {
+    const p = hit.payload as {
+      componentId?: string;
+      name?: string;
+      category?: string;
+    };
+    return {
+      id: p.componentId ?? String(hit.id),
+      name: p.name ?? "",
+      category: p.category ?? "",
+      density: "medium",
+      layout: "full",
+      moodHits: 0,
+      styleHits: 0,
+      avgPairScore: 0,
+      vectorScore: hit.score,
+      source: "vector" as const,
+    };
+  });
 }
 
 /* ------------------------------------------------------------------ */
