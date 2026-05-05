@@ -64,6 +64,7 @@ export const handler: SQSHandler = async (event) => {
             phone: brief.phone ?? null,
             email: brief.email ?? null,
             socialLinks: brief.socialLinks ?? null,
+            pageType: brief.pageType ?? null,
             status: "queued",
           }),
         }),
