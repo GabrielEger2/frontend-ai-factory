@@ -22,6 +22,8 @@ export const SkeletonSlotSchema = z.object({
 export type SkeletonSlot = z.infer<typeof SkeletonSlotSchema>;
 export type Skeleton = SkeletonSlot[];
 
+export const SkeletonSchema = z.array(SkeletonSlotSchema);
+
 /**
  * DEFAULT_SKELETON — Phase A hard-coded page skeleton.
  *

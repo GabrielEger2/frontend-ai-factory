@@ -33,6 +33,9 @@ const CreateProjectSchema = z.object({
   socialLinks: z
     .array(z.object({ platform: z.string(), url: z.string() }))
     .optional(),
+  pageType: z
+    .enum(["landing", "store", "portfolio", "services", "about"])
+    .optional(),
 });
 
 /**
@@ -85,6 +88,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
           phone: input.phone,
           email: input.email,
           socialLinks: input.socialLinks,
+          pageType: input.pageType,
           status: "queued",
           createdAt: now,
           updatedAt: now,
@@ -111,6 +115,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
           phone: input.phone,
           email: input.email,
           socialLinks: input.socialLinks,
+          pageType: input.pageType,
         }),
       }),
     );

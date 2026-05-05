@@ -18,6 +18,7 @@ export const ComposerAgentInputSchema = PipelineStateSchema.pick({
   desiredSections: true,
   brandToneKeywords: true,
   objectives: true,
+  pageType: true,
 }).extend({
   researchOutput: ResearchOutputSchema,
   styleOutput: StyleOutputSchema,

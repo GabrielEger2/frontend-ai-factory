@@ -289,4 +289,5 @@ export interface CreateProjectInput {
   phone?: string;
   email?: string;
   socialLinks?: { platform: string; url: string }[];
+  pageType?: "landing" | "store" | "portfolio" | "services" | "about";
 }

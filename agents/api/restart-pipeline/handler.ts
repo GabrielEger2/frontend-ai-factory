@@ -136,6 +136,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
           email: item.email,
           socialLinks: item.socialLinks,
           executionName,
+          pageType: item.pageType ?? null,
         }),
       }),
     );

@@ -320,6 +320,7 @@ export const PipelineStateSchema = z.object({
     .array(z.object({ platform: z.string(), url: z.string() }))
     .nullable()
     .default(null),
+  pageType: z.string().nullable().default(null),
   composerOutput: ComposerOutputSchema.optional(),
   contentOutput: ContentOutputSchema.optional(),
   humanizerOutput: HumanizerOutputSchema.optional(),
