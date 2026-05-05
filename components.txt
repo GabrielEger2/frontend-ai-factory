@@ -1,0 +1,20 @@
+  Missing categories entirely                                                                                                                                          
+  - Pricing — no pricing tables anywhere. Blocks any SaaS/services site.                                                                                               
+  - Logo cloud / trust bar — universal social proof slot, currently nothing fits.                                                                                      
+  - Process / steps / timeline — no numbered "how it works" component for B2B narratives.                                                                              
+  - Newsletter / pre-footer capture — lead-capture is in your purpose tokens but no component fulfills it outside the contact form.                                    
+                                                                                                                                                                       
+  Thinnest existing categories (functional, not just count)
+  - stats: 1 — only StatsCountUp. No comparison stats, KPI grid, or milestone bar — and stats components punch way above their weight in composition.
+  - layouts/grid: 2 — CardGrid + SimpleGrid only. You're missing the icon-feature grid that 80% of features/services/benefits sections need. This one gap is probably
+  your biggest blocker because so many purpose tokens (features, services, benefits, products, team) route through grids.
+  - cta: 3 — all editorial/image-heavy. No minimal centered CTA or inline strip variant for sites whose style doesn't want another image block.
+  - navigation: 2 navbars — no mega-menu or mobile drawer pattern for content-heavy sites.
+
+  Where I'd focus first
+  If the goal is to unblock the composer for the widest range of generated sites, I'd build icon-feature grid + pricing table + logo cloud + a minimal CTA before
+  adding more heroes. Heroes feel scarce (5/15) but you can already compose a usable page with what you have; without pricing/features-grid/logos, whole site
+  archetypes are unreachable.
+
+  The tradeoff: hero variety drives the visual first impression of demos to clients, so if your near-term constraint is "demo wow factor" rather than "site archetype
+  coverage," prioritizing 3-4 more hero variants instead is defensible.
