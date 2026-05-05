@@ -10,6 +10,8 @@ import {
 } from "framer-motion";
 import { cn } from "@lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
+import { Highlighter } from "@ui/text-decorations/Highlighter";
+import { TextReveal } from "@ui/text-decorations/TextReveal";
 import { TypeWriter } from "@ui/text-decorations/TypeWriter";
 import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
@@ -35,6 +37,12 @@ export interface HeroParallaxImagesProps {
   headline: string;
   /** When provided, the last line cycles through these strings with a typewriter effect */
   headlineRotatingWords?: string[];
+  /** Word inside `headline` to wrap with the Highlighter underline. When set, word-level TextReveal is skipped. */
+  highlightWord?: string;
+  /** Wrap the headline in a word-level TextReveal. Defaults to false. Ignored when `highlightWord` is set. */
+  revealHeadline?: boolean;
+  /** Color scheme for the Highlighter. Defaults to "primary". */
+  accentColorScheme?: ColorScheme;
   subheadline: string;
   ctaText: string;
   ctaUrl?: string;
@@ -262,12 +270,40 @@ const fadeUp = {
 };
 
 /* ------------------------------------------------------------------ */
+/*  Headline helpers                                                   */
+/* ------------------------------------------------------------------ */
+
+function renderHighlightedHeadline(
+  headline: string,
+  highlightWord: string,
+  scheme: ColorScheme,
+) {
+  const idx = headline.toLowerCase().indexOf(highlightWord.toLowerCase());
+  if (idx === -1) return headline;
+  const before = headline.slice(0, idx);
+  const match = headline.slice(idx, idx + highlightWord.length);
+  const after = headline.slice(idx + highlightWord.length);
+  return (
+    <>
+      {before}
+      <Highlighter action="underline" colorScheme={scheme} triggerOnView>
+        {match}
+      </Highlighter>
+      {after}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
 export default function HeroParallaxImages({
   headline,
   headlineRotatingWords,
+  highlightWord,
+  revealHeadline,
+  accentColorScheme = "primary",
   subheadline,
   ctaText,
   ctaUrl,
@@ -284,6 +320,10 @@ export default function HeroParallaxImages({
   className,
 }: HeroParallaxImagesProps) {
   const shouldReduceMotion = useReducedMotion();
+
+  const useHighlighter = Boolean(highlightWord);
+  const useTextReveal =
+    !useHighlighter && revealHeadline && !shouldReduceMotion;
 
   return (
     <section className={cn("w-full bg-neutral", className)}>
@@ -336,7 +376,19 @@ export default function HeroParallaxImages({
             variants={fadeUp}
             className="mb-6 text-4xl font-black uppercase text-neutral-content md:text-5xl lg:text-6xl"
           >
-            {headline}
+            {useHighlighter ? (
+              renderHighlightedHeadline(
+                headline,
+                highlightWord as string,
+                accentColorScheme,
+              )
+            ) : useTextReveal ? (
+              <TextReveal split="word" triggerOnView>
+                {headline}
+              </TextReveal>
+            ) : (
+              headline
+            )}
             {headlineRotatingWords && headlineRotatingWords.length > 0 && (
               <>
                 <br />

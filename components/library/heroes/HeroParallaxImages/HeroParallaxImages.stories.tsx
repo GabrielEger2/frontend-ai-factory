@@ -27,6 +27,12 @@ const meta: Meta<typeof HeroParallaxImages> = {
     scrollHeight: {
       control: { type: "range", min: 800, max: 3000, step: 100 },
     },
+    highlightWord: { control: "text" },
+    revealHeadline: { control: "boolean" },
+    accentColorScheme: {
+      control: "select",
+      options: ["primary", "secondary", "accent", "neutral"],
+    },
   },
   decorators: [
     (Story) => (
