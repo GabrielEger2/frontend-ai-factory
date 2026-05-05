@@ -142,6 +142,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       desiredSections: baseState.desiredSections,
       brandToneKeywords: baseState.brandToneKeywords,
       objectives: baseState.objectives,
+      pageType: baseState.pageType,
     };
 
     const invokeResponse = await lambda.send(
