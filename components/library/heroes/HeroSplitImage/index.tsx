@@ -4,6 +4,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import { FaWhatsapp } from "react-icons/fa";
 import { cn } from "@lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
+import { Highlighter } from "@ui/text-decorations/Highlighter";
+import { TextReveal } from "@ui/text-decorations/TextReveal";
 import { TypeWriter } from "@ui/text-decorations/TypeWriter";
 import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
@@ -32,6 +34,12 @@ export interface HeroSplitImageProps {
   headlineAccent?: string;
   /** When provided, the last line cycles through these strings with a typewriter effect */
   headlineRotatingWords?: string[];
+  /** Word inside `headline` to wrap with the Highlighter underline. When set, word-level TextReveal is skipped. */
+  highlightWord?: string;
+  /** Wrap the headline in a word-level TextReveal. Defaults to false. Ignored when `highlightWord` is set. */
+  revealHeadline?: boolean;
+  /** Color scheme for the Highlighter. Defaults to "primary". */
+  accentColorScheme?: ColorScheme;
   subheadline: string;
   ctaText: string;
   ctaUrl?: string;
@@ -202,6 +210,31 @@ function FeaturedItemCard({ item, index }: FeaturedItemCardProps) {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+function renderHighlightedHeadline(
+  headline: string,
+  highlightWord: string,
+  scheme: ColorScheme,
+) {
+  const idx = headline.toLowerCase().indexOf(highlightWord.toLowerCase());
+  if (idx === -1) return headline;
+  const before = headline.slice(0, idx);
+  const match = headline.slice(idx, idx + highlightWord.length);
+  const after = headline.slice(idx + highlightWord.length);
+  return (
+    <>
+      {before}
+      <Highlighter action="underline" colorScheme={scheme} triggerOnView>
+        {match}
+      </Highlighter>
+      {after}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -209,6 +242,9 @@ export default function HeroSplitImage({
   headline,
   headlineAccent,
   headlineRotatingWords,
+  highlightWord,
+  revealHeadline,
+  accentColorScheme = "primary",
   subheadline,
   ctaText,
   ctaUrl,
@@ -240,6 +276,10 @@ export default function HeroSplitImage({
     800,
     800,
   );
+
+  const useHighlighter = Boolean(highlightWord);
+  const useTextReveal =
+    !useHighlighter && revealHeadline && !shouldReduceMotion;
 
   return (
     <section
@@ -285,7 +325,19 @@ export default function HeroSplitImage({
             variants={fadeUp}
             className="text-balance text-3xl font-bold leading-tight text-base-content sm:text-4xl md:text-5xl lg:text-7xl"
           >
-            {headline}
+            {useHighlighter ? (
+              renderHighlightedHeadline(
+                headline,
+                highlightWord as string,
+                accentColorScheme,
+              )
+            ) : useTextReveal ? (
+              <TextReveal split="word" triggerOnView>
+                {headline}
+              </TextReveal>
+            ) : (
+              headline
+            )}
             {headlineAccent && (
               <>
                 {" "}
