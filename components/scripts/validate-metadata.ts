@@ -130,7 +130,11 @@ interface MetadataJson {
   pairsWell: string[];
   pairsPoorly: string[];
   variants?: ComponentVariantEntry[];
-  description?: string;
+  descriptions?: {
+    descriptive: string;
+    usage: string;
+    audienceFit: string;
+  };
 }
 
 /* ------------------------------------------------------------------ */
@@ -319,6 +323,20 @@ function validateOne(
         .map((v) => `"${v}"`)
         .join(", ")}]`,
     );
+  }
+
+  // Rule 9: when descriptions is present, all three axes must be non-empty strings.
+  if (metadata.descriptions !== undefined) {
+    const axes: ReadonlyArray<keyof NonNullable<MetadataJson["descriptions"]>> =
+      ["descriptive", "usage", "audienceFit"];
+    for (const axis of axes) {
+      const v = metadata.descriptions[axis];
+      if (typeof v !== "string" || v.trim().length === 0) {
+        errors.push(
+          `field "descriptions.${axis}" must be a non-empty string when "descriptions" is present`,
+        );
+      }
+    }
   }
 }
 
