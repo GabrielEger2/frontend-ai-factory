@@ -14,18 +14,19 @@ import {
   ComponentItem,
   StyleOutput,
 } from "../shared/types";
-import { getDriver, getNeo4jDatabase } from "../shared/neo4j-client";
 import { getEmbedding } from "../shared/embeddings";
 import { getQdrantClient } from "../shared/qdrant-client";
-import { emitNeo4jQueryError, emitQdrantQueryError } from "../shared/metrics";
+import { emitQdrantQueryError } from "../shared/metrics";
 import { ComposerAgentInput, ComposerAgentInputSchema } from "./types";
 import {
   buildSystemPrompt,
   buildUserPrompt,
   CandidateComponent,
+  PairMatrixEntry,
 } from "./prompt";
 import { runPairPostCheck } from "./post-check";
 import { COMPONENT_METADATA } from "../assembler/component-sources.generated";
+import { DEFAULT_SKELETON } from "./defaultSkeleton";
 
 /* ------------------------------------------------------------------ */
 /*  Layout constraint violation                                        */
@@ -44,16 +45,6 @@ class LayoutConstraintError extends Error {
     super(message);
     this.name = "LayoutConstraintError";
   }
-}
-
-/* ------------------------------------------------------------------ */
-/*  Pair matrix entry (pair compatibility between candidate components) */
-/* ------------------------------------------------------------------ */
-
-export interface PairMatrixEntry {
-  a: string;
-  b: string;
-  score: number;
 }
 
 /* ------------------------------------------------------------------ */
@@ -173,108 +164,7 @@ async function getClaudeApiKey(): Promise<string> {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Neo4j graph query for candidate components                         */
-/* ------------------------------------------------------------------ */
-
-async function getGraphCandidates(
-  segment: string,
-  imageryDensityScale: number,
-): Promise<{
-  candidates: CandidateComponent[];
-  pairMatrix: PairMatrixEntry[];
-}> {
-  const driver = await getDriver();
-  const database = await getNeo4jDatabase();
-  const session = driver.session({ database });
-
-  try {
-    const result = await session.run(
-      `
-      CALL {
-        MATCH (seg:Segment {id: $segmentId})
-          -[:NATURALLY_FEELS]->(m:Mood)
-          -[:EXPRESSED_AS]->(st:Style)
-          <-[:HAS_STYLE]-(c:Component)
-        RETURN c, count(DISTINCT m) AS moodHits, count(DISTINCT st) AS styleHits
-        UNION ALL
-        MATCH (seg:Segment {id: $segmentId})
-          -[:NATURALLY_FEELS]->(m:Mood)
-          <-[:HAS_MOOD]-(c:Component)
-        RETURN c, count(DISTINCT m) AS moodHits, 0 AS styleHits
-      }
-      WITH c, sum(moodHits) AS moodHits, max(styleHits) AS styleHits
-      OPTIONAL MATCH (c)-[pw:PAIRS_WITH]->()
-      WITH c, moodHits, styleHits,
-        avg(pw.score) AS avgPairScore
-      RETURN c.id AS id, c.name AS name, c.category AS category,
-             c.density AS density, c.layout AS layout,
-             c.imageWeight AS imageWeight,
-             moodHits, styleHits,
-             coalesce(avgPairScore, 0.5) AS avgPairScore
-      ORDER BY (moodHits * 2 + styleHits + avgPairScore + coalesce(c.imageWeight, 0) * $imageryDensityScale) DESC
-      LIMIT 20
-      `,
-      { segmentId: segment, imageryDensityScale },
-    );
-
-    const candidates: CandidateComponent[] = result.records.map((record) => ({
-      id: record.get("id") as string,
-      name: record.get("name") as string,
-      category: record.get("category") as string,
-      density: record.get("density") as string,
-      layout: record.get("layout") as string,
-      moodHits:
-        typeof record.get("moodHits") === "object"
-          ? (record.get("moodHits") as { toNumber(): number }).toNumber()
-          : (record.get("moodHits") as number),
-      styleHits:
-        typeof record.get("styleHits") === "object"
-          ? (record.get("styleHits") as { toNumber(): number }).toNumber()
-          : (record.get("styleHits") as number),
-      avgPairScore:
-        typeof record.get("avgPairScore") === "object"
-          ? (record.get("avgPairScore") as { toNumber(): number }).toNumber()
-          : (record.get("avgPairScore") as number),
-      imageWeight: (() => {
-        const raw = record.get("imageWeight");
-        if (raw === null || raw === undefined) return undefined;
-        if (typeof raw === "object" && raw !== null && "toNumber" in raw) {
-          return (raw as { toNumber(): number }).toNumber();
-        }
-        return raw as number;
-      })(),
-    }));
-
-    const candidateIds = candidates.map((c) => c.id);
-
-    const pairResult = await session.run(
-      `
-      MATCH (a:Component)-[pw:PAIRS_WITH]->(b:Component)
-      WHERE a.id IN $candidateIds AND b.id IN $candidateIds
-        AND a.id < b.id
-      RETURN a.id AS a, b.id AS b, pw.score AS score
-      ORDER BY pw.score DESC
-      `,
-      { candidateIds },
-    );
-
-    const pairMatrix: PairMatrixEntry[] = pairResult.records.map((record) => ({
-      a: record.get("a") as string,
-      b: record.get("b") as string,
-      score:
-        typeof record.get("score") === "object"
-          ? (record.get("score") as { toNumber(): number }).toNumber()
-          : (record.get("score") as number),
-    }));
-
-    return { candidates, pairMatrix };
-  } finally {
-    await session.close();
-  }
-}
-
-/* ------------------------------------------------------------------ */
-/*  DynamoDB fallback — scan ComponentsTable when Neo4j is unavailable */
+/*  DynamoDB fallback — scan ComponentsTable when vector search fails  */
 /* ------------------------------------------------------------------ */
 
 async function getDynamoFallbackCandidates(
@@ -367,30 +257,28 @@ async function markComposingStarted(projectId: string): Promise<void> {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Vector retrieval helpers (Qdrant semantic search)                  */
+/*  Vector retrieval — per-slot category-filtered Qdrant search        */
 /* ------------------------------------------------------------------ */
 
-function buildVectorSearchQuery(input: ComposerAgentInput): string {
-  const parts: string[] = [
-    input.segment,
-    input.description,
-    input.researchOutput?.companySummary ?? "",
-    input.researchOutput?.targetAudience ?? "",
-    ...(input.styleOutput?.mood ?? []),
-    ...(input.styleOutput?.style ?? []),
-  ];
-  return parts.filter(Boolean).join(" ");
-}
-
-async function getVectorCandidates(
+/**
+ * Run a single Qdrant cosine-similarity search restricted to one canonical
+ * category. The `category` field on each Qdrant payload was seeded in Stage 1
+ * with the singular canonical value (matching `metadata.json`'s `category`),
+ * so the equality match below is sufficient — no payload re-shape required.
+ */
+async function getVectorCandidatesForSlot(
   queryVector: number[],
   topK: number,
+  category: string,
 ): Promise<CandidateComponent[]> {
   const client = await getQdrantClient();
   const hits = await client.search("components", {
     vector: queryVector,
     limit: topK,
     with_payload: true,
+    filter: {
+      must: [{ key: "category", match: { value: category } }],
+    },
   });
   return hits.map((hit) => {
     const p = hit.payload as {
@@ -401,16 +289,54 @@ async function getVectorCandidates(
     return {
       id: p.componentId ?? String(hit.id),
       name: p.name ?? "",
-      category: p.category ?? "",
+      category: p.category ?? category,
       density: "medium",
       layout: "full",
       moodHits: 0,
       styleHits: 0,
-      avgPairScore: 0,
+      // Surface the cosine similarity in `avgPairScore` so re-ranker logic
+      // operates on a single normalized 0–1 score field.
+      avgPairScore: hit.score,
       vectorScore: hit.score,
       source: "vector" as const,
     };
   });
+}
+
+/**
+ * Greedy left-to-right re-ranker: for each candidate, scan every previously
+ * picked component's `pairsWell` / `pairsPoorly` arrays. A hit in `pairsWell`
+ * applies a +0.3 boost to the candidate's `avgPairScore`; a hit in
+ * `pairsPoorly` applies a -0.3 demotion. Adjustments are clamped to [0, 1].
+ *
+ * Pure function — does not mutate input. Returns a freshly sorted array
+ * (descending by adjusted `avgPairScore`).
+ *
+ * Phase A boost values are intentionally simple and uniform; Phase D will
+ * replace this with a calibrated model that weights pair distance, slot
+ * category, and seller feedback.
+ */
+function reRankByPairsWell(
+  candidates: CandidateComponent[],
+  pickedIds: string[],
+): CandidateComponent[] {
+  const BOOST = 0.3;
+  const DEMOTE = 0.3;
+
+  return [...candidates]
+    .map((c) => {
+      let adjustment = 0;
+      for (const pickedId of pickedIds) {
+        const pickedMeta = COMPONENT_METADATA[pickedId];
+        const pairsWell = pickedMeta?.pairsWell ?? [];
+        const pairsPoorly = pickedMeta?.pairsPoorly ?? [];
+        if (pairsWell.includes(c.id)) adjustment += BOOST;
+        if (pairsPoorly.includes(c.id)) adjustment -= DEMOTE;
+      }
+      const adjusted = Math.max(0, Math.min(1, c.avgPairScore + adjustment));
+      return { ...c, avgPairScore: adjusted };
+    })
+    .sort((a, b) => b.avgPairScore - a.avgPairScore);
 }
 
 /* ------------------------------------------------------------------ */
@@ -420,7 +346,7 @@ async function getVectorCandidates(
 async function composeLayouts(
   input: ReturnType<typeof ComposerAgentInputSchema.parse>,
   candidates: CandidateComponent[],
-  source: "graph" | "fallback" | "hybrid",
+  source: "vector" | "fallback",
   pairMatrix: PairMatrixEntry[],
 ): Promise<ComposerOutput> {
   const apiKey = await getClaudeApiKey();
@@ -460,26 +386,9 @@ async function composeLayouts(
   const validated = ComposerOutputSchema.parse(parsed);
 
   validated.candidateCount = candidates.length;
-  const selectedComponents =
-    validated.layouts[validated.selectedLayout].components;
-  const pairLookup = new Map<string, number>();
-  for (const entry of pairMatrix) {
-    const key = [entry.a, entry.b].sort().join("|");
-    pairLookup.set(key, entry.score);
-  }
-  let scoreSum = 0;
-  let scoreCount = 0;
-  for (let i = 0; i < selectedComponents.length - 1; i++) {
-    const key = [selectedComponents[i], selectedComponents[i + 1]]
-      .sort()
-      .join("|");
-    const score = pairLookup.get(key);
-    if (score !== undefined) {
-      scoreSum += score;
-      scoreCount++;
-    }
-  }
-  validated.avgScore = scoreCount > 0 ? scoreSum / scoreCount : null;
+  // No graph-derived pair matrix in Phase A — `avgScore` is unused until
+  // Phase D reintroduces a deterministic adjacency score. Mark explicitly null.
+  validated.avgScore = null;
 
   const enforced = enforceNavbarFooter(validated);
 
@@ -598,151 +507,109 @@ export const handler: Handler<
   // 2. Mark project as "composing" before processing
   await markComposingStarted(input.projectId);
 
-  // 3. Get candidate components — try graph first, fallback to DynamoDB.
-  //    In parallel, request the OpenAI embedding for the project brief so
-  //    Qdrant vector retrieval can run alongside the graph query.
-  let candidates: CandidateComponent[];
-  let source: "graph" | "fallback" | "hybrid";
-  let pairMatrix: PairMatrixEntry[] = [];
-  const VECTOR_TOP_K = 8;
-  let vectorCandidates: CandidateComponent[] = [];
+  // 3. Per-slot category-filtered vector search with greedy PAIRS_WITH
+  //    re-ranking. Each slot in DEFAULT_SKELETON drives one OpenAI embedding
+  //    call and one Qdrant search restricted to that category. Picks are
+  //    taken left-to-right; previously picked components bias subsequent
+  //    rankings via metadata-native pairsWell / pairsPoorly arrays.
+  let allCandidates: CandidateComponent[] = [];
+  let source: "vector" | "fallback" = "vector";
+  const pickedIds: string[] = [];
+  const moodTags = (input.styleOutput.mood ?? []).join(", ");
+  const SLOT_TOP_K = 5;
 
-  // Compute imageryDensityScale to bias candidate scoring by visual density.
-  // Negative scale demotes image-heavy components (e.g. SaaS-tooling),
-  // positive scale promotes them (e.g. real-estate, portfolio, fashion).
-  const imageryDensityScale =
-    { low: -1, medium: 0, high: 2 }[
-      input.styleOutput?.imageryDensity ?? "medium"
-    ] ?? 0;
+  let qdrantHadAnySuccess = false;
+  for (const slot of DEFAULT_SKELETON) {
+    const slotQuery = `${slot.category} for ${input.companyName}; mood: ${moodTags}; needs: ${slot.purpose}`;
+    let slotQueryVector: number[];
+    try {
+      slotQueryVector = await getEmbedding(slotQuery);
+    } catch (err) {
+      console.warn(
+        JSON.stringify({
+          agent: "composer",
+          projectId: input.projectId,
+          warning: `Embedding failed for slot ${slot.category}`,
+          error: err instanceof Error ? err.message : String(err),
+        }),
+      );
+      continue;
+    }
+    try {
+      const slotCandidates = await getVectorCandidatesForSlot(
+        slotQueryVector,
+        SLOT_TOP_K,
+        slot.category,
+      );
+      const ranked = reRankByPairsWell(slotCandidates, pickedIds);
+      const top = ranked[0];
+      if (top) {
+        pickedIds.push(top.id);
+        allCandidates.push(...ranked);
+        qdrantHadAnySuccess = true;
+      }
+    } catch (err) {
+      console.warn(
+        JSON.stringify({
+          agent: "composer",
+          projectId: input.projectId,
+          warning: `Qdrant slot query failed for ${slot.category}`,
+          error: err instanceof Error ? err.message : String(err),
+        }),
+      );
+      emitQdrantQueryError("composer");
+    }
+  }
 
-  // Run graph query and embedding fetch concurrently. `as const` preserves
-  // per-element types in the Promise.allSettled tuple — without it the
-  // inferred type is a union and `.value` accessors break.
-  const results = await Promise.allSettled([
-    getGraphCandidates(input.segment, imageryDensityScale),
-    getEmbedding(buildVectorSearchQuery(input)),
-  ] as const);
-  const [graphResult, embeddingResult] = results;
+  // Dedup by id (same component may surface in multiple slot queries when
+  // categories overlap or vectors converge on a versatile candidate).
+  const seen = new Set<string>();
+  allCandidates = allCandidates.filter((c) => {
+    if (seen.has(c.id)) return false;
+    seen.add(c.id);
+    return true;
+  });
 
-  if (graphResult.status === "fulfilled") {
-    candidates = graphResult.value.candidates;
-    pairMatrix = graphResult.value.pairMatrix;
-    source = "graph";
-    console.log(
-      JSON.stringify({
-        agent: "composer",
-        projectId: input.projectId,
-        candidateSource: "graph",
-        candidateCount: candidates.length,
-      }),
-    );
-  } else {
-    console.warn(
-      JSON.stringify({
-        agent: "composer",
-        projectId: input.projectId,
-        warning: "Neo4j unavailable, falling back to DynamoDB scan",
-        error:
-          graphResult.reason instanceof Error
-            ? graphResult.reason.message
-            : String(graphResult.reason),
-      }),
-    );
-    emitNeo4jQueryError("composer");
-    candidates = await getDynamoFallbackCandidates(
-      input.styleOutput,
-      imageryDensityScale,
-    );
+  if (!qdrantHadAnySuccess || allCandidates.length === 0) {
+    // Pass `0` for imageryDensityScale: with no graph-derived bias, the
+    // fallback path treats imagery as neutral. Not perfect, but acceptable
+    // for the cold-path failure mode.
+    allCandidates = await getDynamoFallbackCandidates(input.styleOutput, 0);
     source = "fallback";
     console.log(
       JSON.stringify({
         agent: "composer",
         projectId: input.projectId,
         candidateSource: "fallback",
-        candidateCount: candidates.length,
+        candidateCount: allCandidates.length,
       }),
     );
-  }
-
-  // Qdrant vector retrieval — isolated try/catch. Failure here MUST NOT
-  // affect the graph/fallback chain. Reuse the embedding from the parallel
-  // Promise.allSettled if it succeeded; otherwise re-fetch once.
-  try {
-    const queryVector =
-      embeddingResult.status === "fulfilled"
-        ? embeddingResult.value
-        : await getEmbedding(buildVectorSearchQuery(input));
-    vectorCandidates = await getVectorCandidates(queryVector, VECTOR_TOP_K);
+  } else {
     console.log(
       JSON.stringify({
         agent: "composer",
         projectId: input.projectId,
         candidateSource: "vector",
-        vectorCandidateCount: vectorCandidates.length,
-      }),
-    );
-  } catch (err) {
-    console.warn(
-      JSON.stringify({
-        agent: "composer",
-        projectId: input.projectId,
-        warning: "Qdrant unavailable, skipping vector candidates",
-        error: err instanceof Error ? err.message : String(err),
-      }),
-    );
-    emitQdrantQueryError("composer");
-    vectorCandidates = [];
-  }
-
-  // Merge graph/DDB candidates with vector candidates by id. Components in
-  // both sources upgrade to source: "graph+vector". Top-level source upgrades
-  // from "graph" to "hybrid" only when graph succeeded AND vector merged —
-  // "fallback" stays "fallback" so graph-outage signal remains visible.
-  if (vectorCandidates.length > 0) {
-    const merged = new Map<string, CandidateComponent>();
-    for (const c of candidates) {
-      merged.set(c.id, { ...c, source: c.source ?? "graph" });
-    }
-    for (const v of vectorCandidates) {
-      const existing = merged.get(v.id);
-      if (existing) {
-        merged.set(v.id, {
-          ...existing,
-          vectorScore: v.vectorScore,
-          source: "graph+vector",
-        });
-      } else {
-        merged.set(v.id, v);
-      }
-    }
-    candidates = Array.from(merged.values());
-    if (source !== "fallback") {
-      source = "hybrid";
-    }
-    console.log(
-      JSON.stringify({
-        agent: "composer",
-        projectId: input.projectId,
-        candidateSource: "hybrid",
-        vectorCandidateCount: vectorCandidates.length,
-        mergedCandidateCount: candidates.length,
+        candidateCount: allCandidates.length,
+        pickedSlots: pickedIds.length,
       }),
     );
   }
 
-  if (candidates.length === 0) {
+  if (allCandidates.length === 0) {
     throw new Error(
       `No candidate components found for segment "${input.segment}"`,
     );
   }
 
-  // 4. Call Claude to compose layouts from candidates
-  const composerOutput = await composeLayouts(
-    input,
-    candidates,
-    source,
-    pairMatrix,
-  );
+  // 4. Call Claude to compose layouts from candidates. `pairMatrix` is
+  //    always [] in Phase A — graph-derived pair scores are gone, and
+  //    metadata-native pairsWell/pairsPoorly are applied via reRankByPairsWell
+  //    above (not as a separate matrix passed to the LLM). The empty matrix
+  //    parameter is preserved on `composeLayouts` for forward compatibility
+  //    with Phase D scoring; the prompt's matrix block silently renders nothing
+  //    when the array is empty.
+  const composerOutput = await composeLayouts(input, allCandidates, source, []);
 
   console.log(
     JSON.stringify({
