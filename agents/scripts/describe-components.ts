@@ -119,7 +119,7 @@ interface MetadataJson {
   pairsWell: string[];
   pairsPoorly: string[];
   variants?: ComponentVariantEntry[];
-  description?: string;
+  descriptions?: { descriptive: string; usage: string; audienceFit: string };
 }
 
 /* ------------------------------------------------------------------ */
@@ -238,9 +238,13 @@ async function main(): Promise<void> {
       continue;
     }
 
+    // Legacy single-description field (pre-Phase C) — checked via cast.
+    // This skip/write path is fully rewritten in WI2 to use the new
+    // 3-axis `descriptions` object.
+    const legacy = (json as MetadataJson & { description?: string })
+      .description;
     const hasDescription =
-      typeof json.description === "string" &&
-      json.description.trim().length > 0;
+      typeof legacy === "string" && legacy.trim().length > 0;
 
     if (hasDescription && !force) {
       console.log(`[skip] ${json.id} — description already set`);
@@ -250,7 +254,10 @@ async function main(): Promise<void> {
 
     try {
       const description = await generateDescription(json);
-      const updated: MetadataJson = { ...json, description };
+      const updated: MetadataJson = {
+        ...json,
+        ...({ description } as Partial<MetadataJson>),
+      };
       writeMetadata(filePath, updated);
       console.log(
         `[done] ${json.id} — ${description.substring(0, 80)}${description.length > 80 ? "…" : ""}`,

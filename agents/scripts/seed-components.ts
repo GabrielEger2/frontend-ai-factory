@@ -93,7 +93,7 @@ interface MetadataJson {
   pairsWell: string[];
   pairsPoorly: string[];
   variants?: ComponentVariantEntry[];
-  description?: string;
+  descriptions?: { descriptive: string; usage: string; audienceFit: string };
 }
 
 interface ComponentSeedItem {

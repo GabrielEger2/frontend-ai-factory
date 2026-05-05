@@ -91,7 +91,7 @@ interface MetadataJson {
   pairsWell: string[];
   pairsPoorly: string[];
   variants?: ComponentVariantEntry[];
-  description?: string;
+  descriptions?: { descriptive: string; usage: string; audienceFit: string };
 }
 
 /* ------------------------------------------------------------------ */
@@ -135,11 +135,12 @@ function buildEmbeddingInput(json: MetadataJson): string {
     `Purpose: ${json.purpose.join(", ")}`,
   ];
 
-  if (
-    typeof json.description === "string" &&
-    json.description.trim().length > 0
-  ) {
-    parts.push(`Description: ${json.description.trim()}`);
+  // Legacy single-description field (pre-Phase C) — read via cast.
+  // The `descriptions` object replaces this; this function is fully
+  // rewritten in WI4 (per phase-c-plan).
+  const legacy = (json as MetadataJson & { description?: string }).description;
+  if (typeof legacy === "string" && legacy.trim().length > 0) {
+    parts.push(`Description: ${legacy.trim()}`);
   }
 
   return parts.join("\n");
