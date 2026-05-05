@@ -54,7 +54,7 @@ export class MainStage extends Construct {
     /*  3. VectorStack — Qdrant Cloud + OpenAI SSM parameter paths      */
     /* ---------------------------------------------------------------- */
 
-    new VectorStack(this, "VectorStack");
+    const vector = new VectorStack(this, "VectorStack");
 
     /* ---------------------------------------------------------------- */
     /*  4. PipelineStack — SQS, Step Functions, agent Lambdas           */
@@ -71,6 +71,9 @@ export class MainStage extends Construct {
       neo4jPasswordSsmPath: graph.neo4jPasswordSsmPath,
       neo4jUsernameSsmPath: graph.neo4jUsernameSsmPath,
       neo4jDatabaseSsmPath: graph.neo4jDatabaseSsmPath,
+      qdrantEndpointSsmPath: vector.qdrantEndpointSsmPath,
+      qdrantApiKeySsmPath: vector.qdrantApiKeySsmPath,
+      openAiApiKeySsmPath: vector.openAiApiKeySsmPath,
     });
 
     /* ---------------------------------------------------------------- */
