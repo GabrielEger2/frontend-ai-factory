@@ -137,7 +137,7 @@ If no variant is better than default, omit from variantSelections.`;
 export function buildUserPrompt(
   input: ComposerAgentInput,
   candidates: CandidateComponent[],
-  source: "graph" | "fallback",
+  source: "graph" | "fallback" | "hybrid",
   pairMatrix: PairMatrixEntry[],
 ): string {
   const companySection = [
@@ -203,15 +203,18 @@ export function buildUserPrompt(
               .map((v) => `${v.id}(${v.colorMode}/${v.density})`)
               .join(", ")
           : "\u2014";
-      return `| ${c.id} | ${c.name} | ${c.category} | ${c.density} | ${c.layout} | ${c.moodHits} | ${c.styleHits} | ${c.avgPairScore.toFixed(2)} | ${variantCol} |`;
+      const vectorScoreCol =
+        c.vectorScore !== undefined ? c.vectorScore.toFixed(3) : "\u2014";
+      const sourceCol = c.source ?? "graph";
+      return `| ${c.id} | ${c.name} | ${c.category} | ${c.density} | ${c.layout} | ${c.moodHits} | ${c.styleHits} | ${c.avgPairScore.toFixed(2)} | ${vectorScoreCol} | ${sourceCol} | ${variantCol} |`;
     })
     .join("\n");
 
   const candidateSection = [
     "## Candidate Components",
     "",
-    "| ID | Name | Category | Density | Layout | MoodHits | StyleHits | AvgPairScore | Variants |",
-    "|---|---|---|---|---|---|---|---|---|",
+    "| ID | Name | Category | Density | Layout | MoodHits | StyleHits | AvgPairScore | VectorScore | Source | Variants |",
+    "|---|---|---|---|---|---|---|---|---|---|---|",
     candidateRows,
   ].join("\n");
 
@@ -231,7 +234,7 @@ export function buildUserPrompt(
         ].join("\n")
       : "";
 
-  const sourceNote = `\n## Source\n\nSet "source" to "${source}" in your output.\n`;
+  const sourceNote = `\n## Source\n\nSet "source" to "${source}" in your output. Use "hybrid" when candidates from multiple retrieval sources are present.\n`;
 
   return [
     companySection,
