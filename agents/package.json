@@ -7,8 +7,6 @@
     "type-check": "tsc --noEmit",
     "seed:components": "ts-node scripts/seed-components.ts sitegen-components",
     "generate:pairs": "ts-node scripts/generate-pair-scores.ts",
-    "seed:graph": "ts-node scripts/seed-graph.ts",
-    "verify:graph": "ts-node scripts/verify-graph.ts",
     "generate-sources": "ts-node assembler/generate-sources.ts",
     "import:nicepage": "ts-node scripts/nicepage-import.ts",
     "describe:components": "ts-node scripts/describe-components.ts",
@@ -26,7 +24,6 @@
     "@aws-sdk/client-sqs": "^3",
     "@qdrant/js-client-rest": "^1",
     "cheerio": "^1.0.0-rc.12",
-    "neo4j-driver": "^5",
     "openai": "^4",
     "playwright": "^1.44.0",
     "zod": "^3"

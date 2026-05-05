@@ -7,8 +7,6 @@ import Anthropic from "@anthropic-ai/sdk";
 import { StyleOutput, StyleOutputSchema } from "../shared/types";
 import { StyleAgentInput, StyleAgentInputSchema } from "./types";
 import { buildStyleSystemPrompt, buildStyleUserPrompt } from "./prompt";
-import { getDriver, getNeo4jDatabase } from "../shared/neo4j-client";
-import { emitNeo4jQueryError } from "../shared/metrics";
 
 const DEFAULT_STYLE_KIT = {
   card: "base",
@@ -17,19 +15,6 @@ const DEFAULT_STYLE_KIT = {
   background: "none",
   textDecoration: "none",
 };
-
-/* ------------------------------------------------------------------ */
-/*  Palette suggestion from Neo4j graph                                */
-/* ------------------------------------------------------------------ */
-
-interface PaletteSuggestion {
-  moodId: string;
-  paletteId: string;
-  paletteName: string;
-  temperatureRange: string;
-  contrastLevel: string;
-  saturationRange: string;
-}
 
 /* ------------------------------------------------------------------ */
 /*  Clients (reused across Lambda invocations)                         */
@@ -65,59 +50,6 @@ async function getClaudeApiKey(): Promise<string> {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Neo4j graph query for palette suggestions                          */
-/* ------------------------------------------------------------------ */
-
-async function queryPaletteSuggestions(
-  segment: string,
-): Promise<{ suggestions: PaletteSuggestion[]; source: "graph" | "fallback" }> {
-  try {
-    const driver = await getDriver();
-    const database = await getNeo4jDatabase();
-    const session = driver.session({ database });
-
-    try {
-      const result = await session.run(
-        `
-        MATCH (seg:Segment {id: $segmentId})
-          -[:NATURALLY_FEELS]->(m:Mood)
-          -[:SUGGESTS_PALETTE]->(p:PaletteProfile)
-        RETURN m.id AS moodId, p.id AS paletteId, p.name AS paletteName,
-               p.temperatureRange AS temperatureRange, p.contrastLevel AS contrastLevel,
-               p.saturationRange AS saturationRange
-        ORDER BY m.id, p.id
-        `,
-        { segmentId: segment },
-      );
-
-      return {
-        suggestions: result.records.map((record) => ({
-          moodId: record.get("moodId") as string,
-          paletteId: record.get("paletteId") as string,
-          paletteName: record.get("paletteName") as string,
-          temperatureRange: record.get("temperatureRange") as string,
-          contrastLevel: record.get("contrastLevel") as string,
-          saturationRange: record.get("saturationRange") as string,
-        })),
-        source: "graph" as const,
-      };
-    } finally {
-      await session.close();
-    }
-  } catch (err) {
-    emitNeo4jQueryError("style");
-    console.warn(
-      JSON.stringify({
-        agent: "style",
-        warning: "Neo4j unavailable, skipping palette suggestions",
-        error: err instanceof Error ? err.message : String(err),
-      }),
-    );
-    return { suggestions: [], source: "fallback" as const };
-  }
-}
-
-/* ------------------------------------------------------------------ */
 /*  Mark project as "styling" in DynamoDB                              */
 /* ------------------------------------------------------------------ */
 
@@ -147,13 +79,15 @@ async function markStylingStarted(projectId: string): Promise<void> {
 
 async function generateStyle(
   input: ReturnType<typeof StyleAgentInputSchema.parse>,
-  paletteSuggestions: PaletteSuggestion[],
 ): Promise<StyleOutput> {
   const apiKey = await getClaudeApiKey();
   const client = new Anthropic({ apiKey });
 
   const systemPrompt = buildStyleSystemPrompt();
-  const userPrompt = buildStyleUserPrompt(input, paletteSuggestions);
+  // Phase A removes the Neo4j-derived palette suggestions; the prompt-side
+  // `paletteSuggestions` parameter (typed as PaletteSuggestionHint[]) defaults
+  // to [] and the conditional rendering produces no section on empty input.
+  const userPrompt = buildStyleUserPrompt(input, []);
 
   const response = await client.messages.create({
     model: "claude-sonnet-4-20250514",
@@ -245,21 +179,13 @@ export const handler: Handler<StyleAgentInput, void> = async (event) => {
   // 2. Mark project as "styling" before calling Claude
   await markStylingStarted(input.projectId);
 
-  // 3. Query Neo4j for palette suggestions (graceful degradation — empty array on failure)
-  const { suggestions: paletteSuggestions, source: paletteSource } =
-    await queryPaletteSuggestions(input.segment);
-
-  console.log(
-    JSON.stringify({
-      agent: "style",
-      projectId: input.projectId,
-      paletteSuggestionsCount: paletteSuggestions.length,
-    }),
-  );
-
-  // 4. Generate style via Claude
-  const styleOutput = await generateStyle(input, paletteSuggestions);
-  styleOutput.paletteSource = paletteSource;
+  // 3. Generate style via Claude. Neo4j palette suggestions are gone in
+  //    Phase A; paletteSource is always "fallback". The enum on
+  //    StyleOutputSchema retains "graph" as a legacy value (existing DDB
+  //    items written during Stage 2 still parse), but new executions always
+  //    write "fallback".
+  const styleOutput = await generateStyle(input);
+  styleOutput.paletteSource = "fallback";
 
   console.log(
     JSON.stringify({

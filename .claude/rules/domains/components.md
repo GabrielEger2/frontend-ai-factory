@@ -74,11 +74,10 @@ Directory names (`components/library/footers/...`) may remain plural — only th
 }
 ```
 
-## PAIRS_WITH Scoring (Phase 3 — Neo4j)
-- Each component pair has a compatibility score (0-1).
-- The Composer Agent uses these scores to chain components into page layouts.
+## PAIRS_WITH Scoring
+- PAIRS_WITH data lives in `metadata.json` as `pairsWell` / `pairsPoorly` arrays. These are the source of truth.
+- The Composer Agent reads them as a re-ranking signal post-retrieval (greedy left-to-right boost/demote): once a slot is filled, candidates for subsequent slots whose IDs appear in any prior pick's `pairsWell` get boosted, and those in `pairsPoorly` get demoted.
 - Scores are manually seeded initially, then refined by the learning loop (Phase 5).
-- Until Neo4j is ready, PAIRS_WITH data lives in metadata.json as `pairsWell`/`pairsPoorly` arrays.
 - All values inside `pairsWell` and `pairsPoorly` MUST resolve to a real component `id` somewhere in the library. Ghost references (IDs that don't match any real component) are caught by the metadata validator.
 
 ## Slot System

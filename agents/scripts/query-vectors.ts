@@ -1,6 +1,5 @@
 /**
- * Demo: query the Qdrant `components` collection for the top-5 components
- * matching a free-form natural-language brief.
+ * Demo: query the Qdrant `components` collection per skeleton slot.
  *
  * Usage:
  *   ts-node scripts/query-vectors.ts "<brief>"
@@ -10,13 +9,16 @@
  *   QDRANT_API_KEY_SSM_PATH    — e.g. /sitegen/dev/qdrant-api-key
  *   OPENAI_API_KEY_SSM_PATH    — e.g. /sitegen/dev/openai-api-key
  *
- * Embeds the brief via OpenAI text-embedding-3-small (1536-d), runs a
- * cosine similarity search against the `components` collection, and prints
- * the top-5 hits as a markdown table.
+ * For each slot in DEFAULT_SKELETON, embeds a per-slot query string via
+ * OpenAI text-embedding-3-small (1536-d), runs a category-filtered cosine
+ * similarity search against the `components` collection, and prints the
+ * top-3 hits per slot as a markdown table. Mirrors the per-slot loop the
+ * Composer handler runs in production.
  */
 
 import { getEmbedding } from "../shared/embeddings";
 import { getQdrantClient } from "../shared/qdrant-client";
+import { DEFAULT_SKELETON } from "../composer/defaultSkeleton";
 
 /* ------------------------------------------------------------------ */
 /*  Resolve query brief                                                */
@@ -68,39 +70,42 @@ async function main(): Promise<void> {
   // narrowing across module-level checks is unreliable, so re-assert.
   const queryText: string = brief as string;
 
-  const queryVector = await getEmbedding(queryText);
-
   const client = await getQdrantClient();
 
-  // The Qdrant SDK exposes options in snake_case (`with_payload`),
-  // matching the underlying REST schema — verified against
-  // @qdrant/js-client-rest qdrant-client.d.ts.
-  const hits = await client.search("components", {
-    vector: queryVector,
-    limit: 5,
-    with_payload: true,
-  });
-
-  /* -------------------------------------------------------------- */
-  /*  Print markdown table                                          */
-  /* -------------------------------------------------------------- */
-
   const escapedBrief = queryText.replace(/"/g, '\\"');
-
   console.log();
   console.log(`> Query: "${escapedBrief}"`);
-  console.log();
-  console.log("| Rank | ID | Name | Category | Score |");
-  console.log("|---|---|---|---|---|");
 
-  hits.forEach((hit, idx) => {
-    const payload = (hit.payload ?? {}) as ComponentPayload;
-    const id = payload.componentId ?? String(hit.id);
-    const name = payload.name ?? "—";
-    const category = payload.category ?? "—";
-    const score = hit.score.toFixed(4);
-    console.log(`| ${idx + 1} | ${id} | ${name} | ${category} | ${score} |`);
-  });
+  for (const slot of DEFAULT_SKELETON) {
+    const slotQuery = `${slot.category} for ${queryText}; needs: ${slot.purpose}`;
+    const slotVector = await getEmbedding(slotQuery);
+
+    // The Qdrant SDK exposes options in snake_case (`with_payload`),
+    // matching the underlying REST schema — verified against
+    // @qdrant/js-client-rest qdrant-client.d.ts.
+    const hits = await client.search("components", {
+      vector: slotVector,
+      limit: 3,
+      with_payload: true,
+      filter: {
+        must: [{ key: "category", match: { value: slot.category } }],
+      },
+    });
+
+    console.log();
+    console.log(`## Slot: ${slot.category} (needs: ${slot.purpose})`);
+    console.log();
+    console.log("| Rank | ID | Name | Score |");
+    console.log("|---|---|---|---|");
+
+    hits.forEach((hit, idx) => {
+      const payload = (hit.payload ?? {}) as ComponentPayload;
+      const id = payload.componentId ?? String(hit.id);
+      const name = payload.name ?? "—";
+      const score = hit.score.toFixed(4);
+      console.log(`| ${idx + 1} | ${id} | ${name} | ${score} |`);
+    });
+  }
 }
 
 main().catch((err) => {

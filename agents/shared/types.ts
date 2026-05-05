@@ -183,7 +183,7 @@ export const ComposerLayoutSchema = z.object({
 export const ComposerOutputSchema = z.object({
   layouts: z.array(ComposerLayoutSchema),
   selectedLayout: z.number().int(),
-  source: z.enum(["graph", "fallback", "hybrid"]),
+  source: z.enum(["vector", "fallback"]).catch("vector"),
   candidateCount: z.number().int().optional(),
   avgScore: z.number().nullable().optional(),
   warnings: z.array(z.string()).optional(),
