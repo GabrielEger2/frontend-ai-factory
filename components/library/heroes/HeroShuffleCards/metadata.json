@@ -124,5 +124,10 @@
       ]
     }
   ],
-  "description": "A dynamic hero section featuring animated card elements that shuffle or rotate to showcase multiple key messages or services. Perfect for creative agencies, tech startups, and innovative businesses that want to demonstrate versatility and capture attention with interactive visual storytelling."
+  "description": "A dynamic hero section featuring animated card elements that shuffle or rotate to showcase multiple key messages or services. Perfect for creative agencies, tech startups, and innovative businesses that want to demonstrate versatility and capture attention with interactive visual storytelling.",
+  "descriptions": {
+    "descriptive": "A dynamic hero layout featuring overlapping card elements that appear to shuffle or stack with editorial-style typography. Bold geometric shapes and high contrast create visual energy while maintaining clean, modern proportions. The design balances professional structure with playful movement.",
+    "usage": "Perfect for homepage hero sections that need to immediately capture attention and convey multiple value propositions. Works best when you have 3-4 key messages or services to highlight simultaneously while maintaining focus on a primary call-to-action.",
+    "audienceFit": "Ideal for creative agencies, tech startups, design studios, and modern B2B services that want to appear approachable yet sophisticated. Appeals to audiences who value innovation and expect polished, contemporary digital experiences."
+  }
 }

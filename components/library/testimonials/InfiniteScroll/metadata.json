@@ -86,5 +86,10 @@
     "layout-stackedsplit-01",
     "layout-staggerfan-01"
   ],
-  "description": "A continuously scrolling testimonial component with bold typography and editorial spacing that creates dynamic social proof. Perfect for tech companies and agencies wanting to showcase extensive client feedback without pagination interruptions."
+  "description": "A continuously scrolling testimonial component with bold typography and editorial spacing that creates dynamic social proof. Perfect for tech companies and agencies wanting to showcase extensive client feedback without pagination interruptions.",
+  "descriptions": {
+    "descriptive": "A continuous, vertically scrolling testimonial feed with bold typography and editorial-style card layouts. Features high contrast text blocks, generous whitespace, and dynamic motion that creates an energetic browsing experience while maintaining clean, professional aesthetics.",
+    "usage": "Deploy when you have numerous customer testimonials to showcase without overwhelming the page layout. Ideal for building sustained credibility through social proof, allowing users to browse testimonials at their own pace while maintaining engagement through smooth scrolling interactions.",
+    "audienceFit": "Perfect for established B2B SaaS platforms, consulting firms, and premium service providers who need to demonstrate extensive client satisfaction. Appeals to decision-makers who value comprehensive social validation and professional credibility in their vendor selection process."
+  }
 }

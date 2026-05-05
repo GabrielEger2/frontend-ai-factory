@@ -81,5 +81,10 @@
     "layout-stickycards-01"
   ],
   "pairsPoorly": [],
-  "description": "A clean, animated statistics display that reveals key numbers through count-up animations, perfect for corporate websites and professional service firms showcasing achievements, metrics, or company milestones."
+  "description": "A clean, animated statistics display that reveals key numbers through count-up animations, perfect for corporate websites and professional service firms showcasing achievements, metrics, or company milestones.",
+  "descriptions": {
+    "descriptive": "Clean numerical displays with animated count-up effects, featuring bold typography and generous whitespace. Uses a restrained color palette with subtle accent colors to highlight key metrics. Grid-based layout maintains visual hierarchy through consistent spacing and typography scales.",
+    "usage": "Showcases quantifiable achievements, company metrics, or performance data to build credibility. Best positioned after hero sections or within about pages to reinforce brand authority through concrete numbers like years in business, clients served, or success rates.",
+    "audienceFit": "Perfect for established B2B companies, consulting firms, financial services, and professional service providers who need to demonstrate track record and reliability. Appeals to decision-makers who value data-driven proof points over emotional appeals."
+  }
 }

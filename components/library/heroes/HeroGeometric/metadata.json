@@ -183,5 +183,10 @@
       ]
     }
   ],
-  "description": "A clean, geometric hero section with structured layouts and minimal styling that builds trust through professional design. Perfect for corporate websites, B2B services, and tech companies seeking a sophisticated, authoritative first impression."
+  "description": "A clean, geometric hero section with structured layouts and minimal styling that builds trust through professional design. Perfect for corporate websites, B2B services, and tech companies seeking a sophisticated, authoritative first impression.",
+  "descriptions": {
+    "descriptive": "Clean geometric shapes and sharp angular elements create a structured, symmetrical composition with plenty of white space. Typography is sans-serif and hierarchical, while a restrained color palette emphasizes precision and order through mathematical forms and grid-based alignment.",
+    "usage": "Opens corporate websites and landing pages where first impressions matter most. Establishes immediate credibility while clearly communicating the primary value proposition to visitors who need quick confidence in the brand's expertise and reliability.",
+    "audienceFit": "Perfect for established B2B companies, financial services, consulting firms, and technology companies targeting enterprise clients. Appeals to decision-makers who value professionalism over creativity and prefer conservative, time-tested visual approaches that signal stability."
+  }
 }

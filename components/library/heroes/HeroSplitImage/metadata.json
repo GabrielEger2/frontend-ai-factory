@@ -249,5 +249,10 @@
       ]
     }
   ],
-  "description": "A split-screen hero section that pairs impactful imagery with headline content, designed for professional service firms and corporate brands seeking an elegant, editorial-style first impression."
+  "description": "A split-screen hero section that pairs impactful imagery with headline content, designed for professional service firms and corporate brands seeking an elegant, editorial-style first impression.",
+  "descriptions": {
+    "descriptive": "A sophisticated split-screen layout featuring a prominent image occupying half the viewport alongside clean typography and minimal content. The design emphasizes white space, refined typography hierarchy, and balanced proportions that convey editorial sophistication with corporate polish.",
+    "usage": "Perfect for homepage hero sections where visual storytelling needs equal weight with messaging. Ideal when you have compelling photography or graphics that deserve prominence while maintaining space for clear value propositions and primary calls-to-action.",
+    "audienceFit": "Professional services firms, B2B companies, consulting agencies, and established brands seeking to project authority and credibility. Appeals to discerning audiences who value quality presentation and expect polished, magazine-quality digital experiences."
+  }
 }

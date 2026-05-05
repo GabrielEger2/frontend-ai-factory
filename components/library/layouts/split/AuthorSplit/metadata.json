@@ -85,5 +85,10 @@
   "pairsPoorly": [
     "layout-statementsplit-01"
   ],
-  "description": "A clean split-layout component that pairs professional headshots with biographical content, perfect for editorial sites, consulting firms, and creative agencies showcasing their team or founder stories."
+  "description": "A clean split-layout component that pairs professional headshots with biographical content, perfect for editorial sites, consulting firms, and creative agencies showcasing their team or founder stories.",
+  "descriptions": {
+    "descriptive": "Clean two-column layout with generous white space and editorial typography. Features author headshot alongside biographical content in a balanced, asymmetrical composition. Minimal styling with sophisticated font hierarchy creates an elegant, magazine-like aesthetic that feels both modern and timeless.",
+    "usage": "Perfect for about pages, team member profiles, or author bio sections where personal storytelling meets professional credibility. Displays individual expertise and personality while maintaining organizational structure for multiple team members or contributors.",
+    "audienceFit": "Ideal for creative agencies, publishing houses, consulting firms, and professional services that value thought leadership. Appeals to audiences seeking expertise with a human touch - clients who appreciate both competence and approachability in their service providers."
+  }
 }

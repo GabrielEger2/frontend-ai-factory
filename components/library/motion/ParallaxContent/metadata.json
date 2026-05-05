@@ -78,5 +78,10 @@
     "layout-stickycards-01",
     "hero-parallax-images-01"
   ],
-  "description": "A sophisticated parallax scrolling component that creates depth and visual interest while showcasing key content sections. Perfect for creative agencies, design studios, and modern businesses wanting to highlight their services or company story with dynamic, engaging motion effects."
+  "description": "A sophisticated parallax scrolling component that creates depth and visual interest while showcasing key content sections. Perfect for creative agencies, design studios, and modern businesses wanting to highlight their services or company story with dynamic, engaging motion effects.",
+  "descriptions": {
+    "descriptive": "Layered scrolling animation creates depth through staggered movement speeds between foreground content and background elements. Bold typography and editorial-style imagery move at different rates, producing a sophisticated kinetic experience with clean, modern spacing and energetic visual flow.",
+    "usage": "Enhances feature presentations, about sections, or service showcases where storytelling benefits from dynamic visual engagement. Ideal for guiding users through detailed content while maintaining attention through subtle motion that reveals information progressively.",
+    "audienceFit": "Appeals to creative agencies, tech companies, and premium service providers seeking to demonstrate innovation and attention to detail. Resonates with audiences who value cutting-edge digital experiences and expect polished, interactive brand touchpoints."
+  }
 }

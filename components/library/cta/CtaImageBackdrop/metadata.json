@@ -130,5 +130,10 @@
     "cta-cta-editorial-split-01",
     "cta-cta-collage-duo-01"
   ],
-  "description": "A sophisticated call-to-action that overlays text on a full-width background image, creating an editorial magazine-like aesthetic perfect for luxury brands and premium service providers wanting to combine compelling visuals with clear action prompts."
+  "description": "A sophisticated call-to-action that overlays text on a full-width background image, creating an editorial magazine-like aesthetic perfect for luxury brands and premium service providers wanting to combine compelling visuals with clear action prompts.",
+  "descriptions": {
+    "descriptive": "A sophisticated call-to-action featuring a large, high-quality background image with refined typography overlays. Clean lines and generous whitespace create breathing room, while the editorial styling emphasizes visual storytelling through carefully curated photography and minimal design elements that exude calm luxury.",
+    "usage": "Deploy when you need to combine brand narrative with conversion action, particularly for premium offerings or story-driven campaigns. Perfect for landing pages where emotional connection precedes the ask, allowing brands to establish credibility and context before presenting their primary call-to-action.",
+    "audienceFit": "Resonates with established premium brands, creative agencies, luxury services, and lifestyle companies targeting discerning customers who value quality over quantity. Appeals to audiences that appreciate sophisticated design and expect brands to demonstrate substance before making conversion requests."
+  }
 }

@@ -129,5 +129,10 @@
   "pairsPoorly": [
     "cta-cta-editorial-split-01"
   ],
-  "description": "A dynamic two-panel call-to-action layout that combines bold typography with editorial-style imagery, perfect for creative agencies and lifestyle brands looking to make an energetic brand statement while capturing leads."
+  "description": "A dynamic two-panel call-to-action layout that combines bold typography with editorial-style imagery, perfect for creative agencies and lifestyle brands looking to make an energetic brand statement while capturing leads.",
+  "descriptions": {
+    "descriptive": "A dynamic two-panel layout featuring bold typography and editorial-style imagery with modern geometric elements. The design balances high-contrast visuals with clean whitespace, creating an energetic yet trustworthy feel through friendly color palettes and confident messaging hierarchy.",
+    "usage": "Perfect for capturing leads while reinforcing brand identity on landing pages or homepage sections. Use when you need to present dual value propositions or split-test different calls-to-action, combining brand storytelling with conversion-focused elements.",
+    "audienceFit": "Ideal for creative agencies, lifestyle brands, or forward-thinking B2B companies targeting millennials and Gen Z. Appeals to businesses that balance professionalism with personality, particularly those in design, wellness, or innovative service sectors."
+  }
 }

@@ -136,7 +136,12 @@
     "pairsPoorly": [
       "carousel-swipe-01"
     ],
-    "description": "A sleek rotating card display that showcases multiple content pieces in an organized, professional layout. Perfect for corporate websites displaying product features, client testimonials, or service offerings with a clean, trustworthy aesthetic."
+    "description": "A sleek rotating card display that showcases multiple content pieces in an organized, professional layout. Perfect for corporate websites displaying product features, client testimonials, or service offerings with a clean, trustworthy aesthetic.",
+    "descriptions": {
+      "descriptive": "Clean card-based carousel with structured layouts featuring generous whitespace and professional typography. Cards display content in organized grids with subtle shadows and rounded corners. Editorial influence shows through balanced text hierarchy and refined spacing that feels polished yet approachable.",
+      "usage": "Showcases multiple features, product offerings, or customer testimonials in an interactive sliding format. Users can browse through different items without overwhelming the page layout. Perfect for highlighting key selling points or social proof while maintaining organized content flow.",
+      "audienceFit": "Established businesses and B2B companies seeking credible, professional presentation. Appeals to corporate clients, consulting firms, and service providers who need to build trust while remaining personable. Ideal for companies with multiple offerings requiring clear, structured communication."
+    }
   },
   {
     "id": "carousel-horizontal-scroll-01",
@@ -227,7 +232,12 @@
       "carousel-cards-01",
       "carousel-swipe-01"
     ],
-    "description": "A sleek horizontal scrolling carousel that showcases featured content with bold typography and generous spacing. Perfect for creative agencies, media companies, and modern e-commerce brands displaying portfolios or product collections with editorial flair."
+    "description": "A sleek horizontal scrolling carousel that showcases featured content with bold typography and generous spacing. Perfect for creative agencies, media companies, and modern e-commerce brands displaying portfolios or product collections with editorial flair.",
+    "descriptions": {
+      "descriptive": "A sleek horizontal scrolling interface with bold typography and generous white space. Features clean card layouts that glide smoothly across the viewport, emphasizing high-quality imagery and concise text. The modern editorial aesthetic balances energetic motion with elegant restraint.",
+      "usage": "Perfect for showcasing multiple products, portfolio pieces, or key features when vertical space is limited. Allows users to browse through content collections efficiently while maintaining focus on individual items. Ideal for feature comparisons and product galleries.",
+      "audienceFit": "Appeals to creative agencies, premium brands, and tech companies seeking sophisticated presentation. Resonates with design-conscious businesses, luxury retailers, and professional services firms targeting discerning clientele who appreciate polished digital experiences."
+    }
   },
   {
     "id": "carousel-swipe-01",
@@ -284,7 +294,12 @@
     "pairsPoorly": [
       "carousel-cards-01"
     ],
-    "description": "A clean, swipeable carousel with minimal styling that showcases content through smooth horizontal navigation. Perfect for professional service firms and modern businesses displaying product features, client testimonials, or key capabilities."
+    "description": "A clean, swipeable carousel with minimal styling that showcases content through smooth horizontal navigation. Perfect for professional service firms and modern businesses displaying product features, client testimonials, or key capabilities.",
+    "descriptions": {
+      "descriptive": "Clean horizontal scrolling interface with smooth swipe gestures and subtle navigation dots. Features generous white space, typography-focused cards, and understated transitions that prioritize content readability over flashy effects.",
+      "usage": "Displays multiple content pieces like product highlights, feature overviews, or customer testimonials in a space-efficient format. Users can browse through items at their own pace without overwhelming page real estate.",
+      "audienceFit": "Ideal for SaaS platforms, consulting firms, or professional services that value clear communication over visual drama. Appeals to decision-makers who appreciate organized information presentation and streamlined user experiences."
+    }
   },
   {
     "id": "contact-contact-locations-map-01",
@@ -390,7 +405,12 @@
       "navbar-sticky-01"
     ],
     "pairsPoorly": [],
-    "description": "A sophisticated contact section featuring an integrated map display alongside location details, designed for professional service firms and corporate businesses with multiple office locations that need to convey trustworthiness and accessibility."
+    "description": "A sophisticated contact section featuring an integrated map display alongside location details, designed for professional service firms and corporate businesses with multiple office locations that need to convey trustworthiness and accessibility.",
+    "descriptions": {
+      "descriptive": "Clean, structured layout featuring an interactive map paired with organized location cards. Uses generous white space, refined typography, and a balanced grid system. Corporate styling with editorial touches creates a polished, magazine-like presentation with subtle shadows and precise alignment.",
+      "usage": "Essential for businesses with multiple physical locations needing to help customers find nearby offices, stores, or service centers. Combines visual mapping with detailed contact information to reduce friction in the customer journey from discovery to visit.",
+      "audienceFit": "Perfect for established enterprises, professional services firms, retail chains, and B2B companies with physical presence. Appeals to customers who value transparency and accessibility, particularly in finance, healthcare, consulting, and franchise operations."
+    }
   },
   {
     "id": "contact-contact-shapes-form-01",
@@ -524,7 +544,12 @@
       "stats-count-up-01"
     ],
     "pairsPoorly": [],
-    "description": "A modern contact form enhanced with geometric shapes and editorial styling, designed for corporate businesses seeking to capture leads while maintaining a professional yet approachable brand presence."
+    "description": "A modern contact form enhanced with geometric shapes and editorial styling, designed for corporate businesses seeking to capture leads while maintaining a professional yet approachable brand presence.",
+    "descriptions": {
+      "descriptive": "Clean contact form enhanced with geometric shapes and contemporary typography. Features balanced white space, structured input fields, and subtle graphic elements that create visual interest without overwhelming the content. Professional color palette with friendly accent touches maintains approachability.",
+      "usage": "Ideal for business websites needing professional lead capture while displaying location information. Perfect when you want users to easily reach out for consultations, services, or partnerships while maintaining credibility through polished design presentation.",
+      "audienceFit": "Appeals to established B2B companies, consulting firms, and professional service providers targeting corporate clients. Resonates with audiences who value competence and reliability, particularly in finance, law, architecture, or high-end consulting sectors."
+    }
   },
   {
     "id": "cta-cta-collage-duo-01",
@@ -657,7 +682,12 @@
     "pairsPoorly": [
       "cta-cta-editorial-split-01"
     ],
-    "description": "A dynamic two-panel call-to-action layout that combines bold typography with editorial-style imagery, perfect for creative agencies and lifestyle brands looking to make an energetic brand statement while capturing leads."
+    "description": "A dynamic two-panel call-to-action layout that combines bold typography with editorial-style imagery, perfect for creative agencies and lifestyle brands looking to make an energetic brand statement while capturing leads.",
+    "descriptions": {
+      "descriptive": "A dynamic two-panel layout featuring bold typography and editorial-style imagery with modern geometric elements. The design balances high-contrast visuals with clean whitespace, creating an energetic yet trustworthy feel through friendly color palettes and confident messaging hierarchy.",
+      "usage": "Perfect for capturing leads while reinforcing brand identity on landing pages or homepage sections. Use when you need to present dual value propositions or split-test different calls-to-action, combining brand storytelling with conversion-focused elements.",
+      "audienceFit": "Ideal for creative agencies, lifestyle brands, or forward-thinking B2B companies targeting millennials and Gen Z. Appeals to businesses that balance professionalism with personality, particularly those in design, wellness, or innovative service sectors."
+    }
   },
   {
     "id": "cta-cta-editorial-split-01",
@@ -785,7 +815,12 @@
       "carousel-cards-01"
     ],
     "pairsPoorly": [],
-    "description": "A bold split-layout call-to-action that combines editorial-style content with a prominent action button, designed for professional services and B2B companies that need to build trust while driving conversions. The asymmetrical design balances detailed messaging with clear next steps."
+    "description": "A bold split-layout call-to-action that combines editorial-style content with a prominent action button, designed for professional services and B2B companies that need to build trust while driving conversions. The asymmetrical design balances detailed messaging with clear next steps.",
+    "descriptions": {
+      "descriptive": "A bold, magazine-inspired split layout featuring high-contrast typography and clean geometric divisions. The design balances serious editorial gravitas with energetic modern touches through strategic white space, strong headlines, and purposeful visual hierarchy that commands attention.",
+      "usage": "Deploy when you need to make a powerful brand statement while driving conversions. Perfect for landing pages, product launches, or service announcements where credibility and action must coexist. Transforms brand messaging into compelling calls-to-action.",
+      "audienceFit": "Ideal for professional services, B2B companies, premium brands, and thought leaders who need to project authority while maintaining approachability. Resonates with mature businesses targeting decision-makers who value substance and clear communication over flashy aesthetics."
+    }
   },
   {
     "id": "cta-image-backdrop-01",
@@ -919,7 +954,12 @@
       "cta-cta-editorial-split-01",
       "cta-cta-collage-duo-01"
     ],
-    "description": "A sophisticated call-to-action that overlays text on a full-width background image, creating an editorial magazine-like aesthetic perfect for luxury brands and premium service providers wanting to combine compelling visuals with clear action prompts."
+    "description": "A sophisticated call-to-action that overlays text on a full-width background image, creating an editorial magazine-like aesthetic perfect for luxury brands and premium service providers wanting to combine compelling visuals with clear action prompts.",
+    "descriptions": {
+      "descriptive": "A sophisticated call-to-action featuring a large, high-quality background image with refined typography overlays. Clean lines and generous whitespace create breathing room, while the editorial styling emphasizes visual storytelling through carefully curated photography and minimal design elements that exude calm luxury.",
+      "usage": "Deploy when you need to combine brand narrative with conversion action, particularly for premium offerings or story-driven campaigns. Perfect for landing pages where emotional connection precedes the ask, allowing brands to establish credibility and context before presenting their primary call-to-action.",
+      "audienceFit": "Resonates with established premium brands, creative agencies, luxury services, and lifestyle companies targeting discerning customers who value quality over quantity. Appeals to audiences that appreciate sophisticated design and expect brands to demonstrate substance before making conversion requests."
+    }
   },
   {
     "id": "faq-accordion-01",
@@ -985,7 +1025,12 @@
       "faq-minimal-01",
       "faq-solutions-01"
     ],
-    "description": "A clean, collapsible FAQ section with modern typography and subtle animations that builds customer trust through organized, easily accessible information. Perfect for SaaS companies, professional services, and corporate websites needing to address common questions efficiently."
+    "description": "A clean, collapsible FAQ section with modern typography and subtle animations that builds customer trust through organized, easily accessible information. Perfect for SaaS companies, professional services, and corporate websites needing to address common questions efficiently.",
+    "descriptions": {
+      "descriptive": "Clean accordion-style layout with expandable sections featuring subtle shadows and generous white space. Typography is crisp and structured with clear visual hierarchy. Muted color palette with professional blue or gray accents creates an approachable yet authoritative appearance.",
+      "usage": "Organizes frequently asked questions in a space-efficient expandable format that lets users quickly scan topics and dive into specific answers. Perfect for support pages, product information sections, or anywhere detailed explanations need digestible presentation.",
+      "audienceFit": "Ideal for established B2B companies, SaaS platforms, and professional service providers who need to communicate complex information clearly. Appeals to decision-makers who value efficiency and comprehensive documentation in their research process."
+    }
   },
   {
     "id": "faq-minimal-01",
@@ -1051,7 +1096,12 @@
       "faq-accordion-01",
       "faq-solutions-01"
     ],
-    "description": "A clean, text-focused FAQ section with generous whitespace and simple typography that builds trust through clarity. Perfect for professional services, SaaS platforms, and corporate websites where credibility matters more than flashy design."
+    "description": "A clean, text-focused FAQ section with generous whitespace and simple typography that builds trust through clarity. Perfect for professional services, SaaS platforms, and corporate websites where credibility matters more than flashy design.",
+    "descriptions": {
+      "descriptive": "Clean, text-focused layout with generous whitespace and minimal visual hierarchy. Features simple typography, subtle dividers, and understated expand/collapse indicators. The editorial approach prioritizes readability with calm spacing and professional restraint, avoiding decorative elements.",
+      "usage": "Perfect for presenting frequently asked questions in a scannable, digestible format. Users can quickly locate relevant information through clear question headings and expandable answers. Ideal for support pages, product explanations, or policy clarifications.",
+      "audienceFit": "Appeals to established businesses, professional services, and B2B companies that value credibility over flashiness. Resonates with audiences seeking straightforward information without distractions, particularly in finance, consulting, healthcare, or enterprise software sectors."
+    }
   },
   {
     "id": "faq-solutions-01",
@@ -1146,7 +1196,12 @@
       "faq-accordion-01",
       "faq-minimal-01"
     ],
-    "description": "A bold, editorial-style FAQ section with modern typography and dynamic layouts that builds trust through clear, energetic presentation of common questions and answers. Perfect for tech companies, agencies, and professional services that want to showcase expertise while maintaining an approachable, confident brand voice."
+    "description": "A bold, editorial-style FAQ section with modern typography and dynamic layouts that builds trust through clear, energetic presentation of common questions and answers. Perfect for tech companies, agencies, and professional services that want to showcase expertise while maintaining an approachable, confident brand voice.",
+    "descriptions": {
+      "descriptive": "Clean, structured FAQ layout with bold typography and generous white space. Features editorial-style headings with strong contrast and modern geometric elements. The design emphasizes readability through clear hierarchy and professional spacing, creating an energetic yet organized visual rhythm.",
+      "usage": "Deploy when customers need quick answers to common questions without navigating away from key pages. Ideal for reducing support tickets and building confidence during decision-making moments. Works best on product pages, pricing sections, or dedicated help areas.",
+      "audienceFit": "Perfect for B2B software companies, consulting firms, and professional service providers targeting decision-makers who value efficiency and transparency. Appeals to businesses that want to project expertise while maintaining approachable customer communication."
+    }
   },
   {
     "id": "footer-pulse-01",
@@ -1334,7 +1389,12 @@
       "navbar-pill-01"
     ],
     "pairsPoorly": [],
-    "description": "A clean, magazine-style footer with refined typography and minimal visual elements that builds credibility for editorial websites, publishing platforms, and content-focused businesses requiring professional authority."
+    "description": "A clean, magazine-style footer with refined typography and minimal visual elements that builds credibility for editorial websites, publishing platforms, and content-focused businesses requiring professional authority.",
+    "descriptions": {
+      "descriptive": "A streamlined footer with generous whitespace and typography-forward design. Features clean sans-serif text hierarchy, subtle dividing lines, and restrained color palette. The editorial influence shows in careful text spacing and journalistic information architecture that feels both sophisticated and uncluttered.",
+      "usage": "Anchors content-heavy websites where credibility and readability matter most. Perfect for publications, blogs, news sites, and professional services that need to maintain reader trust while providing essential navigation and contact information without visual distraction from the main content.",
+      "audienceFit": "Appeals to established media companies, professional publications, consulting firms, and knowledge-based businesses. Resonates with educated audiences who value substance over flashiness, making it ideal for brands positioning themselves as thought leaders or authoritative information sources."
+    }
   },
   {
     "id": "footer-reveal-01",
@@ -1515,7 +1575,12 @@
       "faq-accordion-01"
     ],
     "pairsPoorly": [],
-    "description": "A modern footer that elegantly reveals itself as users scroll, featuring clean typography and minimal design elements. Perfect for editorial sites, professional services, and brands seeking a sophisticated, trustworthy presence."
+    "description": "A modern footer that elegantly reveals itself as users scroll, featuring clean typography and minimal design elements. Perfect for editorial sites, professional services, and brands seeking a sophisticated, trustworthy presence.",
+    "descriptions": {
+      "descriptive": "A sleek footer that emerges smoothly as users scroll, featuring clean typography and generous white space. The minimal design uses subtle shadows and refined spacing to create an editorial magazine aesthetic with polished, understated elegance.",
+      "usage": "Serves as the primary site footer while maintaining visual hierarchy through progressive disclosure. Reveals contact information, legal links, and brand elements without overwhelming the main content experience until users naturally reach the page bottom.",
+      "audienceFit": "Perfect for professional services firms, design agencies, consulting practices, and B2B companies that value sophisticated brand presentation. Appeals to discerning clients who associate clean design with competence and reliability."
+    }
   },
   {
     "id": "hero-hero-bold-editorial-01",
@@ -1688,7 +1753,12 @@
       "hero-shuffle-cards-01",
       "hero-parallax-images-01"
     ],
-    "description": "A magazine-inspired hero section with sophisticated typography and editorial layout that positions brands as authoritative industry leaders. Perfect for luxury businesses, professional services, and publications seeking to establish credibility and gravitas."
+    "description": "A magazine-inspired hero section with sophisticated typography and editorial layout that positions brands as authoritative industry leaders. Perfect for luxury businesses, professional services, and publications seeking to establish credibility and gravitas.",
+    "descriptions": {
+      "descriptive": "A sophisticated hero layout with strong typography hierarchy and generous white space. Features bold serif headlines, editorial-style text treatment, and premium visual density. The composition balances dramatic scale with refined elegance, creating a magazine-quality aesthetic that commands attention through restrained luxury.",
+      "usage": "Opens high-end websites and landing pages where making a powerful first impression is critical. Perfect for establishing brand authority and credibility immediately upon arrival. Serves companies that need to communicate expertise, premium positioning, or thought leadership through their hero section.",
+      "audienceFit": "Resonates with luxury brands, professional services firms, high-end consultancies, and established publications. Appeals to sophisticated audiences who value quality and expertise over flashy design. Ideal for businesses targeting affluent clients or positioning themselves as industry authorities."
+    }
   },
   {
     "id": "hero-geometric-01",
@@ -1875,7 +1945,12 @@
         ]
       }
     ],
-    "description": "A clean, geometric hero section with structured layouts and minimal styling that builds trust through professional design. Perfect for corporate websites, B2B services, and tech companies seeking a sophisticated, authoritative first impression."
+    "description": "A clean, geometric hero section with structured layouts and minimal styling that builds trust through professional design. Perfect for corporate websites, B2B services, and tech companies seeking a sophisticated, authoritative first impression.",
+    "descriptions": {
+      "descriptive": "Clean geometric shapes and sharp angular elements create a structured, symmetrical composition with plenty of white space. Typography is sans-serif and hierarchical, while a restrained color palette emphasizes precision and order through mathematical forms and grid-based alignment.",
+      "usage": "Opens corporate websites and landing pages where first impressions matter most. Establishes immediate credibility while clearly communicating the primary value proposition to visitors who need quick confidence in the brand's expertise and reliability.",
+      "audienceFit": "Perfect for established B2B companies, financial services, consulting firms, and technology companies targeting enterprise clients. Appeals to decision-makers who value professionalism over creativity and prefer conservative, time-tested visual approaches that signal stability."
+    }
   },
   {
     "id": "hero-parallax-images-01",
@@ -2081,7 +2156,12 @@
         ]
       }
     ],
-    "description": "A modern hero section featuring parallax scrolling images that creates dynamic visual depth and movement. Perfect for creative agencies, portfolios, and media companies wanting to make a bold first impression with sophisticated visual storytelling."
+    "description": "A modern hero section featuring parallax scrolling images that creates dynamic visual depth and movement. Perfect for creative agencies, portfolios, and media companies wanting to make a bold first impression with sophisticated visual storytelling.",
+    "descriptions": {
+      "descriptive": "A visually striking hero section featuring layered images that move at different speeds during scroll, creating depth and motion. The editorial layout uses bold typography overlays with clean, modern spacing. High-contrast imagery dominates the viewport with sophisticated visual hierarchy.",
+      "usage": "Opens landing pages and homepages where immediate visual impact is crucial. Perfect for storytelling brands that need to capture attention instantly and communicate their narrative through compelling imagery before users engage with content.",
+      "audienceFit": "Appeals to creative agencies, luxury brands, and media companies targeting design-conscious audiences. Suits established businesses with strong visual assets who want to project innovation and premium positioning to sophisticated consumers."
+    }
   },
   {
     "id": "hero-shuffle-cards-01",
@@ -2209,7 +2289,12 @@
         ]
       }
     ],
-    "description": "A dynamic hero section featuring animated card elements that shuffle or rotate to showcase multiple key messages or services. Perfect for creative agencies, tech startups, and innovative businesses that want to demonstrate versatility and capture attention with interactive visual storytelling."
+    "description": "A dynamic hero section featuring animated card elements that shuffle or rotate to showcase multiple key messages or services. Perfect for creative agencies, tech startups, and innovative businesses that want to demonstrate versatility and capture attention with interactive visual storytelling.",
+    "descriptions": {
+      "descriptive": "A dynamic hero layout featuring overlapping card elements that appear to shuffle or stack with editorial-style typography. Bold geometric shapes and high contrast create visual energy while maintaining clean, modern proportions. The design balances professional structure with playful movement.",
+      "usage": "Perfect for homepage hero sections that need to immediately capture attention and convey multiple value propositions. Works best when you have 3-4 key messages or services to highlight simultaneously while maintaining focus on a primary call-to-action.",
+      "audienceFit": "Ideal for creative agencies, tech startups, design studios, and modern B2B services that want to appear approachable yet sophisticated. Appeals to audiences who value innovation and expect polished, contemporary digital experiences."
+    }
   },
   {
     "id": "hero-split-image-01",
@@ -2462,7 +2547,12 @@
         ]
       }
     ],
-    "description": "A split-screen hero section that pairs impactful imagery with headline content, designed for professional service firms and corporate brands seeking an elegant, editorial-style first impression."
+    "description": "A split-screen hero section that pairs impactful imagery with headline content, designed for professional service firms and corporate brands seeking an elegant, editorial-style first impression.",
+    "descriptions": {
+      "descriptive": "A sophisticated split-screen layout featuring a prominent image occupying half the viewport alongside clean typography and minimal content. The design emphasizes white space, refined typography hierarchy, and balanced proportions that convey editorial sophistication with corporate polish.",
+      "usage": "Perfect for homepage hero sections where visual storytelling needs equal weight with messaging. Ideal when you have compelling photography or graphics that deserve prominence while maintaining space for clear value propositions and primary calls-to-action.",
+      "audienceFit": "Professional services firms, B2B companies, consulting agencies, and established brands seeking to project authority and credibility. Appeals to discerning audiences who value quality presentation and expect polished, magazine-quality digital experiences."
+    }
   },
   {
     "id": "layout-cardgrid-01",
@@ -2568,7 +2658,12 @@
     "pairsPoorly": [
       "layout-staggerfan-01"
     ],
-    "description": "A dynamic grid layout that showcases multiple content blocks with consistent spacing and visual hierarchy, perfect for businesses displaying product catalogs, team profiles, or service offerings with professional appeal."
+    "description": "A dynamic grid layout that showcases multiple content blocks with consistent spacing and visual hierarchy, perfect for businesses displaying product catalogs, team profiles, or service offerings with professional appeal.",
+    "descriptions": {
+      "descriptive": "A structured grid of uniform cards with clean lines and generous white space. Bold typography and vibrant accent colors create visual hierarchy while maintaining professional polish. Each card features consistent spacing and modern shadows, balancing corporate sophistication with approachable, playful elements.",
+      "usage": "Organizes multiple related items like product offerings, service categories, team members, or feature highlights into scannable chunks. Perfect for pages where users need to compare options or browse through collections, making complex information digestible through visual consistency.",
+      "audienceFit": "Ideal for established B2B companies, SaaS platforms, and professional services firms seeking to appear both credible and innovative. Appeals to decision-makers who value clarity and efficiency, particularly in tech, consulting, and modern enterprises balancing authority with accessibility."
+    }
   },
   {
     "id": "layout-simplegrid-01",
@@ -2678,7 +2773,12 @@
     "pairsPoorly": [
       "layout-simplegrid-01"
     ],
-    "description": "A clean, evenly-spaced grid layout that organizes content into structured columns, perfect for professional service firms and B2B companies showcasing their key offerings or process steps."
+    "description": "A clean, evenly-spaced grid layout that organizes content into structured columns, perfect for professional service firms and B2B companies showcasing their key offerings or process steps.",
+    "descriptions": {
+      "descriptive": "Clean rectangular grid with generous white space between elements. Features uniform card-like sections with subtle borders or shadows. Typography is sans-serif and well-spaced. Color palette leans neutral with strategic accent colors. Overall density is low, prioritizing readability over visual complexity.",
+      "usage": "Organizes feature lists, service offerings, or process steps into digestible chunks. Perfect for presenting multiple related items that need equal visual weight. Helps users quickly scan and compare options without overwhelming cognitive load.",
+      "audienceFit": "Ideal for B2B companies, consulting firms, and established enterprises that value clarity over creativity. Appeals to decision-makers who prefer straightforward information architecture. Works well for professional services, SaaS platforms, and corporate websites targeting executive audiences."
+    }
   },
   {
     "id": "layout-authorsplit-01",
@@ -2767,7 +2867,12 @@
     "pairsPoorly": [
       "layout-statementsplit-01"
     ],
-    "description": "A clean split-layout component that pairs professional headshots with biographical content, perfect for editorial sites, consulting firms, and creative agencies showcasing their team or founder stories."
+    "description": "A clean split-layout component that pairs professional headshots with biographical content, perfect for editorial sites, consulting firms, and creative agencies showcasing their team or founder stories.",
+    "descriptions": {
+      "descriptive": "Clean two-column layout with generous white space and editorial typography. Features author headshot alongside biographical content in a balanced, asymmetrical composition. Minimal styling with sophisticated font hierarchy creates an elegant, magazine-like aesthetic that feels both modern and timeless.",
+      "usage": "Perfect for about pages, team member profiles, or author bio sections where personal storytelling meets professional credibility. Displays individual expertise and personality while maintaining organizational structure for multiple team members or contributors.",
+      "audienceFit": "Ideal for creative agencies, publishing houses, consulting firms, and professional services that value thought leadership. Appeals to audiences seeking expertise with a human touch - clients who appreciate both competence and approachability in their service providers."
+    }
   },
   {
     "id": "layout-editorial-framed-split-01",
@@ -2890,7 +2995,12 @@
       "layout-statementsplit-01",
       "layout-authorsplit-01"
     ],
-    "description": "A refined split layout featuring framed content sections that creates editorial-style hierarchy, perfect for professional services and established brands showcasing their story or key features with understated elegance."
+    "description": "A refined split layout featuring framed content sections that creates editorial-style hierarchy, perfect for professional services and established brands showcasing their story or key features with understated elegance.",
+    "descriptions": {
+      "descriptive": "A sophisticated two-column layout featuring generous whitespace, refined typography, and subtle framing elements. Clean lines and restrained visual hierarchy create an editorial magazine aesthetic with classic proportions and minimal ornamentation.",
+      "usage": "Perfect for presenting detailed feature explanations, company story narratives, or service descriptions where content depth matters. Balances substantial text blocks with supporting visuals to guide readers through complex information.",
+      "audienceFit": "Ideal for established professional services, consulting firms, luxury brands, or publications targeting educated audiences who value substance over flash. Appeals to clients seeking expertise and long-term partnerships."
+    }
   },
   {
     "id": "layout-iconlistsplit-01",
@@ -2992,7 +3102,12 @@
     "pairsPoorly": [
       "layout-cardgrid-01"
     ],
-    "description": "A two-column layout that pairs descriptive content with organized icon lists, perfect for professional service firms and B2B companies showcasing their key features, services, or step-by-step processes."
+    "description": "A two-column layout that pairs descriptive content with organized icon lists, perfect for professional service firms and B2B companies showcasing their key features, services, or step-by-step processes.",
+    "descriptions": {
+      "descriptive": "Clean two-column layout featuring organized icon-text pairs with generous white space. Icons are simple line-style graphics paired with concise headings and descriptions. The minimal aesthetic uses subtle typography hierarchy and restrained color palette to create an uncluttered, systematic presentation that feels orderly and refined.",
+      "usage": "Perfect for showcasing service offerings, key features, or step-by-step processes where each item needs equal visual weight. Use when you have 4-8 related items that benefit from scannable organization and want users to quickly grasp multiple value propositions or workflow stages without overwhelming detail.",
+      "audienceFit": "Ideal for B2B companies, professional services firms, SaaS platforms, and established businesses targeting corporate decision-makers. Appeals to audiences who value efficiency and clarity over flashy design, particularly in consulting, finance, technology, and healthcare sectors where credibility and systematic presentation matter most."
+    }
   },
   {
     "id": "layout-imagetext-01",
@@ -3090,7 +3205,12 @@
     "pairsPoorly": [
       "layout-authorsplit-01"
     ],
-    "description": "A balanced split-layout component that pairs compelling imagery with descriptive text, ideal for professional service firms and corporate websites showcasing key features or company information."
+    "description": "A balanced split-layout component that pairs compelling imagery with descriptive text, ideal for professional service firms and corporate websites showcasing key features or company information.",
+    "descriptions": {
+      "descriptive": "Clean two-column layout pairing high-quality imagery with structured text blocks. Features generous white space, refined typography hierarchy, and balanced visual weight between image and content. The editorial styling creates a polished, magazine-like aesthetic with corporate sophistication.",
+      "usage": "Perfect for showcasing key features, services, or product details where visual storytelling enhances written content. Use when you need to explain complex offerings or build credibility through professional presentation of information alongside supporting imagery.",
+      "audienceFit": "Ideal for established B2B companies, professional services firms, and premium consumer brands. Appeals to discerning audiences who value quality and expertise, particularly in consulting, technology, healthcare, or financial services sectors."
+    }
   },
   {
     "id": "layout-statementsplit-01",
@@ -3189,7 +3309,12 @@
     "pairsPoorly": [
       "hero-geometric-01"
     ],
-    "description": "A clean two-column layout that elegantly separates compelling copy from supporting visuals, perfect for luxury brands and professional services showcasing their story or key features with sophisticated restraint."
+    "description": "A clean two-column layout that elegantly separates compelling copy from supporting visuals, perfect for luxury brands and professional services showcasing their story or key features with sophisticated restraint.",
+    "descriptions": {
+      "descriptive": "Clean two-column layout with generous white space and sophisticated typography hierarchy. Features refined editorial styling with subtle luxury touches, creating an elegant and minimalist composition that breathes with calm professionalism.",
+      "usage": "Perfect for presenting key company information, service offerings, or feature highlights where content needs thoughtful organization. Ideal for about pages or services sections that require clear information hierarchy and professional presentation.",
+      "audienceFit": "Appeals to premium brands, professional services firms, and established businesses targeting sophisticated clientele. Resonates with luxury retailers, high-end consultancies, and mature companies valuing understated elegance over flashy design."
+    }
   },
   {
     "id": "layout-parallaxcontent-01",
@@ -3271,7 +3396,12 @@
       "layout-stickycards-01",
       "hero-parallax-images-01"
     ],
-    "description": "A sophisticated parallax scrolling component that creates depth and visual interest while showcasing key content sections. Perfect for creative agencies, design studios, and modern businesses wanting to highlight their services or company story with dynamic, engaging motion effects."
+    "description": "A sophisticated parallax scrolling component that creates depth and visual interest while showcasing key content sections. Perfect for creative agencies, design studios, and modern businesses wanting to highlight their services or company story with dynamic, engaging motion effects.",
+    "descriptions": {
+      "descriptive": "Layered scrolling animation creates depth through staggered movement speeds between foreground content and background elements. Bold typography and editorial-style imagery move at different rates, producing a sophisticated kinetic experience with clean, modern spacing and energetic visual flow.",
+      "usage": "Enhances feature presentations, about sections, or service showcases where storytelling benefits from dynamic visual engagement. Ideal for guiding users through detailed content while maintaining attention through subtle motion that reveals information progressively.",
+      "audienceFit": "Appeals to creative agencies, tech companies, and premium service providers seeking to demonstrate innovation and attention to detail. Resonates with audiences who value cutting-edge digital experiences and expect polished, interactive brand touchpoints."
+    }
   },
   {
     "id": "layout-stickycards-01",
@@ -3343,7 +3473,12 @@
     "pairsPoorly": [
       "layout-cardgrid-01"
     ],
-    "description": "A dynamic card layout that remains fixed during scroll to showcase key features or services with bold typography and editorial-style presentation. Perfect for professional service firms and agencies that need to communicate their process or capabilities with energy and authority."
+    "description": "A dynamic card layout that remains fixed during scroll to showcase key features or services with bold typography and editorial-style presentation. Perfect for professional service firms and agencies that need to communicate their process or capabilities with energy and authority.",
+    "descriptions": {
+      "descriptive": "Cards that dynamically stick and unstick during scroll, creating layered visual depth with bold typography and clean editorial spacing. Modern geometric layouts with high contrast elements that animate smoothly, maintaining professional polish while delivering energetic visual transitions.",
+      "usage": "Perfect for showcasing multi-step processes, service tiers, or feature comparisons where sequential revelation builds understanding. Creates engaging storytelling flow as users scroll through complex information that benefits from staged presentation.",
+      "audienceFit": "Appeals to tech companies, consulting firms, and B2B services that need to communicate sophisticated offerings with authority. Resonates with audiences expecting premium digital experiences and process-driven solutions from established, innovation-focused brands."
+    }
   },
   {
     "id": "navbar-pill-01",
@@ -3423,7 +3558,12 @@
       "footer-reveal-01"
     ],
     "pairsPoorly": [],
-    "description": "A sleek navigation bar with pill-shaped glass elements that creates a refined, editorial aesthetic perfect for professional service firms, design agencies, and premium content publishers seeking an understated yet sophisticated header."
+    "description": "A sleek navigation bar with pill-shaped glass elements that creates a refined, editorial aesthetic perfect for professional service firms, design agencies, and premium content publishers seeking an understated yet sophisticated header.",
+    "descriptions": {
+      "descriptive": "A sleek navigation bar featuring rounded pill-shaped buttons with subtle glass-like transparency effects. Clean typography and generous whitespace create an uncluttered, sophisticated appearance with soft edges and refined visual hierarchy that feels contemporary and polished.",
+      "usage": "Perfect for primary site navigation where users need clear, intuitive access to main sections. The prominent yet elegant design guides visitors smoothly between pages while maintaining focus on content, ideal for homepages and landing pages requiring seamless user flow.",
+      "audienceFit": "Appeals to established businesses, creative agencies, and professional service firms targeting discerning clients. The refined aesthetic resonates with brands emphasizing quality and expertise, particularly in consulting, design, finance, or premium B2B services where credibility matters most."
+    }
   },
   {
     "id": "navbar-sticky-01",
@@ -3497,7 +3637,12 @@
     "mobileBehavior": "collapse",
     "pairsWell": [],
     "pairsPoorly": [],
-    "description": "A fixed navigation bar that remains visible while scrolling, featuring clean typography and subtle styling perfect for corporate websites and professional services that need consistent access to key menu items."
+    "description": "A fixed navigation bar that remains visible while scrolling, featuring clean typography and subtle styling perfect for corporate websites and professional services that need consistent access to key menu items.",
+    "descriptions": {
+      "descriptive": "A streamlined horizontal navigation bar that remains fixed at the top of the viewport while scrolling. Features clean typography, generous white space, and subtle shadow effects. The minimal design uses corporate color schemes with well-spaced menu items and refined hover states that maintain visual hierarchy.",
+      "usage": "Essential for websites requiring constant access to main navigation regardless of scroll position. Perfect for long-form content sites, multi-page corporate websites, and service platforms where users need to navigate between sections without returning to the top of the page.",
+      "audienceFit": "Ideal for established B2B companies, professional service firms, and corporate enterprises seeking to project reliability and competence. Appeals to business audiences who value efficiency and expect polished, convention-following interfaces that facilitate quick decision-making."
+    }
   },
   {
     "id": "stats-count-up-01",
@@ -3582,7 +3727,12 @@
       "layout-stickycards-01"
     ],
     "pairsPoorly": [],
-    "description": "A clean, animated statistics display that reveals key numbers through count-up animations, perfect for corporate websites and professional service firms showcasing achievements, metrics, or company milestones."
+    "description": "A clean, animated statistics display that reveals key numbers through count-up animations, perfect for corporate websites and professional service firms showcasing achievements, metrics, or company milestones.",
+    "descriptions": {
+      "descriptive": "Clean numerical displays with animated count-up effects, featuring bold typography and generous whitespace. Uses a restrained color palette with subtle accent colors to highlight key metrics. Grid-based layout maintains visual hierarchy through consistent spacing and typography scales.",
+      "usage": "Showcases quantifiable achievements, company metrics, or performance data to build credibility. Best positioned after hero sections or within about pages to reinforce brand authority through concrete numbers like years in business, clients served, or success rates.",
+      "audienceFit": "Perfect for established B2B companies, consulting firms, financial services, and professional service providers who need to demonstrate track record and reliability. Appeals to decision-makers who value data-driven proof points over emotional appeals."
+    }
   },
   {
     "id": "layout-infinitescroll-01",
@@ -3672,7 +3822,12 @@
       "layout-stackedsplit-01",
       "layout-staggerfan-01"
     ],
-    "description": "A continuously scrolling testimonial component with bold typography and editorial spacing that creates dynamic social proof. Perfect for tech companies and agencies wanting to showcase extensive client feedback without pagination interruptions."
+    "description": "A continuously scrolling testimonial component with bold typography and editorial spacing that creates dynamic social proof. Perfect for tech companies and agencies wanting to showcase extensive client feedback without pagination interruptions.",
+    "descriptions": {
+      "descriptive": "A continuous, vertically scrolling testimonial feed with bold typography and editorial-style card layouts. Features high contrast text blocks, generous whitespace, and dynamic motion that creates an energetic browsing experience while maintaining clean, professional aesthetics.",
+      "usage": "Deploy when you have numerous customer testimonials to showcase without overwhelming the page layout. Ideal for building sustained credibility through social proof, allowing users to browse testimonials at their own pace while maintaining engagement through smooth scrolling interactions.",
+      "audienceFit": "Perfect for established B2B SaaS platforms, consulting firms, and premium service providers who need to demonstrate extensive client satisfaction. Appeals to decision-makers who value comprehensive social validation and professional credibility in their vendor selection process."
+    }
   },
   {
     "id": "layout-stackedsplit-01",
@@ -3763,7 +3918,12 @@
       "layout-infinitescroll-01",
       "layout-staggerfan-01"
     ],
-    "description": "A vertically stacked testimonial layout that presents customer quotes with elegant typography and structured spacing, ideal for professional services and B2B companies showcasing client credibility."
+    "description": "A vertically stacked testimonial layout that presents customer quotes with elegant typography and structured spacing, ideal for professional services and B2B companies showcasing client credibility.",
+    "descriptions": {
+      "descriptive": "Clean two-column layout with testimonial content stacked vertically in one column and complementary visual elements in the other. Features generous white space, refined typography hierarchy, and structured geometric arrangement that conveys editorial sophistication and corporate polish.",
+      "usage": "Display customer testimonials and reviews in a structured format that emphasizes credibility and readability. Perfect for showcasing detailed client feedback, case study quotes, or peer endorsements where the testimonial content needs prominent visual treatment.",
+      "audienceFit": "Appeals to established B2B companies, professional services firms, and enterprise software providers who need to demonstrate proven track records to discerning business decision-makers. Resonates with audiences valuing stability and institutional credibility."
+    }
   },
   {
     "id": "layout-staggerfan-01",
@@ -3843,6 +4003,11 @@
       "layout-infinitescroll-01",
       "layout-stackedsplit-01"
     ],
-    "description": "A dynamic testimonial layout with staggered cards arranged in a fan pattern, perfect for creative agencies and lifestyle brands wanting to showcase customer feedback with visual energy and personality."
+    "description": "A dynamic testimonial layout with staggered cards arranged in a fan pattern, perfect for creative agencies and lifestyle brands wanting to showcase customer feedback with visual energy and personality.",
+    "descriptions": {
+      "descriptive": "A dynamic testimonial layout where customer reviews are arranged in an offset, fan-like pattern with bold typography and vibrant accent colors. Cards cascade at playful angles with generous white space, creating visual movement and energy through asymmetrical positioning.",
+      "usage": "Perfect for showcasing customer testimonials when you want to break from traditional grid layouts. Use this to highlight positive reviews in an engaging way that encourages users to read multiple testimonials and builds social proof through visual excitement.",
+      "audienceFit": "Ideal for creative agencies, lifestyle brands, tech startups, and consumer-facing businesses targeting younger demographics. Appeals to companies that want to appear approachable and innovative while maintaining professionalism in their social proof presentation."
+    }
   }
 ]

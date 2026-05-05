@@ -130,5 +130,10 @@
     "stats-count-up-01"
   ],
   "pairsPoorly": [],
-  "description": "A modern contact form enhanced with geometric shapes and editorial styling, designed for corporate businesses seeking to capture leads while maintaining a professional yet approachable brand presence."
+  "description": "A modern contact form enhanced with geometric shapes and editorial styling, designed for corporate businesses seeking to capture leads while maintaining a professional yet approachable brand presence.",
+  "descriptions": {
+    "descriptive": "Clean contact form enhanced with geometric shapes and contemporary typography. Features balanced white space, structured input fields, and subtle graphic elements that create visual interest without overwhelming the content. Professional color palette with friendly accent touches maintains approachability.",
+    "usage": "Ideal for business websites needing professional lead capture while displaying location information. Perfect when you want users to easily reach out for consultations, services, or partnerships while maintaining credibility through polished design presentation.",
+    "audienceFit": "Appeals to established B2B companies, consulting firms, and professional service providers targeting corporate clients. Resonates with audiences who value competence and reliability, particularly in finance, law, architecture, or high-end consulting sectors."
+  }
 }

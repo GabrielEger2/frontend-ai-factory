@@ -62,5 +62,10 @@
     "faq-minimal-01",
     "faq-solutions-01"
   ],
-  "description": "A clean, collapsible FAQ section with modern typography and subtle animations that builds customer trust through organized, easily accessible information. Perfect for SaaS companies, professional services, and corporate websites needing to address common questions efficiently."
+  "description": "A clean, collapsible FAQ section with modern typography and subtle animations that builds customer trust through organized, easily accessible information. Perfect for SaaS companies, professional services, and corporate websites needing to address common questions efficiently.",
+  "descriptions": {
+    "descriptive": "Clean accordion-style layout with expandable sections featuring subtle shadows and generous white space. Typography is crisp and structured with clear visual hierarchy. Muted color palette with professional blue or gray accents creates an approachable yet authoritative appearance.",
+    "usage": "Organizes frequently asked questions in a space-efficient expandable format that lets users quickly scan topics and dive into specific answers. Perfect for support pages, product information sections, or anywhere detailed explanations need digestible presentation.",
+    "audienceFit": "Ideal for established B2B companies, SaaS platforms, and professional service providers who need to communicate complex information clearly. Appeals to decision-makers who value efficiency and comprehensive documentation in their research process."
+  }
 }

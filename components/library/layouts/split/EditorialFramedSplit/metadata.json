@@ -119,5 +119,10 @@
     "layout-statementsplit-01",
     "layout-authorsplit-01"
   ],
-  "description": "A refined split layout featuring framed content sections that creates editorial-style hierarchy, perfect for professional services and established brands showcasing their story or key features with understated elegance."
+  "description": "A refined split layout featuring framed content sections that creates editorial-style hierarchy, perfect for professional services and established brands showcasing their story or key features with understated elegance.",
+  "descriptions": {
+    "descriptive": "A sophisticated two-column layout featuring generous whitespace, refined typography, and subtle framing elements. Clean lines and restrained visual hierarchy create an editorial magazine aesthetic with classic proportions and minimal ornamentation.",
+    "usage": "Perfect for presenting detailed feature explanations, company story narratives, or service descriptions where content depth matters. Balances substantial text blocks with supporting visuals to guide readers through complex information.",
+    "audienceFit": "Ideal for established professional services, consulting firms, luxury brands, or publications targeting educated audiences who value substance over flash. Appeals to clients seeking expertise and long-term partnerships."
+  }
 }
