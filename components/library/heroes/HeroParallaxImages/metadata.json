@@ -202,5 +202,10 @@
       ]
     }
   ],
-  "description": "A modern hero section featuring parallax scrolling images that creates dynamic visual depth and movement. Perfect for creative agencies, portfolios, and media companies wanting to make a bold first impression with sophisticated visual storytelling."
+  "description": "A modern hero section featuring parallax scrolling images that creates dynamic visual depth and movement. Perfect for creative agencies, portfolios, and media companies wanting to make a bold first impression with sophisticated visual storytelling.",
+  "descriptions": {
+    "descriptive": "A visually striking hero section featuring layered images that move at different speeds during scroll, creating depth and motion. The editorial layout uses bold typography overlays with clean, modern spacing. High-contrast imagery dominates the viewport with sophisticated visual hierarchy.",
+    "usage": "Opens landing pages and homepages where immediate visual impact is crucial. Perfect for storytelling brands that need to capture attention instantly and communicate their narrative through compelling imagery before users engage with content.",
+    "audienceFit": "Appeals to creative agencies, luxury brands, and media companies targeting design-conscious audiences. Suits established businesses with strong visual assets who want to project innovation and premium positioning to sophisticated consumers."
+  }
 }

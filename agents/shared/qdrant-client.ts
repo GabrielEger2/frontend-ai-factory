@@ -95,3 +95,38 @@ export async function ensureCollection(collectionName: string): Promise<void> {
     vectors: { size: 1536, distance: "Cosine" },
   });
 }
+
+/* ------------------------------------------------------------------ */
+/*  Phase C: named-vector (multi-axis) collection migration           */
+/*                                                                     */
+/*  Deletes the collection if it exists and recreates it with three   */
+/*  named vectors (descriptive / usage / audienceFit), each 1536-d    */
+/*  cosine. Required for Phase C — `ensureCollection` cannot migrate  */
+/*  an existing flat-vector collection in place.                       */
+/* ------------------------------------------------------------------ */
+
+export async function recreateCollectionMultiVector(
+  collectionName: string,
+): Promise<void> {
+  const client = await getQdrantClient();
+  const existence = await client.collectionExists(collectionName);
+  if (existence.exists) {
+    await client.deleteCollection(collectionName);
+  }
+  await client.createCollection(collectionName, {
+    vectors: {
+      descriptive: { size: 1536, distance: "Cosine" },
+      usage: { size: 1536, distance: "Cosine" },
+      audienceFit: { size: 1536, distance: "Cosine" },
+    },
+  });
+
+  // Qdrant rejects `match` filters on payload fields without a payload index.
+  // The Composer slot loop and query-vectors demo both filter by `category`,
+  // so the index must exist before any search runs.
+  await client.createPayloadIndex(collectionName, {
+    field_name: "category",
+    field_schema: "keyword",
+    wait: true,
+  });
+}

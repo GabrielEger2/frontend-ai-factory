@@ -102,5 +102,10 @@
     "navbar-sticky-01"
   ],
   "pairsPoorly": [],
-  "description": "A sophisticated contact section featuring an integrated map display alongside location details, designed for professional service firms and corporate businesses with multiple office locations that need to convey trustworthiness and accessibility."
+  "description": "A sophisticated contact section featuring an integrated map display alongside location details, designed for professional service firms and corporate businesses with multiple office locations that need to convey trustworthiness and accessibility.",
+  "descriptions": {
+    "descriptive": "Clean, structured layout featuring an interactive map paired with organized location cards. Uses generous white space, refined typography, and a balanced grid system. Corporate styling with editorial touches creates a polished, magazine-like presentation with subtle shadows and precise alignment.",
+    "usage": "Essential for businesses with multiple physical locations needing to help customers find nearby offices, stores, or service centers. Combines visual mapping with detailed contact information to reduce friction in the customer journey from discovery to visit.",
+    "audienceFit": "Perfect for established enterprises, professional services firms, retail chains, and B2B companies with physical presence. Appeals to customers who value transparency and accessibility, particularly in finance, healthcare, consulting, and franchise operations."
+  }
 }

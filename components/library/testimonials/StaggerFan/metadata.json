@@ -76,5 +76,10 @@
     "layout-infinitescroll-01",
     "layout-stackedsplit-01"
   ],
-  "description": "A dynamic testimonial layout with staggered cards arranged in a fan pattern, perfect for creative agencies and lifestyle brands wanting to showcase customer feedback with visual energy and personality."
+  "description": "A dynamic testimonial layout with staggered cards arranged in a fan pattern, perfect for creative agencies and lifestyle brands wanting to showcase customer feedback with visual energy and personality.",
+  "descriptions": {
+    "descriptive": "A dynamic testimonial layout where customer reviews are arranged in an offset, fan-like pattern with bold typography and vibrant accent colors. Cards cascade at playful angles with generous white space, creating visual movement and energy through asymmetrical positioning.",
+    "usage": "Perfect for showcasing customer testimonials when you want to break from traditional grid layouts. Use this to highlight positive reviews in an engaging way that encourages users to read multiple testimonials and builds social proof through visual excitement.",
+    "audienceFit": "Ideal for creative agencies, lifestyle brands, tech startups, and consumer-facing businesses targeting younger demographics. Appeals to companies that want to appear approachable and innovative while maintaining professionalism in their social proof presentation."
+  }
 }

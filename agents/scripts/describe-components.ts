@@ -1,9 +1,11 @@
 /**
- * Generate 1-2 sentence design-purpose descriptions for every component
- * in the library and write them back to each component's metadata.json.
+ * Generate 3-axis structured descriptions for every component in the
+ * library and write them back to each component's metadata.json under
+ * the `descriptions` object.
  *
- * Idempotent: components that already have a non-empty `description` are
- * skipped unless `--force` is passed.
+ * Idempotent: components that already have all three axes populated
+ * (descriptive, usage, audienceFit) are skipped unless `--force` is
+ * passed.
  *
  * Usage:
  *   CLAUDE_API_KEY_SSM_PATH=/sitegen/dev/claude-api-key \
@@ -13,15 +15,16 @@
  *     ts-node scripts/describe-components.ts --force
  *
  * Walks components/library/ recursively, finds every metadata.json,
- * calls Claude sequentially (33 calls — no batching, simpler reasoning),
- * and writes the description back into the same metadata.json file
- * preserving existing field order.
+ * calls Claude sequentially (one structured-output call per component
+ * returns all three axes), and writes the descriptions back into the
+ * same metadata.json file preserving existing field order.
  */
 
 import * as fs from "fs";
 import * as path from "path";
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import Anthropic from "@anthropic-ai/sdk";
+import { z } from "zod";
 
 /* ------------------------------------------------------------------ */
 /*  CLI flags                                                          */
@@ -119,7 +122,7 @@ interface MetadataJson {
   pairsWell: string[];
   pairsPoorly: string[];
   variants?: ComponentVariantEntry[];
-  description?: string;
+  descriptions?: { descriptive: string; usage: string; audienceFit: string };
 }
 
 /* ------------------------------------------------------------------ */
@@ -129,17 +132,34 @@ interface MetadataJson {
 const SYSTEM_PROMPT = [
   "You write concise design briefs for UI components in a website builder library.",
   "Given a component's name, category, style tags, mood tags, and purpose tags,",
-  "produce a single 1-2 sentence description that captures:",
-  "  1. The component's design purpose / what makes its layout distinctive.",
-  "  2. The kind of business or use case it best fits.",
+  "produce a JSON object with exactly three string fields capturing the component",
+  "from three distinct angles:",
   "",
-  "Example output:",
-  '"A split-layout hero suited for luxury brands and service businesses needing strong photography paired with a bold headline."',
+  '  "descriptive": What the layout looks like and its visual personality.',
+  "                 Anchor on the style[] and mood[] tags. Describe shape, density,",
+  "                 imagery weight, and overall feel.",
+  '  "usage":       When to use this component and what need it solves.',
+  "                 Anchor on the purpose[] tags and the canonical category.",
+  "                 Describe the page role and the user goal it addresses.",
+  '  "audienceFit": What kind of business or audience resonates with this look.',
+  "                 Interpret style[]/mood[]/purpose[] as audience signals.",
+  "                 Describe verticals, brand maturity, or customer profile.",
+  "",
+  "Canonical categories (the value of `category`):",
+  "hero | testimonial | footer | cta | faq | contact | navigation | stats |",
+  "motion | carousel | layout/grid | layout/split",
+  "",
+  "Canonical purpose tokens (the values inside `purpose[]`):",
+  "hero, navigation, footer, faq, contact, testimonials, stats,",
+  "features, services, products, about, team, process, benefits,",
+  "portfolio, showcase, cta, lead-capture, brand-statement, story,",
+  "location-display, magazine-opener",
   "",
   "Constraints:",
-  "- Output ONLY the description sentence(s). No preamble, no quotes, no markdown, no labels.",
-  "- 1 to 2 sentences. Maximum ~280 characters.",
-  "- Write in plain English, present tense.",
+  "- Output ONLY a single JSON object. No preamble, no markdown fences, no labels.",
+  "- Exactly three keys: descriptive, usage, audienceFit. All non-empty strings.",
+  "- Each field is at most 280 characters. Plain English, present tense.",
+  "- Do not repeat the same sentence across axes — each angle must add new signal.",
 ].join("\n");
 
 function buildUserPrompt(json: MetadataJson): string {
@@ -155,21 +175,29 @@ function buildUserPrompt(json: MetadataJson): string {
     `Mood tags: ${moodList}`,
     `Purpose tags: ${purposeList}`,
     "",
-    "Write the 1-2 sentence description now.",
+    "Return the JSON object now.",
   ].join("\n");
 }
 
 /* ------------------------------------------------------------------ */
-/*  Claude call                                                        */
+/*  Claude call + Zod-validated structured output                      */
 /* ------------------------------------------------------------------ */
 
-async function generateDescription(json: MetadataJson): Promise<string> {
+const DescriptionsSchema = z.object({
+  descriptive: z.string().min(1).max(400),
+  usage: z.string().min(1).max(400),
+  audienceFit: z.string().min(1).max(400),
+});
+
+type Descriptions = z.infer<typeof DescriptionsSchema>;
+
+async function callClaudeOnce(json: MetadataJson): Promise<Descriptions> {
   const apiKey = await getClaudeApiKey();
   const client = new Anthropic({ apiKey });
 
   const response = await client.messages.create({
     model: "claude-sonnet-4-20250514",
-    max_tokens: 200,
+    max_tokens: 400,
     system: SYSTEM_PROMPT,
     messages: [{ role: "user", content: buildUserPrompt(json) }],
   });
@@ -179,14 +207,25 @@ async function generateDescription(json: MetadataJson): Promise<string> {
     throw new Error("Claude response did not contain a text block");
   }
 
-  return textBlock.text.trim();
+  const parsed = JSON.parse(textBlock.text);
+  return DescriptionsSchema.parse(parsed);
+}
+
+async function generateDescriptions(json: MetadataJson): Promise<Descriptions> {
+  try {
+    return await callClaudeOnce(json);
+  } catch (firstErr) {
+    console.warn(
+      `[retry] ${json.id} — first attempt failed: ${(firstErr as Error).message}`,
+    );
+    return await callClaudeOnce(json);
+  }
 }
 
 /* ------------------------------------------------------------------ */
-/*  Write metadata.json with description added                         */
-/*  Preserves existing field order — JSON.parse + add field +          */
-/*  JSON.stringify mirrors the source key ordering, with `description` */
-/*  appended at the end if not already present.                         */
+/*  Write metadata.json with descriptions added                        */
+/*  Preserves existing field order — JSON.parse + spread + stringify   */
+/*  appends `descriptions` at the end if not already present.          */
 /* ------------------------------------------------------------------ */
 
 function writeMetadata(filePath: string, updated: MetadataJson): void {
@@ -238,22 +277,24 @@ async function main(): Promise<void> {
       continue;
     }
 
-    const hasDescription =
-      typeof json.description === "string" &&
-      json.description.trim().length > 0;
+    const hasAllAxes =
+      !!json.descriptions?.descriptive &&
+      !!json.descriptions?.usage &&
+      !!json.descriptions?.audienceFit;
 
-    if (hasDescription && !force) {
-      console.log(`[skip] ${json.id} — description already set`);
+    if (hasAllAxes && !force) {
+      console.log(`[skip] ${json.id} — descriptions already complete`);
       skipped += 1;
       continue;
     }
 
     try {
-      const description = await generateDescription(json);
-      const updated: MetadataJson = { ...json, description };
+      const descriptions = await generateDescriptions(json);
+      const updated: MetadataJson = { ...json, descriptions };
       writeMetadata(filePath, updated);
+      const preview = descriptions.descriptive;
       console.log(
-        `[done] ${json.id} — ${description.substring(0, 80)}${description.length > 80 ? "…" : ""}`,
+        `[done] ${json.id} — ${preview.substring(0, 80)}${preview.length > 80 ? "…" : ""}`,
       );
       described += 1;
     } catch (err) {

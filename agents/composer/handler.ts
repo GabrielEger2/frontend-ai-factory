@@ -261,10 +261,19 @@ async function markComposingStarted(projectId: string): Promise<void> {
 /* ------------------------------------------------------------------ */
 
 /**
- * Run a single Qdrant cosine-similarity search restricted to one canonical
- * category. The `category` field on each Qdrant payload was seeded in Stage 1
- * with the singular canonical value (matching `metadata.json`'s `category`),
- * so the equality match below is sufficient — no payload re-shape required.
+ * Run three Qdrant cosine-similarity searches restricted to one canonical
+ * category — one per named vector axis (`descriptive`, `usage`, `audienceFit`).
+ * Results are merged by `componentId`; each candidate's score is the max
+ * across the three axes, so the strongest matching axis pulls the component
+ * into the top-K.
+ *
+ * Three independent calls (rather than the batch `searchBatch` API) keeps the
+ * code simple and matches the Phase C plan: 3 searches × N slots × M generations
+ * is well within Qdrant's request budget for a single-tenant deployment.
+ *
+ * The `category` field on each Qdrant payload was seeded with the singular
+ * canonical value (matching `metadata.json`'s `category`), so the equality
+ * match below is sufficient — no payload re-shape required.
  */
 async function getVectorCandidatesForSlot(
   queryVector: number[],
@@ -272,35 +281,91 @@ async function getVectorCandidatesForSlot(
   category: string,
 ): Promise<CandidateComponent[]> {
   const client = await getQdrantClient();
-  const hits = await client.search("components", {
-    vector: queryVector,
-    limit: topK,
-    with_payload: true,
-    filter: {
-      must: [{ key: "category", match: { value: category } }],
-    },
-  });
-  return hits.map((hit) => {
-    const p = hit.payload as {
-      componentId?: string;
-      name?: string;
-      category?: string;
-    };
-    return {
-      id: p.componentId ?? String(hit.id),
-      name: p.name ?? "",
-      category: p.category ?? category,
+  const filter = {
+    must: [{ key: "category", match: { value: category } }],
+  };
+
+  const axes = ["descriptive", "usage", "audienceFit"] as const;
+  type Axis = (typeof axes)[number];
+
+  const [descriptiveHits, usageHits, audienceFitHits] = await Promise.all(
+    axes.map((axis) =>
+      client.search("components", {
+        vector: { name: axis, vector: queryVector },
+        limit: topK,
+        with_payload: true,
+        filter,
+      }),
+    ),
+  );
+
+  type Merged = {
+    payload: { componentId?: string; name?: string; category?: string };
+    scoresByAxis: { descriptive: number; usage: number; audienceFit: number };
+  };
+  const merged = new Map<string, Merged>();
+
+  const ingest = (
+    hits: Awaited<ReturnType<typeof client.search>>,
+    axis: Axis,
+  ): void => {
+    for (const hit of hits) {
+      const p = (hit.payload ?? {}) as {
+        componentId?: string;
+        name?: string;
+        category?: string;
+      };
+      const id = p.componentId ?? String(hit.id);
+      const existing = merged.get(id);
+      if (existing) {
+        existing.scoresByAxis[axis] = Math.max(
+          existing.scoresByAxis[axis],
+          hit.score,
+        );
+      } else {
+        merged.set(id, {
+          payload: p,
+          scoresByAxis: {
+            descriptive: 0,
+            usage: 0,
+            audienceFit: 0,
+            [axis]: hit.score,
+          },
+        });
+      }
+    }
+  };
+
+  ingest(descriptiveHits, "descriptive");
+  ingest(usageHits, "usage");
+  ingest(audienceFitHits, "audienceFit");
+
+  const candidates: CandidateComponent[] = [];
+  for (const [id, entry] of merged) {
+    const maxScore = Math.max(
+      entry.scoresByAxis.descriptive,
+      entry.scoresByAxis.usage,
+      entry.scoresByAxis.audienceFit,
+    );
+    candidates.push({
+      id,
+      name: entry.payload.name ?? "",
+      category: entry.payload.category ?? category,
       density: "medium",
       layout: "full",
       moodHits: 0,
       styleHits: 0,
       // Surface the cosine similarity in `avgPairScore` so re-ranker logic
       // operates on a single normalized 0–1 score field.
-      avgPairScore: hit.score,
-      vectorScore: hit.score,
+      avgPairScore: maxScore,
+      vectorScore: maxScore,
+      vectorScoresByAxis: entry.scoresByAxis,
       source: "vector" as const,
-    };
-  });
+    });
+  }
+
+  candidates.sort((a, b) => b.vectorScore! - a.vectorScore!);
+  return candidates.slice(0, topK);
 }
 
 /**

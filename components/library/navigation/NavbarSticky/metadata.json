@@ -70,5 +70,10 @@
   "mobileBehavior": "collapse",
   "pairsWell": [],
   "pairsPoorly": [],
-  "description": "A fixed navigation bar that remains visible while scrolling, featuring clean typography and subtle styling perfect for corporate websites and professional services that need consistent access to key menu items."
+  "description": "A fixed navigation bar that remains visible while scrolling, featuring clean typography and subtle styling perfect for corporate websites and professional services that need consistent access to key menu items.",
+  "descriptions": {
+    "descriptive": "A streamlined horizontal navigation bar that remains fixed at the top of the viewport while scrolling. Features clean typography, generous white space, and subtle shadow effects. The minimal design uses corporate color schemes with well-spaced menu items and refined hover states that maintain visual hierarchy.",
+    "usage": "Essential for websites requiring constant access to main navigation regardless of scroll position. Perfect for long-form content sites, multi-page corporate websites, and service platforms where users need to navigate between sections without returning to the top of the page.",
+    "audienceFit": "Ideal for established B2B companies, professional service firms, and corporate enterprises seeking to project reliability and competence. Appeals to business audiences who value efficiency and expect polished, convention-following interfaces that facilitate quick decision-making."
+  }
 }

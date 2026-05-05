@@ -124,5 +124,10 @@
     "carousel-cards-01"
   ],
   "pairsPoorly": [],
-  "description": "A bold split-layout call-to-action that combines editorial-style content with a prominent action button, designed for professional services and B2B companies that need to build trust while driving conversions. The asymmetrical design balances detailed messaging with clear next steps."
+  "description": "A bold split-layout call-to-action that combines editorial-style content with a prominent action button, designed for professional services and B2B companies that need to build trust while driving conversions. The asymmetrical design balances detailed messaging with clear next steps.",
+  "descriptions": {
+    "descriptive": "A bold, magazine-inspired split layout featuring high-contrast typography and clean geometric divisions. The design balances serious editorial gravitas with energetic modern touches through strategic white space, strong headlines, and purposeful visual hierarchy that commands attention.",
+    "usage": "Deploy when you need to make a powerful brand statement while driving conversions. Perfect for landing pages, product launches, or service announcements where credibility and action must coexist. Transforms brand messaging into compelling calls-to-action.",
+    "audienceFit": "Ideal for professional services, B2B companies, premium brands, and thought leaders who need to project authority while maintaining approachability. Resonates with mature businesses targeting decision-makers who value substance and clear communication over flashy aesthetics."
+  }
 }

@@ -76,5 +76,10 @@
     "footer-reveal-01"
   ],
   "pairsPoorly": [],
-  "description": "A sleek navigation bar with pill-shaped glass elements that creates a refined, editorial aesthetic perfect for professional service firms, design agencies, and premium content publishers seeking an understated yet sophisticated header."
+  "description": "A sleek navigation bar with pill-shaped glass elements that creates a refined, editorial aesthetic perfect for professional service firms, design agencies, and premium content publishers seeking an understated yet sophisticated header.",
+  "descriptions": {
+    "descriptive": "A sleek navigation bar featuring rounded pill-shaped buttons with subtle glass-like transparency effects. Clean typography and generous whitespace create an uncluttered, sophisticated appearance with soft edges and refined visual hierarchy that feels contemporary and polished.",
+    "usage": "Perfect for primary site navigation where users need clear, intuitive access to main sections. The prominent yet elegant design guides visitors smoothly between pages while maintaining focus on content, ideal for homepages and landing pages requiring seamless user flow.",
+    "audienceFit": "Appeals to established businesses, creative agencies, and professional service firms targeting discerning clients. The refined aesthetic resonates with brands emphasizing quality and expertise, particularly in consulting, design, finance, or premium B2B services where credibility matters most."
+  }
 }

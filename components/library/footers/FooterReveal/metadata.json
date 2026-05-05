@@ -177,5 +177,10 @@
     "faq-accordion-01"
   ],
   "pairsPoorly": [],
-  "description": "A modern footer that elegantly reveals itself as users scroll, featuring clean typography and minimal design elements. Perfect for editorial sites, professional services, and brands seeking a sophisticated, trustworthy presence."
+  "description": "A modern footer that elegantly reveals itself as users scroll, featuring clean typography and minimal design elements. Perfect for editorial sites, professional services, and brands seeking a sophisticated, trustworthy presence.",
+  "descriptions": {
+    "descriptive": "A sleek footer that emerges smoothly as users scroll, featuring clean typography and generous white space. The minimal design uses subtle shadows and refined spacing to create an editorial magazine aesthetic with polished, understated elegance.",
+    "usage": "Serves as the primary site footer while maintaining visual hierarchy through progressive disclosure. Reveals contact information, legal links, and brand elements without overwhelming the main content experience until users naturally reach the page bottom.",
+    "audienceFit": "Perfect for professional services firms, design agencies, consulting practices, and B2B companies that value sophisticated brand presentation. Appeals to discerning clients who associate clean design with competence and reliability."
+  }
 }

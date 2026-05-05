@@ -68,5 +68,10 @@
   "pairsPoorly": [
     "layout-cardgrid-01"
   ],
-  "description": "A dynamic card layout that remains fixed during scroll to showcase key features or services with bold typography and editorial-style presentation. Perfect for professional service firms and agencies that need to communicate their process or capabilities with energy and authority."
+  "description": "A dynamic card layout that remains fixed during scroll to showcase key features or services with bold typography and editorial-style presentation. Perfect for professional service firms and agencies that need to communicate their process or capabilities with energy and authority.",
+  "descriptions": {
+    "descriptive": "Cards that dynamically stick and unstick during scroll, creating layered visual depth with bold typography and clean editorial spacing. Modern geometric layouts with high contrast elements that animate smoothly, maintaining professional polish while delivering energetic visual transitions.",
+    "usage": "Perfect for showcasing multi-step processes, service tiers, or feature comparisons where sequential revelation builds understanding. Creates engaging storytelling flow as users scroll through complex information that benefits from staged presentation.",
+    "audienceFit": "Appeals to tech companies, consulting firms, and B2B services that need to communicate sophisticated offerings with authority. Resonates with audiences expecting premium digital experiences and process-driven solutions from established, innovation-focused brands."
+  }
 }

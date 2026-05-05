@@ -98,5 +98,10 @@
   "pairsPoorly": [
     "layout-cardgrid-01"
   ],
-  "description": "A two-column layout that pairs descriptive content with organized icon lists, perfect for professional service firms and B2B companies showcasing their key features, services, or step-by-step processes."
+  "description": "A two-column layout that pairs descriptive content with organized icon lists, perfect for professional service firms and B2B companies showcasing their key features, services, or step-by-step processes.",
+  "descriptions": {
+    "descriptive": "Clean two-column layout featuring organized icon-text pairs with generous white space. Icons are simple line-style graphics paired with concise headings and descriptions. The minimal aesthetic uses subtle typography hierarchy and restrained color palette to create an uncluttered, systematic presentation that feels orderly and refined.",
+    "usage": "Perfect for showcasing service offerings, key features, or step-by-step processes where each item needs equal visual weight. Use when you have 4-8 related items that benefit from scannable organization and want users to quickly grasp multiple value propositions or workflow stages without overwhelming detail.",
+    "audienceFit": "Ideal for B2B companies, professional services firms, SaaS platforms, and established businesses targeting corporate decision-makers. Appeals to audiences who value efficiency and clarity over flashy design, particularly in consulting, finance, technology, and healthcare sectors where credibility and systematic presentation matter most."
+  }
 }

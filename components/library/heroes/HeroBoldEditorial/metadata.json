@@ -169,5 +169,10 @@
     "hero-shuffle-cards-01",
     "hero-parallax-images-01"
   ],
-  "description": "A magazine-inspired hero section with sophisticated typography and editorial layout that positions brands as authoritative industry leaders. Perfect for luxury businesses, professional services, and publications seeking to establish credibility and gravitas."
+  "description": "A magazine-inspired hero section with sophisticated typography and editorial layout that positions brands as authoritative industry leaders. Perfect for luxury businesses, professional services, and publications seeking to establish credibility and gravitas.",
+  "descriptions": {
+    "descriptive": "A sophisticated hero layout with strong typography hierarchy and generous white space. Features bold serif headlines, editorial-style text treatment, and premium visual density. The composition balances dramatic scale with refined elegance, creating a magazine-quality aesthetic that commands attention through restrained luxury.",
+    "usage": "Opens high-end websites and landing pages where making a powerful first impression is critical. Perfect for establishing brand authority and credibility immediately upon arrival. Serves companies that need to communicate expertise, premium positioning, or thought leadership through their hero section.",
+    "audienceFit": "Resonates with luxury brands, professional services firms, high-end consultancies, and established publications. Appeals to sophisticated audiences who value quality and expertise over flashy design. Ideal for businesses targeting affluent clients or positioning themselves as industry authorities."
+  }
 }

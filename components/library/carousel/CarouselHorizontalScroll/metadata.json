@@ -87,5 +87,10 @@
     "carousel-cards-01",
     "carousel-swipe-01"
   ],
-  "description": "A sleek horizontal scrolling carousel that showcases featured content with bold typography and generous spacing. Perfect for creative agencies, media companies, and modern e-commerce brands displaying portfolios or product collections with editorial flair."
+  "description": "A sleek horizontal scrolling carousel that showcases featured content with bold typography and generous spacing. Perfect for creative agencies, media companies, and modern e-commerce brands displaying portfolios or product collections with editorial flair.",
+  "descriptions": {
+    "descriptive": "A sleek horizontal scrolling interface with bold typography and generous white space. Features clean card layouts that glide smoothly across the viewport, emphasizing high-quality imagery and concise text. The modern editorial aesthetic balances energetic motion with elegant restraint.",
+    "usage": "Perfect for showcasing multiple products, portfolio pieces, or key features when vertical space is limited. Allows users to browse through content collections efficiently while maintaining focus on individual items. Ideal for feature comparisons and product galleries.",
+    "audienceFit": "Appeals to creative agencies, premium brands, and tech companies seeking sophisticated presentation. Resonates with design-conscious businesses, luxury retailers, and professional services firms targeting discerning clientele who appreciate polished digital experiences."
+  }
 }

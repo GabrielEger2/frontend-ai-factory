@@ -184,5 +184,10 @@
     "navbar-pill-01"
   ],
   "pairsPoorly": [],
-  "description": "A clean, magazine-style footer with refined typography and minimal visual elements that builds credibility for editorial websites, publishing platforms, and content-focused businesses requiring professional authority."
+  "description": "A clean, magazine-style footer with refined typography and minimal visual elements that builds credibility for editorial websites, publishing platforms, and content-focused businesses requiring professional authority.",
+  "descriptions": {
+    "descriptive": "A streamlined footer with generous whitespace and typography-forward design. Features clean sans-serif text hierarchy, subtle dividing lines, and restrained color palette. The editorial influence shows in careful text spacing and journalistic information architecture that feels both sophisticated and uncluttered.",
+    "usage": "Anchors content-heavy websites where credibility and readability matter most. Perfect for publications, blogs, news sites, and professional services that need to maintain reader trust while providing essential navigation and contact information without visual distraction from the main content.",
+    "audienceFit": "Appeals to established media companies, professional publications, consulting firms, and knowledge-based businesses. Resonates with educated audiences who value substance over flashiness, making it ideal for brands positioning themselves as thought leaders or authoritative information sources."
+  }
 }

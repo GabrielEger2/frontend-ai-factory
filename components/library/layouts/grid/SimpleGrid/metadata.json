@@ -106,5 +106,10 @@
   "pairsPoorly": [
     "layout-simplegrid-01"
   ],
-  "description": "A clean, evenly-spaced grid layout that organizes content into structured columns, perfect for professional service firms and B2B companies showcasing their key offerings or process steps."
+  "description": "A clean, evenly-spaced grid layout that organizes content into structured columns, perfect for professional service firms and B2B companies showcasing their key offerings or process steps.",
+  "descriptions": {
+    "descriptive": "Clean rectangular grid with generous white space between elements. Features uniform card-like sections with subtle borders or shadows. Typography is sans-serif and well-spaced. Color palette leans neutral with strategic accent colors. Overall density is low, prioritizing readability over visual complexity.",
+    "usage": "Organizes feature lists, service offerings, or process steps into digestible chunks. Perfect for presenting multiple related items that need equal visual weight. Helps users quickly scan and compare options without overwhelming cognitive load.",
+    "audienceFit": "Ideal for B2B companies, consulting firms, and established enterprises that value clarity over creativity. Appeals to decision-makers who prefer straightforward information architecture. Works well for professional services, SaaS platforms, and corporate websites targeting executive audiences."
+  }
 }

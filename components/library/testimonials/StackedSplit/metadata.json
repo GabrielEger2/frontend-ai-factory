@@ -87,5 +87,10 @@
     "layout-infinitescroll-01",
     "layout-staggerfan-01"
   ],
-  "description": "A vertically stacked testimonial layout that presents customer quotes with elegant typography and structured spacing, ideal for professional services and B2B companies showcasing client credibility."
+  "description": "A vertically stacked testimonial layout that presents customer quotes with elegant typography and structured spacing, ideal for professional services and B2B companies showcasing client credibility.",
+  "descriptions": {
+    "descriptive": "Clean two-column layout with testimonial content stacked vertically in one column and complementary visual elements in the other. Features generous white space, refined typography hierarchy, and structured geometric arrangement that conveys editorial sophistication and corporate polish.",
+    "usage": "Display customer testimonials and reviews in a structured format that emphasizes credibility and readability. Perfect for showcasing detailed client feedback, case study quotes, or peer endorsements where the testimonial content needs prominent visual treatment.",
+    "audienceFit": "Appeals to established B2B companies, professional services firms, and enterprise software providers who need to demonstrate proven track records to discerning business decision-makers. Resonates with audiences valuing stability and institutional credibility."
+  }
 }

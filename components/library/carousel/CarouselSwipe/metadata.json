@@ -53,5 +53,10 @@
   "pairsPoorly": [
     "carousel-cards-01"
   ],
-  "description": "A clean, swipeable carousel with minimal styling that showcases content through smooth horizontal navigation. Perfect for professional service firms and modern businesses displaying product features, client testimonials, or key capabilities."
+  "description": "A clean, swipeable carousel with minimal styling that showcases content through smooth horizontal navigation. Perfect for professional service firms and modern businesses displaying product features, client testimonials, or key capabilities.",
+  "descriptions": {
+    "descriptive": "Clean horizontal scrolling interface with smooth swipe gestures and subtle navigation dots. Features generous white space, typography-focused cards, and understated transitions that prioritize content readability over flashy effects.",
+    "usage": "Displays multiple content pieces like product highlights, feature overviews, or customer testimonials in a space-efficient format. Users can browse through items at their own pace without overwhelming page real estate.",
+    "audienceFit": "Ideal for SaaS platforms, consulting firms, or professional services that value clear communication over visual drama. Appeals to decision-makers who appreciate organized information presentation and streamlined user experiences."
+  }
 }

@@ -10,10 +10,12 @@
  *   OPENAI_API_KEY_SSM_PATH    — e.g. /sitegen/dev/openai-api-key
  *
  * For each slot in DEFAULT_SKELETON, embeds a per-slot query string via
- * OpenAI text-embedding-3-small (1536-d), runs a category-filtered cosine
- * similarity search against the `components` collection, and prints the
- * top-3 hits per slot as a markdown table. Mirrors the per-slot loop the
- * Composer handler runs in production.
+ * OpenAI text-embedding-3-small (1536-d), runs three category-filtered
+ * cosine similarity searches against the `components` collection — one per
+ * named-vector axis (`descriptive`, `usage`, `audienceFit`) — merges results
+ * by componentId taking the max axis score, and prints the top-3 hits per
+ * slot as a markdown table. Mirrors the per-slot loop the Composer handler
+ * runs in production.
  */
 
 import { getEmbedding } from "../shared/embeddings";
@@ -76,34 +78,106 @@ async function main(): Promise<void> {
   console.log();
   console.log(`> Query: "${escapedBrief}"`);
 
+  const axes = ["descriptive", "usage", "audienceFit"] as const;
+  type Axis = (typeof axes)[number];
+
   for (const slot of DEFAULT_SKELETON) {
     const slotQuery = `${slot.category} for ${queryText}; needs: ${slot.purpose}`;
     const slotVector = await getEmbedding(slotQuery);
 
+    const filter = {
+      must: [{ key: "category", match: { value: slot.category } }],
+    };
+
     // The Qdrant SDK exposes options in snake_case (`with_payload`),
     // matching the underlying REST schema — verified against
-    // @qdrant/js-client-rest qdrant-client.d.ts.
-    const hits = await client.search("components", {
-      vector: slotVector,
-      limit: 3,
-      with_payload: true,
-      filter: {
-        must: [{ key: "category", match: { value: slot.category } }],
-      },
-    });
+    // @qdrant/js-client-rest qdrant-client.d.ts. Named-vector search uses
+    // `vector: { name, vector }` (NamedVectorStruct).
+    const [descriptiveHits, usageHits, audienceFitHits] = await Promise.all(
+      axes.map((axis) =>
+        client.search("components", {
+          vector: { name: axis, vector: slotVector },
+          limit: 3,
+          with_payload: true,
+          filter,
+        }),
+      ),
+    );
+
+    type Merged = {
+      payload: ComponentPayload;
+      scoresByAxis: Record<Axis, number>;
+    };
+    const merged = new Map<string, Merged>();
+
+    const ingest = (
+      hits: Awaited<ReturnType<typeof client.search>>,
+      axis: Axis,
+    ): void => {
+      for (const hit of hits) {
+        const payload = (hit.payload ?? {}) as ComponentPayload;
+        const id = payload.componentId ?? String(hit.id);
+        const existing = merged.get(id);
+        if (existing) {
+          existing.scoresByAxis[axis] = Math.max(
+            existing.scoresByAxis[axis],
+            hit.score,
+          );
+        } else {
+          merged.set(id, {
+            payload,
+            scoresByAxis: {
+              descriptive: 0,
+              usage: 0,
+              audienceFit: 0,
+              [axis]: hit.score,
+            },
+          });
+        }
+      }
+    };
+
+    ingest(descriptiveHits, "descriptive");
+    ingest(usageHits, "usage");
+    ingest(audienceFitHits, "audienceFit");
+
+    type Ranked = {
+      id: string;
+      name: string;
+      score: number;
+      axis: Axis;
+    };
+    const ranked: Ranked[] = [];
+    for (const [id, entry] of merged) {
+      let bestAxis: Axis = "descriptive";
+      let bestScore = entry.scoresByAxis.descriptive;
+      for (const axis of axes) {
+        if (entry.scoresByAxis[axis] > bestScore) {
+          bestScore = entry.scoresByAxis[axis];
+          bestAxis = axis;
+        }
+      }
+      ranked.push({
+        id,
+        name: entry.payload.name ?? "—",
+        score: bestScore,
+        axis: bestAxis,
+      });
+    }
+    ranked.sort((a, b) => b.score - a.score);
+    const topRanked = ranked.slice(0, 3);
 
     console.log();
     console.log(`## Slot: ${slot.category} (needs: ${slot.purpose})`);
     console.log();
-    console.log("| Rank | ID | Name | Score |");
-    console.log("|---|---|---|---|");
+    console.log("| Rank | ID | Name | Score | Axis |");
+    console.log("|---|---|---|---|---|");
 
-    hits.forEach((hit, idx) => {
-      const payload = (hit.payload ?? {}) as ComponentPayload;
-      const id = payload.componentId ?? String(hit.id);
-      const name = payload.name ?? "—";
-      const score = hit.score.toFixed(4);
-      console.log(`| ${idx + 1} | ${id} | ${name} | ${score} |`);
+    topRanked.forEach((row, idx) => {
+      const score = row.score.toFixed(4);
+      console.log(
+        `| ${idx + 1} | ${row.id} | ${row.name} | ${score} | ${row.axis} |`,
+      );
     });
   }
 }

@@ -91,5 +91,10 @@
     "faq-accordion-01",
     "faq-minimal-01"
   ],
-  "description": "A bold, editorial-style FAQ section with modern typography and dynamic layouts that builds trust through clear, energetic presentation of common questions and answers. Perfect for tech companies, agencies, and professional services that want to showcase expertise while maintaining an approachable, confident brand voice."
+  "description": "A bold, editorial-style FAQ section with modern typography and dynamic layouts that builds trust through clear, energetic presentation of common questions and answers. Perfect for tech companies, agencies, and professional services that want to showcase expertise while maintaining an approachable, confident brand voice.",
+  "descriptions": {
+    "descriptive": "Clean, structured FAQ layout with bold typography and generous white space. Features editorial-style headings with strong contrast and modern geometric elements. The design emphasizes readability through clear hierarchy and professional spacing, creating an energetic yet organized visual rhythm.",
+    "usage": "Deploy when customers need quick answers to common questions without navigating away from key pages. Ideal for reducing support tickets and building confidence during decision-making moments. Works best on product pages, pricing sections, or dedicated help areas.",
+    "audienceFit": "Perfect for B2B software companies, consulting firms, and professional service providers targeting decision-makers who value efficiency and transparency. Appeals to businesses that want to project expertise while maintaining approachable customer communication."
+  }
 }
