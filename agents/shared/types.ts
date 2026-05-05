@@ -126,7 +126,10 @@ export const StyleKitSchema = z.object({
   ctaVariant: z.string().optional(),
   ctaColorScheme: z.string().optional(),
   background: z.string().optional(),
-  textDecoration: z.string().optional(),
+  textDecoration: z
+    .enum(["none", "highlighter", "reveal"])
+    .catch("none")
+    .optional(),
 });
 
 export const StyleOutputSchema = z.object({
