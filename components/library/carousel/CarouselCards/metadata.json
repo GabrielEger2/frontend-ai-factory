@@ -2,20 +2,36 @@
   "id": "carousel-cards-01",
   "name": "Card Carousel",
   "category": "carousel",
-  "purpose": ["features", "products", "testimonials"],
+  "purpose": [
+    "features",
+    "products",
+    "testimonials"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
     "textDecoration": true,
     "button": true
   },
-  "style": ["modern", "corporate", "editorial"],
-  "mood": ["professional", "trustworthy", "friendly"],
+  "style": [
+    "modern",
+    "corporate",
+    "editorial"
+  ],
+  "mood": [
+    "professional",
+    "trustworthy",
+    "friendly"
+  ],
   "layout": "stacked",
   "density": "medium",
-  "imageWeight": 0.0,
+  "imageWeight": 0,
   "slots": [
-    { "name": "headline", "type": "text", "maxLength": 60 },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 60
+    },
     {
       "name": "highlightWord",
       "type": "text",
@@ -26,7 +42,12 @@
       "name": "highlightColorScheme",
       "type": "text",
       "optional": true,
-      "enum": ["primary", "secondary", "accent", "neutral"]
+      "enum": [
+        "primary",
+        "secondary",
+        "accent",
+        "neutral"
+      ]
     },
     {
       "name": "revealHeadline",
@@ -45,18 +66,33 @@
       "optional": true,
       "maxLength": 30
     },
-    { "name": "ctaUrl", "type": "url", "optional": true },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
     {
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+      "enum": [
+        "default",
+        "slide",
+        "dotExpand",
+        "drawOutline",
+        "glow"
+      ]
     },
     {
       "name": "ctaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": ["primary", "secondary", "accent", "neutral"]
+      "enum": [
+        "primary",
+        "secondary",
+        "accent",
+        "neutral"
+      ]
     },
     {
       "name": "cards",
@@ -65,16 +101,39 @@
       "itemSchema": {
         "type": "object",
         "fields": [
-          { "name": "image", "type": "image", "aspectRatio": "16:9" },
-          { "name": "imageAlt", "type": "text", "maxLength": 120 },
-          { "name": "tag", "type": "text", "maxLength": 30 },
-          { "name": "title", "type": "text", "maxLength": 80 },
-          { "name": "description", "type": "text", "maxLength": 160 }
+          {
+            "name": "image",
+            "type": "image",
+            "aspectRatio": "16:9"
+          },
+          {
+            "name": "imageAlt",
+            "type": "text",
+            "maxLength": 120
+          },
+          {
+            "name": "tag",
+            "type": "text",
+            "maxLength": 30
+          },
+          {
+            "name": "title",
+            "type": "text",
+            "maxLength": 80
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "maxLength": 160
+          }
         ]
       }
     }
   ],
   "mobileBehavior": "scroll",
   "pairsWell": [],
-  "pairsPoorly": ["carousel-swipe-01"]
+  "pairsPoorly": [
+    "carousel-swipe-01"
+  ],
+  "description": "A sleek rotating card display that showcases multiple content pieces in an organized, professional layout. Perfect for corporate websites displaying product features, client testimonials, or service offerings with a clean, trustworthy aesthetic."
 }

@@ -2,12 +2,24 @@
   "id": "layout-iconlistsplit-01",
   "name": "Icon List Split",
   "category": "layout/split",
-  "style": ["modern", "corporate", "minimal"],
-  "mood": ["professional", "trustworthy", "calm"],
+  "style": [
+    "modern",
+    "corporate",
+    "minimal"
+  ],
+  "mood": [
+    "professional",
+    "trustworthy",
+    "calm"
+  ],
   "layout": "split",
   "density": "medium",
   "imageWeight": 0.2,
-  "purpose": ["features", "services", "process"],
+  "purpose": [
+    "features",
+    "services",
+    "process"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
@@ -15,7 +27,11 @@
     "button": false
   },
   "slots": [
-    { "name": "headline", "type": "text", "maxLength": 80 },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
     {
       "name": "features",
       "type": "list",
@@ -23,9 +39,21 @@
       "itemSchema": {
         "type": "object",
         "fields": [
-          { "name": "icon", "type": "text", "maxLength": 10 },
-          { "name": "title", "type": "text", "maxLength": 60 },
-          { "name": "description", "type": "text", "maxLength": 200 }
+          {
+            "name": "icon",
+            "type": "text",
+            "maxLength": 10
+          },
+          {
+            "name": "title",
+            "type": "text",
+            "maxLength": 60
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "maxLength": 200
+          }
         ]
       }
     },
@@ -35,7 +63,12 @@
       "aspectRatio": "1:1",
       "optional": true
     },
-    { "name": "imageAlt", "type": "text", "maxLength": 120, "optional": true },
+    {
+      "name": "imageAlt",
+      "type": "text",
+      "maxLength": 120,
+      "optional": true
+    },
     {
       "name": "logos",
       "type": "list",
@@ -44,13 +77,26 @@
       "itemSchema": {
         "type": "object",
         "fields": [
-          { "name": "image", "type": "image" },
-          { "name": "imageAlt", "type": "text", "maxLength": 60 }
+          {
+            "name": "image",
+            "type": "image"
+          },
+          {
+            "name": "imageAlt",
+            "type": "text",
+            "maxLength": 60
+          }
         ]
       }
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["hero-split-image-01", "layout-authorsplit-01"],
-  "pairsPoorly": ["layout-cardgrid-01"]
+  "pairsWell": [
+    "hero-split-image-01",
+    "layout-authorsplit-01"
+  ],
+  "pairsPoorly": [
+    "layout-cardgrid-01"
+  ],
+  "description": "A two-column layout that pairs descriptive content with organized icon lists, perfect for professional service firms and B2B companies showcasing their key features, services, or step-by-step processes."
 }

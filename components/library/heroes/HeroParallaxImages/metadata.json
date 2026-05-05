@@ -2,41 +2,81 @@
   "id": "hero-parallax-images-01",
   "name": "Parallax Images Hero",
   "category": "hero",
-  "purpose": ["hero"],
+  "purpose": [
+    "hero"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
     "textDecoration": true,
     "button": true
   },
-  "style": ["modern", "editorial", "bold"],
-  "mood": ["energetic", "elegant", "professional"],
+  "style": [
+    "modern",
+    "editorial",
+    "bold"
+  ],
+  "mood": [
+    "energetic",
+    "elegant",
+    "professional"
+  ],
   "layout": "centered",
   "density": "high",
   "imageWeight": 0.15,
   "slots": [
-    { "name": "headline", "type": "text", "maxLength": 80 },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
     {
       "name": "headlineRotatingWords",
       "type": "list",
       "optional": true,
       "maxItems": 6,
-      "itemSchema": { "type": "text", "maxLength": 40 }
+      "itemSchema": {
+        "type": "text",
+        "maxLength": 40
+      }
     },
-    { "name": "subheadline", "type": "text", "maxLength": 200 },
-    { "name": "ctaText", "type": "text", "maxLength": 30 },
-    { "name": "ctaUrl", "type": "url", "optional": true },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "maxLength": 200
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 30
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
     {
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+      "enum": [
+        "default",
+        "slide",
+        "dotExpand",
+        "drawOutline",
+        "glow"
+      ]
     },
     {
       "name": "ctaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": ["primary", "secondary", "accent", "neutral"]
+      "enum": [
+        "primary",
+        "secondary",
+        "accent",
+        "neutral"
+      ]
     },
     {
       "name": "secondaryCtaText",
@@ -44,18 +84,33 @@
       "optional": true,
       "maxLength": 30
     },
-    { "name": "secondaryCtaUrl", "type": "url", "optional": true },
+    {
+      "name": "secondaryCtaUrl",
+      "type": "url",
+      "optional": true
+    },
     {
       "name": "secondaryCtaStyle",
       "type": "text",
       "optional": true,
-      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+      "enum": [
+        "default",
+        "slide",
+        "dotExpand",
+        "drawOutline",
+        "glow"
+      ]
     },
     {
       "name": "secondaryCtaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": ["primary", "secondary", "accent", "neutral"]
+      "enum": [
+        "primary",
+        "secondary",
+        "accent",
+        "neutral"
+      ]
     },
     {
       "name": "centerImage",
@@ -63,7 +118,11 @@
       "aspectRatio": "16:9",
       "optional": true
     },
-    { "name": "centerImageAlt", "type": "text", "maxLength": 120 },
+    {
+      "name": "centerImageAlt",
+      "type": "text",
+      "maxLength": 120
+    },
     {
       "name": "parallaxImages",
       "type": "list",
@@ -71,10 +130,26 @@
       "itemSchema": {
         "type": "object",
         "fields": [
-          { "name": "src", "type": "image", "aspectRatio": "16:9" },
-          { "name": "alt", "type": "text", "maxLength": 120 },
-          { "name": "start", "type": "number", "optional": true },
-          { "name": "end", "type": "number", "optional": true },
+          {
+            "name": "src",
+            "type": "image",
+            "aspectRatio": "16:9"
+          },
+          {
+            "name": "alt",
+            "type": "text",
+            "maxLength": 120
+          },
+          {
+            "name": "start",
+            "type": "number",
+            "optional": true
+          },
+          {
+            "name": "end",
+            "type": "number",
+            "optional": true
+          },
           {
             "name": "widthClass",
             "type": "text",
@@ -97,22 +172,35 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["layout-cardgrid-01", "layout-infinitescroll-01"],
-  "pairsPoorly": ["hero-shuffle-cards-01", "hero-split-image-01"],
+  "pairsWell": [
+    "layout-cardgrid-01",
+    "layout-infinitescroll-01"
+  ],
+  "pairsPoorly": [
+    "hero-shuffle-cards-01",
+    "hero-split-image-01"
+  ],
   "variants": [
     {
       "id": "hero-parallax-images-01-editorial",
       "name": "Editorial Dark",
       "density": "high",
       "colorMode": "dark",
-      "styleOverrides": ["editorial", "bold"]
+      "styleOverrides": [
+        "editorial",
+        "bold"
+      ]
     },
     {
       "id": "hero-parallax-images-01-airy",
       "name": "Airy Light",
       "density": "low",
       "colorMode": "light",
-      "styleOverrides": ["modern", "editorial"]
+      "styleOverrides": [
+        "modern",
+        "editorial"
+      ]
     }
-  ]
+  ],
+  "description": "A modern hero section featuring parallax scrolling images that creates dynamic visual depth and movement. Perfect for creative agencies, portfolios, and media companies wanting to make a bold first impression with sophisticated visual storytelling."
 }

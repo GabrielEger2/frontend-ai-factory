@@ -2,15 +2,25 @@
   "id": "footer-pulse-01",
   "name": "Pulse Editorial Footer",
   "category": "footer",
-  "purpose": ["footer"],
+  "purpose": [
+    "footer"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
     "textDecoration": false,
     "button": true
   },
-  "style": ["modern", "editorial", "minimal"],
-  "mood": ["professional", "elegant", "trustworthy"],
+  "style": [
+    "modern",
+    "editorial",
+    "minimal"
+  ],
+  "mood": [
+    "professional",
+    "elegant",
+    "trustworthy"
+  ],
   "layout": "multi-column",
   "density": "medium",
   "imageWeight": 0.05,
@@ -21,28 +31,78 @@
       "aspectRatio": "auto",
       "optional": true
     },
-    { "name": "tagline", "type": "text", "maxLength": 120, "optional": true },
-    { "name": "whatsappUrl", "type": "url", "optional": true },
-    { "name": "whatsappText", "type": "text", "maxLength": 30 },
-    { "name": "phoneUrl", "type": "url", "optional": true },
-    { "name": "phoneText", "type": "text", "maxLength": 30 },
-    { "name": "emailUrl", "type": "url", "optional": true },
-    { "name": "emailText", "type": "text", "maxLength": 60 },
-    { "name": "addressText", "type": "text", "maxLength": 120 },
-    { "name": "addressMapsUrl", "type": "url", "optional": true },
-    { "name": "hoursText", "type": "text", "maxLength": 60, "optional": true },
+    {
+      "name": "tagline",
+      "type": "text",
+      "maxLength": 120,
+      "optional": true
+    },
+    {
+      "name": "whatsappUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "whatsappText",
+      "type": "text",
+      "maxLength": 30
+    },
+    {
+      "name": "phoneUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "phoneText",
+      "type": "text",
+      "maxLength": 30
+    },
+    {
+      "name": "emailUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "emailText",
+      "type": "text",
+      "maxLength": 60
+    },
+    {
+      "name": "addressText",
+      "type": "text",
+      "maxLength": 120
+    },
+    {
+      "name": "addressMapsUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "hoursText",
+      "type": "text",
+      "maxLength": 60,
+      "optional": true
+    },
     {
       "name": "navColumns",
       "type": "list",
       "maxItems": 4,
       "itemSchema": {
-        "title": { "type": "text", "maxLength": 30 },
+        "title": {
+          "type": "text",
+          "maxLength": 30
+        },
         "links": {
           "type": "list",
           "maxItems": 6,
           "itemSchema": {
-            "text": { "type": "text", "maxLength": 30 },
-            "href": { "type": "url" }
+            "text": {
+              "type": "text",
+              "maxLength": 30
+            },
+            "href": {
+              "type": "url"
+            }
           }
         }
       }
@@ -68,18 +128,42 @@
             "telegram"
           ]
         },
-        "url": { "type": "url" },
-        "label": { "type": "text", "maxLength": 60 }
+        "url": {
+          "type": "url"
+        },
+        "label": {
+          "type": "text",
+          "maxLength": 60
+        }
       }
     },
-    { "name": "companyName", "type": "text", "maxLength": 60 },
-    { "name": "ctaText", "type": "text", "maxLength": 40, "optional": true },
-    { "name": "ctaUrl", "type": "url", "optional": true },
+    {
+      "name": "companyName",
+      "type": "text",
+      "maxLength": 60
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 40,
+      "optional": true
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
     {
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+      "enum": [
+        "default",
+        "slide",
+        "dotExpand",
+        "drawOutline",
+        "glow"
+      ]
     },
     {
       "name": "locationLabel",
@@ -87,9 +171,18 @@
       "maxLength": 30,
       "optional": true
     },
-    { "name": "timezone", "type": "text", "maxLength": 60, "optional": true }
+    {
+      "name": "timezone",
+      "type": "text",
+      "maxLength": 60,
+      "optional": true
+    }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["faq-accordion-01", "navbar-pill-01"],
-  "pairsPoorly": []
+  "pairsWell": [
+    "faq-accordion-01",
+    "navbar-pill-01"
+  ],
+  "pairsPoorly": [],
+  "description": "A clean, magazine-style footer with refined typography and minimal visual elements that builds credibility for editorial websites, publishing platforms, and content-focused businesses requiring professional authority."
 }

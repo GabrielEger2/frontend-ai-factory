@@ -2,21 +2,39 @@
   "id": "faq-solutions-01",
   "name": "FAQ Solutions",
   "category": "faq",
-  "purpose": ["faq"],
+  "purpose": [
+    "faq"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
     "textDecoration": false,
     "button": true
   },
-  "style": ["modern", "bold", "editorial"],
-  "mood": ["professional", "energetic", "trustworthy"],
+  "style": [
+    "modern",
+    "bold",
+    "editorial"
+  ],
+  "mood": [
+    "professional",
+    "energetic",
+    "trustworthy"
+  ],
   "layout": "split",
   "density": "medium",
-  "imageWeight": 0.0,
+  "imageWeight": 0,
   "slots": [
-    { "name": "headline", "type": "text", "maxLength": 80 },
-    { "name": "subheadline", "type": "text", "maxLength": 160 },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "maxLength": 160
+    },
     {
       "name": "items",
       "type": "list",
@@ -24,19 +42,54 @@
       "itemSchema": {
         "type": "object",
         "fields": [
-          { "name": "title", "type": "text", "maxLength": 60 },
-          { "name": "description", "type": "text", "maxLength": 300 },
-          { "name": "ctaText", "type": "text", "maxLength": 30 },
-          { "name": "ctaUrl", "type": "url" },
-          { "name": "image", "type": "image", "aspectRatio": "4:3" },
-          { "name": "imageAlt", "type": "text", "maxLength": 120 }
+          {
+            "name": "title",
+            "type": "text",
+            "maxLength": 60
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "maxLength": 300
+          },
+          {
+            "name": "ctaText",
+            "type": "text",
+            "maxLength": 30
+          },
+          {
+            "name": "ctaUrl",
+            "type": "url"
+          },
+          {
+            "name": "image",
+            "type": "image",
+            "aspectRatio": "4:3"
+          },
+          {
+            "name": "imageAlt",
+            "type": "text",
+            "maxLength": 120
+          }
         ]
       }
     },
-    { "name": "ctaStyle", "type": "text", "optional": true },
-    { "name": "ctaColorScheme", "type": "text", "optional": true }
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true
+    }
   ],
   "mobileBehavior": "stack",
   "pairsWell": [],
-  "pairsPoorly": ["faq-accordion-01", "faq-minimal-01"]
+  "pairsPoorly": [
+    "faq-accordion-01",
+    "faq-minimal-01"
+  ],
+  "description": "A bold, editorial-style FAQ section with modern typography and dynamic layouts that builds trust through clear, energetic presentation of common questions and answers. Perfect for tech companies, agencies, and professional services that want to showcase expertise while maintaining an approachable, confident brand voice."
 }

@@ -2,15 +2,25 @@
   "id": "footer-reveal-01",
   "name": "Sticky Reveal Footer",
   "category": "footer",
-  "purpose": ["footer"],
+  "purpose": [
+    "footer"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
     "textDecoration": false,
     "button": true
   },
-  "style": ["modern", "editorial", "minimal"],
-  "mood": ["professional", "elegant", "trustworthy"],
+  "style": [
+    "modern",
+    "editorial",
+    "minimal"
+  ],
+  "mood": [
+    "professional",
+    "elegant",
+    "trustworthy"
+  ],
   "layout": "multi-column",
   "density": "medium",
   "imageWeight": 0.08,
@@ -21,27 +31,72 @@
       "aspectRatio": "auto",
       "optional": true
     },
-    { "name": "whatsappUrl", "type": "url", "optional": true },
-    { "name": "whatsappText", "type": "text", "maxLength": 30 },
-    { "name": "phoneUrl", "type": "url", "optional": true },
-    { "name": "phoneText", "type": "text", "maxLength": 30 },
-    { "name": "emailUrl", "type": "url", "optional": true },
-    { "name": "emailText", "type": "text", "maxLength": 60 },
-    { "name": "addressText", "type": "text", "maxLength": 120 },
-    { "name": "addressMapsUrl", "type": "url", "optional": true },
-    { "name": "hoursText", "type": "text", "maxLength": 60, "optional": true },
+    {
+      "name": "whatsappUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "whatsappText",
+      "type": "text",
+      "maxLength": 30
+    },
+    {
+      "name": "phoneUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "phoneText",
+      "type": "text",
+      "maxLength": 30
+    },
+    {
+      "name": "emailUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "emailText",
+      "type": "text",
+      "maxLength": 60
+    },
+    {
+      "name": "addressText",
+      "type": "text",
+      "maxLength": 120
+    },
+    {
+      "name": "addressMapsUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "hoursText",
+      "type": "text",
+      "maxLength": 60,
+      "optional": true
+    },
     {
       "name": "navColumns",
       "type": "list",
       "maxItems": 4,
       "itemSchema": {
-        "title": { "type": "text", "maxLength": 30 },
+        "title": {
+          "type": "text",
+          "maxLength": 30
+        },
         "links": {
           "type": "list",
           "maxItems": 6,
           "itemSchema": {
-            "text": { "type": "text", "maxLength": 30 },
-            "href": { "type": "url" }
+            "text": {
+              "type": "text",
+              "maxLength": 30
+            },
+            "href": {
+              "type": "url"
+            }
           }
         }
       }
@@ -67,27 +122,60 @@
             "telegram"
           ]
         },
-        "url": { "type": "url" },
-        "label": { "type": "text", "maxLength": 60 }
+        "url": {
+          "type": "url"
+        },
+        "label": {
+          "type": "text",
+          "maxLength": 60
+        }
       }
     },
-    { "name": "companyName", "type": "text", "maxLength": 60 },
-    { "name": "ctaText", "type": "text", "maxLength": 40, "optional": true },
-    { "name": "ctaUrl", "type": "url", "optional": true },
+    {
+      "name": "companyName",
+      "type": "text",
+      "maxLength": 60
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 40,
+      "optional": true
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
     {
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+      "enum": [
+        "default",
+        "slide",
+        "dotExpand",
+        "drawOutline",
+        "glow"
+      ]
     },
     {
       "name": "height",
       "type": "number",
       "optional": true,
-      "enum": [350, 400, 450, 500, 550]
+      "enum": [
+        350,
+        400,
+        450,
+        500,
+        550
+      ]
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["faq-accordion-01"],
-  "pairsPoorly": []
+  "pairsWell": [
+    "faq-accordion-01"
+  ],
+  "pairsPoorly": [],
+  "description": "A modern footer that elegantly reveals itself as users scroll, featuring clean typography and minimal design elements. Perfect for editorial sites, professional services, and brands seeking a sophisticated, trustworthy presence."
 }

@@ -2,21 +2,39 @@
   "id": "faq-minimal-01",
   "name": "FAQ Minimal",
   "category": "faq",
-  "purpose": ["faq"],
+  "purpose": [
+    "faq"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
     "textDecoration": false,
     "button": false
   },
-  "style": ["minimal", "editorial", "corporate"],
-  "mood": ["calm", "professional", "trustworthy"],
+  "style": [
+    "minimal",
+    "editorial",
+    "corporate"
+  ],
+  "mood": [
+    "calm",
+    "professional",
+    "trustworthy"
+  ],
   "layout": "centered",
   "density": "low",
-  "imageWeight": 0.0,
+  "imageWeight": 0,
   "slots": [
-    { "name": "headline", "type": "text", "maxLength": 80 },
-    { "name": "subheadline", "type": "text", "maxLength": 160 },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "maxLength": 160
+    },
     {
       "name": "items",
       "type": "list",
@@ -24,13 +42,25 @@
       "itemSchema": {
         "type": "object",
         "fields": [
-          { "name": "question", "type": "text", "maxLength": 120 },
-          { "name": "answer", "type": "text", "maxLength": 500 }
+          {
+            "name": "question",
+            "type": "text",
+            "maxLength": 120
+          },
+          {
+            "name": "answer",
+            "type": "text",
+            "maxLength": 500
+          }
         ]
       }
     }
   ],
   "mobileBehavior": "stack",
   "pairsWell": [],
-  "pairsPoorly": ["faq-accordion-01", "faq-solutions-01"]
+  "pairsPoorly": [
+    "faq-accordion-01",
+    "faq-solutions-01"
+  ],
+  "description": "A clean, text-focused FAQ section with generous whitespace and simple typography that builds trust through clarity. Perfect for professional services, SaaS platforms, and corporate websites where credibility matters more than flashy design."
 }

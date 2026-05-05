@@ -2,12 +2,24 @@
   "id": "layout-stickycards-01",
   "name": "Sticky Cards",
   "category": "motion",
-  "style": ["modern", "bold", "editorial"],
-  "mood": ["professional", "energetic", "trustworthy"],
+  "style": [
+    "modern",
+    "bold",
+    "editorial"
+  ],
+  "mood": [
+    "professional",
+    "energetic",
+    "trustworthy"
+  ],
   "layout": "stacked",
   "density": "low",
   "imageWeight": 0.08,
-  "purpose": ["features", "services", "process"],
+  "purpose": [
+    "features",
+    "services",
+    "process"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
@@ -15,7 +27,12 @@
     "button": false
   },
   "slots": [
-    { "name": "headline", "type": "text", "maxLength": 80, "optional": true },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80,
+      "optional": true
+    },
     {
       "name": "subheadline",
       "type": "text",
@@ -37,9 +54,19 @@
         ]
       }
     },
-    { "name": "cardHeight", "type": "number", "optional": true }
+    {
+      "name": "cardHeight",
+      "type": "number",
+      "optional": true
+    }
   ],
   "mobileBehavior": "scroll",
-  "pairsWell": ["hero-geometric-01", "hero-split-image-01"],
-  "pairsPoorly": ["layout-cardgrid-01"]
+  "pairsWell": [
+    "hero-geometric-01",
+    "hero-split-image-01"
+  ],
+  "pairsPoorly": [
+    "layout-cardgrid-01"
+  ],
+  "description": "A dynamic card layout that remains fixed during scroll to showcase key features or services with bold typography and editorial-style presentation. Perfect for professional service firms and agencies that need to communicate their process or capabilities with energy and authority."
 }

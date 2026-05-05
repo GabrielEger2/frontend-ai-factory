@@ -2,15 +2,28 @@
   "id": "layout-editorial-framed-split-01",
   "name": "Editorial Framed Split",
   "category": "layout/split",
-  "purpose": ["features", "about", "services", "story"],
+  "purpose": [
+    "features",
+    "about",
+    "services",
+    "story"
+  ],
   "acceptsStyleKit": {
     "card": true,
     "background": true,
     "textDecoration": true,
     "button": true
   },
-  "style": ["editorial", "classic", "minimal"],
-  "mood": ["professional", "elegant", "trustworthy"],
+  "style": [
+    "editorial",
+    "classic",
+    "minimal"
+  ],
+  "mood": [
+    "professional",
+    "elegant",
+    "trustworthy"
+  ],
   "layout": "split",
   "density": "medium",
   "imageWeight": 0.18,
@@ -75,13 +88,24 @@
       "name": "ctaVariant",
       "type": "text",
       "optional": true,
-      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+      "enum": [
+        "default",
+        "slide",
+        "dotExpand",
+        "drawOutline",
+        "glow"
+      ]
     },
     {
       "name": "ctaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": ["primary", "secondary", "accent", "neutral"]
+      "enum": [
+        "primary",
+        "secondary",
+        "accent",
+        "neutral"
+      ]
     }
   ],
   "mobileBehavior": "stack",
@@ -91,5 +115,9 @@
     "layout-cardgrid-01",
     "footer-reveal-01"
   ],
-  "pairsPoorly": ["layout-statementsplit-01", "layout-authorsplit-01"]
+  "pairsPoorly": [
+    "layout-statementsplit-01",
+    "layout-authorsplit-01"
+  ],
+  "description": "A refined split layout featuring framed content sections that creates editorial-style hierarchy, perfect for professional services and established brands showcasing their story or key features with understated elegance."
 }

@@ -301,7 +301,7 @@ export default function CarouselCards({
       aria-label={headline}
     >
       <div className="relative overflow-hidden p-4">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-7xl">
           {/* Header + navigation */}
           <div className="mb-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
@@ -2002,7 +2002,7 @@ export default function CtaImageBackdrop({
       <div className="relative flex w-full items-center" style={{ minHeight }}>
         <div
           className={cn(
-            "mx-auto w-full max-w-[96rem] px-4 py-16 md:px-8 md:py-24 lg:px-12",
+            "mx-auto w-full max-w-7xl px-4 py-16 md:px-8 md:py-24 lg:px-12",
             align === "center" && "text-center",
           )}
         >
@@ -2155,7 +2155,7 @@ export default function FaqAccordion({
     <section
       className={cn("w-full bg-base-100 py-12 md:py-16 lg:py-24", className)}
     >
-      <div className="mx-auto max-w-3xl px-4 md:px-8">
+      <div className="mx-auto max-w-7xl px-4 md:px-8">
         {/* Header */}
         <div className="mb-8 text-center">
           <h2 className="text-3xl font-bold leading-tight text-base-content md:text-4xl">
@@ -2431,7 +2431,7 @@ export default function FaqMinimal({
     <section
       className={cn("w-full bg-base-100 py-12 md:py-16 lg:py-24", className)}
     >
-      <div className="mx-auto max-w-3xl px-4 md:px-8">
+      <div className="mx-auto max-w-7xl px-4 md:px-8">
         {/* Header */}
         <div className="mb-6 text-center">
           <h2 className="text-3xl font-semibold leading-tight text-base-content md:text-4xl">
@@ -2687,7 +2687,7 @@ export default function FaqSolutions({
     <section
       className={cn("w-full bg-base-100 py-12 md:py-16 lg:py-24", className)}
     >
-      <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-8 px-4 md:px-8 lg:grid-cols-[1fr_350px]">
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-8 px-4 md:px-8 lg:grid-cols-[1fr_350px]">
         <div>
           {/* Header */}
           <h2 className="mb-2 text-3xl font-bold leading-tight text-base-content md:text-4xl">
@@ -2735,6 +2735,404 @@ export default function FaqSolutions({
         </AnimatePresence>
       </div>
     </section>
+  );
+}
+`,
+  "src/components/footers/FooterPulse/index.tsx": `"use client";
+
+import React, { useEffect, useState } from "react";
+import {
+  FaWhatsapp,
+  FaPhoneAlt,
+  FaInstagram,
+  FaLinkedinIn,
+  FaFacebook,
+  FaTwitter,
+  FaYoutube,
+  FaTiktok,
+  FaGoogle,
+  FaPinterest,
+  FaTelegram,
+  FaGlobe,
+} from "react-icons/fa";
+import { HiOutlineMail, HiOutlineMap } from "react-icons/hi";
+import { cn } from "@/lib/utils";
+import { CtaButton, type CtaVariant } from "@/lib/ui/button";
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+
+export interface FooterNavColumn {
+  title: string;
+  links: Array<{ text: string; href: string }>;
+}
+
+export interface FooterSocialLink {
+  network:
+    | "instagram"
+    | "linkedin"
+    | "facebook"
+    | "whatsapp"
+    | "twitter"
+    | "youtube"
+    | "tiktok"
+    | "google"
+    | "pinterest"
+    | "telegram";
+  url: string;
+  label: string;
+}
+
+export interface FooterPulseProps {
+  /** Logo element (ReactNode — SVG, image, or text) */
+  logo?: React.ReactNode;
+  /** WhatsApp link (full wa.me URL with message) */
+  whatsappUrl?: string;
+  /** WhatsApp display text (e.g. "+55 11 99999-9999") */
+  whatsappText?: string;
+  /** Phone link (tel: format) */
+  phoneUrl?: string;
+  /** Phone display text */
+  phoneText?: string;
+  /** Email link (mailto: format with optional subject/body) */
+  emailUrl?: string;
+  /** Email display text — rendered as the large gradient hero of the footer */
+  emailText?: string;
+  /** Physical address text (supports line breaks via \\n) */
+  addressText?: string;
+  /** Google Maps link for the address */
+  addressMapsUrl?: string;
+  /** Business hours text (e.g. "Mon–Fri 9am–6pm") */
+  hoursText?: string;
+  /** Navigation columns (max 4) */
+  navColumns?: FooterNavColumn[];
+  /** Social media links shown in the bottom bar */
+  socialLinks?: FooterSocialLink[];
+  /** Company name for copyright */
+  companyName?: string;
+  /** Optional CTA button label */
+  ctaText?: string;
+  /** CTA destination URL */
+  ctaUrl?: string;
+  /** CTA button style — "default" uses the standard filled button, others use animated variants */
+  ctaStyle?: CtaVariant;
+  /** Optional location label rendered above the live clock (e.g. "lisbon", "são paulo") */
+  locationLabel?: string;
+  /** IANA timezone for the live clock. Defaults to the visitor's locale. */
+  timezone?: string;
+  /** Tagline displayed under the logo (e.g. "studio · journal · interface · futures") */
+  tagline?: string;
+  /** Extra classes on the root element */
+  className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_NAV_COLUMNS: FooterNavColumn[] = [
+  {
+    title: "Product",
+    links: [
+      { text: "Features", href: "/features" },
+      { text: "Pricing", href: "/pricing" },
+      { text: "Integrations", href: "/integrations" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { text: "About", href: "/about" },
+      { text: "Careers", href: "/careers" },
+      { text: "Contact", href: "/contact" },
+    ],
+  },
+];
+
+const SOCIAL_ICONS: Record<
+  string,
+  React.ComponentType<{ className?: string }>
+> = {
+  instagram: FaInstagram,
+  linkedin: FaLinkedinIn,
+  facebook: FaFacebook,
+  whatsapp: FaWhatsapp,
+  twitter: FaTwitter,
+  youtube: FaYoutube,
+  tiktok: FaTiktok,
+  google: FaGoogle,
+  pinterest: FaPinterest,
+  telegram: FaTelegram,
+};
+
+/* ------------------------------------------------------------------ */
+/*  Live clock — ticks every second, respects optional timezone        */
+/* ------------------------------------------------------------------ */
+
+function LiveClock({ timezone }: { timezone?: string }) {
+  const [time, setTime] = useState<string>("--:--:--");
+
+  useEffect(() => {
+    const fmt = () => {
+      try {
+        const formatter = new Intl.DateTimeFormat("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+          timeZone: timezone,
+        });
+        setTime(formatter.format(new Date()));
+      } catch {
+        const d = new Date();
+        const h = d.getHours().toString().padStart(2, "0");
+        const m = d.getMinutes().toString().padStart(2, "0");
+        const s = d.getSeconds().toString().padStart(2, "0");
+        setTime(\`\${h}:\${m}:\${s}\`);
+      }
+    };
+    fmt();
+    const iv = setInterval(fmt, 1000);
+    return () => clearInterval(iv);
+  }, [timezone]);
+
+  return (
+    <span className="font-mono text-3xl font-medium tracking-tight text-neutral-content md:text-4xl">
+      {time}
+    </span>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Component                                                          */
+/* ------------------------------------------------------------------ */
+
+export default function FooterPulse({
+  logo,
+  whatsappUrl,
+  whatsappText,
+  phoneUrl,
+  phoneText,
+  emailUrl,
+  emailText,
+  addressText,
+  addressMapsUrl,
+  hoursText,
+  navColumns = DEFAULT_NAV_COLUMNS,
+  socialLinks = [],
+  companyName = "Your Company",
+  ctaText,
+  ctaUrl,
+  ctaStyle = "default",
+  locationLabel,
+  timezone,
+  tagline,
+  className,
+}: FooterPulseProps) {
+  const showContact =
+    whatsappUrl || phoneUrl || emailUrl || addressText || hoursText;
+
+  return (
+    <footer
+      className={cn(
+        "relative overflow-hidden border-t border-base-content/10 bg-neutral text-neutral-content",
+        className,
+      )}
+    >
+      {/* Subtle ambient gradient glow — matches the futuristic / glow palette */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-40 left-1/4 h-80 w-80 rounded-full opacity-30 blur-3xl"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 50%, oklch(var(--color-primary)), transparent 70%)",
+        }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-40 right-1/4 h-80 w-80 rounded-full opacity-25 blur-3xl"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 50%, oklch(var(--color-accent)), transparent 70%)",
+        }}
+      />
+
+      <div className="relative mx-auto max-w-7xl px-6 pb-10 pt-20 lg:px-12 lg:pt-28">
+        {/* ---------- Hero row: contact email + local time ---------- */}
+        <div className="flex flex-col gap-12 border-b border-neutral-content/10 pb-16 lg:flex-row lg:items-end lg:justify-between">
+          {/* Left: contact + huge gradient email */}
+          <div className="space-y-5">
+            <p className="text-xs uppercase tracking-[0.2em] text-neutral-content/50">
+              Contact
+            </p>
+            {emailUrl && emailText ? (
+              <a
+                href={emailUrl}
+                className="group inline-block bg-gradient-to-r from-neutral-content to-neutral-content bg-clip-text text-[clamp(2rem,5vw,3.5rem)] font-semibold leading-none tracking-tight text-transparent transition-[background-image] duration-500 hover:from-primary hover:via-secondary hover:to-accent"
+              >
+                {emailText}
+              </a>
+            ) : (
+              <span className="block text-[clamp(2rem,5vw,3.5rem)] font-semibold leading-none tracking-tight">
+                {companyName}
+              </span>
+            )}
+
+            {ctaText && ctaUrl && (
+              <div className="pt-3">
+                <CtaButton
+                  variant={ctaStyle}
+                  href={ctaUrl}
+                  colorScheme="primary"
+                  className="text-sm"
+                >
+                  {ctaText}
+                </CtaButton>
+              </div>
+            )}
+          </div>
+
+          {/* Right: live clock */}
+          <div className="space-y-3 lg:text-right">
+            <p className="text-xs uppercase tracking-[0.2em] text-neutral-content/50">
+              Local time{locationLabel ? \` · \${locationLabel}\` : ""}
+            </p>
+            <LiveClock timezone={timezone} />
+          </div>
+        </div>
+
+        {/* ---------- Mid row: brand block + nav columns ---------- */}
+        <div className="grid gap-12 py-12 lg:grid-cols-[1fr_auto] lg:gap-20">
+          {/* Brand + secondary contact info */}
+          <div className="max-w-md space-y-6">
+            <div className="h-12">{logo}</div>
+
+            {tagline && (
+              <p className="text-sm text-neutral-content/60">{tagline}</p>
+            )}
+
+            {showContact && (
+              <div className="space-y-3 text-sm">
+                {(whatsappUrl || phoneUrl) && (
+                  <div className="flex flex-wrap items-center gap-4">
+                    {whatsappUrl && whatsappText && (
+                      <a
+                        href={whatsappUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 transition-opacity hover:opacity-80"
+                      >
+                        <FaWhatsapp className="h-4 w-4" />
+                        <span>{whatsappText}</span>
+                      </a>
+                    )}
+                    {phoneUrl && phoneText && (
+                      <a
+                        href={phoneUrl}
+                        className="inline-flex items-center gap-2 transition-opacity hover:opacity-80"
+                      >
+                        <FaPhoneAlt className="h-4 w-4" />
+                        <span>{phoneText}</span>
+                      </a>
+                    )}
+                  </div>
+                )}
+
+                {emailUrl && emailText && (
+                  <a
+                    href={emailUrl}
+                    className="inline-flex items-center gap-2 transition-opacity hover:opacity-80"
+                  >
+                    <HiOutlineMail className="h-4 w-4" />
+                    <span>{emailText}</span>
+                  </a>
+                )}
+
+                {addressMapsUrl && addressText && (
+                  <a
+                    href={addressMapsUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-start gap-2 transition-opacity hover:opacity-80"
+                  >
+                    <HiOutlineMap className="mt-0.5 h-4 w-4 shrink-0" />
+                    <span className="whitespace-pre-line">{addressText}</span>
+                  </a>
+                )}
+
+                {hoursText && (
+                  <p className="text-sm text-neutral-content/70">{hoursText}</p>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Nav columns */}
+          {navColumns.length > 0 && (
+            <nav
+              className={cn(
+                "grid gap-10 text-sm",
+                navColumns.length === 1 && "grid-cols-1",
+                navColumns.length === 2 && "grid-cols-2",
+                navColumns.length === 3 && "grid-cols-2 md:grid-cols-3",
+                navColumns.length >= 4 && "grid-cols-2 md:grid-cols-4",
+              )}
+              aria-label="Footer navigation"
+            >
+              {navColumns.map((column) => (
+                <div key={column.title}>
+                  <p className="text-xs uppercase tracking-[0.18em] text-neutral-content/50">
+                    {column.title}
+                  </p>
+                  <ul className="mt-4 space-y-3">
+                    {column.links.map((link) => (
+                      <li key={link.text}>
+                        <a
+                          href={link.href}
+                          className="transition-opacity hover:opacity-75"
+                        >
+                          {link.text}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </nav>
+          )}
+        </div>
+
+        {/* ---------- Bottom bar ---------- */}
+        <div className="flex flex-col gap-4 border-t border-neutral-content/10 pt-6 text-xs md:flex-row md:items-center md:justify-between">
+          <span className="text-neutral-content/70">
+            &copy; {new Date().getFullYear()} {companyName}.
+          </span>
+
+          {socialLinks.length > 0 && (
+            <div className="flex items-center gap-4 text-base">
+              {socialLinks.map((social) => {
+                const Icon = SOCIAL_ICONS[social.network] ?? FaGlobe;
+                return (
+                  <a
+                    key={social.network}
+                    href={social.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="transition-opacity hover:opacity-70"
+                    aria-label={social.label}
+                  >
+                    <Icon />
+                  </a>
+                );
+              })}
+            </div>
+          )}
+
+          <span className="text-neutral-content/50">All rights reserved.</span>
+        </div>
+      </div>
+    </footer>
   );
 }
 `,
@@ -5713,7 +6111,7 @@ export default function AuthorSplit({
       data-purpose={purpose}
       className={cn("w-full bg-base-100 py-16 md:py-24", className)}
     >
-      <div className="mx-auto max-w-4xl px-4 md:px-8">
+      <div className="mx-auto max-w-7xl px-4 md:px-8">
         {/* Banner image */}
         <motion.div
           className="mb-10 h-64 w-full overflow-hidden rounded-lg"
@@ -6583,22 +6981,10 @@ import {
 } from "motion/react";
 import { cn } from "@/lib/utils";
 import type { StyleKit } from "@/lib/style-kit";
-import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
-
-export interface ContentSection {
-  /** Heading displayed in the below-fold content area */
-  contentHeadline: string;
-  /** Body text for the below-fold content area */
-  contentDescription: string;
-  /** CTA button text */
-  ctaText: string;
-  /** CTA destination URL */
-  ctaUrl: string;
-}
 
 export interface ParallaxSection {
   /** Background image URL for the sticky parallax panel */
@@ -6608,12 +6994,12 @@ export interface ParallaxSection {
   label: string;
   /** Large heading displayed on the parallax overlay */
   heading: string;
-  /** Below-fold content block rendered after the parallax panel */
-  content: ContentSection;
+  /** Below-fold content rendered after the parallax panel — any React node */
+  content: React.ReactNode;
 }
 
 export interface ParallaxContentProps {
-  /** Array of parallax sections — each renders a sticky image, overlay text, and content block */
+  /** Array of parallax sections — each renders a sticky image, overlay text, and content node */
   sections?: ParallaxSection[];
   /** Site-wide style kit threaded by the Assembler */
   styleKit?: StyleKit;
@@ -6634,39 +7020,54 @@ const DEFAULT_PARALLAX_SECTIONS: ParallaxSection[] = [
     imageAlt: "Aerial view of a coastal city at sunset",
     label: "Discovery",
     heading: "Start where you are",
-    content: {
-      contentHeadline: "Map the terrain before you build",
-      contentDescription:
-        "We spend the first two weeks on the ground with your team — interviews, audits, and quiet listening — so the plan we deliver actually fits the company you have, not the one a deck imagines.",
-      ctaText: "Read the playbook",
-      ctaUrl: "#",
-    },
+    content: (
+      <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 pb-24 pt-12 md:grid-cols-12 md:px-8">
+        <h3 className="col-span-1 text-3xl font-bold text-base-content md:col-span-4">
+          Map the terrain before you build
+        </h3>
+        <p className="col-span-1 text-xl text-base-content/60 md:col-span-8 md:text-2xl">
+          We spend the first two weeks on the ground with your team —
+          interviews, audits, and quiet listening — so the plan we deliver
+          actually fits the company you have, not the one a deck imagines.
+        </p>
+      </div>
+    ),
   },
   {
     image: "https://picsum.photos/seed/parallaxcontent-section-1/800/600",
     imageAlt: "Architect sketching plans in a sunlit studio",
     label: "Design",
     heading: "Decide what to build",
-    content: {
-      contentHeadline: "Tradeoffs made deliberate",
-      contentDescription:
-        "Every design choice gets paired with the cost it carries — engineering hours, support load, runway. The result is a plan you can defend in any room without flinching.",
-      ctaText: "See an example brief",
-      ctaUrl: "#",
-    },
+    content: (
+      <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 pb-24 pt-12 md:grid-cols-12 md:px-8">
+        <h3 className="col-span-1 text-3xl font-bold text-base-content md:col-span-4">
+          Tradeoffs made deliberate
+        </h3>
+        <p className="col-span-1 text-xl text-base-content/60 md:col-span-8 md:text-2xl">
+          Every design choice gets paired with the cost it carries — engineering
+          hours, support load, runway. The result is a plan you can defend in
+          any room without flinching.
+        </p>
+      </div>
+    ),
   },
   {
     image: "https://picsum.photos/seed/parallaxcontent-section-2/800/600",
     imageAlt: "Team celebrating a launch in a modern office",
     label: "Ship",
     heading: "Launch in weeks, not quarters",
-    content: {
-      contentHeadline: "Built to be handed off cleanly",
-      contentDescription:
-        "We document, demo, and stay on call through the first month live. By the time we're gone, your team owns the system end-to-end — and we mean it.",
-      ctaText: "Book a kickoff",
-      ctaUrl: "#",
-    },
+    content: (
+      <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 pb-24 pt-12 md:grid-cols-12 md:px-8">
+        <h3 className="col-span-1 text-3xl font-bold text-base-content md:col-span-4">
+          Built to be handed off cleanly
+        </h3>
+        <p className="col-span-1 text-xl text-base-content/60 md:col-span-8 md:text-2xl">
+          We document, demo, and stay on call through the first month live. By
+          the time we&apos;re gone, your team owns the system end-to-end — and
+          we mean it.
+        </p>
+      </div>
+    ),
   },
 ];
 
@@ -6763,41 +7164,19 @@ function OverlayCopy({ label, heading, shouldReduceMotion }: OverlayCopyProps) {
 }
 
 interface ContentBlockProps {
-  content: ContentSection;
-  ctaStyle: CtaVariant;
-  ctaColorScheme: ColorScheme;
+  content: React.ReactNode;
   shouldReduceMotion: boolean | null;
 }
 
-function ContentBlock({
-  content,
-  ctaStyle,
-  ctaColorScheme,
-  shouldReduceMotion,
-}: ContentBlockProps) {
+function ContentBlock({ content, shouldReduceMotion }: ContentBlockProps) {
   return (
     <motion.div
-      className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 pb-24 pt-12 md:grid-cols-12 md:px-8"
       initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
-      <h3 className="col-span-1 text-3xl font-bold text-base-content md:col-span-4">
-        {content.contentHeadline}
-      </h3>
-      <div className="col-span-1 md:col-span-8">
-        <p className="mb-8 text-xl text-base-content/60 md:text-2xl">
-          {content.contentDescription}
-        </p>
-        <CtaButton
-          variant={ctaStyle}
-          colorScheme={ctaColorScheme}
-          href={content.ctaUrl}
-        >
-          {content.ctaText}
-        </CtaButton>
-      </div>
+      {content}
     </motion.div>
   );
 }
@@ -6808,15 +7187,12 @@ function ContentBlock({
 
 export default function ParallaxContent({
   sections = DEFAULT_PARALLAX_SECTIONS,
-  styleKit,
+  styleKit: _styleKit,
   imagePadding = DEFAULT_IMAGE_PADDING,
   purpose,
   className,
 }: ParallaxContentProps) {
   const shouldReduceMotion = useReducedMotion();
-
-  const ctaStyle: CtaVariant = styleKit?.ctaVariant ?? "default";
-  const ctaColorScheme: ColorScheme = styleKit?.ctaColorScheme ?? "primary";
 
   return (
     <section
@@ -6847,11 +7223,9 @@ export default function ParallaxContent({
             </div>
           </div>
 
-          {/* Below-fold content block */}
+          {/* Below-fold content node */}
           <ContentBlock
             content={section.content}
-            ctaStyle={ctaStyle}
-            ctaColorScheme={ctaColorScheme}
             shouldReduceMotion={shouldReduceMotion}
           />
         </div>
@@ -6872,23 +7246,14 @@ import {
 } from "motion/react";
 import { cn } from "@/lib/utils";
 import type { StyleKit } from "@/lib/style-kit";
-import { CtaButton, type CtaVariant, type ColorScheme } from "@/lib/ui/button";
-import { useSafeImageSrc } from "@/lib/ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
-export interface FeatureCard {
-  /** Icon rendered above the title — emoji, SVG string, or React node */
-  icon?: React.ReactNode;
-  /** Optional image displayed alongside the content */
-  image?: string;
-  imageAlt?: string;
-  title: string;
-  description: string;
-  ctaText: string;
-  ctaUrl: string;
+export interface StickyCard {
+  /** Card content — any React node (e.g. ImageText, CardGrid, IconListSplit) */
+  content: React.ReactNode;
 }
 
 export interface StickyCardsProps {
@@ -6896,8 +7261,8 @@ export interface StickyCardsProps {
   headline?: string;
   /** Optional section sub-headline for context */
   subheadline?: string;
-  /** Feature cards — each becomes a full-viewport sticky section */
-  cards?: FeatureCard[];
+  /** Cards — each becomes a full-viewport sticky panel */
+  cards?: StickyCard[];
   /** Site-wide style kit threaded by the Assembler */
   styleKit?: StyleKit;
   /** Height of each card section in px — controls scroll pacing. Defaults to 600 */
@@ -6911,27 +7276,45 @@ export interface StickyCardsProps {
 /*  Defaults                                                           */
 /* ------------------------------------------------------------------ */
 
-const DEFAULT_STICKY_CARDS: FeatureCard[] = [
+const DEFAULT_STICKY_CARDS: StickyCard[] = [
   {
-    title: "Define the problem worth solving",
-    description:
-      "Most teams skip this step and pay for it later. We start with a sharp written brief everyone in the room agrees with.",
-    ctaText: "Read the framework",
-    ctaUrl: "#",
+    content: (
+      <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 px-4 text-center md:px-8">
+        <h3 className="text-3xl font-semibold sm:text-4xl md:text-5xl">
+          Define the problem worth solving
+        </h3>
+        <p className="max-w-lg text-base text-base-content/70">
+          Most teams skip this step and pay for it later. We start with a sharp
+          written brief everyone in the room agrees with.
+        </p>
+      </div>
+    ),
   },
   {
-    title: "Prototype before you commit",
-    description:
-      "A clickable prototype, in front of real users, in under two weeks. The feedback rewrites the roadmap — every time.",
-    ctaText: "See an example",
-    ctaUrl: "#",
+    content: (
+      <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 px-4 text-center md:px-8">
+        <h3 className="text-3xl font-semibold sm:text-4xl md:text-5xl">
+          Prototype before you commit
+        </h3>
+        <p className="max-w-lg text-base text-base-content/70">
+          A clickable prototype, in front of real users, in under two weeks. The
+          feedback rewrites the roadmap — every time.
+        </p>
+      </div>
+    ),
   },
   {
-    title: "Ship, measure, then ship again",
-    description:
-      "We instrument the launch from day one and meet weekly to decide what stays, what goes, and what gets doubled down on.",
-    ctaText: "Book a working session",
-    ctaUrl: "#",
+    content: (
+      <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 px-4 text-center md:px-8">
+        <h3 className="text-3xl font-semibold sm:text-4xl md:text-5xl">
+          Ship, measure, then ship again
+        </h3>
+        <p className="max-w-lg text-base text-base-content/70">
+          We instrument the launch from day one and meet weekly to decide what
+          stays, what goes, and what gets doubled down on.
+        </p>
+      </div>
+    ),
   },
 ];
 
@@ -6945,40 +7328,26 @@ const DEFAULT_CARD_HEIGHT = 600;
 /*  Sub-components                                                     */
 /* ------------------------------------------------------------------ */
 
-interface StickyCardProps {
-  card: FeatureCard;
+interface StickyCardPanelProps {
+  card: StickyCard;
   position: number;
   totalCards: number;
   scrollYProgress: MotionValue<number>;
   cardHeight: number;
-  isOdd: boolean;
-  ctaStyle: CtaVariant;
-  ctaColorScheme: ColorScheme;
   shouldReduceMotion: boolean | null;
-  index: number;
 }
 
-function StickyCard({
+function StickyCardPanel({
   card,
   position,
   totalCards,
   scrollYProgress,
   cardHeight,
-  isOdd,
-  ctaStyle,
-  ctaColorScheme,
   shouldReduceMotion,
-  index,
-}: StickyCardProps) {
+}: StickyCardPanelProps) {
   const isLast = position === totalCards;
   const scaleFromPct = (position - 1) / totalCards;
   const y = useTransform(scrollYProgress, [scaleFromPct, 1], [0, -cardHeight]);
-  const safeImg = useSafeImageSrc(
-    card.image,
-    \`layout-stickycards-01-card-image-\${index}\`,
-    400,
-    320,
-  );
 
   return (
     <motion.div
@@ -6986,67 +7355,9 @@ function StickyCard({
         height: cardHeight,
         y: shouldReduceMotion || isLast ? undefined : y,
       }}
-      className={cn(
-        "sticky top-0 flex w-full origin-top flex-col items-center justify-center px-4",
-        isOdd
-          ? "bg-neutral text-neutral-content"
-          : "bg-base-100 text-base-content",
-      )}
+      className="sticky top-0 flex w-full origin-top items-center justify-center bg-base-100"
     >
-      <div
-        className={cn(
-          "mx-auto flex w-full max-w-5xl flex-col items-center gap-8 px-4 md:px-8",
-          card.image && "md:flex-row md:gap-12",
-        )}
-      >
-        {/* Image column */}
-        <div className="flex w-full shrink-0 justify-center md:w-2/5">
-          <img
-            src={safeImg.src}
-            onError={safeImg.onError}
-            alt={card.imageAlt ?? ""}
-            className="max-h-64 w-auto rounded-lg object-cover md:max-h-80"
-            loading="lazy"
-          />
-        </div>
-
-        {/* Content column */}
-        <div
-          className={cn(
-            "flex flex-col items-center",
-            card.image ? "md:items-start" : "items-center",
-          )}
-        >
-          {card.icon && <div className="mb-4 text-4xl">{card.icon}</div>}
-
-          <h3
-            className={cn(
-              "mb-4 text-center text-3xl font-semibold sm:text-4xl md:text-5xl",
-              card.image && "md:text-left",
-            )}
-          >
-            {card.title}
-          </h3>
-
-          <p
-            className={cn(
-              "mb-8 max-w-lg text-center text-sm md:text-base",
-              isOdd ? "text-neutral-content/70" : "text-base-content/70",
-              card.image && "md:text-left",
-            )}
-          >
-            {card.description}
-          </p>
-
-          <CtaButton
-            variant={ctaStyle}
-            colorScheme={ctaColorScheme}
-            href={card.ctaUrl}
-          >
-            {card.ctaText}
-          </CtaButton>
-        </div>
-      </div>
+      {card.content}
     </motion.div>
   );
 }
@@ -7094,16 +7405,13 @@ export default function StickyCards({
   headline,
   subheadline,
   cards = DEFAULT_STICKY_CARDS,
-  styleKit,
+  styleKit: _styleKit,
   cardHeight = DEFAULT_CARD_HEIGHT,
   purpose,
   className,
 }: StickyCardsProps) {
   const ref = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
-
-  const ctaStyle: CtaVariant = styleKit?.ctaVariant ?? "default";
-  const ctaColorScheme: ColorScheme = styleKit?.ctaColorScheme ?? "primary";
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -7122,22 +7430,435 @@ export default function StickyCards({
 
       <div ref={ref} className="relative">
         {cards.map((card, idx) => (
-          <StickyCard
+          <StickyCardPanel
             key={idx}
             card={card}
             position={idx + 1}
             totalCards={cards.length}
             scrollYProgress={scrollYProgress}
             cardHeight={cardHeight}
-            isOdd={(idx + 1) % 2 === 1}
-            ctaStyle={ctaStyle}
-            ctaColorScheme={ctaColorScheme}
             shouldReduceMotion={shouldReduceMotion}
-            index={idx}
           />
         ))}
       </div>
     </section>
+  );
+}
+`,
+  "src/components/navigation/NavbarPill/index.tsx": `"use client";
+
+import React, { useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "framer-motion";
+import { FiArrowRight, FiChevronDown, FiMenu, FiX } from "react-icons/fi";
+import { cn } from "@/lib/utils";
+import { ClientSideLink } from "@/lib/ui/ClientSideLink";
+import { CtaButton, type CtaVariant } from "@/lib/ui/button";
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+
+export interface NavbarPillLink {
+  /** Visible link label */
+  text: string;
+  /** Destination URL or anchor (e.g. "/about", "#features") */
+  href: string;
+  /** Optional flyout content rendered on hover (desktop) / expand (mobile) */
+  flyoutContent?: React.ComponentType;
+}
+
+export type CtaStyle = CtaVariant;
+
+export interface NavbarPillProps {
+  /** Logo rendered at the start of the bar (accepts any ReactNode, typically an SVG or image) */
+  logo?: React.ReactNode;
+  /** Alternate logo for dark-on-light contexts (scrolled state / mobile menu) */
+  logoDark?: React.ReactNode;
+  /** Navigation links */
+  links?: NavbarPillLink[];
+  /** Optional CTA button label shown on desktop */
+  ctaText?: string;
+  /** CTA destination URL */
+  ctaUrl?: string;
+  /** CTA button style — "default" uses the standard filled button, others use animated variants. "arrow" keeps the inline pill+arrow look from the reference. */
+  ctaStyle?: CtaStyle | "arrow";
+  /** Pixel threshold after which the bar tightens / increases its glass blur */
+  scrollThreshold?: number;
+  /** When true, uses \`sticky\` positioning instead of \`fixed\` so the bar stays inside its containing block (used by the editor preview) */
+  previewMode?: boolean;
+  /** Extra classes on the root \`<nav>\` element */
+  className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Defaults                                                           */
+/* ------------------------------------------------------------------ */
+
+const DEFAULT_LINKS: NavbarPillLink[] = [
+  { text: "Studio", href: "/" },
+  { text: "Work", href: "/work" },
+  { text: "Journal", href: "/journal" },
+  { text: "Contact", href: "/contact" },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+const buildHref = (href: string) => (href?.startsWith("#") ? \`/\${href}\` : href);
+
+/* ------------------------------------------------------------------ */
+/*  Brand mark — conic gradient orb fallback when no logo is provided  */
+/* ------------------------------------------------------------------ */
+
+function BrandMark() {
+  return (
+    <span
+      aria-hidden="true"
+      className="block h-[22px] w-[22px] rounded-full shadow-[0_0_18px_rgba(124,58,237,0.6)]"
+      style={{
+        background:
+          "conic-gradient(from 0deg, oklch(var(--color-primary)), oklch(var(--color-secondary)), oklch(var(--color-accent)), oklch(var(--color-primary)))",
+      }}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Arrow CTA — inline pill with sliding arrow (matches the reference) */
+/* ------------------------------------------------------------------ */
+
+function ArrowCta({ text, url }: { text: string; url: string }) {
+  return (
+    <a
+      href={url}
+      className="group inline-flex items-center gap-2 rounded-full border border-base-content/30 px-4 py-2 text-sm transition-all duration-300 ease-out hover:border-base-content hover:bg-base-content hover:text-base-100"
+    >
+      <span>{text}</span>
+      <FiArrowRight className="transition-transform duration-300 group-hover:translate-x-0.5" />
+    </a>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  CTA dispatcher                                                     */
+/* ------------------------------------------------------------------ */
+
+function NavbarCta({
+  text,
+  url,
+  style,
+}: {
+  text: string;
+  url: string;
+  style: CtaStyle | "arrow";
+}) {
+  if (style === "arrow") return <ArrowCta text={text} url={url} />;
+
+  return (
+    <CtaButton
+      variant={style}
+      href={url}
+      colorScheme="primary"
+      className="text-sm"
+    >
+      {text}
+    </CtaButton>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Desktop link with hover gradient underline                         */
+/* ------------------------------------------------------------------ */
+
+function FlyoutLink({
+  children,
+  href,
+  FlyoutContent,
+}: {
+  children: React.ReactNode;
+  href: string;
+  FlyoutContent?: React.ComponentType;
+}) {
+  const [open, setOpen] = useState(false);
+  const finalHref = buildHref(href);
+  const showFlyout = FlyoutContent && open;
+
+  return (
+    <div
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      className="group relative h-fit w-fit"
+    >
+      <ClientSideLink href={finalHref}>
+        <span className="relative flex cursor-pointer items-center gap-1 rounded-full px-3.5 py-2 text-sm font-medium text-base-content/70 transition-colors duration-200 hover:text-base-content">
+          {children}
+          {FlyoutContent && (
+            <FiChevronDown
+              className={cn(
+                "transition-transform duration-200",
+                open && "rotate-180",
+              )}
+            />
+          )}
+          {/* gradient underline reveal */}
+          <span
+            className="pointer-events-none absolute bottom-1 left-3.5 right-3.5 h-px origin-center scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent, oklch(var(--color-accent)), transparent)",
+            }}
+          />
+        </span>
+      </ClientSideLink>
+
+      <AnimatePresence>
+        {showFlyout && (
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 15 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
+            className="absolute left-1/2 top-10 z-50 -translate-x-1/2 pt-4"
+          >
+            <div className="absolute -top-6 left-0 right-0 h-6 bg-transparent" />
+            <div className="absolute left-1/2 top-2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-base-100 shadow-sm" />
+            <div className="relative -translate-y-2 overflow-hidden rounded-lg bg-base-100 text-base-content shadow-xl">
+              <FlyoutContent />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function DesktopLinks({ links }: { links: NavbarPillLink[] }) {
+  return (
+    <ul className="flex items-center gap-1">
+      {links.map((link) => (
+        <li key={link.text}>
+          <FlyoutLink href={link.href} FlyoutContent={link.flyoutContent}>
+            {link.text}
+          </FlyoutLink>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Mobile menu                                                        */
+/* ------------------------------------------------------------------ */
+
+function MobileMenuLink({
+  children,
+  href,
+  onNavigate,
+}: {
+  children: React.ReactNode;
+  href: string;
+  onNavigate: () => void;
+}) {
+  return (
+    <a
+      onClick={(e) => {
+        e.stopPropagation();
+        onNavigate();
+      }}
+      href={href}
+      className="flex w-full cursor-pointer items-center justify-between border-b border-base-300 py-6 text-start text-xl font-medium text-base-content"
+    >
+      <span>{children}</span>
+      <FiArrowRight />
+    </a>
+  );
+}
+
+function MobileMenuDropdown({
+  children,
+  FlyoutContent,
+}: {
+  children: React.ReactNode;
+  href: string;
+  FlyoutContent?: React.ComponentType;
+  onNavigate: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="border-b border-base-300 text-base-content">
+      <div
+        className="flex w-full cursor-pointer items-center justify-between py-6 text-start text-xl font-medium"
+        onClick={() => setOpen(!open)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setOpen(!open);
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-expanded={open}
+      >
+        <span className={cn(open && "text-primary")}>{children}</span>
+        <motion.div animate={{ rotate: open ? 180 : 0 }}>
+          <FiChevronDown />
+        </motion.div>
+      </div>
+
+      <AnimatePresence>
+        {open && FlyoutContent && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
+            className="overflow-hidden bg-base-200 px-4"
+          >
+            <div className="space-y-4 pb-6">
+              <FlyoutContent />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function MobileMenu({
+  links,
+  logo,
+  onClose,
+}: {
+  links: NavbarPillLink[];
+  logo?: React.ReactNode;
+  onClose: () => void;
+}) {
+  return (
+    <motion.nav
+      initial={{ x: "100vw" }}
+      animate={{ x: 0 }}
+      exit={{ x: "100vw" }}
+      transition={{ duration: 0.15, ease: "easeOut" }}
+      className="fixed inset-0 z-[60] flex h-screen w-full flex-col bg-base-100"
+      aria-label="Mobile navigation"
+    >
+      <div className="flex items-center justify-between p-6">
+        {logo}
+        <button onClick={onClose} aria-label="Close menu">
+          <FiX className="text-3xl text-base-content" />
+        </button>
+      </div>
+      <div className="h-full overflow-y-auto bg-base-200 p-6">
+        {links.map((link) =>
+          link.flyoutContent ? (
+            <MobileMenuDropdown
+              key={link.text}
+              href={link.href}
+              FlyoutContent={link.flyoutContent}
+              onNavigate={onClose}
+            >
+              {link.text}
+            </MobileMenuDropdown>
+          ) : (
+            <MobileMenuLink
+              key={link.text}
+              href={link.href}
+              onNavigate={onClose}
+            >
+              {link.text}
+            </MobileMenuLink>
+          ),
+        )}
+      </div>
+    </motion.nav>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Main component                                                     */
+/* ------------------------------------------------------------------ */
+
+export default function NavbarPill({
+  logo,
+  logoDark,
+  links = DEFAULT_LINKS,
+  ctaText,
+  ctaUrl,
+  ctaStyle = "arrow",
+  scrollThreshold = 60,
+  previewMode = false,
+  className,
+}: NavbarPillProps) {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setScrolled(latest > scrollThreshold);
+  });
+
+  const renderedLogo = scrolled && logoDark ? logoDark : logo;
+
+  return (
+    <div
+      className={cn(
+        \`\${previewMode ? "sticky" : "fixed"} top-0 z-50 w-full px-4 pt-4 lg:px-12 lg:pt-6\`,
+        className,
+      )}
+      aria-label="Main navigation"
+    >
+      <nav
+        className={cn(
+          "mx-auto flex max-w-7xl items-center justify-between rounded-full border border-base-content/15 px-5 py-3 text-base-content backdrop-blur-md transition-all duration-300 ease-out lg:px-7",
+          scrolled
+            ? "bg-base-100/70 shadow-xl"
+            : "bg-base-100/30 shadow-[0_0_0_1px_rgba(255,255,255,0.04)]",
+        )}
+      >
+        {/* Brand */}
+        <div className="flex shrink-0 items-center gap-2.5">
+          {renderedLogo ?? <BrandMark />}
+        </div>
+
+        {/* Desktop links */}
+        <div className="hidden items-center gap-2 lg:flex">
+          <DesktopLinks links={links} />
+        </div>
+
+        {/* Desktop CTA */}
+        <div className="hidden items-center lg:flex">
+          {ctaText && ctaUrl && (
+            <NavbarCta text={ctaText} url={ctaUrl} style={ctaStyle} />
+          )}
+        </div>
+
+        {/* Mobile hamburger */}
+        <button
+          onClick={() => setMobileOpen(true)}
+          className="block text-2xl lg:hidden"
+          aria-label="Open menu"
+        >
+          <FiMenu />
+        </button>
+      </nav>
+
+      <AnimatePresence>
+        {mobileOpen && (
+          <MobileMenu
+            links={links}
+            logo={logoDark ?? logo}
+            onClose={() => setMobileOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 `,
@@ -7646,7 +8367,7 @@ export default function StatsCountUp({
 
   return (
     <section className={cn("bg-base-100 px-4 py-20 md:py-24", className)}>
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-7xl">
         {renderedHeadline && (
           <motion.h2
             className="mb-8 text-center text-base font-semibold uppercase tracking-wide text-base-content sm:text-lg md:mb-16"
@@ -8791,6 +9512,349 @@ export function DotPattern({
       </defs>
       <rect width="100%" height="100%" fill={\`url(#\${id}-dot)\`} />
     </svg>
+  );
+}
+`,
+  "src/lib/ui/backgrounds/GlowOrbs.tsx": `"use client";
+
+import { useEffect, useMemo, useRef } from "react";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from "motion/react";
+import { cn } from "@/lib/utils";
+
+/* ------------------------------------------------------------------ */
+/*  Palettes                                                           */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Curated palette presets. The \`theme\` palette pulls from the OKLCH token
+ * system so it adapts to the active brand palette. The other palettes are
+ * fixed aesthetic moods that can be picked when the section visual calls
+ * for it (e.g., dark/cinematic heroes).
+ */
+export const GLOW_ORBS_PALETTES = {
+  theme: {
+    bg: "oklch(var(--color-base-300))",
+    bg2: "oklch(var(--color-base-200))",
+    orbs: [
+      "oklch(var(--color-primary))",
+      "oklch(var(--color-secondary))",
+      "oklch(var(--color-accent))",
+      "oklch(var(--color-primary))",
+      "oklch(var(--color-secondary))",
+    ],
+  },
+  aurora: {
+    bg: "#0a0e2a",
+    bg2: "#1a1240",
+    orbs: ["#ff3ea5", "#7c3aed", "#22d3ee", "#ec4899", "#3b82f6"],
+  },
+  ember: {
+    bg: "#1a0a0e",
+    bg2: "#2a1418",
+    orbs: ["#f97316", "#ef4444", "#fbbf24", "#dc2626", "#a855f7"],
+  },
+  forest: {
+    bg: "#06121a",
+    bg2: "#0a2a24",
+    orbs: ["#10b981", "#06b6d4", "#84cc16", "#14b8a6", "#3b82f6"],
+  },
+  candy: {
+    bg: "#1a0a2a",
+    bg2: "#2a0a3a",
+    orbs: ["#f472b6", "#a78bfa", "#60a5fa", "#fb7185", "#c084fc"],
+  },
+  mono: {
+    bg: "#0a0a0a",
+    bg2: "#1a1a1a",
+    orbs: ["#ffffff", "#a0a0a0", "#606060", "#d0d0d0", "#404040"],
+  },
+} as const;
+
+export type GlowOrbsPalette = keyof typeof GLOW_ORBS_PALETTES;
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+
+export interface GlowOrbsProps {
+  /** Palette preset. @default "theme" */
+  palette?: GlowOrbsPalette;
+  /** Number of glowing orbs (clamped to 2–10). @default 5 */
+  orbCount?: number;
+  /** Blur radius in pixels applied to each orb. @default 110 */
+  blur?: number;
+  /** Animation speed multiplier. 0 disables drift. @default 1 */
+  speed?: number;
+  /** Track the mouse for a subtle parallax effect. @default true */
+  interactive?: boolean;
+  /** Render a subtle starfield over the gradient base. @default false */
+  showStars?: boolean;
+  /** Render an overlay vignette to focus content. @default true */
+  vignette?: boolean;
+  /** Additional CSS classes for the container. */
+  className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Component                                                          */
+/* ------------------------------------------------------------------ */
+
+export function GlowOrbs({
+  palette = "theme",
+  orbCount = 5,
+  blur = 110,
+  speed = 1,
+  interactive = true,
+  showStars = false,
+  vignette = true,
+  className,
+}: GlowOrbsProps) {
+  const shouldReduceMotion = useReducedMotion();
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const resolved = GLOW_ORBS_PALETTES[palette] ?? GLOW_ORBS_PALETTES.theme;
+  const count = Math.max(2, Math.min(10, Math.round(orbCount)));
+
+  // Mouse position normalized to [-0.5, 0.5] around the container center.
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const smoothX = useSpring(mouseX, { stiffness: 80, damping: 20, mass: 0.5 });
+  const smoothY = useSpring(mouseY, { stiffness: 80, damping: 20, mass: 0.5 });
+
+  useEffect(() => {
+    if (!interactive || shouldReduceMotion) {
+      mouseX.set(0);
+      mouseY.set(0);
+      return;
+    }
+
+    const handleMove = (event: MouseEvent) => {
+      const el = containerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const nx = (event.clientX - rect.left) / rect.width - 0.5;
+      const ny = (event.clientY - rect.top) / rect.height - 0.5;
+      mouseX.set(nx);
+      mouseY.set(ny);
+    };
+
+    window.addEventListener("mousemove", handleMove);
+    return () => window.removeEventListener("mousemove", handleMove);
+  }, [interactive, shouldReduceMotion, mouseX, mouseY]);
+
+  // Pre-compute deterministic orb seeds so positions are stable per render.
+  const orbs = useMemo(() => {
+    return Array.from({ length: count }).map((_, i) => {
+      const seed = i * 37.13;
+      const sin = Math.sin(seed) * 0.5 + 0.5;
+      const cos = Math.cos(seed * 1.7) * 0.5 + 0.5;
+      const sin2 = Math.sin(seed * 2.3) * 0.5 + 0.5;
+      const sin3 = Math.sin(seed * 3.1) * 0.5 + 0.5;
+      const sin4 = Math.sin(seed * 0.7) * 0.5 + 0.5;
+      return {
+        id: i,
+        color: resolved.orbs[i % resolved.orbs.length],
+        x: 8 + sin * 80,
+        y: 8 + cos * 80,
+        size: 32 + sin2 * 38,
+        amp: 6 + sin3 * 14,
+        phase: seed,
+        parallax: 0.4 + (i / count) * 0.9,
+        opacity: 0.55 + sin4 * 0.4,
+      };
+    });
+  }, [count, resolved]);
+
+  return (
+    <div
+      ref={containerRef}
+      aria-hidden="true"
+      className={cn(
+        "pointer-events-none absolute inset-0 z-0 overflow-hidden",
+        className,
+      )}
+    >
+      <div
+        className="absolute inset-0"
+        style={{
+          background: \`radial-gradient(ellipse at 70% 50%, \${resolved.bg2} 0%, \${resolved.bg} 60%, #000 110%)\`,
+        }}
+      />
+
+      {showStars && <Stars />}
+
+      <div className="absolute inset-0">
+        {orbs.map((orb) => (
+          <Orb
+            key={\`\${palette}-\${orb.id}\`}
+            orb={orb}
+            blur={blur}
+            speed={speed}
+            interactive={interactive && !shouldReduceMotion}
+            shouldReduceMotion={!!shouldReduceMotion}
+            mouseX={smoothX}
+            mouseY={smoothY}
+          />
+        ))}
+      </div>
+
+      {vignette && (
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.55) 100%)",
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Orb (single animated blob)                                         */
+/* ------------------------------------------------------------------ */
+
+interface OrbConfig {
+  id: number;
+  color: string;
+  x: number;
+  y: number;
+  size: number;
+  amp: number;
+  phase: number;
+  parallax: number;
+  opacity: number;
+}
+
+interface OrbProps {
+  orb: OrbConfig;
+  blur: number;
+  speed: number;
+  interactive: boolean;
+  shouldReduceMotion: boolean;
+  mouseX: MotionValue<number>;
+  mouseY: MotionValue<number>;
+}
+
+function Orb({
+  orb,
+  blur,
+  speed,
+  interactive,
+  shouldReduceMotion,
+  mouseX,
+  mouseY,
+}: OrbProps) {
+  // Drift uses a long, looped keyframe animation (Framer Motion handles
+  // the rAF). The keyframes trace one full sine/cosine cycle around the
+  // orb's anchor position.
+  const driftDuration = shouldReduceMotion || speed === 0 ? 0 : 36 / speed;
+
+  const xKeyframes = useMemo(() => {
+    if (shouldReduceMotion || speed === 0) return [\`\${orb.x}vw\`];
+    const steps = 8;
+    return Array.from({ length: steps + 1 }).map((_, i) => {
+      const t = (i / steps) * Math.PI * 2;
+      const v = orb.x + Math.sin(t + orb.phase) * orb.amp;
+      return \`\${v}vw\`;
+    });
+  }, [orb.x, orb.amp, orb.phase, shouldReduceMotion, speed]);
+
+  const yKeyframes = useMemo(() => {
+    if (shouldReduceMotion || speed === 0) return [\`\${orb.y}vh\`];
+    const steps = 8;
+    return Array.from({ length: steps + 1 }).map((_, i) => {
+      const t = (i / steps) * Math.PI * 2;
+      const v = orb.y + Math.cos(t * 0.78 + orb.phase * 1.3) * orb.amp * 0.8;
+      return \`\${v}vh\`;
+    });
+  }, [orb.y, orb.amp, orb.phase, shouldReduceMotion, speed]);
+
+  const scaleKeyframes = useMemo(() => {
+    if (shouldReduceMotion || speed === 0) return [1];
+    return [1, 1 + 0.08, 1 - 0.04, 1];
+  }, [shouldReduceMotion, speed]);
+
+  // Parallax adds a small horizontal/vertical translate driven by the
+  // mouse motion values. Range ~ +/- 80px * orb.parallax.
+  const parallaxX = useTransform(mouseX, (v) =>
+    interactive ? v * orb.parallax * 80 : 0,
+  );
+  const parallaxY = useTransform(mouseY, (v) =>
+    interactive ? v * orb.parallax * 80 : 0,
+  );
+
+  return (
+    <motion.div
+      className="absolute left-0 top-0 rounded-full will-change-transform"
+      style={{
+        width: \`\${orb.size}vmax\`,
+        height: \`\${orb.size}vmax\`,
+        marginLeft: \`-\${orb.size / 2}vmax\`,
+        marginTop: \`-\${orb.size / 2}vmax\`,
+        x: parallaxX,
+        y: parallaxY,
+        background: \`radial-gradient(circle at 50% 50%, \${orb.color}, \${orb.color}00 70%)\`,
+        filter: \`blur(\${blur}px)\`,
+        opacity: orb.opacity,
+        mixBlendMode: "screen",
+      }}
+      animate={
+        shouldReduceMotion || speed === 0
+          ? { left: xKeyframes[0], top: yKeyframes[0] }
+          : {
+              left: xKeyframes,
+              top: yKeyframes,
+              scale: scaleKeyframes,
+            }
+      }
+      transition={
+        shouldReduceMotion || speed === 0
+          ? { duration: 0 }
+          : {
+              duration: driftDuration,
+              ease: "easeInOut",
+              repeat: Infinity,
+              repeatType: "loop",
+            }
+      }
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Stars (subtle decorative twinkle)                                  */
+/* ------------------------------------------------------------------ */
+
+function Stars() {
+  return (
+    <motion.div
+      className="absolute inset-0"
+      style={{
+        backgroundImage: [
+          "radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.7), transparent 50%)",
+          "radial-gradient(1px 1px at 28% 72%, rgba(255,255,255,0.5), transparent 50%)",
+          "radial-gradient(1px 1px at 41% 34%, rgba(255,255,255,0.6), transparent 50%)",
+          "radial-gradient(1px 1px at 56% 82%, rgba(255,255,255,0.4), transparent 50%)",
+          "radial-gradient(1px 1px at 67% 12%, rgba(255,255,255,0.7), transparent 50%)",
+          "radial-gradient(1px 1px at 78% 56%, rgba(255,255,255,0.5), transparent 50%)",
+          "radial-gradient(1px 1px at 89% 28%, rgba(255,255,255,0.6), transparent 50%)",
+          "radial-gradient(1px 1px at 8% 88%, rgba(255,255,255,0.5), transparent 50%)",
+          "radial-gradient(1px 1px at 33% 8%, rgba(255,255,255,0.4), transparent 50%)",
+          "radial-gradient(1px 1px at 95% 70%, rgba(255,255,255,0.6), transparent 50%)",
+        ].join(", "),
+      }}
+      animate={{ opacity: [0.45, 0.75, 0.45] }}
+      transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
+    />
   );
 }
 `,
@@ -12111,6 +13175,7 @@ export const COMPONENT_ID_TO_PATH: Record<string, string> = {
   "faq-accordion-01": "src/components/faq/FaqAccordion",
   "faq-minimal-01": "src/components/faq/FaqMinimal",
   "faq-solutions-01": "src/components/faq/FaqSolutions",
+  "footer-pulse-01": "src/components/footers/FooterPulse",
   "footer-reveal-01": "src/components/footers/FooterReveal",
   "hero-hero-bold-editorial-01": "src/components/heroes/HeroBoldEditorial",
   "hero-geometric-01": "src/components/heroes/HeroGeometric",
@@ -12126,6 +13191,7 @@ export const COMPONENT_ID_TO_PATH: Record<string, string> = {
   "layout-statementsplit-01": "src/components/layouts/split/StatementSplit",
   "layout-parallaxcontent-01": "src/components/motion/ParallaxContent",
   "layout-stickycards-01": "src/components/motion/StickyCards",
+  "navbar-pill-01": "src/components/navigation/NavbarPill",
   "navbar-sticky-01": "src/components/navigation/NavbarSticky",
   "stats-count-up-01": "src/components/stats/StatsCountUp",
   "layout-infinitescroll-01": "src/components/testimonials/InfiniteScroll",
@@ -12142,14 +13208,15 @@ export const COMPONENT_METADATA: Record<string, { slots: unknown[]; acceptsStyle
   "carousel-horizontal-scroll-01": {"slots":[{"name":"headline","type":"text","optional":true,"maxLength":80},{"name":"subheadline","type":"text","optional":true,"maxLength":160},{"name":"scrollHintBefore","type":"text","optional":true,"maxLength":40},{"name":"scrollHintAfter","type":"text","optional":true,"maxLength":40},{"name":"items","type":"list","maxItems":12,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"1:1"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"title","type":"text","optional":true,"maxLength":30}]}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":["footer-reveal-01"],"pairsPoorly":["carousel-cards-01","carousel-swipe-01"],"category":"carousel","nativeMotif":null},
   "carousel-swipe-01": {"slots":[{"name":"items","type":"list","maxItems":10,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120}]}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":[],"pairsPoorly":["carousel-cards-01"],"category":"carousel","nativeMotif":null},
   "contact-contact-locations-map-01": {"slots":[{"name":"headline","type":"text","optional":true,"maxLength":80},{"name":"subheadline","type":"text","optional":true,"maxLength":200},{"name":"highlightWord","type":"text","optional":true,"maxLength":30},{"name":"featuredImage","type":"image","aspectRatio":"16:9"},{"name":"featuredImageAlt","type":"text","maxLength":160},{"name":"locations","type":"list","maxItems":6,"itemSchema":[{"name":"city","type":"text","maxLength":40},{"name":"address","type":"text","maxLength":160},{"name":"phone","type":"text","maxLength":30,"optional":true},{"name":"email","type":"text","maxLength":80,"optional":true},{"name":"hours","type":"text","maxLength":80,"optional":true}]},{"name":"mapEmbedUrl","type":"url","optional":true}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":false},"pairsWell":["faq-minimal-01","footer-reveal-01","navbar-sticky-01"],"pairsPoorly":[],"category":"contact","nativeMotif":null},
-  "contact-contact-shapes-form-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"body","type":"text","maxLength":320},{"name":"highlightWord","type":"text","optional":true,"maxLength":30},{"name":"revealHeadline","type":"boolean","optional":true},{"name":"namePlaceholder","type":"text","optional":true,"maxLength":40},{"name":"emailPlaceholder","type":"text","optional":true,"maxLength":40},{"name":"messagePlaceholder","type":"text","optional":true,"maxLength":60},{"name":"submitText","type":"text","maxLength":30},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"mapEmbedUrl","type":"url","optional":true},{"name":"mapImageUrl","type":"url","optional":true},{"name":"mapImageAlt","type":"text","optional":true,"maxLength":120},{"name":"locationLabel","type":"text","optional":true,"maxLength":60},{"name":"locationAddress","type":"text","optional":true,"maxLength":160}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":["faq-accordion-01","footer-reveal-01","stats-countup-01"],"pairsPoorly":[],"category":"contact","nativeMotif":null},
-  "cta-cta-collage-duo-01": {"slots":[{"name":"headline","type":"text","maxLength":60},{"name":"body","type":"text","maxLength":320},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"primaryImage","type":"image","aspectRatio":"3:4"},{"name":"primaryImageAlt","type":"text","maxLength":160},{"name":"secondaryImage","type":"image","aspectRatio":"4:3"},{"name":"secondaryImageAlt","type":"text","maxLength":160},{"name":"attributionText","type":"text","optional":true,"maxLength":80},{"name":"attributionLinkText","type":"text","optional":true,"maxLength":40},{"name":"attributionUrl","type":"url","optional":true},{"name":"highlightWord","type":"text","optional":true,"maxLength":30},{"name":"revealHeadline","type":"boolean","optional":true},{"name":"className","type":"text","optional":true}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":["hero-modern-split-01","features-icon-grid-01","testimonial-carousel-01","footer-multi-column-01"],"pairsPoorly":["cta-editorial-split-01"],"category":"cta","nativeMotif":null},
+  "contact-contact-shapes-form-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"body","type":"text","maxLength":320},{"name":"highlightWord","type":"text","optional":true,"maxLength":30},{"name":"revealHeadline","type":"boolean","optional":true},{"name":"namePlaceholder","type":"text","optional":true,"maxLength":40},{"name":"emailPlaceholder","type":"text","optional":true,"maxLength":40},{"name":"messagePlaceholder","type":"text","optional":true,"maxLength":60},{"name":"submitText","type":"text","maxLength":30},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"mapEmbedUrl","type":"url","optional":true},{"name":"mapImageUrl","type":"url","optional":true},{"name":"mapImageAlt","type":"text","optional":true,"maxLength":120},{"name":"locationLabel","type":"text","optional":true,"maxLength":60},{"name":"locationAddress","type":"text","optional":true,"maxLength":160}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":["faq-accordion-01","footer-reveal-01","stats-count-up-01"],"pairsPoorly":[],"category":"contact","nativeMotif":null},
+  "cta-cta-collage-duo-01": {"slots":[{"name":"headline","type":"text","maxLength":60},{"name":"body","type":"text","maxLength":320},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"primaryImage","type":"image","aspectRatio":"3:4"},{"name":"primaryImageAlt","type":"text","maxLength":160},{"name":"secondaryImage","type":"image","aspectRatio":"4:3"},{"name":"secondaryImageAlt","type":"text","maxLength":160},{"name":"attributionText","type":"text","optional":true,"maxLength":80},{"name":"attributionLinkText","type":"text","optional":true,"maxLength":40},{"name":"attributionUrl","type":"url","optional":true},{"name":"highlightWord","type":"text","optional":true,"maxLength":30},{"name":"revealHeadline","type":"boolean","optional":true},{"name":"className","type":"text","optional":true}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":[],"pairsPoorly":["cta-cta-editorial-split-01"],"category":"cta","nativeMotif":null},
   "cta-cta-editorial-split-01": {"slots":[{"name":"eyebrowCallout","type":"text","maxLength":60},{"name":"headline","type":"text","maxLength":80},{"name":"body","type":"text","maxLength":240},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"primaryImage","type":"image","aspectRatio":"3:4"},{"name":"primaryImageAlt","type":"text","maxLength":160},{"name":"secondaryImage","type":"image","aspectRatio":"4:5"},{"name":"secondaryImageAlt","type":"text","maxLength":160},{"name":"highlightWord","type":"text","optional":true,"maxLength":30},{"name":"revealHeadline","type":"boolean","optional":true}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":["footer-reveal-01","faq-accordion-01","carousel-cards-01"],"pairsPoorly":[],"category":"cta","nativeMotif":null},
-  "cta-image-backdrop-01": {"slots":[{"name":"eyebrow","type":"text","maxLength":120},{"name":"displayWord","type":"text","maxLength":30},{"name":"body","type":"text","maxLength":240},{"name":"backgroundImage","type":"image","aspectRatio":"16:9"},{"name":"backgroundImageAlt","type":"text","maxLength":160},{"name":"ctaText","type":"text","optional":true,"maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"overlayOpacity","type":"number","optional":true},{"name":"parallax","type":"boolean","optional":true},{"name":"align","type":"text","optional":true,"enum":["left","center"]},{"name":"minHeight","type":"text","optional":true},{"name":"highlightWord","type":"text","optional":true,"maxLength":30},{"name":"revealDisplayWord","type":"boolean","optional":true}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":["features-icon-grid-01","testimonial-carousel-01","faq-accordion-01","footer-multi-column-01"],"pairsPoorly":["cta-cta-editorial-split-01","cta-cta-collage-duo-01"],"category":"cta","nativeMotif":null},
+  "cta-image-backdrop-01": {"slots":[{"name":"eyebrow","type":"text","maxLength":120},{"name":"displayWord","type":"text","maxLength":30},{"name":"body","type":"text","maxLength":240},{"name":"backgroundImage","type":"image","aspectRatio":"16:9"},{"name":"backgroundImageAlt","type":"text","maxLength":160},{"name":"ctaText","type":"text","optional":true,"maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"overlayOpacity","type":"number","optional":true},{"name":"parallax","type":"boolean","optional":true},{"name":"align","type":"text","optional":true,"enum":["left","center"]},{"name":"minHeight","type":"text","optional":true},{"name":"highlightWord","type":"text","optional":true,"maxLength":30},{"name":"revealDisplayWord","type":"boolean","optional":true}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":["faq-accordion-01"],"pairsPoorly":["cta-cta-editorial-split-01","cta-cta-collage-duo-01"],"category":"cta","nativeMotif":null},
   "faq-accordion-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":10,"itemSchema":{"type":"object","fields":[{"name":"question","type":"text","maxLength":120},{"name":"answer","type":"text","maxLength":500}]}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":[],"pairsPoorly":["faq-minimal-01","faq-solutions-01"],"category":"faq","nativeMotif":null},
   "faq-minimal-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"question","type":"text","maxLength":120},{"name":"answer","type":"text","maxLength":500}]}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":[],"pairsPoorly":["faq-accordion-01","faq-solutions-01"],"category":"faq","nativeMotif":null},
   "faq-solutions-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"title","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":300},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"},{"name":"image","type":"image","aspectRatio":"4:3"},{"name":"imageAlt","type":"text","maxLength":120}]}},{"name":"ctaStyle","type":"text","optional":true},{"name":"ctaColorScheme","type":"text","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":[],"pairsPoorly":["faq-accordion-01","faq-minimal-01"],"category":"faq","nativeMotif":null},
-  "footer-reveal-01": {"slots":[{"name":"logo","type":"image","aspectRatio":"auto","optional":true},{"name":"whatsappUrl","type":"url","optional":true},{"name":"whatsappText","type":"text","maxLength":30},{"name":"phoneUrl","type":"url","optional":true},{"name":"phoneText","type":"text","maxLength":30},{"name":"emailUrl","type":"url","optional":true},{"name":"emailText","type":"text","maxLength":60},{"name":"addressText","type":"text","maxLength":120},{"name":"addressMapsUrl","type":"url","optional":true},{"name":"hoursText","type":"text","maxLength":60,"optional":true},{"name":"navColumns","type":"list","maxItems":4,"itemSchema":{"title":{"type":"text","maxLength":30},"links":{"type":"list","maxItems":6,"itemSchema":{"text":{"type":"text","maxLength":30},"href":{"type":"url"}}}}},{"name":"socialLinks","type":"list","maxItems":6,"itemSchema":{"network":{"type":"text","maxLength":20,"enum":["instagram","linkedin","facebook","whatsapp","twitter","youtube","tiktok","google","pinterest","telegram"]},"url":{"type":"url"},"label":{"type":"text","maxLength":60}}},{"name":"companyName","type":"text","maxLength":60},{"name":"ctaText","type":"text","maxLength":40,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"height","type":"number","optional":true,"enum":[350,400,450,500,550]}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["faq-accordion-01"],"pairsPoorly":[],"category":"footers","nativeMotif":null},
+  "footer-pulse-01": {"slots":[{"name":"logo","type":"image","aspectRatio":"auto","optional":true},{"name":"tagline","type":"text","maxLength":120,"optional":true},{"name":"whatsappUrl","type":"url","optional":true},{"name":"whatsappText","type":"text","maxLength":30},{"name":"phoneUrl","type":"url","optional":true},{"name":"phoneText","type":"text","maxLength":30},{"name":"emailUrl","type":"url","optional":true},{"name":"emailText","type":"text","maxLength":60},{"name":"addressText","type":"text","maxLength":120},{"name":"addressMapsUrl","type":"url","optional":true},{"name":"hoursText","type":"text","maxLength":60,"optional":true},{"name":"navColumns","type":"list","maxItems":4,"itemSchema":{"title":{"type":"text","maxLength":30},"links":{"type":"list","maxItems":6,"itemSchema":{"text":{"type":"text","maxLength":30},"href":{"type":"url"}}}}},{"name":"socialLinks","type":"list","maxItems":6,"itemSchema":{"network":{"type":"text","maxLength":20,"enum":["instagram","linkedin","facebook","whatsapp","twitter","youtube","tiktok","google","pinterest","telegram"]},"url":{"type":"url"},"label":{"type":"text","maxLength":60}}},{"name":"companyName","type":"text","maxLength":60},{"name":"ctaText","type":"text","maxLength":40,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"locationLabel","type":"text","maxLength":30,"optional":true},{"name":"timezone","type":"text","maxLength":60,"optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["faq-accordion-01","navbar-pill-01"],"pairsPoorly":[],"category":"footer","nativeMotif":null},
+  "footer-reveal-01": {"slots":[{"name":"logo","type":"image","aspectRatio":"auto","optional":true},{"name":"whatsappUrl","type":"url","optional":true},{"name":"whatsappText","type":"text","maxLength":30},{"name":"phoneUrl","type":"url","optional":true},{"name":"phoneText","type":"text","maxLength":30},{"name":"emailUrl","type":"url","optional":true},{"name":"emailText","type":"text","maxLength":60},{"name":"addressText","type":"text","maxLength":120},{"name":"addressMapsUrl","type":"url","optional":true},{"name":"hoursText","type":"text","maxLength":60,"optional":true},{"name":"navColumns","type":"list","maxItems":4,"itemSchema":{"title":{"type":"text","maxLength":30},"links":{"type":"list","maxItems":6,"itemSchema":{"text":{"type":"text","maxLength":30},"href":{"type":"url"}}}}},{"name":"socialLinks","type":"list","maxItems":6,"itemSchema":{"network":{"type":"text","maxLength":20,"enum":["instagram","linkedin","facebook","whatsapp","twitter","youtube","tiktok","google","pinterest","telegram"]},"url":{"type":"url"},"label":{"type":"text","maxLength":60}}},{"name":"companyName","type":"text","maxLength":60},{"name":"ctaText","type":"text","maxLength":40,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"height","type":"number","optional":true,"enum":[350,400,450,500,550]}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["faq-accordion-01"],"pairsPoorly":[],"category":"footer","nativeMotif":null},
   "hero-hero-bold-editorial-01": {"slots":[{"name":"eyebrow","type":"text","optional":true,"maxLength":160},{"name":"headline","type":"text","maxLength":60},{"name":"highlightWord","type":"text","optional":true,"maxLength":20},{"name":"revealHeadline","type":"boolean","optional":true},{"name":"primaryImage","type":"image","aspectRatio":"3:4"},{"name":"primaryImageAlt","type":"text","maxLength":120},{"name":"primaryImageOverlayText","type":"text","optional":true,"maxLength":30},{"name":"accentImage","type":"image","optional":true,"aspectRatio":"1:1"},{"name":"accentImageAlt","type":"text","optional":true,"maxLength":120},{"name":"ctaText","type":"text","optional":true,"maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"accentColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":["layout-statementsplit-01","layout-imagetext-01","stats-count-up-01"],"pairsPoorly":["hero-split-image-01","hero-geometric-01","hero-shuffle-cards-01","hero-parallax-images-01"],"category":"hero","nativeMotif":null},
   "hero-geometric-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"image","type":"image","aspectRatio":"4:5","optional":true},{"name":"imageAlt","type":"text","maxLength":120},{"name":"socialProofAvatars","type":"list","optional":true,"maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"1:1"},{"name":"imageAlt","type":"text","maxLength":60}]}},{"name":"socialProofLabel","type":"text","optional":true,"maxLength":60}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":["layout-cardgrid-01","layout-infinitescroll-01"],"pairsPoorly":["hero-split-image-01","hero-parallax-images-01"],"category":"hero","nativeMotif":"animated-svg"},
   "hero-parallax-images-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"centerImage","type":"image","aspectRatio":"16:9","optional":true},{"name":"centerImageAlt","type":"text","maxLength":120},{"name":"parallaxImages","type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"src","type":"image","aspectRatio":"16:9"},{"name":"alt","type":"text","maxLength":120},{"name":"start","type":"number","optional":true},{"name":"end","type":"number","optional":true},{"name":"widthClass","type":"text","optional":true,"maxLength":20},{"name":"alignClass","type":"text","optional":true,"maxLength":20}]}},{"name":"scrollHeight","type":"number","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":true,"button":true},"pairsWell":["layout-cardgrid-01","layout-infinitescroll-01"],"pairsPoorly":["hero-shuffle-cards-01","hero-split-image-01"],"category":"hero","nativeMotif":null},
@@ -12162,8 +13229,9 @@ export const COMPONENT_METADATA: Record<string, { slots: unknown[]; acceptsStyle
   "layout-iconlistsplit-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"features","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"icon","type":"text","maxLength":10},{"name":"title","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":200}]}},{"name":"image","type":"image","aspectRatio":"1:1","optional":true},{"name":"imageAlt","type":"text","maxLength":120,"optional":true},{"name":"logos","type":"list","optional":true,"maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image"},{"name":"imageAlt","type":"text","maxLength":60}]}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":["hero-split-image-01","layout-authorsplit-01"],"pairsPoorly":["layout-cardgrid-01"],"category":"layout/split","nativeMotif":null},
   "layout-imagetext-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":300},{"name":"ctaText","type":"text","maxLength":30,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"image","type":"image","aspectRatio":"16:9","optional":true},{"name":"imageAlt","type":"text","maxLength":120},{"name":"label","type":"text","maxLength":60,"optional":true},{"name":"imagePosition","type":"text","enum":["left","right"],"optional":true},{"name":"colorScheme","type":"text","enum":["light","dark"],"optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["layout-cardgrid-01","layout-statementsplit-01","hero-split-image-01"],"pairsPoorly":["layout-authorsplit-01"],"category":"layout/split","nativeMotif":null},
   "layout-statementsplit-01": {"slots":[{"name":"headline","type":"text","maxLength":120},{"name":"description","type":"text","maxLength":400},{"name":"descriptionEmphasis","type":"text","maxLength":80,"optional":true},{"name":"image","type":"image","aspectRatio":"16:9","optional":true},{"name":"imageAlt","type":"text","maxLength":120},{"name":"accentImage","type":"image","aspectRatio":"1:1","optional":true},{"name":"accentImageAlt","type":"text","maxLength":120,"optional":true},{"name":"colorScheme","type":"text","enum":["dark","light"],"optional":true},{"name":"headlinePosition","type":"text","enum":["left","right"],"optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":["layout-stickycards-01","layout-imagetext-01","stats-count-up-01","layout-infinitescroll-01"],"pairsPoorly":["hero-geometric-01"],"category":"layout/split","nativeMotif":null},
-  "layout-parallaxcontent-01": {"slots":[{"name":"sections","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"label","type":"text","maxLength":40},{"name":"heading","type":"text","maxLength":60},{"name":"content","type":"object","fields":[{"name":"contentHeadline","type":"text","maxLength":80},{"name":"contentDescription","type":"text","maxLength":300},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"}]}]}},{"name":"imagePadding","type":"number","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["hero-geometric-01","hero-split-image-01","footer-reveal-01"],"pairsPoorly":["layout-stickycards-01","hero-parallax-images-01"],"category":"motion","nativeMotif":null},
-  "layout-stickycards-01": {"slots":[{"name":"headline","type":"text","maxLength":80,"optional":true},{"name":"subheadline","type":"text","maxLength":200,"optional":true},{"name":"cards","type":"list","maxItems":6,"itemSchema":{"type":"object","fields":[{"name":"icon","type":"text","maxLength":10,"optional":true},{"name":"image","type":"image","aspectRatio":"4:3","optional":true},{"name":"imageAlt","type":"text","maxLength":120,"optional":true},{"name":"title","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"}]}},{"name":"cardHeight","type":"number","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["hero-geometric-01","hero-split-image-01"],"pairsPoorly":["layout-cardgrid-01"],"category":"motion","nativeMotif":null},
+  "layout-parallaxcontent-01": {"slots":[{"name":"sections","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"16:9"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"label","type":"text","maxLength":40},{"name":"heading","type":"text","maxLength":60},{"name":"content","type":"component","description":"Below-fold content for this section. Composer nests another component here (e.g. ImageText, CardGrid, IconListSplit) — content is not a text/image slot."}]}},{"name":"imagePadding","type":"number","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":["hero-geometric-01","hero-split-image-01","footer-reveal-01"],"pairsPoorly":["layout-stickycards-01","hero-parallax-images-01"],"category":"motion","nativeMotif":null},
+  "layout-stickycards-01": {"slots":[{"name":"headline","type":"text","maxLength":80,"optional":true},{"name":"subheadline","type":"text","maxLength":200,"optional":true},{"name":"cards","type":"list","maxItems":6,"itemSchema":{"type":"object","fields":[{"name":"content","type":"component","description":"Card body. Composer nests another component here (e.g. ImageText, CardGrid, IconListSplit) — content is not a text/image slot."}]}},{"name":"cardHeight","type":"number","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":["hero-geometric-01","hero-split-image-01"],"pairsPoorly":["layout-cardgrid-01"],"category":"motion","nativeMotif":null},
+  "navbar-pill-01": {"slots":[{"name":"logo","type":"image","aspectRatio":"auto","optional":true},{"name":"links","type":"list","maxItems":6,"itemSchema":{"text":{"type":"text","maxLength":30},"href":{"type":"url"}}},{"name":"ctaText","type":"text","maxLength":20,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["arrow","default","slide","dotExpand","drawOutline","glow"]}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["footer-pulse-01","footer-reveal-01"],"pairsPoorly":[],"category":"navigation","nativeMotif":null},
   "navbar-sticky-01": {"slots":[{"name":"logo","type":"image","aspectRatio":"auto","optional":true},{"name":"links","type":"list","maxItems":6,"itemSchema":{"text":{"type":"text","maxLength":30},"href":{"type":"url"}}},{"name":"ctaText","type":"text","maxLength":20},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline"]}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":[],"pairsPoorly":[],"category":"navigation","nativeMotif":null},
   "stats-count-up-01": {"slots":[{"name":"headline","type":"text","optional":true,"maxLength":120},{"name":"headlineHighlight","type":"text","optional":true,"maxLength":60},{"name":"stats","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"value","type":"number"},{"name":"decimals","type":"number","optional":true},{"name":"prefix","type":"text","optional":true,"maxLength":5},{"name":"suffix","type":"text","optional":true,"maxLength":10},{"name":"label","type":"text","maxLength":80}]}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":["hero-geometric-01","hero-split-image-01","layout-stickycards-01"],"pairsPoorly":[],"category":"stats","nativeMotif":null},
   "layout-infinitescroll-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":200,"optional":true},{"name":"rows","type":"list","maxItems":3,"itemSchema":{"type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"1:1"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"name","type":"text","maxLength":40},{"name":"title","type":"text","maxLength":60},{"name":"quote","type":"text","maxLength":200}]}}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":["hero-geometric-01","hero-split-image-01","layout-cardgrid-01"],"pairsPoorly":["layout-stackedsplit-01","layout-staggerfan-01"],"category":"testimonial","nativeMotif":null},

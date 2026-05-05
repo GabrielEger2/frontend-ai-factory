@@ -2,12 +2,22 @@
   "id": "layout-staggerfan-01",
   "name": "Stagger Fan",
   "category": "testimonial",
-  "style": ["bold", "playful", "modern"],
-  "mood": ["energetic", "fun", "friendly"],
+  "style": [
+    "bold",
+    "playful",
+    "modern"
+  ],
+  "mood": [
+    "energetic",
+    "fun",
+    "friendly"
+  ],
   "layout": "centered",
   "density": "medium",
   "imageWeight": 0.08,
-  "purpose": ["testimonials"],
+  "purpose": [
+    "testimonials"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
@@ -22,15 +32,39 @@
       "itemSchema": {
         "type": "object",
         "fields": [
-          { "name": "image", "type": "image", "aspectRatio": "3:4" },
-          { "name": "imageAlt", "type": "text", "maxLength": 120 },
-          { "name": "name", "type": "text", "maxLength": 40 },
-          { "name": "title", "type": "text", "maxLength": 60 },
-          { "name": "quote", "type": "text", "maxLength": 200 }
+          {
+            "name": "image",
+            "type": "image",
+            "aspectRatio": "3:4"
+          },
+          {
+            "name": "imageAlt",
+            "type": "text",
+            "maxLength": 120
+          },
+          {
+            "name": "name",
+            "type": "text",
+            "maxLength": 40
+          },
+          {
+            "name": "title",
+            "type": "text",
+            "maxLength": 60
+          },
+          {
+            "name": "quote",
+            "type": "text",
+            "maxLength": 200
+          }
         ]
       }
     },
-    { "name": "sectionHeight", "type": "number", "optional": true }
+    {
+      "name": "sectionHeight",
+      "type": "number",
+      "optional": true
+    }
   ],
   "mobileBehavior": "scroll",
   "pairsWell": [
@@ -38,5 +72,9 @@
     "hero-parallax-images-01",
     "layout-cardgrid-01"
   ],
-  "pairsPoorly": ["layout-infinitescroll-01", "layout-stackedsplit-01"]
+  "pairsPoorly": [
+    "layout-infinitescroll-01",
+    "layout-stackedsplit-01"
+  ],
+  "description": "A dynamic testimonial layout with staggered cards arranged in a fan pattern, perfect for creative agencies and lifestyle brands wanting to showcase customer feedback with visual energy and personality."
 }

@@ -2,41 +2,81 @@
   "id": "hero-geometric-01",
   "name": "Geometric Hero",
   "category": "hero",
-  "purpose": ["hero"],
+  "purpose": [
+    "hero"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": true,
     "textDecoration": true,
     "button": true
   },
-  "style": ["modern", "minimal", "corporate"],
-  "mood": ["professional", "trustworthy", "calm"],
+  "style": [
+    "modern",
+    "minimal",
+    "corporate"
+  ],
+  "mood": [
+    "professional",
+    "trustworthy",
+    "calm"
+  ],
   "layout": "split",
   "density": "medium",
   "imageWeight": 0.15,
   "slots": [
-    { "name": "headline", "type": "text", "maxLength": 80 },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
     {
       "name": "headlineRotatingWords",
       "type": "list",
       "optional": true,
       "maxItems": 6,
-      "itemSchema": { "type": "text", "maxLength": 40 }
+      "itemSchema": {
+        "type": "text",
+        "maxLength": 40
+      }
     },
-    { "name": "subheadline", "type": "text", "maxLength": 200 },
-    { "name": "ctaText", "type": "text", "maxLength": 30 },
-    { "name": "ctaUrl", "type": "url", "optional": true },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "maxLength": 200
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 30
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
     {
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+      "enum": [
+        "default",
+        "slide",
+        "dotExpand",
+        "drawOutline",
+        "glow"
+      ]
     },
     {
       "name": "ctaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": ["primary", "secondary", "accent", "neutral"]
+      "enum": [
+        "primary",
+        "secondary",
+        "accent",
+        "neutral"
+      ]
     },
     {
       "name": "secondaryCtaText",
@@ -44,18 +84,33 @@
       "optional": true,
       "maxLength": 30
     },
-    { "name": "secondaryCtaUrl", "type": "url", "optional": true },
+    {
+      "name": "secondaryCtaUrl",
+      "type": "url",
+      "optional": true
+    },
     {
       "name": "secondaryCtaStyle",
       "type": "text",
       "optional": true,
-      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+      "enum": [
+        "default",
+        "slide",
+        "dotExpand",
+        "drawOutline",
+        "glow"
+      ]
     },
     {
       "name": "secondaryCtaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": ["primary", "secondary", "accent", "neutral"]
+      "enum": [
+        "primary",
+        "secondary",
+        "accent",
+        "neutral"
+      ]
     },
     {
       "name": "image",
@@ -63,7 +118,11 @@
       "aspectRatio": "4:5",
       "optional": true
     },
-    { "name": "imageAlt", "type": "text", "maxLength": 120 },
+    {
+      "name": "imageAlt",
+      "type": "text",
+      "maxLength": 120
+    },
     {
       "name": "socialProofAvatars",
       "type": "list",
@@ -72,8 +131,16 @@
       "itemSchema": {
         "type": "object",
         "fields": [
-          { "name": "image", "type": "image", "aspectRatio": "1:1" },
-          { "name": "imageAlt", "type": "text", "maxLength": 60 }
+          {
+            "name": "image",
+            "type": "image",
+            "aspectRatio": "1:1"
+          },
+          {
+            "name": "imageAlt",
+            "type": "text",
+            "maxLength": 60
+          }
         ]
       }
     },
@@ -85,8 +152,14 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["layout-cardgrid-01", "layout-infinitescroll-01"],
-  "pairsPoorly": ["hero-split-image-01", "hero-parallax-images-01"],
+  "pairsWell": [
+    "layout-cardgrid-01",
+    "layout-infinitescroll-01"
+  ],
+  "pairsPoorly": [
+    "hero-split-image-01",
+    "hero-parallax-images-01"
+  ],
   "nativeMotif": "animated-svg",
   "variants": [
     {
@@ -94,14 +167,21 @@
       "name": "Bold Dark",
       "density": "high",
       "colorMode": "dark",
-      "styleOverrides": ["bold", "corporate"]
+      "styleOverrides": [
+        "bold",
+        "corporate"
+      ]
     },
     {
       "id": "hero-geometric-01-minimal",
       "name": "Minimal Light",
       "density": "low",
       "colorMode": "light",
-      "styleOverrides": ["minimal", "modern"]
+      "styleOverrides": [
+        "minimal",
+        "modern"
+      ]
     }
-  ]
+  ],
+  "description": "A clean, geometric hero section with structured layouts and minimal styling that builds trust through professional design. Perfect for corporate websites, B2B services, and tech companies seeking a sophisticated, authoritative first impression."
 }

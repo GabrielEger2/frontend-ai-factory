@@ -2,18 +2,30 @@
   "id": "contact-contact-shapes-form-01",
   "name": "Contact Form with Shapes",
   "category": "contact",
-  "purpose": ["contact", "lead-capture", "location-display"],
+  "purpose": [
+    "contact",
+    "lead-capture",
+    "location-display"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": true,
     "textDecoration": true,
     "button": true
   },
-  "style": ["modern", "editorial", "corporate"],
-  "mood": ["professional", "friendly", "trustworthy"],
+  "style": [
+    "modern",
+    "editorial",
+    "corporate"
+  ],
+  "mood": [
+    "professional",
+    "friendly",
+    "trustworthy"
+  ],
   "layout": "split",
   "density": "medium",
-  "imageWeight": 0.0,
+  "imageWeight": 0,
   "slots": [
     {
       "name": "headline",
@@ -63,13 +75,24 @@
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+      "enum": [
+        "default",
+        "slide",
+        "dotExpand",
+        "drawOutline",
+        "glow"
+      ]
     },
     {
       "name": "ctaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": ["primary", "secondary", "accent", "neutral"]
+      "enum": [
+        "primary",
+        "secondary",
+        "accent",
+        "neutral"
+      ]
     },
     {
       "name": "mapEmbedUrl",
@@ -101,6 +124,11 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["faq-accordion-01", "footer-reveal-01", "stats-count-up-01"],
-  "pairsPoorly": []
+  "pairsWell": [
+    "faq-accordion-01",
+    "footer-reveal-01",
+    "stats-count-up-01"
+  ],
+  "pairsPoorly": [],
+  "description": "A modern contact form enhanced with geometric shapes and editorial styling, designed for corporate businesses seeking to capture leads while maintaining a professional yet approachable brand presence."
 }

@@ -2,20 +2,35 @@
   "id": "stats-count-up-01",
   "name": "Count-Up Stats",
   "category": "stats",
-  "purpose": ["stats"],
+  "purpose": [
+    "stats"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
     "textDecoration": false,
     "button": false
   },
-  "style": ["modern", "minimal", "corporate"],
-  "mood": ["professional", "trustworthy", "serious"],
+  "style": [
+    "modern",
+    "minimal",
+    "corporate"
+  ],
+  "mood": [
+    "professional",
+    "trustworthy",
+    "serious"
+  ],
   "layout": "horizontal",
   "density": "low",
-  "imageWeight": 0.0,
+  "imageWeight": 0,
   "slots": [
-    { "name": "headline", "type": "text", "optional": true, "maxLength": 120 },
+    {
+      "name": "headline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 120
+    },
     {
       "name": "headlineHighlight",
       "type": "text",
@@ -29,8 +44,15 @@
       "itemSchema": {
         "type": "object",
         "fields": [
-          { "name": "value", "type": "number" },
-          { "name": "decimals", "type": "number", "optional": true },
+          {
+            "name": "value",
+            "type": "number"
+          },
+          {
+            "name": "decimals",
+            "type": "number",
+            "optional": true
+          },
           {
             "name": "prefix",
             "type": "text",
@@ -43,7 +65,11 @@
             "optional": true,
             "maxLength": 10
           },
-          { "name": "label", "type": "text", "maxLength": 80 }
+          {
+            "name": "label",
+            "type": "text",
+            "maxLength": 80
+          }
         ]
       }
     }
@@ -54,5 +80,6 @@
     "hero-split-image-01",
     "layout-stickycards-01"
   ],
-  "pairsPoorly": []
+  "pairsPoorly": [],
+  "description": "A clean, animated statistics display that reveals key numbers through count-up animations, perfect for corporate websites and professional service firms showcasing achievements, metrics, or company milestones."
 }

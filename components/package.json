@@ -8,7 +8,7 @@
     "type-check": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "build:manifest": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/build-manifest.ts",
+    "build:manifest": "ts-node scripts/build-manifest.ts",
     "validate:metadata": "ts-node scripts/validate-metadata.ts"
   },
   "ts-node": {

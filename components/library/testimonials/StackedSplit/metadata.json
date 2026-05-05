@@ -2,12 +2,22 @@
   "id": "layout-stackedsplit-01",
   "name": "Stacked Split",
   "category": "testimonial",
-  "style": ["modern", "editorial", "corporate"],
-  "mood": ["professional", "elegant", "trustworthy"],
+  "style": [
+    "modern",
+    "editorial",
+    "corporate"
+  ],
+  "mood": [
+    "professional",
+    "elegant",
+    "trustworthy"
+  ],
   "layout": "split",
   "density": "medium",
-  "imageWeight": 0.0,
-  "purpose": ["testimonials"],
+  "imageWeight": 0,
+  "purpose": [
+    "testimonials"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
@@ -15,7 +25,11 @@
     "button": false
   },
   "slots": [
-    { "name": "headline", "type": "text", "maxLength": 80 },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
     {
       "name": "subheadline",
       "type": "text",
@@ -29,11 +43,31 @@
       "itemSchema": {
         "type": "object",
         "fields": [
-          { "name": "image", "type": "image", "aspectRatio": "1:1" },
-          { "name": "imageAlt", "type": "text", "maxLength": 120 },
-          { "name": "name", "type": "text", "maxLength": 40 },
-          { "name": "title", "type": "text", "maxLength": 60 },
-          { "name": "quote", "type": "text", "maxLength": 200 }
+          {
+            "name": "image",
+            "type": "image",
+            "aspectRatio": "1:1"
+          },
+          {
+            "name": "imageAlt",
+            "type": "text",
+            "maxLength": 120
+          },
+          {
+            "name": "name",
+            "type": "text",
+            "maxLength": 40
+          },
+          {
+            "name": "title",
+            "type": "text",
+            "maxLength": 60
+          },
+          {
+            "name": "quote",
+            "type": "text",
+            "maxLength": 200
+          }
         ]
       }
     },
@@ -49,5 +83,9 @@
     "layout-stickycards-01",
     "footer-reveal-01"
   ],
-  "pairsPoorly": ["layout-infinitescroll-01", "layout-staggerfan-01"]
+  "pairsPoorly": [
+    "layout-infinitescroll-01",
+    "layout-staggerfan-01"
+  ],
+  "description": "A vertically stacked testimonial layout that presents customer quotes with elegant typography and structured spacing, ideal for professional services and B2B companies showcasing client credibility."
 }
