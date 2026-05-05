@@ -26,6 +26,22 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ZIP_RE = /^\d{5}-?\d{3}$/;
 const URL_RE = /^https?:\/\/.+/i;
 
+/* ─── Page-type options (closed enum mirrored from agents) ───────── */
+const PAGE_TYPES = [
+  "landing",
+  "store",
+  "portfolio",
+  "services",
+  "about",
+] as const;
+const PAGE_TYPE_LABELS: Record<(typeof PAGE_TYPES)[number], string> = {
+  landing: "Landing Page",
+  store: "Store / E-commerce",
+  portfolio: "Portfolio",
+  services: "Services",
+  about: "About / Institutional",
+};
+
 /* ─── Day-of-week table ──────────────────────────────────────────── */
 const DAYS = [
   { id: "mon", short: "Mon", full: "Monday" },
@@ -266,6 +282,9 @@ export default function NewProjectPage() {
   // Company basics
   const [companyName, setCompanyName] = useState("");
   const [segment, setSegment] = useState("");
+  const [pageType, setPageType] = useState<
+    "landing" | "store" | "portfolio" | "services" | "about" | ""
+  >("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [hasBrandColor, setHasBrandColor] = useState(false);
@@ -486,6 +505,7 @@ export default function NewProjectPage() {
       const result = await createProject({
         companyName,
         segment,
+        pageType: pageType || undefined,
         description,
         brandColor: hasBrandColor ? brandColor : undefined,
         brandToneKeywords:
@@ -578,6 +598,35 @@ export default function NewProjectPage() {
                   {SUPPORTED_SEGMENTS.map((seg) => (
                     <option key={seg} value={seg}>
                       {SEGMENT_LABELS[seg] ?? seg}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="pageType" className={labelClasses}>
+                  Page type
+                </label>
+                <select
+                  id="pageType"
+                  value={pageType}
+                  onChange={(e) =>
+                    setPageType(
+                      e.target.value as
+                        | "landing"
+                        | "store"
+                        | "portfolio"
+                        | "services"
+                        | "about"
+                        | "",
+                    )
+                  }
+                  className={inputClasses}
+                >
+                  <option value="">Select a page type...</option>
+                  {PAGE_TYPES.map((pt) => (
+                    <option key={pt} value={pt}>
+                      {PAGE_TYPE_LABELS[pt]}
                     </option>
                   ))}
                 </select>
