@@ -10,7 +10,10 @@
     "seed:graph": "ts-node scripts/seed-graph.ts",
     "verify:graph": "ts-node scripts/verify-graph.ts",
     "generate-sources": "ts-node assembler/generate-sources.ts",
-    "import:nicepage": "ts-node scripts/nicepage-import.ts"
+    "import:nicepage": "ts-node scripts/nicepage-import.ts",
+    "describe:components": "ts-node scripts/describe-components.ts",
+    "seed:vectors": "ts-node scripts/seed-vectors.ts",
+    "query:vectors": "ts-node scripts/query-vectors.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39",
@@ -21,8 +24,10 @@
     "@aws-sdk/client-ssm": "^3",
     "@aws-sdk/client-sfn": "^3",
     "@aws-sdk/client-sqs": "^3",
+    "@qdrant/js-client-rest": "^1",
     "cheerio": "^1.0.0-rc.12",
     "neo4j-driver": "^5",
+    "openai": "^4",
     "playwright": "^1.44.0",
     "zod": "^3"
   },
