@@ -420,7 +420,7 @@ async function getVectorCandidates(
 async function composeLayouts(
   input: ReturnType<typeof ComposerAgentInputSchema.parse>,
   candidates: CandidateComponent[],
-  source: "graph" | "fallback",
+  source: "graph" | "fallback" | "hybrid",
   pairMatrix: PairMatrixEntry[],
 ): Promise<ComposerOutput> {
   const apiKey = await getClaudeApiKey();
@@ -598,10 +598,14 @@ export const handler: Handler<
   // 2. Mark project as "composing" before processing
   await markComposingStarted(input.projectId);
 
-  // 3. Get candidate components — try graph first, fallback to DynamoDB
+  // 3. Get candidate components — try graph first, fallback to DynamoDB.
+  //    In parallel, request the OpenAI embedding for the project brief so
+  //    Qdrant vector retrieval can run alongside the graph query.
   let candidates: CandidateComponent[];
-  let source: "graph" | "fallback";
+  let source: "graph" | "fallback" | "hybrid";
   let pairMatrix: PairMatrixEntry[] = [];
+  const VECTOR_TOP_K = 8;
+  let vectorCandidates: CandidateComponent[] = [];
 
   // Compute imageryDensityScale to bias candidate scoring by visual density.
   // Negative scale demotes image-heavy components (e.g. SaaS-tooling),
@@ -611,13 +615,18 @@ export const handler: Handler<
       input.styleOutput?.imageryDensity ?? "medium"
     ] ?? 0;
 
-  try {
-    const graphResult = await getGraphCandidates(
-      input.segment,
-      imageryDensityScale,
-    );
-    candidates = graphResult.candidates;
-    pairMatrix = graphResult.pairMatrix;
+  // Run graph query and embedding fetch concurrently. `as const` preserves
+  // per-element types in the Promise.allSettled tuple — without it the
+  // inferred type is a union and `.value` accessors break.
+  const results = await Promise.allSettled([
+    getGraphCandidates(input.segment, imageryDensityScale),
+    getEmbedding(buildVectorSearchQuery(input)),
+  ] as const);
+  const [graphResult, embeddingResult] = results;
+
+  if (graphResult.status === "fulfilled") {
+    candidates = graphResult.value.candidates;
+    pairMatrix = graphResult.value.pairMatrix;
     source = "graph";
     console.log(
       JSON.stringify({
@@ -627,13 +636,16 @@ export const handler: Handler<
         candidateCount: candidates.length,
       }),
     );
-  } catch (err) {
+  } else {
     console.warn(
       JSON.stringify({
         agent: "composer",
         projectId: input.projectId,
         warning: "Neo4j unavailable, falling back to DynamoDB scan",
-        error: err instanceof Error ? err.message : String(err),
+        error:
+          graphResult.reason instanceof Error
+            ? graphResult.reason.message
+            : String(graphResult.reason),
       }),
     );
     emitNeo4jQueryError("composer");
@@ -648,6 +660,72 @@ export const handler: Handler<
         projectId: input.projectId,
         candidateSource: "fallback",
         candidateCount: candidates.length,
+      }),
+    );
+  }
+
+  // Qdrant vector retrieval — isolated try/catch. Failure here MUST NOT
+  // affect the graph/fallback chain. Reuse the embedding from the parallel
+  // Promise.allSettled if it succeeded; otherwise re-fetch once.
+  try {
+    const queryVector =
+      embeddingResult.status === "fulfilled"
+        ? embeddingResult.value
+        : await getEmbedding(buildVectorSearchQuery(input));
+    vectorCandidates = await getVectorCandidates(queryVector, VECTOR_TOP_K);
+    console.log(
+      JSON.stringify({
+        agent: "composer",
+        projectId: input.projectId,
+        candidateSource: "vector",
+        vectorCandidateCount: vectorCandidates.length,
+      }),
+    );
+  } catch (err) {
+    console.warn(
+      JSON.stringify({
+        agent: "composer",
+        projectId: input.projectId,
+        warning: "Qdrant unavailable, skipping vector candidates",
+        error: err instanceof Error ? err.message : String(err),
+      }),
+    );
+    emitQdrantQueryError("composer");
+    vectorCandidates = [];
+  }
+
+  // Merge graph/DDB candidates with vector candidates by id. Components in
+  // both sources upgrade to source: "graph+vector". Top-level source upgrades
+  // from "graph" to "hybrid" only when graph succeeded AND vector merged —
+  // "fallback" stays "fallback" so graph-outage signal remains visible.
+  if (vectorCandidates.length > 0) {
+    const merged = new Map<string, CandidateComponent>();
+    for (const c of candidates) {
+      merged.set(c.id, { ...c, source: c.source ?? "graph" });
+    }
+    for (const v of vectorCandidates) {
+      const existing = merged.get(v.id);
+      if (existing) {
+        merged.set(v.id, {
+          ...existing,
+          vectorScore: v.vectorScore,
+          source: "graph+vector",
+        });
+      } else {
+        merged.set(v.id, v);
+      }
+    }
+    candidates = Array.from(merged.values());
+    if (source !== "fallback") {
+      source = "hybrid";
+    }
+    console.log(
+      JSON.stringify({
+        agent: "composer",
+        projectId: input.projectId,
+        candidateSource: "hybrid",
+        vectorCandidateCount: vectorCandidates.length,
+        mergedCandidateCount: candidates.length,
       }),
     );
   }
