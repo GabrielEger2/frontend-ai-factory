@@ -8,7 +8,6 @@ A product layer on top of a CRM. Sellers input company info, AI generates a comp
 - **Auth:** CRM JWT validation + API key auth (no standalone auth — sellers auth through CRM)
 - **Backend:** AWS Lambda (Node.js 20, ARM64), API Gateway (REST), Step Functions, SQS
 - **Database:** MongoDB or DynamoDB (TBD — projects, components, deployments)
-- **Graph (Phase 3):** Neo4j Aura (component compatibility, mood/style/segment intelligence)
 - **AI:** Claude/GPT API (specialized prompts per agent, not monolithic)
 - **Generated Sites:** Vercel API deploy (programmatic, edge network)
 - **IaC:** AWS CDK (TypeScript), single-stage deployment
@@ -60,7 +59,6 @@ SQS → Step Function:
 | `ApiStack` | API Gateway + CRM JWT/API key validation + deploy-draft Lambda (Vercel) |
 | `PipelineStack` | Step Functions + SQS + agent Lambdas (terminates at ready_for_review after QA) |
 | `DatabaseStack` | Database tables — projects, components, share tokens (DDB) |
-| `GraphStack` | Neo4j Aura connection (Phase 3) |
 | `DashboardStack` | Seller dashboard (OpenNext pattern) |
 
 ## Immutable Rules
