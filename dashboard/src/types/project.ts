@@ -181,7 +181,7 @@ export interface ComposerLayout {
 export interface ComposerOutput {
   layouts: ComposerLayout[];
   selectedLayout: number;
-  source: "graph" | "fallback";
+  source: "vector" | "fallback" | "graph" | "hybrid"; // "graph" and "hybrid" are legacy Stage 2 values
   candidateCount?: number;
   avgScore?: number | null;
   warnings?: string[];
