@@ -2,12 +2,22 @@
   "id": "layout-infinitescroll-01",
   "name": "Infinite Scroll",
   "category": "testimonial",
-  "style": ["modern", "bold", "editorial"],
-  "mood": ["energetic", "trustworthy", "professional"],
+  "style": [
+    "modern",
+    "bold",
+    "editorial"
+  ],
+  "mood": [
+    "energetic",
+    "trustworthy",
+    "professional"
+  ],
   "layout": "stacked",
   "density": "high",
-  "imageWeight": 0.0,
-  "purpose": ["testimonials"],
+  "imageWeight": 0,
+  "purpose": [
+    "testimonials"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
@@ -15,7 +25,11 @@
     "button": false
   },
   "slots": [
-    { "name": "headline", "type": "text", "maxLength": 80 },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
     {
       "name": "subheadline",
       "type": "text",
@@ -32,11 +46,31 @@
         "itemSchema": {
           "type": "object",
           "fields": [
-            { "name": "image", "type": "image", "aspectRatio": "1:1" },
-            { "name": "imageAlt", "type": "text", "maxLength": 120 },
-            { "name": "name", "type": "text", "maxLength": 40 },
-            { "name": "title", "type": "text", "maxLength": 60 },
-            { "name": "quote", "type": "text", "maxLength": 200 }
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "1:1"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "name",
+              "type": "text",
+              "maxLength": 40
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "quote",
+              "type": "text",
+              "maxLength": 200
+            }
           ]
         }
       }
@@ -48,5 +82,9 @@
     "hero-split-image-01",
     "layout-cardgrid-01"
   ],
-  "pairsPoorly": ["layout-stackedsplit-01", "layout-staggerfan-01"]
+  "pairsPoorly": [
+    "layout-stackedsplit-01",
+    "layout-staggerfan-01"
+  ],
+  "description": "A continuously scrolling testimonial component with bold typography and editorial spacing that creates dynamic social proof. Perfect for tech companies and agencies wanting to showcase extensive client feedback without pagination interruptions."
 }

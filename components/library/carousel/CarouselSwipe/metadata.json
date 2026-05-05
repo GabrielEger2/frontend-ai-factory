@@ -2,18 +2,30 @@
   "id": "carousel-swipe-01",
   "name": "Swipe Carousel",
   "category": "carousel",
-  "purpose": ["features", "products", "testimonials"],
+  "purpose": [
+    "features",
+    "products",
+    "testimonials"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
     "textDecoration": false,
     "button": false
   },
-  "style": ["modern", "minimal", "editorial"],
-  "mood": ["professional", "calm", "friendly"],
+  "style": [
+    "modern",
+    "minimal",
+    "editorial"
+  ],
+  "mood": [
+    "professional",
+    "calm",
+    "friendly"
+  ],
   "layout": "centered",
   "density": "low",
-  "imageWeight": 0.0,
+  "imageWeight": 0,
   "slots": [
     {
       "name": "items",
@@ -22,13 +34,24 @@
       "itemSchema": {
         "type": "object",
         "fields": [
-          { "name": "image", "type": "image", "aspectRatio": "16:9" },
-          { "name": "imageAlt", "type": "text", "maxLength": 120 }
+          {
+            "name": "image",
+            "type": "image",
+            "aspectRatio": "16:9"
+          },
+          {
+            "name": "imageAlt",
+            "type": "text",
+            "maxLength": 120
+          }
         ]
       }
     }
   ],
   "mobileBehavior": "scroll",
   "pairsWell": [],
-  "pairsPoorly": ["carousel-cards-01"]
+  "pairsPoorly": [
+    "carousel-cards-01"
+  ],
+  "description": "A clean, swipeable carousel with minimal styling that showcases content through smooth horizontal navigation. Perfect for professional service firms and modern businesses displaying product features, client testimonials, or key capabilities."
 }

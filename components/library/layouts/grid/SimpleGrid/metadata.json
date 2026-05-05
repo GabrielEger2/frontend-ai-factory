@@ -2,12 +2,25 @@
   "id": "layout-simplegrid-01",
   "name": "Simple Grid",
   "category": "layout/grid",
-  "style": ["modern", "corporate", "minimal"],
-  "mood": ["professional", "trustworthy", "calm"],
+  "style": [
+    "modern",
+    "corporate",
+    "minimal"
+  ],
+  "mood": [
+    "professional",
+    "trustworthy",
+    "calm"
+  ],
   "layout": "grid",
   "density": "medium",
-  "imageWeight": 0.0,
-  "purpose": ["features", "services", "benefits", "process"],
+  "imageWeight": 0,
+  "purpose": [
+    "features",
+    "services",
+    "benefits",
+    "process"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
@@ -15,8 +28,17 @@
     "button": true
   },
   "slots": [
-    { "name": "label", "type": "text", "maxLength": 60, "optional": true },
-    { "name": "headline", "type": "text", "maxLength": 80 },
+    {
+      "name": "label",
+      "type": "text",
+      "maxLength": 60,
+      "optional": true
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
     {
       "name": "description",
       "type": "text",
@@ -29,21 +51,51 @@
       "itemSchema": {
         "type": "object",
         "fields": [
-          { "name": "title", "type": "text", "maxLength": 60 },
-          { "name": "description", "type": "text", "maxLength": 200 },
+          {
+            "name": "title",
+            "type": "text",
+            "maxLength": 60
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "maxLength": 200
+          },
           {
             "name": "ctaText",
             "type": "text",
             "maxLength": 30,
             "optional": true
           },
-          { "name": "ctaUrl", "type": "url", "optional": true }
+          {
+            "name": "ctaUrl",
+            "type": "url",
+            "optional": true
+          }
         ]
       }
     },
-    { "name": "ctaText", "type": "text", "maxLength": 30, "optional": true },
-    { "name": "ctaUrl", "type": "url", "optional": true },
-    { "name": "columns", "type": "number", "enum": [2, 3, 4], "optional": true }
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 30,
+      "optional": true
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "columns",
+      "type": "number",
+      "enum": [
+        2,
+        3,
+        4
+      ],
+      "optional": true
+    }
   ],
   "mobileBehavior": "stack",
   "pairsWell": [
@@ -51,5 +103,8 @@
     "layout-imagetext-01",
     "hero-split-image-01"
   ],
-  "pairsPoorly": ["layout-simplegrid-01"]
+  "pairsPoorly": [
+    "layout-simplegrid-01"
+  ],
+  "description": "A clean, evenly-spaced grid layout that organizes content into structured columns, perfect for professional service firms and B2B companies showcasing their key offerings or process steps."
 }

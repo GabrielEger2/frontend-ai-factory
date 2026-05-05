@@ -2,12 +2,24 @@
   "id": "layout-statementsplit-01",
   "name": "Statement Split",
   "category": "layout/split",
-  "style": ["editorial", "luxury", "minimal"],
-  "mood": ["elegant", "professional", "calm"],
+  "style": [
+    "editorial",
+    "luxury",
+    "minimal"
+  ],
+  "mood": [
+    "elegant",
+    "professional",
+    "calm"
+  ],
   "layout": "asymmetric",
   "density": "low",
   "imageWeight": 0.2,
-  "purpose": ["about", "features", "services"],
+  "purpose": [
+    "about",
+    "features",
+    "services"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
@@ -15,8 +27,16 @@
     "button": false
   },
   "slots": [
-    { "name": "headline", "type": "text", "maxLength": 120 },
-    { "name": "description", "type": "text", "maxLength": 400 },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 120
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 400
+    },
     {
       "name": "descriptionEmphasis",
       "type": "text",
@@ -29,7 +49,11 @@
       "aspectRatio": "16:9",
       "optional": true
     },
-    { "name": "imageAlt", "type": "text", "maxLength": 120 },
+    {
+      "name": "imageAlt",
+      "type": "text",
+      "maxLength": 120
+    },
     {
       "name": "accentImage",
       "type": "image",
@@ -45,13 +69,19 @@
     {
       "name": "colorScheme",
       "type": "text",
-      "enum": ["dark", "light"],
+      "enum": [
+        "dark",
+        "light"
+      ],
       "optional": true
     },
     {
       "name": "headlinePosition",
       "type": "text",
-      "enum": ["left", "right"],
+      "enum": [
+        "left",
+        "right"
+      ],
       "optional": true
     }
   ],
@@ -62,5 +92,8 @@
     "stats-count-up-01",
     "layout-infinitescroll-01"
   ],
-  "pairsPoorly": ["hero-geometric-01"]
+  "pairsPoorly": [
+    "hero-geometric-01"
+  ],
+  "description": "A clean two-column layout that elegantly separates compelling copy from supporting visuals, perfect for luxury brands and professional services showcasing their story or key features with sophisticated restraint."
 }

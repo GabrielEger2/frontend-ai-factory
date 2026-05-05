@@ -2,12 +2,23 @@
   "id": "layout-authorsplit-01",
   "name": "Author Split",
   "category": "layout/split",
-  "style": ["editorial", "modern", "minimal"],
-  "mood": ["professional", "friendly", "elegant"],
+  "style": [
+    "editorial",
+    "modern",
+    "minimal"
+  ],
+  "mood": [
+    "professional",
+    "friendly",
+    "elegant"
+  ],
   "layout": "split",
   "density": "low",
   "imageWeight": 0.2,
-  "purpose": ["about", "team"],
+  "purpose": [
+    "about",
+    "team"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
@@ -21,19 +32,48 @@
       "aspectRatio": "2:1",
       "optional": true
     },
-    { "name": "bannerImageAlt", "type": "text", "maxLength": 120 },
+    {
+      "name": "bannerImageAlt",
+      "type": "text",
+      "maxLength": 120
+    },
     {
       "name": "authorImage",
       "type": "image",
       "aspectRatio": "1:1",
       "optional": true
     },
-    { "name": "authorImageAlt", "type": "text", "maxLength": 120 },
-    { "name": "authorName", "type": "text", "maxLength": 60 },
-    { "name": "authorTagline", "type": "text", "maxLength": 200 },
-    { "name": "description", "type": "text", "maxLength": 600 },
-    { "name": "ctaText", "type": "text", "maxLength": 30, "optional": true },
-    { "name": "ctaUrl", "type": "url", "optional": true }
+    {
+      "name": "authorImageAlt",
+      "type": "text",
+      "maxLength": 120
+    },
+    {
+      "name": "authorName",
+      "type": "text",
+      "maxLength": 60
+    },
+    {
+      "name": "authorTagline",
+      "type": "text",
+      "maxLength": 200
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 600
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 30,
+      "optional": true
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    }
   ],
   "mobileBehavior": "stack",
   "pairsWell": [
@@ -42,5 +82,8 @@
     "layout-simplegrid-01",
     "stats-count-up-01"
   ],
-  "pairsPoorly": ["layout-statementsplit-01"]
+  "pairsPoorly": [
+    "layout-statementsplit-01"
+  ],
+  "description": "A clean split-layout component that pairs professional headshots with biographical content, perfect for editorial sites, consulting firms, and creative agencies showcasing their team or founder stories."
 }

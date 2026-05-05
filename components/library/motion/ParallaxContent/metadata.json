@@ -2,12 +2,24 @@
   "id": "layout-parallaxcontent-01",
   "name": "Parallax Content",
   "category": "motion",
-  "style": ["modern", "editorial", "bold"],
-  "mood": ["professional", "elegant", "energetic"],
+  "style": [
+    "modern",
+    "editorial",
+    "bold"
+  ],
+  "mood": [
+    "professional",
+    "elegant",
+    "energetic"
+  ],
   "layout": "stacked",
   "density": "low",
-  "imageWeight": 0.0,
-  "purpose": ["features", "about", "services"],
+  "imageWeight": 0,
+  "purpose": [
+    "features",
+    "about",
+    "services"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
@@ -22,10 +34,26 @@
       "itemSchema": {
         "type": "object",
         "fields": [
-          { "name": "image", "type": "image", "aspectRatio": "16:9" },
-          { "name": "imageAlt", "type": "text", "maxLength": 120 },
-          { "name": "label", "type": "text", "maxLength": 40 },
-          { "name": "heading", "type": "text", "maxLength": 60 },
+          {
+            "name": "image",
+            "type": "image",
+            "aspectRatio": "16:9"
+          },
+          {
+            "name": "imageAlt",
+            "type": "text",
+            "maxLength": 120
+          },
+          {
+            "name": "label",
+            "type": "text",
+            "maxLength": 40
+          },
+          {
+            "name": "heading",
+            "type": "text",
+            "maxLength": 60
+          },
           {
             "name": "content",
             "type": "component",
@@ -34,9 +62,21 @@
         ]
       }
     },
-    { "name": "imagePadding", "type": "number", "optional": true }
+    {
+      "name": "imagePadding",
+      "type": "number",
+      "optional": true
+    }
   ],
   "mobileBehavior": "scroll",
-  "pairsWell": ["hero-geometric-01", "hero-split-image-01", "footer-reveal-01"],
-  "pairsPoorly": ["layout-stickycards-01", "hero-parallax-images-01"]
+  "pairsWell": [
+    "hero-geometric-01",
+    "hero-split-image-01",
+    "footer-reveal-01"
+  ],
+  "pairsPoorly": [
+    "layout-stickycards-01",
+    "hero-parallax-images-01"
+  ],
+  "description": "A sophisticated parallax scrolling component that creates depth and visual interest while showcasing key content sections. Perfect for creative agencies, design studios, and modern businesses wanting to highlight their services or company story with dynamic, engaging motion effects."
 }

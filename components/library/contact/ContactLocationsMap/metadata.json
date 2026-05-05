@@ -2,15 +2,26 @@
   "id": "contact-contact-locations-map-01",
   "name": "Contact Locations with Map",
   "category": "contact",
-  "purpose": ["contact", "location-display"],
+  "purpose": [
+    "contact",
+    "location-display"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": true,
     "textDecoration": true,
     "button": false
   },
-  "style": ["modern", "corporate", "editorial"],
-  "mood": ["professional", "trustworthy", "elegant"],
+  "style": [
+    "modern",
+    "corporate",
+    "editorial"
+  ],
+  "mood": [
+    "professional",
+    "trustworthy",
+    "elegant"
+  ],
   "layout": "grid",
   "density": "medium",
   "imageWeight": 0.18,
@@ -85,6 +96,11 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["faq-minimal-01", "footer-reveal-01", "navbar-sticky-01"],
-  "pairsPoorly": []
+  "pairsWell": [
+    "faq-minimal-01",
+    "footer-reveal-01",
+    "navbar-sticky-01"
+  ],
+  "pairsPoorly": [],
+  "description": "A sophisticated contact section featuring an integrated map display alongside location details, designed for professional service firms and corporate businesses with multiple office locations that need to convey trustworthiness and accessibility."
 }
