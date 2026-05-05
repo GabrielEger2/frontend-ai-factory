@@ -24,6 +24,12 @@ const meta: Meta<typeof HeroGeometric> = {
       control: "select",
       options: ["primary", "secondary", "accent", "neutral"],
     },
+    highlightWord: { control: "text" },
+    revealHeadline: { control: "boolean" },
+    accentColorScheme: {
+      control: "select",
+      options: ["primary", "secondary", "accent", "neutral"],
+    },
   },
 };
 export default meta;
