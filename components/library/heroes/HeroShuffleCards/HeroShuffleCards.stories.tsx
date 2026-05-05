@@ -12,6 +12,12 @@ const meta: Meta<typeof HeroShuffleCards> = {
       control: "select",
       options: ["default", "slide", "dotExpand", "drawOutline", "glow"],
     },
+    highlightWord: { control: "text" },
+    revealHeadline: { control: "boolean" },
+    accentColorScheme: {
+      control: "select",
+      options: ["primary", "secondary", "accent", "neutral"],
+    },
   },
 };
 export default meta;
