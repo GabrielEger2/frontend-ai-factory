@@ -1,27 +1,46 @@
 /**
  * Embed every component metadata file with OpenAI text-embedding-3-small
- * (1536-d) and upsert the resulting vectors into the Qdrant `components`
- * collection.
+ * (1536-d) along three description axes (descriptive / usage /
+ * audienceFit) and upsert the resulting named-vector points into the
+ * Qdrant `components` collection.
  *
- * Idempotent: each component's point ID is a deterministic djb2 hash of
- * its `componentId`, so re-running overwrites in place rather than
- * creating duplicates.
+ * Each component contributes one point carrying three named vectors —
+ * 33 components × 3 axes = 99 OpenAI calls per full re-seed.
+ *
+ * The collection is recreated on every run (named-vector schema cannot
+ * be applied in place over the legacy flat-vector collection); point
+ * IDs are still deterministic djb2 hashes of `componentId`.
  *
  * Usage:
  *   QDRANT_ENDPOINT_SSM_PATH=/sitegen/dev/qdrant-endpoint \
  *   QDRANT_API_KEY_SSM_PATH=/sitegen/dev/qdrant-api-key \
  *   OPENAI_API_KEY_SSM_PATH=/sitegen/dev/openai-api-key \
- *     ts-node scripts/seed-vectors.ts
+ *     ts-node scripts/seed-vectors.ts --wipe
  *
- * Walks components/library/ recursively, finds every metadata.json,
- * builds one embedding per component (sequential — 33 calls), batches
- * them into Qdrant upserts of 100 points at a time.
+ * Pass `--wipe` on first run to acknowledge the destructive recreate.
+ * Components missing any of the three description axes are skipped
+ * with a warning — run `describe:components --force` first to populate
+ * `descriptions.{descriptive,usage,audienceFit}` in metadata.json.
  */
 
 import * as fs from "fs";
 import * as path from "path";
 import { getEmbedding } from "../shared/embeddings";
-import { getQdrantClient, ensureCollection } from "../shared/qdrant-client";
+import {
+  getQdrantClient,
+  recreateCollectionMultiVector,
+} from "../shared/qdrant-client";
+
+/* ------------------------------------------------------------------ */
+/*  CLI flags                                                          */
+/* ------------------------------------------------------------------ */
+
+// `--wipe` is an explicit-intent flag for the runbook. The Phase C
+// schema migration always recreates the collection (named-vector
+// schema cannot be applied in place), so the script behaves the same
+// regardless — but operators are expected to pass --wipe on the first
+// run to acknowledge the destructive recreate.
+const wipe = process.argv.includes("--wipe");
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -120,39 +139,36 @@ function djb2(input: string): number {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Build the embedding input text from metadata                       */
+/*  Read a single description axis from metadata                       */
 /*                                                                     */
-/*  Concatenates the most semantically-loaded fields into a single     */
-/*  text blob that the embedding model can encode.                      */
+/*  Returns the trimmed string for the requested axis, or `null` if    */
+/*  the `descriptions` object is missing or the axis value is empty.   */
+/*  Callers skip components for which any axis returns null.           */
 /* ------------------------------------------------------------------ */
 
-function buildEmbeddingInput(json: MetadataJson): string {
-  const parts: string[] = [
-    `Name: ${json.name}`,
-    `Category: ${json.category}`,
-    `Style: ${json.style.join(", ")}`,
-    `Mood: ${json.mood.join(", ")}`,
-    `Purpose: ${json.purpose.join(", ")}`,
-  ];
-
-  // Legacy single-description field (pre-Phase C) — read via cast.
-  // The `descriptions` object replaces this; this function is fully
-  // rewritten in WI4 (per phase-c-plan).
-  const legacy = (json as MetadataJson & { description?: string }).description;
-  if (typeof legacy === "string" && legacy.trim().length > 0) {
-    parts.push(`Description: ${legacy.trim()}`);
-  }
-
-  return parts.join("\n");
+function readAxisText(
+  json: MetadataJson,
+  axis: "descriptive" | "usage" | "audienceFit",
+): string | null {
+  return json.descriptions?.[axis]?.trim() || null;
 }
 
 /* ------------------------------------------------------------------ */
-/*  Qdrant point shape                                                 */
+/*  Qdrant point shape (named-vector — Phase C)                        */
+/*                                                                     */
+/*  Named-vector collections use a single `vector` field whose value   */
+/*  is a record keyed by vector name (descriptive / usage /            */
+/*  audienceFit). This matches the Qdrant REST API and the             */
+/*  @qdrant/js-client-rest TypeScript types.                            */
 /* ------------------------------------------------------------------ */
 
 interface ComponentPoint {
   id: number;
-  vector: number[];
+  vector: {
+    descriptive: number[];
+    usage: number[];
+    audienceFit: number[];
+  };
   payload: {
     componentId: string;
     name: string;
@@ -190,6 +206,7 @@ async function batchUpsert(points: ComponentPoint[]): Promise<number> {
 /* ------------------------------------------------------------------ */
 
 async function main(): Promise<void> {
+  console.log("seed:vectors", { wipe });
   console.log(`Library root: ${LIBRARY_ROOT}`);
   console.log(`Target collection: ${COLLECTION_NAME}`);
   console.log();
@@ -220,23 +237,55 @@ async function main(): Promise<void> {
   console.log(`Found ${metadataFiles.length} metadata.json files.`);
   console.log();
 
-  // Idempotent collection bootstrap (1536-d cosine).
-  await ensureCollection(COLLECTION_NAME);
+  // Phase C: named-vector collection — always recreate. The helper
+  // deletes-if-exists and creates with three named 1536-d cosine
+  // vectors (descriptive / usage / audienceFit). The `--wipe` flag is
+  // advisory — the schema migration cannot be applied in place, so the
+  // script must recreate the collection on every run.
+  await recreateCollectionMultiVector(COLLECTION_NAME);
 
   const points: ComponentPoint[] = [];
   let embedded = 0;
+  let skipped = 0;
 
-  // Sequential embedding — 33 calls, simpler rate-limit + reasoning model.
+  // Sequential per-component — 33 components × 3 axes = 99 OpenAI
+  // calls per full re-seed. Within each component the 3 axis
+  // embeddings run in parallel via Promise.all.
   for (const filePath of metadataFiles) {
     const raw = fs.readFileSync(filePath, "utf-8");
     const json: MetadataJson = JSON.parse(raw);
 
-    const text = buildEmbeddingInput(json);
-    const vector = await getEmbedding(text);
+    const descriptiveText = readAxisText(json, "descriptive");
+    const usageText = readAxisText(json, "usage");
+    const audienceFitText = readAxisText(json, "audienceFit");
+
+    const missingAxes: string[] = [];
+    if (!descriptiveText) missingAxes.push("descriptive");
+    if (!usageText) missingAxes.push("usage");
+    if (!audienceFitText) missingAxes.push("audienceFit");
+
+    if (missingAxes.length > 0) {
+      console.warn(
+        `[skip] ${json.id} — missing axis: ${missingAxes.join(", ")}. ` +
+          "Run describe:components --force to populate descriptions.",
+      );
+      skipped += 1;
+      continue;
+    }
+
+    const [descriptiveVec, usageVec, audienceFitVec] = await Promise.all([
+      getEmbedding(descriptiveText as string),
+      getEmbedding(usageText as string),
+      getEmbedding(audienceFitText as string),
+    ]);
 
     points.push({
       id: djb2(json.id),
-      vector,
+      vector: {
+        descriptive: descriptiveVec,
+        usage: usageVec,
+        audienceFit: audienceFitVec,
+      },
       payload: {
         componentId: json.id,
         name: json.name,
@@ -258,7 +307,7 @@ async function main(): Promise<void> {
 
   console.log();
   console.log(
-    `Summary: found=${metadataFiles.length} embedded=${embedded} upserted=${upserted}`,
+    `Summary: found=${metadataFiles.length} embedded=${embedded} skipped=${skipped} upserted=${upserted}`,
   );
 }
 
