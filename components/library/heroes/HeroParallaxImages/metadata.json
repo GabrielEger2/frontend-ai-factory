@@ -2,25 +2,15 @@
   "id": "hero-parallax-images-01",
   "name": "Parallax Images Hero",
   "category": "hero",
-  "purpose": [
-    "hero"
-  ],
+  "purpose": ["hero"],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
     "textDecoration": true,
     "button": true
   },
-  "style": [
-    "modern",
-    "editorial",
-    "bold"
-  ],
-  "mood": [
-    "energetic",
-    "elegant",
-    "professional"
-  ],
+  "style": ["modern", "editorial", "bold"],
+  "mood": ["energetic", "elegant", "professional"],
   "layout": "centered",
   "density": "high",
   "imageWeight": 0.15,
@@ -29,6 +19,17 @@
       "name": "headline",
       "type": "text",
       "maxLength": 80
+    },
+    {
+      "name": "highlightWord",
+      "type": "text",
+      "optional": true,
+      "maxLength": 20
+    },
+    {
+      "name": "revealHeadline",
+      "type": "boolean",
+      "optional": true
     },
     {
       "name": "headlineRotatingWords",
@@ -59,24 +60,13 @@
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "default",
-        "slide",
-        "dotExpand",
-        "drawOutline",
-        "glow"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
     },
     {
       "name": "ctaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "accent",
-        "neutral"
-      ]
+      "enum": ["primary", "secondary", "accent", "neutral"]
     },
     {
       "name": "secondaryCtaText",
@@ -93,24 +83,13 @@
       "name": "secondaryCtaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "default",
-        "slide",
-        "dotExpand",
-        "drawOutline",
-        "glow"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
     },
     {
       "name": "secondaryCtaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "accent",
-        "neutral"
-      ]
+      "enum": ["primary", "secondary", "accent", "neutral"]
     },
     {
       "name": "centerImage",
@@ -172,34 +151,22 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "layout-cardgrid-01",
-    "layout-infinitescroll-01"
-  ],
-  "pairsPoorly": [
-    "hero-shuffle-cards-01",
-    "hero-split-image-01"
-  ],
+  "pairsWell": ["layout-cardgrid-01", "layout-infinitescroll-01"],
+  "pairsPoorly": ["hero-shuffle-cards-01", "hero-split-image-01"],
   "variants": [
     {
       "id": "hero-parallax-images-01-editorial",
       "name": "Editorial Dark",
       "density": "high",
       "colorMode": "dark",
-      "styleOverrides": [
-        "editorial",
-        "bold"
-      ]
+      "styleOverrides": ["editorial", "bold"]
     },
     {
       "id": "hero-parallax-images-01-airy",
       "name": "Airy Light",
       "density": "low",
       "colorMode": "light",
-      "styleOverrides": [
-        "modern",
-        "editorial"
-      ]
+      "styleOverrides": ["modern", "editorial"]
     }
   ],
   "description": "A modern hero section featuring parallax scrolling images that creates dynamic visual depth and movement. Perfect for creative agencies, portfolios, and media companies wanting to make a bold first impression with sophisticated visual storytelling.",
