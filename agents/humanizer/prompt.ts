@@ -124,6 +124,7 @@ export function buildHumanizerUserPrompt(input: HumanizerInput): string {
     "- Seja uma string que comeca com: #, http, https, mailto:, tel:, wa.me",
     "- Seja booleano (true/false)",
     "- Seja numerico",
+    '- Seja o valor de um slot cujo nome seja "highlightWord"',
     "",
     "Esses valores sao URLs, ancoras, flags ou configuracoes, nao copy.",
     "",

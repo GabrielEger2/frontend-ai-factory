@@ -35,6 +35,12 @@ const meta: Meta<typeof HeroSplitImage> = {
         "hero-split-image-01-airy",
       ],
     },
+    highlightWord: { control: "text" },
+    revealHeadline: { control: "boolean" },
+    accentColorScheme: {
+      control: "select",
+      options: ["primary", "secondary", "accent", "neutral"],
+    },
   },
 };
 export default meta;

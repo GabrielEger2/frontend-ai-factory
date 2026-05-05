@@ -14,7 +14,7 @@ const DEFAULT_STYLE_KIT = {
   ctaColorScheme: "primary",
   background: "none",
   textDecoration: "none",
-};
+} as const;
 
 /* ------------------------------------------------------------------ */
 /*  Clients (reused across Lambda invocations)                         */

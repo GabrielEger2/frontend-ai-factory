@@ -11,6 +11,8 @@ type SlotPatternConfig = {
   ctaColorSchemeSlot?: string;
   backgroundSlot?: string;
   textDecorationHandled?: boolean;
+  /** Slot name for reveal decoration. Defaults to "revealHeadline". */
+  revealSlotName?: string;
 };
 
 export const SLOT_PATTERN_MAP: Record<string, SlotPatternConfig> = {
@@ -63,6 +65,7 @@ export const SLOT_PATTERN_MAP: Record<string, SlotPatternConfig> = {
     ctaColorSchemeSlot: "ctaColorScheme",
     backgroundSlot: "backgroundVariant",
     textDecorationHandled: true,
+    revealSlotName: "revealDisplayWord",
   },
   "carousel-cards-01": {
     textDecorationHandled: true,
@@ -110,19 +113,25 @@ export function injectStyleKitIntoSlots(
     slots[config.backgroundSlot] = styleKit.background;
   }
   if (config.textDecorationHandled && styleKit.textDecoration) {
+    const revealSlot = config.revealSlotName ?? "revealHeadline";
+
+    // highlightWord is emitted by the Content Agent — no fallback.
+    // Absent slot → undefined prop → no Highlighter (clean skip).
+
     if (
-      styleKit.textDecoration === "highlighter" &&
-      typeof slots.headline === "string" &&
-      slots.highlightWord === undefined
+      styleKit.textDecoration === "reveal" &&
+      slots[revealSlot] === undefined
     ) {
-      slots.highlightWord = (slots.headline as string).split(" ")[0];
+      slots[revealSlot] = true;
     }
+
+    // CtaImageBackdrop's revealDisplayWord defaults to true in the component.
+    // Explicitly disable when textDecoration is "none".
     if (
-      (styleKit.textDecoration === "reveal" ||
-        styleKit.textDecoration === "text-reveal") &&
-      slots.revealHeadline === undefined
+      styleKit.textDecoration === "none" &&
+      revealSlot === "revealDisplayWord"
     ) {
-      slots.revealHeadline = true;
+      slots[revealSlot] = false;
     }
   }
   return slots;
