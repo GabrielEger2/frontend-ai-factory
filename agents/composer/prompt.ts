@@ -14,6 +14,8 @@ export interface CandidateComponent {
   styleHits: number;
   avgPairScore: number;
   imageWeight?: number;
+  source?: "graph" | "vector" | "graph+vector";
+  vectorScore?: number;
   variants?: Array<{
     id: string;
     name: string;
