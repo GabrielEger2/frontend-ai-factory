@@ -94,6 +94,19 @@ Rate each layout on a 0-1 scale based on:
 - Segment appropriateness (20%)
 - Component compatibility / PAIRS_WITH adjacency (20%)
 
+## Retrieval Sources
+
+Candidates come from multiple retrieval sources:
+- **graph** — matched via Neo4j mood/style/segment graph (MoodHits, StyleHits, AvgPairScore reflect signal strength)
+- **vector** — matched via semantic similarity to the project brief (VectorScore reflects cosine similarity; MoodHits/StyleHits are 0)
+- **graph+vector** — appeared in both sources (highest confidence; carries both graph scores and VectorScore)
+
+When ranking candidates, weigh both graph signal and semantic similarity. graph+vector candidates represent the strongest alignment.
+
+Notes:
+- For "vector" rows, Density and Layout show sentinel defaults ("medium" / "full") — they do not reflect measured component values. Weigh component fit primarily by category and VectorScore.
+- The "graph" per-candidate label covers both Neo4j graph traversal and the DynamoDB tag-score fallback path. The top-level "source" field separately reports whether the graph itself was healthy ("graph" or "fallback").
+
 ## Output Format
 
 Return EXACTLY 3 layouts ranked by overall score (highest first). Output ONLY valid JSON matching this schema:
@@ -116,7 +129,7 @@ Return EXACTLY 3 layouts ranked by overall score (highest first). Output ONLY va
 1. Output ONLY valid JSON. No explanations, no markdown, no comments outside the JSON.
 2. Each layout must have between 5 and 8 components.
 3. "selectedLayout" is always 0 (the highest-scored layout).
-4. "source" will be provided to you — use exactly the value given.
+4. "source" will be provided to you — use exactly the value given ("graph", "fallback", or "hybrid").
 5. Component IDs in the output must exactly match the IDs from the candidate list.
 6. Never invent component IDs that are not in the candidate list.
 7. Return exactly 3 layouts.
