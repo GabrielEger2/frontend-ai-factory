@@ -177,7 +177,7 @@ function OverlayCopy({ label, heading, shouldReduceMotion }: OverlayCopyProps) {
   return (
     <motion.div
       ref={targetRef}
-      className="absolute left-0 top-0 flex h-screen w-full flex-col items-center justify-center text-neutral-content"
+      className="absolute left-0 top-0 flex h-[100dvh] w-full flex-col items-center justify-center text-neutral-content"
       style={{
         y: shouldReduceMotion ? 0 : y,
         opacity: shouldReduceMotion ? 1 : opacity,
@@ -224,7 +224,7 @@ export default function ParallaxContent({
 
   return (
     <section
-      className={cn("w-full min-h-screen bg-base-100", className)}
+      className={cn("w-full min-h-[100dvh] bg-base-100", className)}
       data-purpose={purpose}
     >
       {sections.map((section, idx) => (

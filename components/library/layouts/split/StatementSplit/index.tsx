@@ -80,14 +80,14 @@ export default function StatementSplit({
     <section
       data-purpose={purpose}
       className={cn(
-        "relative w-full min-h-screen",
+        "relative w-full min-h-[100dvh]",
         isDark
           ? "bg-neutral text-neutral-content"
           : "bg-base-100 text-base-content",
         className,
       )}
     >
-      <div className="mx-auto flex w-full max-w-7xl items-center px-4 py-16 md:px-8 md:py-0 md:min-h-screen">
+      <div className="mx-auto flex w-full max-w-7xl items-center px-4 py-16 md:px-8 md:py-0 md:min-h-[100dvh]">
         <motion.div
           className={cn(
             "flex w-full flex-col gap-10 lg:gap-12",

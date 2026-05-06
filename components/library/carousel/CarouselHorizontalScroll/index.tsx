@@ -236,7 +236,7 @@ export default function CarouselHorizontalScroll({
         <div
           className={cn(
             "flex items-center overflow-hidden",
-            shouldReduceMotion ? "py-12" : "sticky top-0 h-screen",
+            shouldReduceMotion ? "py-12" : "sticky top-0 h-[100dvh]",
           )}
         >
           <Track items={items} x={x} shouldReduceMotion={shouldReduceMotion} />
