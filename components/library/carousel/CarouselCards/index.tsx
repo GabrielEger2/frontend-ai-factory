@@ -4,9 +4,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
+import CardBase from "@ui/cards/CardBase";
 import { Highlighter } from "@ui/text-decorations/Highlighter";
 import { TextReveal } from "@ui/text-decorations/TextReveal";
-import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -166,19 +166,11 @@ function Card({
   item,
   cardWidth,
   cardGap,
-  index,
 }: {
   item: CarouselCardItem;
   cardWidth: number;
   cardGap: number;
-  index: number;
 }) {
-  const safeImg = useSafeImageSrc(
-    item.image,
-    `carousel-cards-01-card-image-${index}`,
-    600,
-    200,
-  );
   return (
     <div
       className="relative shrink-0 cursor-pointer transition-transform hover:-translate-y-1"
@@ -187,20 +179,14 @@ function Card({
         marginRight: cardGap,
       }}
     >
-      <img
-        src={safeImg.src}
-        onError={safeImg.onError}
-        alt={item.imageAlt}
-        className="mb-3 h-[200px] w-full rounded-lg bg-base-300 object-cover"
-        loading="lazy"
+      <CardBase
+        mode="bare"
+        image={item.image}
+        imageAlt={item.imageAlt}
+        tag={item.tag}
+        title={item.title}
+        description={item.description}
       />
-      <span className="rounded-md border border-base-300 px-1.5 py-1 text-xs uppercase text-base-content/60">
-        {item.tag}
-      </span>
-      <p className="mt-1.5 text-lg font-medium text-base-content">
-        {item.title}
-      </p>
-      <p className="text-sm text-base-content/60">{item.description}</p>
     </div>
   );
 }
@@ -372,7 +358,6 @@ export default function CarouselCards({
                 item={card}
                 cardWidth={cardWidth}
                 cardGap={cardGap}
-                index={idx}
               />
             ))}
           </motion.div>
