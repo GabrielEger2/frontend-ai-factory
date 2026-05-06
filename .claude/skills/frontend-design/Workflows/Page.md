@@ -9,6 +9,14 @@ Scaffold a template page by composing library components into a full website pag
 
 ## Steps
 
+### 0. Set the dials
+
+Read `references/taste-dials.md`. For a **template** (page composition), the dials reflect the overall vibe of the page, not any single component:
+
+1. Pick page-level values, e.g. `VARIANCE 7 / MOTION 6 / DENSITY 4` for a "premium SaaS landing".
+2. State your choice in one line.
+3. Use the dials to filter component candidates in step 2 — don't pull a low-motion footer into a high-motion editorial template (or do, intentionally, for grounding).
+
 ### 1. Determine placement
 Target: `components/templates/<TemplateName>/`
 
@@ -66,7 +74,16 @@ export default function LandingPage({ hero, features, cta }: LandingPageProps) {
 
 **`<TemplateName>.stories.tsx`** — Storybook story with full page preview
 
-### 4. Verify
+### 4. Anti-slop check
+
+Run through `references/anti-slop.md`. For a template, the most common slips are:
+- [ ] No "Acme" / "Nexus" / "SmartFlow" as the demo brand name in stories
+- [ ] No "John Doe" or `99.99%` in the demo content
+- [ ] No 3-equal-card features section (swap for zig-zag or asymmetric grid)
+- [ ] No raw Unsplash links — use `placehold.co` or `picsum.photos/seed/...`
+- [ ] Dial coherence: high-motion template doesn't suddenly drop into a static `motion: 2` carousel — components should sit within ±2 of the page-level motion value
+
+### 5. Verify
 - Components pair well (check `pairsWell`/`pairsPoorly`)
 - Style and mood tags are consistent across components
 - Page flows naturally (hero → value prop → social proof → CTA)

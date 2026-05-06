@@ -12,6 +12,18 @@ If no category is given, infer it from the name prefix or ask.
 
 ## Steps
 
+### 0. Set the dials
+
+Read `references/taste-dials.md` and pick values:
+
+1. Look up the per-category preset for the requested category.
+2. State your choice in one line, e.g.:
+
+   > Dials: VARIANCE 6 / MOTION 5 / DENSITY 4 (cta category, default scaffold).
+
+3. If `MOTION_INTENSITY ≥ 6`, also load `animation.md` § Premium Motion.
+4. If `DESIGN_VARIANCE ≥ 4`, mobile single-column collapse rule applies.
+
 ### 1. Determine placement
 Target directory: `components/library/<category>/<ComponentName>/`
 
@@ -65,12 +77,23 @@ Map these to a TypeScript props interface.
 - Default story with realistic content in all slots
 - Additional variants if relevant (long text, minimal content)
 
-### 4. Verify
+### 4. Anti-slop check
+
+Run through `references/anti-slop.md`. Specifically verify:
+- [ ] No pure black, neon glows, gradient text on big headers
+- [ ] No 3-equal-card horizontal row layout
+- [ ] No "John Doe" / "Acme" / "Nexus" or `99.99%` placeholder content in the story
+- [ ] No filler verbs ("Elevate", "Seamless", etc.) in default copy
+- [ ] No raw Unsplash links — use `placehold.co` or `picsum.photos/seed/...`
+
+### 5. Verify
 - No raw Tailwind colors (only semantic tokens)
 - No `dark:` variants
 - No inline styles
+- No `h-screen` (use `min-h-[100dvh]`)
 - Accessible (semantic HTML, ARIA where needed)
-- Mobile-responsive (stacks on small screens)
+- Mobile-responsive (stacks on small screens; single-column < 768px if variance ≥ 4)
 - Slots in `metadata.json` match props in `index.tsx`
+- **Slots are JSON-serializable** — no `ReactNode`, no `renderX?` callbacks. Primitives composed internally.
 - Story covers the default state with realistic content
 - `cn()` used for any dynamic classes
