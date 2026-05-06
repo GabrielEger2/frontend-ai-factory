@@ -101,9 +101,9 @@ function ProgressBar({
         >
           {selected === n ? (
             <motion.span
-              className="absolute bottom-0 left-0 top-0 bg-base-content"
-              initial={{ width: "0%" }}
-              animate={{ width: "100%" }}
+              className="absolute bottom-0 left-0 right-0 top-0 w-full origin-left bg-base-content"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
               transition={
                 shouldReduceMotion
                   ? { duration: 0 }
@@ -115,8 +115,11 @@ function ProgressBar({
             />
           ) : (
             <span
-              className="absolute bottom-0 left-0 top-0 bg-base-content"
-              style={{ width: selected > n ? "100%" : "0%" }}
+              className="absolute bottom-0 left-0 right-0 top-0 w-full bg-base-content"
+              style={{
+                transform: `scaleX(${selected > n ? 1 : 0})`,
+                transformOrigin: "left",
+              }}
             />
           )}
         </button>

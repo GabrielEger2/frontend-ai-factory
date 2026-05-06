@@ -99,14 +99,17 @@ function StaggerCard({
   testimonial,
   position,
   cardSize,
+  cardSizeMax,
   onMove,
 }: {
   testimonial: InternalTestimonial;
   position: number;
   cardSize: number;
+  cardSizeMax: number;
   onMove: (pos: number) => void;
 }) {
   const isActive = position === 0;
+  const sizeScale = cardSize / cardSizeMax;
 
   return (
     <motion.div
@@ -117,12 +120,13 @@ function StaggerCard({
         isActive ? "z-10 bg-primary" : "z-0 bg-base-100",
       )}
       style={{
+        width: cardSizeMax,
+        height: cardSizeMax,
         borderWidth: BORDER_SIZE,
         clipPath: `polygon(${CORNER_CLIP}px 0%, calc(100% - ${CORNER_CLIP}px) 0%, 100% ${CORNER_CLIP}px, 100% 100%, calc(100% - ${CORNER_CLIP}px) 100%, ${CORNER_CLIP}px 100%, 0 100%, 0 0)`,
       }}
       animate={{
-        width: cardSize,
-        height: cardSize,
+        scale: sizeScale,
         x: `calc(-50% + ${position * (cardSize / 1.5)}px)`,
         y: `calc(-50% + ${
           isActive ? CENTER_STAGGER : position % 2 ? STAGGER : -STAGGER
@@ -270,6 +274,7 @@ export default function StaggerFan({
             testimonial={t}
             position={position}
             cardSize={cardSize}
+            cardSizeMax={cardSizeLg}
             onMove={handleMove}
           />
         );
