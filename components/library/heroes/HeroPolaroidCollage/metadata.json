@@ -1,0 +1,146 @@
+{
+  "id": "hero-polaroid-collage-01",
+  "name": "Polaroid Collage Hero",
+  "category": "hero",
+  "purpose": ["hero", "story", "brand-statement", "showcase"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": true,
+    "button": true
+  },
+  "style": ["playful", "editorial", "classic"],
+  "mood": ["friendly", "energetic", "elegant"],
+  "layout": "asymmetric",
+  "density": "medium",
+  "imageWeight": 0.5,
+  "slots": [
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 100
+    },
+    {
+      "name": "scriptAccent",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "scriptAccentColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 220
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 30
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "secondaryCtaText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "secondaryCtaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "secondaryCtaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    },
+    {
+      "name": "secondaryCtaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "polaroids",
+      "type": "list",
+      "maxItems": 4,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "image", "type": "image", "aspectRatio": "1:1" },
+          { "name": "imageAlt", "type": "text", "maxLength": 120 },
+          {
+            "name": "caption",
+            "type": "text",
+            "optional": true,
+            "maxLength": 60
+          }
+        ]
+      }
+    },
+    {
+      "name": "tapeColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "layout-cardgrid-01",
+    "layout-imagetext-01",
+    "stats-count-up-01",
+    "layout-iconlistsplit-01"
+  ],
+  "pairsPoorly": [
+    "hero-split-image-01",
+    "hero-geometric-01",
+    "hero-shuffle-cards-01",
+    "hero-parallax-images-01",
+    "hero-hero-bold-editorial-01",
+    "hero-bakery-editorial-01",
+    "hero-marquee-strip-01",
+    "hero-grid-gallery-01",
+    "hero-video-backdrop-01",
+    "hero-spotlight-center-01",
+    "hero-newsroom-ticker-01",
+    "hero-split-form-01",
+    "hero-asymmetric-stack-01",
+    "hero-terminal-console-01"
+  ],
+  "description": "A playful, scrapbook-style hero with three to four rotated polaroid cards in an asymmetric collage, paired with an italic script accent in the headline. Built for cafes, weddings, family-run shops, lifestyle blogs, and brands that lead with warmth.",
+  "descriptions": {
+    "descriptive": "Polaroid frames sit on the right with hand-placed rotation, soft shadows, and a small tape strip at the top of each. Hovering nudges them upright. Captions read in italic serif. The headline pairs a confident sans with a script-style accent word, and the section sits on a warm muted base.",
+    "usage": "Best for hospitality, wedding photographers, family-run cafes, slow-living brands, lifestyle publications, and any homepage where intimacy and warmth are the primary feeling. On mobile, the collage flattens into a 2x2 grid that keeps the rotation but loses the depth.",
+    "audienceFit": "Reads as warm and personal to consumer audiences who value handcraft and story over polish. Best avoided for technical, financial, or enterprise contexts where the playfulness can read as unserious."
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "id": "hero-video-backdrop-01",
+  "name": "Video Backdrop Hero",
+  "category": "hero",
+  "purpose": ["hero", "brand-statement", "showcase"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": true,
+    "button": true
+  },
+  "style": ["bold", "modern", "luxury", "editorial"],
+  "mood": ["energetic", "elegant", "trustworthy"],
+  "layout": "stacked",
+  "density": "low",
+  "imageWeight": 0.7,
+  "slots": [
+    {
+      "name": "videoUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "posterImage",
+      "type": "image",
+      "aspectRatio": "16:9"
+    },
+    {
+      "name": "posterAlt",
+      "type": "text",
+      "maxLength": 120
+    },
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 100
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 220
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 30
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "secondaryCtaText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "secondaryCtaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "secondaryCtaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    },
+    {
+      "name": "secondaryCtaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "contentAlign",
+      "type": "text",
+      "optional": true,
+      "enum": ["bottom-left", "bottom-center", "center"]
+    },
+    {
+      "name": "overlayStrength",
+      "type": "text",
+      "optional": true
+    },
+    {
+      "name": "metaItems",
+      "type": "list",
+      "optional": true,
+      "maxItems": 4,
+      "itemSchema": {
+        "type": "text",
+        "maxLength": 28
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "stats-count-up-01",
+    "layout-cardgrid-01",
+    "layout-imagetext-01"
+  ],
+  "pairsPoorly": [
+    "hero-split-image-01",
+    "hero-geometric-01",
+    "hero-shuffle-cards-01",
+    "hero-parallax-images-01",
+    "hero-hero-bold-editorial-01",
+    "hero-bakery-editorial-01",
+    "hero-marquee-strip-01",
+    "hero-grid-gallery-01",
+    "hero-spotlight-center-01",
+    "hero-newsroom-ticker-01",
+    "hero-split-form-01",
+    "hero-asymmetric-stack-01",
+    "hero-terminal-console-01",
+    "hero-polaroid-collage-01"
+  ],
+  "description": "A full-bleed cinematic hero with optional looping video backdrop, tinted overlay, and an asymmetric content block anchored to the bottom edge. Built for hospitality, fashion campaigns, agencies, and any brand whose product is a felt experience.",
+  "descriptions": {
+    "descriptive": "An ambient video plays muted and looping over a poster fallback, layered with a configurable neutral tint and a soft bottom-up gradient for legibility. Headline, subheadline, and CTAs anchor in a chosen quadrant, with an optional metadata strip along the bottom for credits, locations, or release dates.",
+    "usage": "Use as the homepage opener for brands that have strong moving footage — hotels, fashion campaigns, agencies, restaurants, festivals, and media properties. Falls back to the poster image when no video URL is provided or when the user prefers reduced motion.",
+    "audienceFit": "Works for design-aware visitors who associate cinematic motion with quality. Best for brands that already have professional video assets and need a confident first frame."
+  }
+}

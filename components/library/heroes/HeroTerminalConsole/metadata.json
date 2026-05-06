@@ -1,0 +1,142 @@
+{
+  "id": "hero-terminal-console-01",
+  "name": "Terminal Console Hero",
+  "category": "hero",
+  "purpose": ["hero", "showcase", "lead-capture", "brand-statement"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": true,
+    "button": true
+  },
+  "style": ["modern", "minimal", "corporate", "bold"],
+  "mood": ["professional", "trustworthy", "energetic"],
+  "layout": "split",
+  "density": "high",
+  "imageWeight": 0.1,
+  "slots": [
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 100
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 220
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 30
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "secondaryCtaText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "secondaryCtaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "secondaryCtaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    },
+    {
+      "name": "secondaryCtaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "terminalTitle",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    },
+    {
+      "name": "terminalLines",
+      "type": "list",
+      "maxItems": 12,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          {
+            "name": "kind",
+            "type": "text",
+            "enum": ["command", "output", "comment", "success", "error"]
+          },
+          { "name": "text", "type": "text", "maxLength": 100 }
+        ]
+      }
+    },
+    {
+      "name": "platformBadges",
+      "type": "list",
+      "optional": true,
+      "maxItems": 6,
+      "itemSchema": {
+        "type": "object",
+        "fields": [{ "name": "label", "type": "text", "maxLength": 28 }]
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "layout-icon-feature-grid-01",
+    "stats-count-up-01",
+    "layout-cardgrid-01",
+    "faq-accordion-01"
+  ],
+  "pairsPoorly": [
+    "hero-split-image-01",
+    "hero-geometric-01",
+    "hero-shuffle-cards-01",
+    "hero-parallax-images-01",
+    "hero-hero-bold-editorial-01",
+    "hero-bakery-editorial-01",
+    "hero-marquee-strip-01",
+    "hero-grid-gallery-01",
+    "hero-video-backdrop-01",
+    "hero-spotlight-center-01",
+    "hero-newsroom-ticker-01",
+    "hero-split-form-01",
+    "hero-asymmetric-stack-01",
+    "hero-polaroid-collage-01"
+  ],
+  "description": "A developer-tool hero pairing a tight content column with an animated terminal window that staggers in commands, output, and comments. Built for CLIs, dev tools, infrastructure SaaS, and technical platforms where credibility comes from showing the actual interface.",
+  "descriptions": {
+    "descriptive": "A subtle grid backdrop frames a 5/7 split — left column carries an eyebrow status pill, headline, supporting paragraph, CTAs, and platform badges. Right column hosts a macOS-style terminal window with a title bar, three traffic-light dots, and stagger-revealed lines tinted by kind: commands, output, comments, success, error. A primary blinking cursor anchors the bottom.",
+    "usage": "Best for command-line tools, infrastructure providers, developer SDKs, observability and security platforms, and any technical product whose buyer reads the docs before they read the marketing copy. Use platform badges for distribution channels (npm, brew, cargo, apt, github releases).",
+    "audienceFit": "Reads as honest and current to engineers, platform teams, security buyers, and technical founders. Visual fluency with terminal output is the conversion lever — non-technical buyers should not be the primary audience for this hero."
+  }
+}

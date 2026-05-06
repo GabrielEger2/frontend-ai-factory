@@ -1,0 +1,139 @@
+{
+  "id": "hero-split-form-01",
+  "name": "Split Form Hero",
+  "category": "hero",
+  "purpose": ["hero", "lead-capture", "cta"],
+  "acceptsStyleKit": {
+    "card": true,
+    "background": true,
+    "textDecoration": true,
+    "button": true
+  },
+  "style": ["modern", "corporate", "minimal"],
+  "mood": ["professional", "trustworthy", "friendly"],
+  "layout": "split",
+  "density": "medium",
+  "imageWeight": 0,
+  "slots": [
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 120
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 220
+    },
+    {
+      "name": "trustBullets",
+      "type": "list",
+      "optional": true,
+      "maxItems": 4,
+      "itemSchema": {
+        "type": "object",
+        "fields": [{ "name": "label", "type": "text", "maxLength": 50 }]
+      }
+    },
+    {
+      "name": "formTitle",
+      "type": "text",
+      "maxLength": 80
+    },
+    {
+      "name": "formSubtitle",
+      "type": "text",
+      "optional": true,
+      "maxLength": 140
+    },
+    {
+      "name": "submitText",
+      "type": "text",
+      "maxLength": 30
+    },
+    {
+      "name": "submitColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "emailPlaceholder",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    },
+    {
+      "name": "namePlaceholder",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    },
+    {
+      "name": "phonePlaceholder",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    },
+    {
+      "name": "disclaimer",
+      "type": "text",
+      "optional": true,
+      "maxLength": 240
+    },
+    {
+      "name": "successHeadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 80
+    },
+    {
+      "name": "successBody",
+      "type": "text",
+      "optional": true,
+      "maxLength": 200
+    },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["light", "muted", "accent"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "layout-cardgrid-01",
+    "stats-count-up-01",
+    "layout-imagetext-01",
+    "faq-accordion-01"
+  ],
+  "pairsPoorly": [
+    "hero-split-image-01",
+    "hero-geometric-01",
+    "hero-shuffle-cards-01",
+    "hero-parallax-images-01",
+    "hero-hero-bold-editorial-01",
+    "hero-bakery-editorial-01",
+    "hero-marquee-strip-01",
+    "hero-grid-gallery-01",
+    "hero-video-backdrop-01",
+    "hero-spotlight-center-01",
+    "hero-newsroom-ticker-01",
+    "hero-asymmetric-stack-01",
+    "hero-terminal-console-01",
+    "hero-polaroid-collage-01"
+  ],
+  "description": "A conversion-led hero that pairs a left-aligned message with an inline lead-capture form on the right. Designed for SaaS landing pages, financial services, B2B sign-up flows, and any campaign measured by inbound form fills.",
+  "descriptions": {
+    "descriptive": "An eyebrow, balanced display headline, supporting paragraph, and a small set of trust bullets occupy the left column. The right column hosts a card-style form with optional name, email, and phone fields, a primary submit button, and a fine-print disclaimer. After submit, the card replaces itself with an inline confirmation state.",
+    "usage": "Best for SaaS waitlists, sales-led B2B landing pages, financial services lead capture, course sign-ups, and any homepage where the primary metric is inbound form fills. Compose with a stats strip and FAQ section below to handle objections without requiring a scroll.",
+    "audienceFit": "Reads as direct and credible to commercial buyers and decision-makers who expect form-driven inquiry as the standard pattern. Trust bullets help mid-market and enterprise audiences self-qualify before submitting."
+  }
+}

@@ -962,6 +962,234 @@
     }
   },
   {
+    "id": "cta-minimal-strip-01",
+    "name": "Minimal CTA Strip",
+    "category": "cta",
+    "purpose": [
+      "cta",
+      "lead-capture"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": true,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "minimal",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "calm",
+      "trustworthy"
+    ],
+    "layout": "centered",
+    "density": "low",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "label",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 220,
+        "optional": true
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url"
+      },
+      {
+        "name": "secondaryText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "secondaryUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "layoutVariant",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "centered",
+          "inline",
+          "bordered"
+        ]
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "neutral",
+          "muted",
+          "inverse"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "faq-accordion-01",
+      "faq-minimal-01",
+      "footer-pulse-01",
+      "footer-reveal-01",
+      "layout-pricing-tiers-01"
+    ],
+    "pairsPoorly": [
+      "cta-cta-collage-duo-01",
+      "cta-cta-editorial-split-01",
+      "cta-image-backdrop-01",
+      "cta-newsletter-capture-01"
+    ],
+    "description": "A restrained centered or inline CTA strip without decorative imagery — for sites whose existing visual hierarchy doesn't need another image block at the closing ask.",
+    "descriptions": {
+      "descriptive": "Three quiet variants of the same idea: a centered headline-and-button block, a horizontal strip with copy left and CTA right, or a bordered version framed by hairline rules. Optional secondary text-link CTA appears beside the primary button.",
+      "usage": "Use as a closing CTA after an image-heavy hero or a feature section that already carries the visual load. The inline variant pairs well above the footer; the bordered variant works between content sections that don't need a tonal break.",
+      "audienceFit": "Editorial sites, B2B SaaS that have already shown product visuals, services pages, and any site whose brand voice rejects 'one more big image' at the bottom. Defaults safely across luxury, corporate, and minimal briefs."
+    }
+  },
+  {
+    "id": "cta-newsletter-capture-01",
+    "name": "Newsletter Capture",
+    "category": "cta",
+    "purpose": [
+      "lead-capture",
+      "cta"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": true,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "minimal",
+      "editorial"
+    ],
+    "mood": [
+      "professional",
+      "calm",
+      "friendly"
+    ],
+    "layout": "split",
+    "density": "low",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "label",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 90
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 220,
+        "optional": true
+      },
+      {
+        "name": "emailPlaceholder",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 24,
+        "optional": true
+      },
+      {
+        "name": "formAction",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "perks",
+        "type": "list",
+        "maxItems": 4,
+        "optional": true,
+        "itemSchema": {
+          "type": "text",
+          "maxLength": 80
+        }
+      },
+      {
+        "name": "disclaimer",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "successMessage",
+        "type": "text",
+        "maxLength": 160,
+        "optional": true
+      },
+      {
+        "name": "layoutVariant",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "split",
+          "stacked"
+        ]
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "neutral",
+          "inverse"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "footer-pulse-01",
+      "footer-reveal-01",
+      "faq-accordion-01"
+    ],
+    "pairsPoorly": [
+      "cta-cta-collage-duo-01",
+      "cta-cta-editorial-split-01",
+      "cta-image-backdrop-01"
+    ],
+    "description": "A focused pre-footer email-capture section with a single inline form, perk bullets, and an inline success state — designed to slot above the footer for newsletters, product waitlists, and community signups.",
+    "descriptions": {
+      "descriptive": "A wide rounded form pill with a single email field and a high-contrast submit button, framed by a calm headline and three perk bullets. Submission swaps the form for an animated success card without a page navigation, keeping the rest of the section stable.",
+      "usage": "Drop above the footer when the page primary action is content subscription rather than purchase. Pair with a focused headline and 2-3 perk bullets that answer 'what do I actually receive' rather than vague brand promises.",
+      "audienceFit": "Suits newsletters, indie media, communities, product waitlists, and B2B blogs that convert evaluators slowly. The inverse tone works for high-attention launches; neutral tone is the safer default for editorial sites."
+    }
+  },
+  {
     "id": "faq-accordion-01",
     "name": "FAQ Accordion",
     "category": "faq",
@@ -1583,6 +1811,310 @@
     }
   },
   {
+    "id": "hero-asymmetric-stack-01",
+    "name": "Asymmetric Stack Hero",
+    "category": "hero",
+    "purpose": [
+      "hero",
+      "brand-statement",
+      "magazine-opener",
+      "story"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": true,
+      "button": true
+    },
+    "style": [
+      "editorial",
+      "bold",
+      "luxury",
+      "modern"
+    ],
+    "mood": [
+      "elegant",
+      "energetic",
+      "trustworthy"
+    ],
+    "layout": "asymmetric",
+    "density": "low",
+    "imageWeight": 0.25,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "optional": true,
+        "maxLength": 60
+      },
+      {
+        "name": "headlineLines",
+        "type": "list",
+        "maxItems": 3,
+        "itemSchema": {
+          "type": "text",
+          "maxLength": 36
+        }
+      },
+      {
+        "name": "accentWord",
+        "type": "text",
+        "optional": true,
+        "maxLength": 24
+      },
+      {
+        "name": "accentColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 240
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "secondaryCtaText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "secondaryCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "secondaryCtaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "peekImages",
+        "type": "list",
+        "optional": true,
+        "maxItems": 2,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "4:5"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-statementsplit-01",
+      "layout-imagetext-01",
+      "stats-count-up-01",
+      "layout-cardgrid-01"
+    ],
+    "pairsPoorly": [
+      "hero-split-image-01",
+      "hero-geometric-01",
+      "hero-shuffle-cards-01",
+      "hero-parallax-images-01",
+      "hero-hero-bold-editorial-01",
+      "hero-bakery-editorial-01",
+      "hero-marquee-strip-01",
+      "hero-grid-gallery-01",
+      "hero-video-backdrop-01",
+      "hero-spotlight-center-01",
+      "hero-newsroom-ticker-01",
+      "hero-split-form-01",
+      "hero-terminal-console-01",
+      "hero-polaroid-collage-01"
+    ],
+    "description": "An oversized typographic hero with a three-row stacked headline, intentional row offsets, and two peeking rotated image cards. Built for editorial, fashion, and culture-led brands that want the type itself to be the visual.",
+    "descriptions": {
+      "descriptive": "Three large serif rows step diagonally — left-aligned, right-aligned, then indented again — with an italic accent on the middle row and an optional colored accent word. Two small image cards peek out from opposite quadrants on a slight rotation, breaking the symmetry without competing with the type.",
+      "usage": "Best as a homepage opener for editorial brands, fashion houses, cultural institutions, music labels, and culture-led products where typography is the primary asset. Use peek images to suggest scope or season without committing to a hero photograph.",
+      "audienceFit": "Reads as confident and current to design-aware audiences. Especially effective for brands targeting buyers who associate restraint, scale, and italic counterpoints with editorial credibility."
+    }
+  },
+  {
+    "id": "hero-bakery-editorial-01",
+    "name": "Bakery Editorial Hero",
+    "category": "hero",
+    "purpose": [
+      "hero",
+      "products",
+      "brand-statement"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": true,
+      "textDecoration": true,
+      "button": true
+    },
+    "style": [
+      "editorial",
+      "playful",
+      "classic",
+      "bold"
+    ],
+    "mood": [
+      "friendly",
+      "elegant",
+      "energetic",
+      "trustworthy"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "imageWeight": 0.45,
+    "slots": [
+      {
+        "name": "badge",
+        "type": "text",
+        "maxLength": 40
+      },
+      {
+        "name": "headlineLeading",
+        "type": "text",
+        "maxLength": 40
+      },
+      {
+        "name": "headlineAccent",
+        "type": "text",
+        "maxLength": 24
+      },
+      {
+        "name": "headlineTrailing",
+        "type": "text",
+        "maxLength": 60
+      },
+      {
+        "name": "lead",
+        "type": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "primaryCtaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "primaryCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "secondaryCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "productImage",
+        "type": "image",
+        "optional": true,
+        "aspectRatio": "1:1"
+      },
+      {
+        "name": "productImageAlt",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "stampText",
+        "type": "text",
+        "maxLength": 80
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-cardgrid-01",
+      "layout-imagetext-01",
+      "stats-count-up-01",
+      "carousel-cards-01"
+    ],
+    "pairsPoorly": [
+      "hero-hero-bold-editorial-01",
+      "hero-geometric-01",
+      "hero-shuffle-cards-01",
+      "hero-parallax-images-01",
+      "hero-split-image-01"
+    ],
+    "description": "An editorial hero with a framed card layout, hand-script accent word, circular stamp seal, and a hero product photo that breaks out of the right column. Designed for artisan food, bakery, deli, café, and small-batch consumer brands that want a tactile, story-led first impression.",
+    "descriptions": {
+      "descriptive": "A boxed editorial hero with a soft grid background, italicized hand-script accent inside a serif headline, a circular dashed stamp seal, and floating decorative seed glyphs that gently drift in place. The product image deliberately breaks out of the right column, giving the layout an asymmetric, magazine-style focal weight.",
+      "usage": "Opens artisan and small-batch consumer sites where the headline is half-craft / half-product. Pairs the editorial mood of a recipe column with a clear primary CTA, so it works equally well for storytelling brands and direct-to-consumer storefronts.",
+      "audienceFit": "Bakeries, delis, cafés, butchers, chocolatiers, and other food-and-craft brands targeting taste-driven local audiences. Also fits curated retail, perfumery, and slow-living lifestyle brands that want warmth without losing structure."
+    }
+  },
+  {
     "id": "hero-hero-bold-editorial-01",
     "name": "Bold Editorial Hero",
     "category": "hero",
@@ -1751,7 +2283,8 @@
       "hero-split-image-01",
       "hero-geometric-01",
       "hero-shuffle-cards-01",
-      "hero-parallax-images-01"
+      "hero-parallax-images-01",
+      "hero-bakery-editorial-01"
     ],
     "description": "A magazine-inspired hero section with sophisticated typography and editorial layout that positions brands as authoritative industry leaders. Perfect for luxury businesses, professional services, and publications seeking to establish credibility and gravitas.",
     "descriptions": {
@@ -1791,6 +2324,17 @@
         "name": "headline",
         "type": "text",
         "maxLength": 80
+      },
+      {
+        "name": "highlightWord",
+        "type": "text",
+        "optional": true,
+        "maxLength": 20
+      },
+      {
+        "name": "revealHeadline",
+        "type": "boolean",
+        "optional": true
       },
       {
         "name": "headlineRotatingWords",
@@ -1920,7 +2464,10 @@
     ],
     "pairsPoorly": [
       "hero-split-image-01",
-      "hero-parallax-images-01"
+      "hero-parallax-images-01",
+      "hero-hero-bold-editorial-01",
+      "hero-shuffle-cards-01",
+      "hero-bakery-editorial-01"
     ],
     "nativeMotif": "animated-svg",
     "variants": [
@@ -1950,6 +2497,583 @@
       "descriptive": "Clean geometric shapes and sharp angular elements create a structured, symmetrical composition with plenty of white space. Typography is sans-serif and hierarchical, while a restrained color palette emphasizes precision and order through mathematical forms and grid-based alignment.",
       "usage": "Opens corporate websites and landing pages where first impressions matter most. Establishes immediate credibility while clearly communicating the primary value proposition to visitors who need quick confidence in the brand's expertise and reliability.",
       "audienceFit": "Perfect for established B2B companies, financial services, consulting firms, and technology companies targeting enterprise clients. Appeals to decision-makers who value professionalism over creativity and prefer conservative, time-tested visual approaches that signal stability."
+    }
+  },
+  {
+    "id": "hero-grid-gallery-01",
+    "name": "Grid Gallery Hero",
+    "category": "hero",
+    "purpose": [
+      "hero",
+      "portfolio",
+      "showcase",
+      "brand-statement"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": true,
+      "button": true
+    },
+    "style": [
+      "editorial",
+      "modern",
+      "bold"
+    ],
+    "mood": [
+      "elegant",
+      "energetic",
+      "professional"
+    ],
+    "layout": "asymmetric",
+    "density": "medium",
+    "imageWeight": 0.55,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "optional": true,
+        "maxLength": 60
+      },
+      {
+        "name": "badge",
+        "type": "text",
+        "optional": true,
+        "maxLength": 20
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 220
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "secondaryCtaText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "secondaryCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "secondaryCtaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "tiles",
+        "type": "list",
+        "maxItems": 4,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "auto"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "caption",
+              "type": "text",
+              "optional": true,
+              "maxLength": 30
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-cardgrid-01",
+      "stats-count-up-01",
+      "layout-imagetext-01"
+    ],
+    "pairsPoorly": [
+      "hero-split-image-01",
+      "hero-geometric-01",
+      "hero-shuffle-cards-01",
+      "hero-parallax-images-01",
+      "hero-hero-bold-editorial-01",
+      "hero-bakery-editorial-01",
+      "hero-marquee-strip-01",
+      "hero-video-backdrop-01",
+      "hero-spotlight-center-01",
+      "hero-newsroom-ticker-01",
+      "hero-split-form-01",
+      "hero-asymmetric-stack-01",
+      "hero-terminal-console-01",
+      "hero-polaroid-collage-01"
+    ],
+    "description": "A bento-style hero that pairs an editorial content column with an asymmetric four-tile gallery, ideal for portfolios, hospitality brands, and lifestyle products that lead with imagery.",
+    "descriptions": {
+      "descriptive": "A 12-column split places the headline at lower-left and a four-tile bento gallery at right, with one tall feature image and three supporting cells in varied proportions. Captions float over photo corners on small chips, and tiles scale subtly on hover.",
+      "usage": "Use as the homepage opener for studios, design agencies, hotels, restaurants, or boutique commerce sites where the work itself sells the brand. Pairs well with a stats strip below to anchor credibility before the user scrolls into project details.",
+      "audienceFit": "Speaks to design-aware visitors who expect a portfolio-grade first impression — creative directors, hospitality managers, gallerists, and editorial commerce buyers."
+    }
+  },
+  {
+    "id": "hero-marquee-strip-01",
+    "name": "Marquee Strip Hero",
+    "category": "hero",
+    "purpose": [
+      "hero",
+      "brand-statement",
+      "magazine-opener"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": true,
+      "button": true
+    },
+    "style": [
+      "bold",
+      "editorial",
+      "modern",
+      "playful"
+    ],
+    "mood": [
+      "energetic",
+      "friendly",
+      "elegant"
+    ],
+    "layout": "asymmetric",
+    "density": "medium",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "optional": true,
+        "maxLength": 60
+      },
+      {
+        "name": "marqueeWords",
+        "type": "list",
+        "maxItems": 8,
+        "itemSchema": {
+          "type": "text",
+          "maxLength": 30
+        }
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 200
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "secondaryCtaText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "secondaryCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "secondaryCtaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "direction",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "left",
+          "right"
+        ]
+      },
+      {
+        "name": "speed",
+        "type": "text",
+        "optional": true
+      },
+      {
+        "name": "separator",
+        "type": "text",
+        "optional": true,
+        "maxLength": 4
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-cardgrid-01",
+      "layout-imagetext-01",
+      "stats-count-up-01"
+    ],
+    "pairsPoorly": [
+      "hero-split-image-01",
+      "hero-geometric-01",
+      "hero-shuffle-cards-01",
+      "hero-parallax-images-01",
+      "hero-hero-bold-editorial-01",
+      "hero-bakery-editorial-01",
+      "hero-grid-gallery-01",
+      "hero-video-backdrop-01",
+      "hero-spotlight-center-01",
+      "hero-newsroom-ticker-01",
+      "hero-split-form-01",
+      "hero-asymmetric-stack-01",
+      "hero-terminal-console-01",
+      "hero-polaroid-collage-01"
+    ],
+    "description": "An attention-grabbing hero anchored by twin scrolling marquee strips with editorial typography. Designed for fashion drops, festivals, agencies, and brands that lead with personality and movement.",
+    "descriptions": {
+      "descriptive": "Two opposing horizontal marquees frame an asymmetric content block. Oversized serif words travel across the viewport with a subtle italic counter-row beneath, separated by a colored glyph that adopts the brand accent. Headline and CTA sit in a 12-column split that reads naturally without centering everything.",
+      "usage": "Best for openers where energy and rhythm are part of the brand promise. Works for product drops, event campaigns, creative agencies, music labels, and any site that benefits from kinetic typography rather than a static image-led hero.",
+      "audienceFit": "Resonates with creative-led audiences, younger demographics, and brands that already lean editorial or fashion-forward. Reads as confident and current to viewers who associate movement with cultural relevance."
+    }
+  },
+  {
+    "id": "hero-newsroom-ticker-01",
+    "name": "Newsroom Ticker Hero",
+    "category": "hero",
+    "purpose": [
+      "hero",
+      "magazine-opener",
+      "brand-statement",
+      "story"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": true,
+      "button": true
+    },
+    "style": [
+      "editorial",
+      "classic",
+      "modern"
+    ],
+    "mood": [
+      "serious",
+      "trustworthy",
+      "professional"
+    ],
+    "layout": "asymmetric",
+    "density": "high",
+    "imageWeight": 0.2,
+    "slots": [
+      {
+        "name": "tickerItems",
+        "type": "list",
+        "maxItems": 8,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 16
+            },
+            {
+              "name": "value",
+              "type": "text",
+              "maxLength": 16
+            },
+            {
+              "name": "trend",
+              "type": "text",
+              "optional": true,
+              "enum": [
+                "up",
+                "down",
+                "flat"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "issueLabel",
+        "type": "text",
+        "optional": true,
+        "maxLength": 60
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 140
+      },
+      {
+        "name": "lede",
+        "type": "text",
+        "maxLength": 320
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "secondaryCtaText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "secondaryCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "secondaryCtaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "featuredHeadlines",
+        "type": "list",
+        "optional": true,
+        "maxItems": 4,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "kicker",
+              "type": "text",
+              "maxLength": 30
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 140
+            },
+            {
+              "name": "url",
+              "type": "url",
+              "optional": true
+            },
+            {
+              "name": "meta",
+              "type": "text",
+              "optional": true,
+              "maxLength": 40
+            },
+            {
+              "name": "image",
+              "type": "image",
+              "optional": true,
+              "aspectRatio": "4:3"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "optional": true,
+              "maxLength": 80
+            }
+          ]
+        }
+      },
+      {
+        "name": "featuredHeadlinesLabel",
+        "type": "text",
+        "optional": true,
+        "maxLength": 40
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-cardgrid-01",
+      "stats-count-up-01",
+      "layout-statementsplit-01"
+    ],
+    "pairsPoorly": [
+      "hero-split-image-01",
+      "hero-geometric-01",
+      "hero-shuffle-cards-01",
+      "hero-parallax-images-01",
+      "hero-hero-bold-editorial-01",
+      "hero-bakery-editorial-01",
+      "hero-marquee-strip-01",
+      "hero-grid-gallery-01",
+      "hero-video-backdrop-01",
+      "hero-spotlight-center-01",
+      "hero-split-form-01",
+      "hero-asymmetric-stack-01",
+      "hero-terminal-console-01",
+      "hero-polaroid-collage-01"
+    ],
+    "description": "An editorial-newsroom hero with a live data ticker, oversized serif headline, lede paragraph, and a side rail of featured stories. Built for publications, financial-data products, research firms, and any brand that wants to read like a front page.",
+    "descriptions": {
+      "descriptive": "A monospace ticker scrolls along the top edge with up/down sentiment glyphs and trend tints. Below, an issue rule frames a serif display headline and a horizontal divider tucks the lede beneath the title. The right rail stacks featured stories with kickers, optional thumbnails, and meta lines that read like a print contents page.",
+      "usage": "Best for media properties, research firms, fintech and B2B SaaS data products, and any homepage where credibility comes from showing live information at the top. The side rail can be repurposed for case studies, latest releases, or featured projects.",
+      "audienceFit": "Reads as authoritative to professional readers — investors, analysts, journalists, policy folk, and B2B buyers — who associate density and serif typography with trustworthy reporting."
     }
   },
   {
@@ -1983,6 +3107,17 @@
         "name": "headline",
         "type": "text",
         "maxLength": 80
+      },
+      {
+        "name": "highlightWord",
+        "type": "text",
+        "optional": true,
+        "maxLength": 20
+      },
+      {
+        "name": "revealHeadline",
+        "type": "boolean",
+        "optional": true
       },
       {
         "name": "headlineRotatingWords",
@@ -2132,7 +3267,10 @@
     ],
     "pairsPoorly": [
       "hero-shuffle-cards-01",
-      "hero-split-image-01"
+      "hero-split-image-01",
+      "hero-geometric-01",
+      "hero-hero-bold-editorial-01",
+      "hero-bakery-editorial-01"
     ],
     "variants": [
       {
@@ -2161,6 +3299,207 @@
       "descriptive": "A visually striking hero section featuring layered images that move at different speeds during scroll, creating depth and motion. The editorial layout uses bold typography overlays with clean, modern spacing. High-contrast imagery dominates the viewport with sophisticated visual hierarchy.",
       "usage": "Opens landing pages and homepages where immediate visual impact is crucial. Perfect for storytelling brands that need to capture attention instantly and communicate their narrative through compelling imagery before users engage with content.",
       "audienceFit": "Appeals to creative agencies, luxury brands, and media companies targeting design-conscious audiences. Suits established businesses with strong visual assets who want to project innovation and premium positioning to sophisticated consumers."
+    }
+  },
+  {
+    "id": "hero-polaroid-collage-01",
+    "name": "Polaroid Collage Hero",
+    "category": "hero",
+    "purpose": [
+      "hero",
+      "story",
+      "brand-statement",
+      "showcase"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": true,
+      "button": true
+    },
+    "style": [
+      "playful",
+      "editorial",
+      "classic"
+    ],
+    "mood": [
+      "friendly",
+      "energetic",
+      "elegant"
+    ],
+    "layout": "asymmetric",
+    "density": "medium",
+    "imageWeight": 0.5,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "optional": true,
+        "maxLength": 60
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "scriptAccent",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "scriptAccentColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 220
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "secondaryCtaText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "secondaryCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "secondaryCtaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "polaroids",
+        "type": "list",
+        "maxItems": 4,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "1:1"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "caption",
+              "type": "text",
+              "optional": true,
+              "maxLength": 60
+            }
+          ]
+        }
+      },
+      {
+        "name": "tapeColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-cardgrid-01",
+      "layout-imagetext-01",
+      "stats-count-up-01",
+      "layout-iconlistsplit-01"
+    ],
+    "pairsPoorly": [
+      "hero-split-image-01",
+      "hero-geometric-01",
+      "hero-shuffle-cards-01",
+      "hero-parallax-images-01",
+      "hero-hero-bold-editorial-01",
+      "hero-bakery-editorial-01",
+      "hero-marquee-strip-01",
+      "hero-grid-gallery-01",
+      "hero-video-backdrop-01",
+      "hero-spotlight-center-01",
+      "hero-newsroom-ticker-01",
+      "hero-split-form-01",
+      "hero-asymmetric-stack-01",
+      "hero-terminal-console-01"
+    ],
+    "description": "A playful, scrapbook-style hero with three to four rotated polaroid cards in an asymmetric collage, paired with an italic script accent in the headline. Built for cafes, weddings, family-run shops, lifestyle blogs, and brands that lead with warmth.",
+    "descriptions": {
+      "descriptive": "Polaroid frames sit on the right with hand-placed rotation, soft shadows, and a small tape strip at the top of each. Hovering nudges them upright. Captions read in italic serif. The headline pairs a confident sans with a script-style accent word, and the section sits on a warm muted base.",
+      "usage": "Best for hospitality, wedding photographers, family-run cafes, slow-living brands, lifestyle publications, and any homepage where intimacy and warmth are the primary feeling. On mobile, the collage flattens into a 2x2 grid that keeps the rotation but loses the depth.",
+      "audienceFit": "Reads as warm and personal to consumer audiences who value handcraft and story over polish. Best avoided for technical, financial, or enterprise contexts where the playfulness can read as unserious."
     }
   },
   {
@@ -2194,6 +3533,17 @@
         "name": "headline",
         "type": "text",
         "maxLength": 80
+      },
+      {
+        "name": "highlightWord",
+        "type": "text",
+        "optional": true,
+        "maxLength": 20
+      },
+      {
+        "name": "revealHeadline",
+        "type": "boolean",
+        "optional": true
       },
       {
         "name": "headlineRotatingWords",
@@ -2266,7 +3616,13 @@
       "layout-cardgrid-01",
       "layout-infinitescroll-01"
     ],
-    "pairsPoorly": [],
+    "pairsPoorly": [
+      "hero-split-image-01",
+      "hero-geometric-01",
+      "hero-parallax-images-01",
+      "hero-hero-bold-editorial-01",
+      "hero-bakery-editorial-01"
+    ],
     "variants": [
       {
         "id": "hero-shuffle-cards-01-dense",
@@ -2294,6 +3650,172 @@
       "descriptive": "A dynamic hero layout featuring overlapping card elements that appear to shuffle or stack with editorial-style typography. Bold geometric shapes and high contrast create visual energy while maintaining clean, modern proportions. The design balances professional structure with playful movement.",
       "usage": "Perfect for homepage hero sections that need to immediately capture attention and convey multiple value propositions. Works best when you have 3-4 key messages or services to highlight simultaneously while maintaining focus on a primary call-to-action.",
       "audienceFit": "Ideal for creative agencies, tech startups, design studios, and modern B2B services that want to appear approachable yet sophisticated. Appeals to audiences who value innovation and expect polished, contemporary digital experiences."
+    }
+  },
+  {
+    "id": "hero-split-form-01",
+    "name": "Split Form Hero",
+    "category": "hero",
+    "purpose": [
+      "hero",
+      "lead-capture",
+      "cta"
+    ],
+    "acceptsStyleKit": {
+      "card": true,
+      "background": true,
+      "textDecoration": true,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "corporate",
+      "minimal"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "friendly"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "optional": true,
+        "maxLength": 60
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 220
+      },
+      {
+        "name": "trustBullets",
+        "type": "list",
+        "optional": true,
+        "maxItems": 4,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 50
+            }
+          ]
+        }
+      },
+      {
+        "name": "formTitle",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "formSubtitle",
+        "type": "text",
+        "optional": true,
+        "maxLength": 140
+      },
+      {
+        "name": "submitText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "submitColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "emailPlaceholder",
+        "type": "text",
+        "optional": true,
+        "maxLength": 60
+      },
+      {
+        "name": "namePlaceholder",
+        "type": "text",
+        "optional": true,
+        "maxLength": 60
+      },
+      {
+        "name": "phonePlaceholder",
+        "type": "text",
+        "optional": true,
+        "maxLength": 60
+      },
+      {
+        "name": "disclaimer",
+        "type": "text",
+        "optional": true,
+        "maxLength": 240
+      },
+      {
+        "name": "successHeadline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 80
+      },
+      {
+        "name": "successBody",
+        "type": "text",
+        "optional": true,
+        "maxLength": 200
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "light",
+          "muted",
+          "accent"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-cardgrid-01",
+      "stats-count-up-01",
+      "layout-imagetext-01",
+      "faq-accordion-01"
+    ],
+    "pairsPoorly": [
+      "hero-split-image-01",
+      "hero-geometric-01",
+      "hero-shuffle-cards-01",
+      "hero-parallax-images-01",
+      "hero-hero-bold-editorial-01",
+      "hero-bakery-editorial-01",
+      "hero-marquee-strip-01",
+      "hero-grid-gallery-01",
+      "hero-video-backdrop-01",
+      "hero-spotlight-center-01",
+      "hero-newsroom-ticker-01",
+      "hero-asymmetric-stack-01",
+      "hero-terminal-console-01",
+      "hero-polaroid-collage-01"
+    ],
+    "description": "A conversion-led hero that pairs a left-aligned message with an inline lead-capture form on the right. Designed for SaaS landing pages, financial services, B2B sign-up flows, and any campaign measured by inbound form fills.",
+    "descriptions": {
+      "descriptive": "An eyebrow, balanced display headline, supporting paragraph, and a small set of trust bullets occupy the left column. The right column hosts a card-style form with optional name, email, and phone fields, a primary submit button, and a fine-print disclaimer. After submit, the card replaces itself with an inline confirmation state.",
+      "usage": "Best for SaaS waitlists, sales-led B2B landing pages, financial services lead capture, course sign-ups, and any homepage where the primary metric is inbound form fills. Compose with a stats strip and FAQ section below to handle objections without requiring a scroll.",
+      "audienceFit": "Reads as direct and credible to commercial buyers and decision-makers who expect form-driven inquiry as the standard pattern. Trust bullets help mid-market and enterprise audiences self-qualify before submitting."
     }
   },
   {
@@ -2333,6 +3855,17 @@
         "type": "text",
         "optional": true,
         "maxLength": 40
+      },
+      {
+        "name": "highlightWord",
+        "type": "text",
+        "optional": true,
+        "maxLength": 20
+      },
+      {
+        "name": "revealHeadline",
+        "type": "boolean",
+        "optional": true
       },
       {
         "name": "headlineRotatingWords",
@@ -2523,7 +4056,11 @@
       "layout-infinitescroll-01"
     ],
     "pairsPoorly": [
-      "hero-shuffle-cards-01"
+      "hero-shuffle-cards-01",
+      "hero-geometric-01",
+      "hero-parallax-images-01",
+      "hero-hero-bold-editorial-01",
+      "hero-bakery-editorial-01"
     ],
     "variants": [
       {
@@ -2552,6 +4089,590 @@
       "descriptive": "A sophisticated split-screen layout featuring a prominent image occupying half the viewport alongside clean typography and minimal content. The design emphasizes white space, refined typography hierarchy, and balanced proportions that convey editorial sophistication with corporate polish.",
       "usage": "Perfect for homepage hero sections where visual storytelling needs equal weight with messaging. Ideal when you have compelling photography or graphics that deserve prominence while maintaining space for clear value propositions and primary calls-to-action.",
       "audienceFit": "Professional services firms, B2B companies, consulting agencies, and established brands seeking to project authority and credibility. Appeals to discerning audiences who value quality presentation and expect polished, magazine-quality digital experiences."
+    }
+  },
+  {
+    "id": "hero-spotlight-center-01",
+    "name": "Spotlight Center Hero",
+    "category": "hero",
+    "purpose": [
+      "hero",
+      "brand-statement",
+      "lead-capture"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": true,
+      "textDecoration": true,
+      "button": true
+    },
+    "style": [
+      "minimal",
+      "modern",
+      "luxury"
+    ],
+    "mood": [
+      "elegant",
+      "calm",
+      "trustworthy"
+    ],
+    "layout": "centered",
+    "density": "low",
+    "imageWeight": 0.3,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "optional": true,
+        "maxLength": 60
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 220
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "secondaryCtaText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "secondaryCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "secondaryCtaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "spotlightImage",
+        "type": "image",
+        "optional": true,
+        "aspectRatio": "1:1"
+      },
+      {
+        "name": "spotlightImageAlt",
+        "type": "text",
+        "optional": true,
+        "maxLength": 120
+      },
+      {
+        "name": "chips",
+        "type": "list",
+        "optional": true,
+        "maxItems": 4,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 30
+            },
+            {
+              "name": "position",
+              "type": "text",
+              "optional": true,
+              "enum": [
+                "top-left",
+                "top-right",
+                "bottom-left",
+                "bottom-right"
+              ]
+            },
+            {
+              "name": "image",
+              "type": "image",
+              "optional": true,
+              "aspectRatio": "1:1"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "optional": true,
+              "maxLength": 80
+            }
+          ]
+        }
+      },
+      {
+        "name": "showRadialGlow",
+        "type": "boolean",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-cardgrid-01",
+      "stats-count-up-01",
+      "layout-imagetext-01",
+      "layout-iconlistsplit-01"
+    ],
+    "pairsPoorly": [
+      "hero-split-image-01",
+      "hero-geometric-01",
+      "hero-shuffle-cards-01",
+      "hero-parallax-images-01",
+      "hero-hero-bold-editorial-01",
+      "hero-bakery-editorial-01",
+      "hero-marquee-strip-01",
+      "hero-grid-gallery-01",
+      "hero-video-backdrop-01",
+      "hero-newsroom-ticker-01",
+      "hero-split-form-01",
+      "hero-asymmetric-stack-01",
+      "hero-terminal-console-01",
+      "hero-polaroid-collage-01"
+    ],
+    "description": "A calm, centered hero with a soft radial accent glow, optional portrait spotlight, and floating contextual chips that orbit the headline. Designed for boutique brands, premium SaaS, and creator-led pages where restraint signals quality.",
+    "descriptions": {
+      "descriptive": "An eyebrow pill, a balanced display headline, and a pair of CTAs sit centered over a single low-saturation radial halo. Optional small chips with avatars float at the corners to suggest context — pricing, availability, social proof — without crowding the headline. A semi-transparent portrait sits behind the type for visual depth.",
+      "usage": "Best for boutique services, creators, premium SaaS waitlists, and announcement pages where the message is short and the brand benefits from negative space. Pair with a stats strip or icon list below to layer in detail without disturbing the calm.",
+      "audienceFit": "Resonates with audiences who associate restraint with quality — boutique hospitality, premium consumer products, founder-led services, and high-trust B2B."
+    }
+  },
+  {
+    "id": "hero-terminal-console-01",
+    "name": "Terminal Console Hero",
+    "category": "hero",
+    "purpose": [
+      "hero",
+      "showcase",
+      "lead-capture",
+      "brand-statement"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": true,
+      "textDecoration": true,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "minimal",
+      "corporate",
+      "bold"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "energetic"
+    ],
+    "layout": "split",
+    "density": "high",
+    "imageWeight": 0.1,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "optional": true,
+        "maxLength": 60
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 220
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "secondaryCtaText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "secondaryCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "secondaryCtaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "terminalTitle",
+        "type": "text",
+        "optional": true,
+        "maxLength": 60
+      },
+      {
+        "name": "terminalLines",
+        "type": "list",
+        "maxItems": 12,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "kind",
+              "type": "text",
+              "enum": [
+                "command",
+                "output",
+                "comment",
+                "success",
+                "error"
+              ]
+            },
+            {
+              "name": "text",
+              "type": "text",
+              "maxLength": 100
+            }
+          ]
+        }
+      },
+      {
+        "name": "platformBadges",
+        "type": "list",
+        "optional": true,
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 28
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-icon-feature-grid-01",
+      "stats-count-up-01",
+      "layout-cardgrid-01",
+      "faq-accordion-01"
+    ],
+    "pairsPoorly": [
+      "hero-split-image-01",
+      "hero-geometric-01",
+      "hero-shuffle-cards-01",
+      "hero-parallax-images-01",
+      "hero-hero-bold-editorial-01",
+      "hero-bakery-editorial-01",
+      "hero-marquee-strip-01",
+      "hero-grid-gallery-01",
+      "hero-video-backdrop-01",
+      "hero-spotlight-center-01",
+      "hero-newsroom-ticker-01",
+      "hero-split-form-01",
+      "hero-asymmetric-stack-01",
+      "hero-polaroid-collage-01"
+    ],
+    "description": "A developer-tool hero pairing a tight content column with an animated terminal window that staggers in commands, output, and comments. Built for CLIs, dev tools, infrastructure SaaS, and technical platforms where credibility comes from showing the actual interface.",
+    "descriptions": {
+      "descriptive": "A subtle grid backdrop frames a 5/7 split — left column carries an eyebrow status pill, headline, supporting paragraph, CTAs, and platform badges. Right column hosts a macOS-style terminal window with a title bar, three traffic-light dots, and stagger-revealed lines tinted by kind: commands, output, comments, success, error. A primary blinking cursor anchors the bottom.",
+      "usage": "Best for command-line tools, infrastructure providers, developer SDKs, observability and security platforms, and any technical product whose buyer reads the docs before they read the marketing copy. Use platform badges for distribution channels (npm, brew, cargo, apt, github releases).",
+      "audienceFit": "Reads as honest and current to engineers, platform teams, security buyers, and technical founders. Visual fluency with terminal output is the conversion lever — non-technical buyers should not be the primary audience for this hero."
+    }
+  },
+  {
+    "id": "hero-video-backdrop-01",
+    "name": "Video Backdrop Hero",
+    "category": "hero",
+    "purpose": [
+      "hero",
+      "brand-statement",
+      "showcase"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": true,
+      "textDecoration": true,
+      "button": true
+    },
+    "style": [
+      "bold",
+      "modern",
+      "luxury",
+      "editorial"
+    ],
+    "mood": [
+      "energetic",
+      "elegant",
+      "trustworthy"
+    ],
+    "layout": "stacked",
+    "density": "low",
+    "imageWeight": 0.7,
+    "slots": [
+      {
+        "name": "videoUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "posterImage",
+        "type": "image",
+        "aspectRatio": "16:9"
+      },
+      {
+        "name": "posterAlt",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "optional": true,
+        "maxLength": 60
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 220
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "secondaryCtaText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "secondaryCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "secondaryCtaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "contentAlign",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "bottom-left",
+          "bottom-center",
+          "center"
+        ]
+      },
+      {
+        "name": "overlayStrength",
+        "type": "text",
+        "optional": true
+      },
+      {
+        "name": "metaItems",
+        "type": "list",
+        "optional": true,
+        "maxItems": 4,
+        "itemSchema": {
+          "type": "text",
+          "maxLength": 28
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "stats-count-up-01",
+      "layout-cardgrid-01",
+      "layout-imagetext-01"
+    ],
+    "pairsPoorly": [
+      "hero-split-image-01",
+      "hero-geometric-01",
+      "hero-shuffle-cards-01",
+      "hero-parallax-images-01",
+      "hero-hero-bold-editorial-01",
+      "hero-bakery-editorial-01",
+      "hero-marquee-strip-01",
+      "hero-grid-gallery-01",
+      "hero-spotlight-center-01",
+      "hero-newsroom-ticker-01",
+      "hero-split-form-01",
+      "hero-asymmetric-stack-01",
+      "hero-terminal-console-01",
+      "hero-polaroid-collage-01"
+    ],
+    "description": "A full-bleed cinematic hero with optional looping video backdrop, tinted overlay, and an asymmetric content block anchored to the bottom edge. Built for hospitality, fashion campaigns, agencies, and any brand whose product is a felt experience.",
+    "descriptions": {
+      "descriptive": "An ambient video plays muted and looping over a poster fallback, layered with a configurable neutral tint and a soft bottom-up gradient for legibility. Headline, subheadline, and CTAs anchor in a chosen quadrant, with an optional metadata strip along the bottom for credits, locations, or release dates.",
+      "usage": "Use as the homepage opener for brands that have strong moving footage — hotels, fashion campaigns, agencies, restaurants, festivals, and media properties. Falls back to the poster image when no video URL is provided or when the user prefers reduced motion.",
+      "audienceFit": "Works for design-aware visitors who associate cinematic motion with quality. Best for brands that already have professional video assets and need a confident first frame."
     }
   },
   {
@@ -2663,6 +4784,502 @@
       "descriptive": "A structured grid of uniform cards with clean lines and generous white space. Bold typography and vibrant accent colors create visual hierarchy while maintaining professional polish. Each card features consistent spacing and modern shadows, balancing corporate sophistication with approachable, playful elements.",
       "usage": "Organizes multiple related items like product offerings, service categories, team members, or feature highlights into scannable chunks. Perfect for pages where users need to compare options or browse through collections, making complex information digestible through visual consistency.",
       "audienceFit": "Ideal for established B2B companies, SaaS platforms, and professional services firms seeking to appear both credible and innovative. Appeals to decision-makers who value clarity and efficiency, particularly in tech, consulting, and modern enterprises balancing authority with accessibility."
+    }
+  },
+  {
+    "id": "layout-icon-feature-grid-01",
+    "name": "Icon Feature Grid",
+    "category": "layout/grid",
+    "purpose": [
+      "features",
+      "services",
+      "benefits",
+      "products"
+    ],
+    "acceptsStyleKit": {
+      "card": true,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "editorial",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "energetic"
+    ],
+    "layout": "asymmetric",
+    "density": "medium",
+    "imageWeight": 0.05,
+    "slots": [
+      {
+        "name": "label",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 90
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 220,
+        "optional": true
+      },
+      {
+        "name": "features",
+        "type": "list",
+        "maxItems": 8,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "icon",
+              "type": "text",
+              "optional": true,
+              "enum": [
+                "zap",
+                "shield",
+                "layers",
+                "target",
+                "cpu",
+                "branch",
+                "clock",
+                "trending",
+                "users",
+                "box",
+                "chart",
+                "heart",
+                "award",
+                "globe",
+                "lock",
+                "compass"
+              ]
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 80
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 240
+            },
+            {
+              "name": "emphasize",
+              "type": "boolean",
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "variant",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "bento",
+          "zigzag"
+        ]
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-split-image-01",
+      "hero-geometric-01",
+      "layout-process-timeline-01",
+      "layout-pricing-tiers-01"
+    ],
+    "pairsPoorly": [
+      "layout-simplegrid-01"
+    ],
+    "description": "Icon-driven feature grid rendered as an asymmetric bento (one wide hero card + smaller tiles) or alternating zigzag — explicitly avoids the three-equal-card horizontal row that screams AI default.",
+    "descriptions": {
+      "descriptive": "A 6-column desktop grid where the lead feature spans four columns as a dark emphasized card, and the remaining tiles fall into a 3-up rhythm with periodic 4-column wider cards interrupting the cadence. Icons are softly tinted in a primary-coloured rounded square; the emphasized card inverts to a high-contrast surface.",
+      "usage": "Default landing-page features section for SaaS, productised services, and B2B product pages — anywhere you want 4-7 capabilities laid out without falling into the symmetrical 3-card row. The bento variant pairs with editorial heroes; zigzag suits content-heavy briefs that want a calmer rhythm.",
+      "audienceFit": "B2B SaaS, infrastructure tooling, design systems, and enterprise solution pages. The asymmetric structure rewards skim-readers (one big card with the lead claim) without burying secondary capabilities."
+    }
+  },
+  {
+    "id": "layout-logo-cloud-01",
+    "name": "Logo Cloud",
+    "category": "layout/grid",
+    "purpose": [
+      "testimonials",
+      "brand-statement",
+      "showcase"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "minimal",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "calm"
+    ],
+    "layout": "horizontal",
+    "density": "low",
+    "imageWeight": 0.2,
+    "slots": [
+      {
+        "name": "label",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 120,
+        "optional": true
+      },
+      {
+        "name": "logos",
+        "type": "list",
+        "maxItems": 16,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "name",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "src",
+              "type": "image",
+              "aspectRatio": "auto"
+            },
+            {
+              "name": "href",
+              "type": "url",
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "variant",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "marquee",
+          "grid"
+        ]
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "subtle",
+          "stark"
+        ]
+      }
+    ],
+    "mobileBehavior": "scroll",
+    "pairsWell": [
+      "hero-split-image-01",
+      "hero-geometric-01",
+      "stats-count-up-01",
+      "layout-simplegrid-01"
+    ],
+    "pairsPoorly": [],
+    "description": "A horizontal trust bar that displays customer, partner, or media logos as either an infinite marquee or a static grid — the universal social-proof slot that fits between hero and feature sections.",
+    "descriptions": {
+      "descriptive": "A clean strip of brand marks rendered with subtle opacity and grayscale by default, lifting to full color on hover. The marquee variant scrolls at a slow constant velocity with edge-fade masks, while the grid variant sets logos in a calm 4-to-6 column matrix.",
+      "usage": "Place immediately after the hero or before pricing to absorb the 'who else trusts you' question without a testimonial commitment. The marquee variant scales gracefully past 8 logos; the grid variant is for curated selections of 4-8.",
+      "audienceFit": "Universal — B2B SaaS courting evaluators, agencies showcasing client portfolios, media-heavy editorial sites, and consumer brands citing press mentions all use this slot the same way."
+    }
+  },
+  {
+    "id": "layout-pricing-tiers-01",
+    "name": "Pricing Tiers",
+    "category": "layout/grid",
+    "purpose": [
+      "services",
+      "products",
+      "cta"
+    ],
+    "acceptsStyleKit": {
+      "card": true,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "corporate",
+      "minimal"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "serious"
+    ],
+    "layout": "grid",
+    "density": "medium",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "label",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 220,
+        "optional": true
+      },
+      {
+        "name": "billingToggle",
+        "type": "object",
+        "optional": true,
+        "fields": [
+          {
+            "name": "monthly",
+            "type": "text",
+            "maxLength": 16
+          },
+          {
+            "name": "yearly",
+            "type": "text",
+            "maxLength": 16
+          },
+          {
+            "name": "activeIsYearly",
+            "type": "boolean",
+            "optional": true
+          }
+        ]
+      },
+      {
+        "name": "tiers",
+        "type": "list",
+        "maxItems": 4,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "name",
+              "type": "text",
+              "maxLength": 30
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 140,
+              "optional": true
+            },
+            {
+              "name": "price",
+              "type": "text",
+              "maxLength": 20
+            },
+            {
+              "name": "cadence",
+              "type": "text",
+              "maxLength": 24,
+              "optional": true
+            },
+            {
+              "name": "badge",
+              "type": "text",
+              "maxLength": 24,
+              "optional": true
+            },
+            {
+              "name": "ctaText",
+              "type": "text",
+              "maxLength": 30
+            },
+            {
+              "name": "ctaUrl",
+              "type": "url"
+            },
+            {
+              "name": "features",
+              "type": "list",
+              "maxItems": 8,
+              "itemSchema": {
+                "type": "text",
+                "maxLength": 80
+              }
+            },
+            {
+              "name": "featured",
+              "type": "boolean",
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "footnote",
+        "type": "text",
+        "maxLength": 160,
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "faq-accordion-01",
+      "faq-minimal-01",
+      "layout-simplegrid-01"
+    ],
+    "pairsPoorly": [],
+    "description": "A focused pricing-tier comparison with two to four tiers, one optional 'most popular' tier emphasised, inclusive and excluded feature lines, and per-tier CTAs — designed for SaaS, services, and subscription products that sell through a clear price page.",
+    "descriptions": {
+      "descriptive": "Side-by-side pricing cards with disciplined typography, monospaced price numerals, and a dark featured tier that pulls focus through contrast rather than ornament. Inclusive features render with a primary-tinted check; excluded ones with a muted X — making scanability the first job.",
+      "usage": "Anchor a SaaS or service site where the buying decision turns on plan comparison. Place near the bottom of the page after problem framing and feature deep-dives, then follow with FAQ to absorb objections before the final CTA.",
+      "audienceFit": "B2B SaaS, agencies with productised services, fintech subscriptions, and creative tooling. Suits evaluators who scan plans before reading copy and need price + scope visible above the fold of the section."
+    }
+  },
+  {
+    "id": "layout-process-timeline-01",
+    "name": "Process Timeline",
+    "category": "layout/grid",
+    "purpose": [
+      "process",
+      "services",
+      "about"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "editorial",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "calm"
+    ],
+    "layout": "vertical",
+    "density": "medium",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "label",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 220,
+        "optional": true
+      },
+      {
+        "name": "steps",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "marker",
+              "type": "text",
+              "maxLength": 30,
+              "optional": true
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 80
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 240
+            },
+            {
+              "name": "duration",
+              "type": "text",
+              "maxLength": 24,
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "orientation",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "vertical",
+          "horizontal"
+        ]
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "layout-iconlistsplit-01",
+      "layout-simplegrid-01",
+      "faq-accordion-01"
+    ],
+    "pairsPoorly": [],
+    "description": "A numbered, narrative timeline that walks visitors through a process, methodology, or onboarding flow — vertical staircase by default, horizontal rail on desktop when the steps fit on a single line.",
+    "descriptions": {
+      "descriptive": "Sequential steps anchored by monospaced index numbers and a thin connector line. Each step balances a marker (week, phase), a verb-led title, and a two-sentence description, with optional duration tags rendered in tabular numerals on the right.",
+      "usage": "Use when the buying decision depends on understanding what working with you actually feels like — agency engagements, B2B onboarding, multi-stage products, certification paths. Place after the value-prop explanation and before the CTA.",
+      "audienceFit": "Best for B2B services, agencies, consultancies, healthcare procedures, and technical onboarding flows where evaluators need to picture the calendar before they commit. Reads as confident and structured rather than salesy."
     }
   },
   {
@@ -3481,6 +6098,278 @@
     }
   },
   {
+    "id": "navbar-dock-01",
+    "name": "Magnify Dock Navbar",
+    "category": "navigation",
+    "purpose": [
+      "navigation"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "playful",
+      "editorial"
+    ],
+    "mood": [
+      "elegant",
+      "friendly",
+      "energetic"
+    ],
+    "layout": "horizontal",
+    "density": "low",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "logo",
+        "type": "image",
+        "aspectRatio": "auto",
+        "optional": true
+      },
+      {
+        "name": "links",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "text": {
+            "type": "text",
+            "maxLength": 24
+          },
+          "href": {
+            "type": "url"
+          },
+          "icon": {
+            "type": "text",
+            "enum": [
+              "home",
+              "work",
+              "projects",
+              "about",
+              "contact",
+              "layers",
+              "briefcase"
+            ]
+          }
+        }
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 24,
+        "optional": true
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      }
+    ],
+    "mobileBehavior": "collapse",
+    "pairsWell": [
+      "footer-pulse-01",
+      "footer-reveal-01"
+    ],
+    "pairsPoorly": [],
+    "description": "A floating bottom-anchored dock with cursor-driven icon magnification, paired with a quiet top bar for the logo and CTA. Built for portfolio sites and creative studios that want navigation to feel tactile and modern without dominating the page.",
+    "descriptions": {
+      "descriptive": "A macOS-style dock pinned to the bottom centre of the viewport. Each icon scales smoothly toward the cursor through spring physics, with a tooltip label appearing above the hovered tile. The top of the page is reserved for a minimal logo and a single optional CTA, keeping the hero composition clear.",
+      "usage": "Best for portfolio sites, creative agencies, and product landing pages where the navigation can feel like a controlled flourish rather than a utility bar. Pair with image-led heroes and editorial layouts where horizontal top-bar real estate is at a premium.",
+      "audienceFit": "Resonates with design-forward audiences and product-curious visitors who recognise the dock metaphor instantly. Less appropriate for utility-heavy SaaS or compliance-driven enterprise sites where conventional top navigation reduces friction."
+    }
+  },
+  {
+    "id": "navbar-mega-panel-01",
+    "name": "Mega Panel Navbar",
+    "category": "navigation",
+    "purpose": [
+      "navigation"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "corporate",
+      "minimal"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "serious"
+    ],
+    "layout": "horizontal",
+    "density": "medium",
+    "imageWeight": 0.05,
+    "slots": [
+      {
+        "name": "logo",
+        "type": "image",
+        "aspectRatio": "auto",
+        "optional": true
+      },
+      {
+        "name": "links",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "text": {
+            "type": "text",
+            "maxLength": 30
+          },
+          "href": {
+            "type": "url"
+          },
+          "panel": {
+            "type": "list",
+            "optional": true,
+            "maxItems": 1,
+            "itemSchema": {
+              "groups": {
+                "type": "list",
+                "maxItems": 3,
+                "itemSchema": {
+                  "title": {
+                    "type": "text",
+                    "maxLength": 30
+                  },
+                  "items": {
+                    "type": "list",
+                    "maxItems": 6,
+                    "itemSchema": {
+                      "label": {
+                        "type": "text",
+                        "maxLength": 40
+                      },
+                      "description": {
+                        "type": "text",
+                        "maxLength": 80,
+                        "optional": true
+                      },
+                      "href": {
+                        "type": "url"
+                      },
+                      "badge": {
+                        "type": "text",
+                        "maxLength": 12,
+                        "optional": true
+                      }
+                    }
+                  }
+                }
+              },
+              "feature": {
+                "type": "list",
+                "optional": true,
+                "maxItems": 1,
+                "itemSchema": {
+                  "eyebrow": {
+                    "type": "text",
+                    "maxLength": 24,
+                    "optional": true
+                  },
+                  "title": {
+                    "type": "text",
+                    "maxLength": 60
+                  },
+                  "description": {
+                    "type": "text",
+                    "maxLength": 140,
+                    "optional": true
+                  },
+                  "href": {
+                    "type": "url"
+                  },
+                  "ctaLabel": {
+                    "type": "text",
+                    "maxLength": 24,
+                    "optional": true
+                  },
+                  "image": {
+                    "type": "image",
+                    "aspectRatio": "16:10",
+                    "optional": true
+                  },
+                  "imageAlt": {
+                    "type": "text",
+                    "maxLength": 120,
+                    "optional": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "name": "signInText",
+        "type": "text",
+        "maxLength": 20,
+        "optional": true
+      },
+      {
+        "name": "signInUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 24,
+        "optional": true
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      }
+    ],
+    "mobileBehavior": "collapse",
+    "pairsWell": [
+      "footer-pulse-01",
+      "footer-reveal-01"
+    ],
+    "pairsPoorly": [],
+    "description": "A wide flat top bar that opens a structured multi-column mega panel on hover, ideal for SaaS products and enterprise sites with deep information architecture that need to surface featured content alongside grouped link lists.",
+    "descriptions": {
+      "descriptive": "A clean horizontal top bar that reveals a full-width mega panel on hover, organising links into titled columns with optional descriptions, badges, and a featured card on the right. The panel sits on a soft backdrop-blur surface with subtle borders and disciplined typography hierarchy.",
+      "usage": "Best for sites with multiple product surfaces, solution categories, or large resource libraries that need to expose deep navigation without overwhelming the top bar. The featured card slot is ideal for pinning launches, case studies, or signature articles in context.",
+      "audienceFit": "Fits B2B SaaS, enterprise platforms, fintech, and developer tooling brands selling to evaluators who scan for breadth before depth. The dense panel rewards skim-readers without sacrificing the calm of a minimal collapsed state."
+    }
+  },
+  {
     "id": "navbar-pill-01",
     "name": "Pill Glass Navbar",
     "category": "navigation",
@@ -3654,7 +6543,7 @@
     "acceptsStyleKit": {
       "card": false,
       "background": false,
-      "textDecoration": false,
+      "textDecoration": true,
       "button": false
     },
     "style": [
@@ -3732,6 +6621,250 @@
       "descriptive": "Clean numerical displays with animated count-up effects, featuring bold typography and generous whitespace. Uses a restrained color palette with subtle accent colors to highlight key metrics. Grid-based layout maintains visual hierarchy through consistent spacing and typography scales.",
       "usage": "Showcases quantifiable achievements, company metrics, or performance data to build credibility. Best positioned after hero sections or within about pages to reinforce brand authority through concrete numbers like years in business, clients served, or success rates.",
       "audienceFit": "Perfect for established B2B companies, consulting firms, financial services, and professional service providers who need to demonstrate track record and reliability. Appeals to decision-makers who value data-driven proof points over emotional appeals."
+    }
+  },
+  {
+    "id": "stats-kpi-grid-01",
+    "name": "KPI Grid",
+    "category": "stats",
+    "purpose": [
+      "stats",
+      "benefits",
+      "showcase"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "minimal",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "serious"
+    ],
+    "layout": "grid",
+    "density": "high",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "label",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100,
+        "optional": true
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 220,
+        "optional": true
+      },
+      {
+        "name": "metrics",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "value",
+              "type": "number"
+            },
+            {
+              "name": "decimals",
+              "type": "number",
+              "optional": true
+            },
+            {
+              "name": "prefix",
+              "type": "text",
+              "maxLength": 6,
+              "optional": true
+            },
+            {
+              "name": "suffix",
+              "type": "text",
+              "maxLength": 10,
+              "optional": true
+            },
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "caption",
+              "type": "text",
+              "maxLength": 100,
+              "optional": true
+            },
+            {
+              "name": "delta",
+              "type": "text",
+              "maxLength": 16,
+              "optional": true
+            },
+            {
+              "name": "trend",
+              "type": "text",
+              "optional": true,
+              "enum": [
+                "up",
+                "down",
+                "flat"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "variant",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "divided",
+          "boxed"
+        ]
+      },
+      {
+        "name": "footnote",
+        "type": "text",
+        "maxLength": 120,
+        "optional": true
+      },
+      {
+        "name": "duration",
+        "type": "number",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-geometric-01",
+      "hero-split-image-01",
+      "layout-icon-feature-grid-01",
+      "layout-process-timeline-01"
+    ],
+    "pairsPoorly": [
+      "stats-count-up-01"
+    ],
+    "description": "Dashboard-density KPI grid with monospaced numerals, trend deltas, and divider-line grouping — the comparison-first stats slot that complements the count-up hero metric panel.",
+    "descriptions": {
+      "descriptive": "Three-to-six metrics arranged on a divided grid (no card boxes by default) with tabular monospaced numerals, prefix/suffix support, and tinted up/down/flat trend pills next to each value. The boxed variant softens density when the section sits between visually loud neighbours.",
+      "usage": "Drop into product, results, or about pages where comparison is the point — month-over-month conversion, uptime, scale figures. Pair after a hero or before pricing; complements count-up stats rather than replacing them.",
+      "audienceFit": "B2B SaaS product pages, fintech operator dashboards, agency case-study tear-sheets, and infrastructure platforms whose buyers expect numerical proof rather than emotional copy."
+    }
+  },
+  {
+    "id": "stats-milestone-bar-01",
+    "name": "Milestone Bar",
+    "category": "stats",
+    "purpose": [
+      "stats",
+      "about",
+      "story"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "editorial",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "calm"
+    ],
+    "layout": "horizontal",
+    "density": "medium",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "label",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100,
+        "optional": true
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 220,
+        "optional": true
+      },
+      {
+        "name": "milestones",
+        "type": "list",
+        "maxItems": 8,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "marker",
+              "type": "text",
+              "maxLength": 12
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 80
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 200,
+              "optional": true
+            },
+            {
+              "name": "metric",
+              "type": "text",
+              "maxLength": 30,
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "footnote",
+        "type": "text",
+        "maxLength": 120,
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "stats-count-up-01",
+      "stats-kpi-grid-01",
+      "layout-process-timeline-01",
+      "layout-authorsplit-01"
+    ],
+    "pairsPoorly": [],
+    "description": "Horizontal milestone rail for company history, funding journeys, and 'how we got here' narratives — collapses to a vertical timeline on mobile so the rail metaphor never breaks responsively.",
+    "descriptions": {
+      "descriptive": "A thin horizontal hairline rail with anchor dots at each milestone, monospaced markers (years or quarter labels) above bold short titles. Optional metric chips and one-line descriptions hang under each anchor. Mobile collapses to a left-rail vertical timeline.",
+      "usage": "Best on About pages, investor decks rendered as web pages, and anniversary or product-launch retrospectives. Pair after a brand-statement hero and before a team or testimonial section to ground the story in concrete dates.",
+      "audienceFit": "Established companies, funded startups telling their journey, and brand-led services pages where the trust signal comes from longevity. Reads as confident without sliding into self-congratulatory language."
     }
   },
   {

@@ -1,0 +1,139 @@
+{
+  "id": "hero-asymmetric-stack-01",
+  "name": "Asymmetric Stack Hero",
+  "category": "hero",
+  "purpose": ["hero", "brand-statement", "magazine-opener", "story"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": true,
+    "button": true
+  },
+  "style": ["editorial", "bold", "luxury", "modern"],
+  "mood": ["elegant", "energetic", "trustworthy"],
+  "layout": "asymmetric",
+  "density": "low",
+  "imageWeight": 0.25,
+  "slots": [
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    },
+    {
+      "name": "headlineLines",
+      "type": "list",
+      "maxItems": 3,
+      "itemSchema": {
+        "type": "text",
+        "maxLength": 36
+      }
+    },
+    {
+      "name": "accentWord",
+      "type": "text",
+      "optional": true,
+      "maxLength": 24
+    },
+    {
+      "name": "accentColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 240
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 30
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "secondaryCtaText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "secondaryCtaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "secondaryCtaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    },
+    {
+      "name": "secondaryCtaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "peekImages",
+      "type": "list",
+      "optional": true,
+      "maxItems": 2,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "image", "type": "image", "aspectRatio": "4:5" },
+          { "name": "imageAlt", "type": "text", "maxLength": 120 }
+        ]
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "layout-statementsplit-01",
+    "layout-imagetext-01",
+    "stats-count-up-01",
+    "layout-cardgrid-01"
+  ],
+  "pairsPoorly": [
+    "hero-split-image-01",
+    "hero-geometric-01",
+    "hero-shuffle-cards-01",
+    "hero-parallax-images-01",
+    "hero-hero-bold-editorial-01",
+    "hero-bakery-editorial-01",
+    "hero-marquee-strip-01",
+    "hero-grid-gallery-01",
+    "hero-video-backdrop-01",
+    "hero-spotlight-center-01",
+    "hero-newsroom-ticker-01",
+    "hero-split-form-01",
+    "hero-terminal-console-01",
+    "hero-polaroid-collage-01"
+  ],
+  "description": "An oversized typographic hero with a three-row stacked headline, intentional row offsets, and two peeking rotated image cards. Built for editorial, fashion, and culture-led brands that want the type itself to be the visual.",
+  "descriptions": {
+    "descriptive": "Three large serif rows step diagonally — left-aligned, right-aligned, then indented again — with an italic accent on the middle row and an optional colored accent word. Two small image cards peek out from opposite quadrants on a slight rotation, breaking the symmetry without competing with the type.",
+    "usage": "Best as a homepage opener for editorial brands, fashion houses, cultural institutions, music labels, and culture-led products where typography is the primary asset. Use peek images to suggest scope or season without committing to a hero photograph.",
+    "audienceFit": "Reads as confident and current to design-aware audiences. Especially effective for brands targeting buyers who associate restraint, scale, and italic counterpoints with editorial credibility."
+  }
+}

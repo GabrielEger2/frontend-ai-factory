@@ -36,11 +36,20 @@ export { default as FooterPulse } from "./footers/FooterPulse";
 export { default as FooterReveal } from "./footers/FooterReveal";
 
 // Heroes
+export { default as HeroAsymmetricStack } from "./heroes/HeroAsymmetricStack";
 export { default as HeroBoldEditorial } from "./heroes/HeroBoldEditorial";
 export { default as HeroGeometric } from "./heroes/HeroGeometric";
+export { default as HeroGridGallery } from "./heroes/HeroGridGallery";
+export { default as HeroMarqueeStrip } from "./heroes/HeroMarqueeStrip";
+export { default as HeroNewsroomTicker } from "./heroes/HeroNewsroomTicker";
 export { default as HeroParallaxImages } from "./heroes/HeroParallaxImages";
+export { default as HeroPolaroidCollage } from "./heroes/HeroPolaroidCollage";
 export { default as HeroShuffleCards } from "./heroes/HeroShuffleCards";
+export { default as HeroSpotlightCenter } from "./heroes/HeroSpotlightCenter";
+export { default as HeroSplitForm } from "./heroes/HeroSplitForm";
 export { default as HeroSplitImage } from "./heroes/HeroSplitImage";
+export { default as HeroTerminalConsole } from "./heroes/HeroTerminalConsole";
+export { default as HeroVideoBackdrop } from "./heroes/HeroVideoBackdrop";
 
 // Layouts — grid
 export { default as CardGrid } from "./layouts/grid/CardGrid";
@@ -94,11 +103,20 @@ import FaqMinimal from "./faq/FaqMinimal";
 import FaqSolutions from "./faq/FaqSolutions";
 import FooterPulse from "./footers/FooterPulse";
 import FooterReveal from "./footers/FooterReveal";
+import HeroAsymmetricStack from "./heroes/HeroAsymmetricStack";
 import HeroBoldEditorial from "./heroes/HeroBoldEditorial";
 import HeroGeometric from "./heroes/HeroGeometric";
+import HeroGridGallery from "./heroes/HeroGridGallery";
+import HeroMarqueeStrip from "./heroes/HeroMarqueeStrip";
+import HeroNewsroomTicker from "./heroes/HeroNewsroomTicker";
 import HeroParallaxImages from "./heroes/HeroParallaxImages";
+import HeroPolaroidCollage from "./heroes/HeroPolaroidCollage";
 import HeroShuffleCards from "./heroes/HeroShuffleCards";
+import HeroSpotlightCenter from "./heroes/HeroSpotlightCenter";
+import HeroSplitForm from "./heroes/HeroSplitForm";
 import HeroSplitImage from "./heroes/HeroSplitImage";
+import HeroTerminalConsole from "./heroes/HeroTerminalConsole";
+import HeroVideoBackdrop from "./heroes/HeroVideoBackdrop";
 import CardGrid from "./layouts/grid/CardGrid";
 import IconFeatureGrid from "./layouts/grid/IconFeatureGrid";
 import LogoCloud from "./layouts/grid/LogoCloud";
@@ -151,6 +169,15 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "hero-parallax-images-01": HeroParallaxImages,
   "hero-shuffle-cards-01": HeroShuffleCards,
   "hero-split-image-01": HeroSplitImage,
+  "hero-asymmetric-stack-01": HeroAsymmetricStack,
+  "hero-grid-gallery-01": HeroGridGallery,
+  "hero-marquee-strip-01": HeroMarqueeStrip,
+  "hero-newsroom-ticker-01": HeroNewsroomTicker,
+  "hero-polaroid-collage-01": HeroPolaroidCollage,
+  "hero-spotlight-center-01": HeroSpotlightCenter,
+  "hero-split-form-01": HeroSplitForm,
+  "hero-terminal-console-01": HeroTerminalConsole,
+  "hero-video-backdrop-01": HeroVideoBackdrop,
   "layout-cardgrid-01": CardGrid,
   "layout-icon-feature-grid-01": IconFeatureGrid,
   "layout-logo-cloud-01": LogoCloud,
