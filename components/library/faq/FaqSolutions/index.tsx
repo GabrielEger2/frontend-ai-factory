@@ -1,33 +1,10 @@
 "use client";
 
 import { cn } from "@lib/utils";
-import { buttonStyles, type CtaVariant, type ColorScheme } from "@ui/button";
+import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
 import { useSafeImageSrc } from "@ui/useSafeImageSrc";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
-import { FiArrowRight } from "react-icons/fi";
-
-/* ------------------------------------------------------------------ */
-/*  Helpers                                                            */
-/* ------------------------------------------------------------------ */
-
-/** Map CtaVariant → buttonStyles Variant (best-effort downgrade). */
-function toButtonVariant(
-  v?: CtaVariant,
-): "primary" | "secondary" | "accent" | "outline" | "ghost" | "link" | "glow" {
-  switch (v) {
-    case "glow":
-      return "primary";
-    case "slide":
-      return "accent";
-    case "drawOutline":
-      return "outline";
-    case "dotExpand":
-      return "link";
-    default:
-      return "primary";
-  }
-}
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -102,12 +79,14 @@ function SolutionItem({
   isOpen,
   onSelect,
   ctaStyle,
+  ctaColorScheme,
 }: {
   item: FaqSolutionsItem;
   index: number;
   isOpen: boolean;
   onSelect: () => void;
   ctaStyle?: CtaVariant;
+  ctaColorScheme?: ColorScheme;
 }) {
   const shouldReduceMotion = useReducedMotion();
 
@@ -165,17 +144,15 @@ function SolutionItem({
             ease: "easeOut",
           }}
         >
-          <a
+          <CtaButton
+            variant={ctaStyle}
+            colorScheme={ctaColorScheme}
             href={item.ctaUrl}
-            className={cn(
-              buttonStyles({ variant: toButtonVariant(ctaStyle), size: "md" }),
-              "-mx-6 -mb-6 mt-4 flex items-center justify-center gap-1 rounded-t-none",
-            )}
+            className="-mx-6 -mb-6 mt-4 w-full rounded-t-none"
             onClick={(e) => e.stopPropagation()}
           >
-            <span>{item.ctaText}</span>
-            <FiArrowRight className="transition-transform group-hover:translate-x-1" />
-          </a>
+            {item.ctaText}
+          </CtaButton>
         </motion.div>
       </motion.div>
 
@@ -246,6 +223,7 @@ export default function FaqSolutions({
                 isOpen={openIndex === index}
                 onSelect={() => setOpenIndex(index)}
                 ctaStyle={ctaStyle}
+                ctaColorScheme={ctaColorScheme}
               />
             ))}
           </div>
