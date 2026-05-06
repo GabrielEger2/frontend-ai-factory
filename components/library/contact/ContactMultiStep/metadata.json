@@ -1,0 +1,165 @@
+{
+  "id": "contact-multi-step-01",
+  "name": "Contact Multi-Step Wizard",
+  "category": "contact",
+  "purpose": ["contact", "lead-capture"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "corporate", "minimal"],
+  "mood": ["professional", "trustworthy", "friendly"],
+  "layout": "split",
+  "density": "medium",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 240,
+      "optional": true
+    },
+    {
+      "name": "routes",
+      "type": "list",
+      "maxItems": 6,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "id", "type": "text", "maxLength": 32 },
+          { "name": "label", "type": "text", "maxLength": 40 },
+          { "name": "description", "type": "text", "maxLength": 160 },
+          {
+            "name": "icon",
+            "type": "text",
+            "optional": true,
+            "enum": [
+              "briefcase",
+              "help",
+              "users",
+              "heart",
+              "handshake",
+              "zap",
+              "user",
+              "mail",
+              "phone"
+            ]
+          },
+          {
+            "name": "nextStepEyebrow",
+            "type": "text",
+            "maxLength": 40,
+            "optional": true
+          },
+          {
+            "name": "nextStepHeadline",
+            "type": "text",
+            "maxLength": 100,
+            "optional": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "defaultStepTwoHeadline",
+      "type": "text",
+      "maxLength": 100,
+      "optional": true
+    },
+    {
+      "name": "namePlaceholder",
+      "type": "text",
+      "maxLength": 60,
+      "optional": true
+    },
+    {
+      "name": "emailPlaceholder",
+      "type": "text",
+      "maxLength": 60,
+      "optional": true
+    },
+    {
+      "name": "companyPlaceholder",
+      "type": "text",
+      "maxLength": 60,
+      "optional": true
+    },
+    {
+      "name": "phonePlaceholder",
+      "type": "text",
+      "maxLength": 30,
+      "optional": true
+    },
+    {
+      "name": "messagePlaceholder",
+      "type": "text",
+      "maxLength": 200,
+      "optional": true
+    },
+    { "name": "collectCompany", "type": "boolean", "optional": true },
+    { "name": "collectPhone", "type": "boolean", "optional": true },
+    { "name": "submitText", "type": "text", "maxLength": 40 },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "consentText",
+      "type": "text",
+      "maxLength": 200,
+      "optional": true
+    },
+    {
+      "name": "successHeadline",
+      "type": "text",
+      "maxLength": 100,
+      "optional": true
+    },
+    {
+      "name": "successDescription",
+      "type": "text",
+      "maxLength": 280,
+      "optional": true
+    },
+    {
+      "name": "stepLabels",
+      "type": "list",
+      "maxItems": 3,
+      "optional": true,
+      "itemSchema": { "type": "text", "maxLength": 24 }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-split-image-01",
+    "hero-hero-bold-editorial-01",
+    "testimonial-spotlight-quote-01",
+    "faq-tabbed-01",
+    "footer-pulse-01"
+  ],
+  "pairsPoorly": [
+    "contact-booking-embed-01",
+    "contact-contact-locations-map-01",
+    "contact-contact-shapes-form-01",
+    "contact-split-form-01",
+    "contact-support-tabs-01"
+  ],
+  "description": "A wizard-style routing contact form. Step 1 routes the visitor to the right department (sales / support / partnerships / careers); Step 2 collects identity (name, email, optional company / phone); Step 3 captures the message itself. A spring-driven progress bar marks position and AnimatePresence cross-fades between steps, ending in an inline success state.",
+  "descriptions": {
+    "descriptive": "Two-column section: left column carries the headline plus a vertical step list with checkmark transitions; right column hosts the wizard surface with a slim primary-tinted progress bar at the top. Step 1 renders department options as radio cards with iconified pills and a layoutId checkmark on the active card. Steps 2 and 3 use mono uppercase field labels and the SiteGen CtaButton for the final submit. The success state replaces the wizard with a confirmation panel and a 'send another' link.",
+    "usage": "Use as the primary contact section for any organization that legitimately routes inquiries across departments and wants the visitor to self-route before writing the message — sales, support, press, partnerships, careers. Avoid on small sites where one inbox handles everything; ContactSplitForm or ContactShapesForm are more honest. Pair with a calm hero and a single closing FAQ — don't stack two contact sections.",
+    "audienceFit": "Mid-to-late-stage B2B SaaS, marketplaces, larger agencies, professional services firms, and any organization with multi-department intake. Especially strong for buyers who feel friction filling a generic form and prefer a guided three-step path — the wizard reads as 'we'll respect your time' rather than 'fill out twelve fields'."
+  }
+}

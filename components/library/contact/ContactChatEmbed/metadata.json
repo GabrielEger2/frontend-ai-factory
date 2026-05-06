@@ -1,0 +1,151 @@
+{
+  "id": "contact-chat-embed-01",
+  "name": "Contact Chat Embed",
+  "category": "contact",
+  "purpose": ["contact", "lead-capture"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "minimal", "playful"],
+  "mood": ["friendly", "energetic", "trustworthy"],
+  "layout": "split",
+  "density": "medium",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 240,
+      "optional": true
+    },
+    {
+      "name": "provider",
+      "type": "text",
+      "enum": [
+        "whatsapp",
+        "intercom",
+        "crisp",
+        "messenger",
+        "telegram",
+        "livechat"
+      ]
+    },
+    {
+      "name": "providerLabel",
+      "type": "text",
+      "maxLength": 40,
+      "optional": true
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 40 },
+    { "name": "ctaUrl", "type": "url" },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "secondaryCtaText",
+      "type": "text",
+      "maxLength": 40,
+      "optional": true
+    },
+    { "name": "secondaryCtaUrl", "type": "url", "optional": true },
+    {
+      "name": "trustRows",
+      "type": "list",
+      "maxItems": 5,
+      "optional": true,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          {
+            "name": "icon",
+            "type": "text",
+            "optional": true,
+            "enum": ["clock", "shield", "users", "zap", "heart", "check"]
+          },
+          { "name": "label", "type": "text", "maxLength": 60 },
+          {
+            "name": "description",
+            "type": "text",
+            "maxLength": 140,
+            "optional": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "agent",
+      "type": "object",
+      "optional": true,
+      "fields": [
+        { "name": "name", "type": "text", "maxLength": 60 },
+        { "name": "avatarUrl", "type": "url", "optional": true },
+        {
+          "name": "role",
+          "type": "text",
+          "maxLength": 60,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "name": "statusLabel",
+      "type": "text",
+      "maxLength": 30,
+      "optional": true
+    },
+    { "name": "showStatusPulse", "type": "boolean", "optional": true },
+    {
+      "name": "previewMessages",
+      "type": "list",
+      "maxItems": 5,
+      "optional": true,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          {
+            "name": "from",
+            "type": "text",
+            "enum": ["agent", "visitor"]
+          },
+          { "name": "text", "type": "text", "maxLength": 160 }
+        ]
+      }
+    },
+    { "name": "showTypingIndicator", "type": "boolean", "optional": true }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-split-image-01",
+    "hero-hero-bold-editorial-01",
+    "testimonial-spotlight-quote-01",
+    "faq-accordion-01",
+    "footer-pulse-01"
+  ],
+  "pairsPoorly": [
+    "contact-booking-embed-01",
+    "contact-contact-locations-map-01",
+    "contact-contact-shapes-form-01",
+    "contact-split-form-01",
+    "contact-support-tabs-01"
+  ],
+  "description": "A chat-first contact section that pairs an editorial reassurance column with a stylised chat-panel preview. The preview animates an agent's first messages and a typing indicator; the primary CTA opens WhatsApp / Intercom / Crisp / Messenger / Telegram / live-chat in a new context.",
+  "descriptions": {
+    "descriptive": "Two-column split: left side carries the headline, supporting paragraph, and reassurance bullet list (median reply time, real-humans claim, multi-language coverage). Right side renders a rounded chat-panel mock — provider-tagged header with a pulsing online dot, an animated message stream from the named agent, a three-dot typing indicator, and a mock composer footer that turns into the live CTA. Stages messages with a 600ms reveal cadence; respects prefers-reduced-motion.",
+    "usage": "Use as the primary contact section when conversational support is the brand promise — DTC brands with WhatsApp, B2C SaaS with Intercom, agencies with live chat. Drop into /contact, /support, or above the footer on long marketing pages. Avoid on enterprise B2B where a structured form or booking embed reads more credible.",
+    "audienceFit": "Best fit for DTC and consumer brands, B2C SaaS, agencies, and any business whose buyers expect a quick reply from a real person. The named-agent treatment is especially strong for service businesses (clinics, real-estate, coaches) where 'who you'll be talking to' matters as much as the channel itself."
+  }
+}

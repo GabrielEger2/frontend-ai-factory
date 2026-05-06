@@ -673,13 +673,243 @@
       "contact-contact-locations-map-01",
       "contact-contact-shapes-form-01",
       "contact-split-form-01",
-      "contact-support-tabs-01"
+      "contact-support-tabs-01",
+      "contact-chat-embed-01",
+      "contact-multi-step-01"
     ],
     "description": "Calendar-embed contact section that hosts a Cal.com / Calendly / SavvyCal iframe alongside an editorial context column with what-to-expect bullets and an optional email-instead fallback CTA.",
     "descriptions": {
       "descriptive": "Two-column split: editorial copy and a What-to-expect bullet list (with check / clock / video icons) sit on the left; the booking iframe lives in a rounded surface on the right with a min-height so the available slots render without clipping. An optional fallback CTA below the bullets links to email when the visitor prefers it.",
       "usage": "Use as the primary booking surface for sales calls, intro consults, or content meetings. Drop it into /book, /demo, or /contact pages. Pair with a calm hero and a single closing FAQ — don't stack against another contact section.",
       "audienceFit": "Founders selling time, B2B SaaS demo flows, consultants with intro calls, conference speakers booking media, and any segment whose first conversion is a 30-minute call rather than a self-serve signup."
+    }
+  },
+  {
+    "id": "contact-chat-embed-01",
+    "name": "Contact Chat Embed",
+    "category": "contact",
+    "purpose": [
+      "contact",
+      "lead-capture"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "minimal",
+      "playful"
+    ],
+    "mood": [
+      "friendly",
+      "energetic",
+      "trustworthy"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 240,
+        "optional": true
+      },
+      {
+        "name": "provider",
+        "type": "text",
+        "enum": [
+          "whatsapp",
+          "intercom",
+          "crisp",
+          "messenger",
+          "telegram",
+          "livechat"
+        ]
+      },
+      {
+        "name": "providerLabel",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 40
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url"
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "secondaryCtaText",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "trustRows",
+        "type": "list",
+        "maxItems": 5,
+        "optional": true,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "icon",
+              "type": "text",
+              "optional": true,
+              "enum": [
+                "clock",
+                "shield",
+                "users",
+                "zap",
+                "heart",
+                "check"
+              ]
+            },
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 140,
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "agent",
+        "type": "object",
+        "optional": true,
+        "fields": [
+          {
+            "name": "name",
+            "type": "text",
+            "maxLength": 60
+          },
+          {
+            "name": "avatarUrl",
+            "type": "url",
+            "optional": true
+          },
+          {
+            "name": "role",
+            "type": "text",
+            "maxLength": 60,
+            "optional": true
+          }
+        ]
+      },
+      {
+        "name": "statusLabel",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "showStatusPulse",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "previewMessages",
+        "type": "list",
+        "maxItems": 5,
+        "optional": true,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "from",
+              "type": "text",
+              "enum": [
+                "agent",
+                "visitor"
+              ]
+            },
+            {
+              "name": "text",
+              "type": "text",
+              "maxLength": 160
+            }
+          ]
+        }
+      },
+      {
+        "name": "showTypingIndicator",
+        "type": "boolean",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-split-image-01",
+      "hero-hero-bold-editorial-01",
+      "testimonial-spotlight-quote-01",
+      "faq-accordion-01",
+      "footer-pulse-01"
+    ],
+    "pairsPoorly": [
+      "contact-booking-embed-01",
+      "contact-contact-locations-map-01",
+      "contact-contact-shapes-form-01",
+      "contact-split-form-01",
+      "contact-support-tabs-01"
+    ],
+    "description": "A chat-first contact section that pairs an editorial reassurance column with a stylised chat-panel preview. The preview animates an agent's first messages and a typing indicator; the primary CTA opens WhatsApp / Intercom / Crisp / Messenger / Telegram / live-chat in a new context.",
+    "descriptions": {
+      "descriptive": "Two-column split: left side carries the headline, supporting paragraph, and reassurance bullet list (median reply time, real-humans claim, multi-language coverage). Right side renders a rounded chat-panel mock — provider-tagged header with a pulsing online dot, an animated message stream from the named agent, a three-dot typing indicator, and a mock composer footer that turns into the live CTA. Stages messages with a 600ms reveal cadence; respects prefers-reduced-motion.",
+      "usage": "Use as the primary contact section when conversational support is the brand promise — DTC brands with WhatsApp, B2C SaaS with Intercom, agencies with live chat. Drop into /contact, /support, or above the footer on long marketing pages. Avoid on enterprise B2B where a structured form or booking embed reads more credible.",
+      "audienceFit": "Best fit for DTC and consumer brands, B2C SaaS, agencies, and any business whose buyers expect a quick reply from a real person. The named-agent treatment is especially strong for service businesses (clinics, real-estate, coaches) where 'who you'll be talking to' matters as much as the channel itself."
     }
   },
   {
@@ -791,6 +1021,230 @@
       "descriptive": "Clean, structured layout featuring an interactive map paired with organized location cards. Uses generous white space, refined typography, and a balanced grid system. Corporate styling with editorial touches creates a polished, magazine-like presentation with subtle shadows and precise alignment.",
       "usage": "Essential for businesses with multiple physical locations needing to help customers find nearby offices, stores, or service centers. Combines visual mapping with detailed contact information to reduce friction in the customer journey from discovery to visit.",
       "audienceFit": "Perfect for established enterprises, professional services firms, retail chains, and B2B companies with physical presence. Appeals to customers who value transparency and accessibility, particularly in finance, healthcare, consulting, and franchise operations."
+    }
+  },
+  {
+    "id": "contact-multi-step-01",
+    "name": "Contact Multi-Step Wizard",
+    "category": "contact",
+    "purpose": [
+      "contact",
+      "lead-capture"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "corporate",
+      "minimal"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "friendly"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 240,
+        "optional": true
+      },
+      {
+        "name": "routes",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "id",
+              "type": "text",
+              "maxLength": 32
+            },
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 40
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 160
+            },
+            {
+              "name": "icon",
+              "type": "text",
+              "optional": true,
+              "enum": [
+                "briefcase",
+                "help",
+                "users",
+                "heart",
+                "handshake",
+                "zap",
+                "user",
+                "mail",
+                "phone"
+              ]
+            },
+            {
+              "name": "nextStepEyebrow",
+              "type": "text",
+              "maxLength": 40,
+              "optional": true
+            },
+            {
+              "name": "nextStepHeadline",
+              "type": "text",
+              "maxLength": 100,
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "defaultStepTwoHeadline",
+        "type": "text",
+        "maxLength": 100,
+        "optional": true
+      },
+      {
+        "name": "namePlaceholder",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      },
+      {
+        "name": "emailPlaceholder",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      },
+      {
+        "name": "companyPlaceholder",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      },
+      {
+        "name": "phonePlaceholder",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "messagePlaceholder",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "collectCompany",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "collectPhone",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "submitText",
+        "type": "text",
+        "maxLength": 40
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "consentText",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "successHeadline",
+        "type": "text",
+        "maxLength": 100,
+        "optional": true
+      },
+      {
+        "name": "successDescription",
+        "type": "text",
+        "maxLength": 280,
+        "optional": true
+      },
+      {
+        "name": "stepLabels",
+        "type": "list",
+        "maxItems": 3,
+        "optional": true,
+        "itemSchema": {
+          "type": "text",
+          "maxLength": 24
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-split-image-01",
+      "hero-hero-bold-editorial-01",
+      "testimonial-spotlight-quote-01",
+      "faq-tabbed-01",
+      "footer-pulse-01"
+    ],
+    "pairsPoorly": [
+      "contact-booking-embed-01",
+      "contact-contact-locations-map-01",
+      "contact-contact-shapes-form-01",
+      "contact-split-form-01",
+      "contact-support-tabs-01"
+    ],
+    "description": "A wizard-style routing contact form. Step 1 routes the visitor to the right department (sales / support / partnerships / careers); Step 2 collects identity (name, email, optional company / phone); Step 3 captures the message itself. A spring-driven progress bar marks position and AnimatePresence cross-fades between steps, ending in an inline success state.",
+    "descriptions": {
+      "descriptive": "Two-column section: left column carries the headline plus a vertical step list with checkmark transitions; right column hosts the wizard surface with a slim primary-tinted progress bar at the top. Step 1 renders department options as radio cards with iconified pills and a layoutId checkmark on the active card. Steps 2 and 3 use mono uppercase field labels and the SiteGen CtaButton for the final submit. The success state replaces the wizard with a confirmation panel and a 'send another' link.",
+      "usage": "Use as the primary contact section for any organization that legitimately routes inquiries across departments and wants the visitor to self-route before writing the message — sales, support, press, partnerships, careers. Avoid on small sites where one inbox handles everything; ContactSplitForm or ContactShapesForm are more honest. Pair with a calm hero and a single closing FAQ — don't stack two contact sections.",
+      "audienceFit": "Mid-to-late-stage B2B SaaS, marketplaces, larger agencies, professional services firms, and any organization with multi-department intake. Especially strong for buyers who feel friction filling a generic form and prefer a guided three-step path — the wizard reads as 'we'll respect your time' rather than 'fill out twelve fields'."
     }
   },
   {
@@ -1119,7 +1573,9 @@
       "contact-contact-locations-map-01",
       "contact-contact-shapes-form-01",
       "contact-booking-embed-01",
-      "contact-support-tabs-01"
+      "contact-support-tabs-01",
+      "contact-chat-embed-01",
+      "contact-multi-step-01"
     ],
     "description": "Practical split-layout contact section: full form on the left (name, email, optional company and topic select, message), structured info column on the right with phone, email, WhatsApp, address, and a tabular hours table. Higher-density counterpart to ContactShapesForm.",
     "descriptions": {
@@ -1277,7 +1733,9 @@
       "contact-contact-locations-map-01",
       "contact-contact-shapes-form-01",
       "contact-split-form-01",
-      "contact-booking-embed-01"
+      "contact-booking-embed-01",
+      "contact-chat-embed-01",
+      "contact-multi-step-01"
     ],
     "description": "Routing-style contact section with category tabs (Sales / Support / Press / Partnerships). Each tab surfaces its own channel list (email, phone, chat, booking link) and an optional per-tab CTA — the visitor self-routes instead of submitting one generic form.",
     "descriptions": {
@@ -2897,6 +3355,100 @@
     }
   },
   {
+    "id": "faq-categorized-01",
+    "name": "FAQ Categorized",
+    "category": "faq",
+    "purpose": [
+      "faq"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "editorial",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "calm"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 160
+      },
+      {
+        "name": "categories",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 32
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 160,
+              "optional": true
+            },
+            {
+              "name": "questions",
+              "type": "list",
+              "maxItems": 8,
+              "itemSchema": {
+                "type": "object",
+                "fields": [
+                  {
+                    "name": "question",
+                    "type": "text",
+                    "maxLength": 140
+                  },
+                  {
+                    "name": "answer",
+                    "type": "text",
+                    "maxLength": 600
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [],
+    "pairsPoorly": [
+      "faq-accordion-01",
+      "faq-minimal-01",
+      "faq-solutions-01",
+      "faq-tabbed-01"
+    ],
+    "description": "An FAQ section with a vertical category rail and a paired question accordion, ideal for help centers and policy hubs that group naturally into topic buckets. The sidebar collapses to a horizontal scroll strip below md, and category switching cross-fades the question list with a spring-driven active-state marker.",
+    "descriptions": {
+      "descriptive": "Two-column editorial layout: a slim left rail with category labels and live question counts, paired with a divider-line accordion of the active category's questions. Active-state is communicated by a spring-physics primary marker rail and a tinted question count chip, with a cross-fade transition between categories.",
+      "usage": "Use when an FAQ library exceeds twelve questions and groups cleanly into three to six distinct topic areas — Billing, Security, Implementation, etc. The sidebar acts as a content map, helping visitors locate the right bucket before they read individual questions.",
+      "audienceFit": "Strong fit for B2B SaaS, fintech, and regulated industries where customers ask category-shaped questions (legal, security, compliance, billing) and value being able to mentally pre-filter before reading. Works equally well on dedicated help-center pages and as the bottom-of-funnel section on long pricing or product pages."
+    }
+  },
+  {
     "id": "faq-minimal-01",
     "name": "FAQ Minimal",
     "category": "faq",
@@ -2965,6 +3517,101 @@
       "descriptive": "Clean, text-focused layout with generous whitespace and minimal visual hierarchy. Features simple typography, subtle dividers, and understated expand/collapse indicators. The editorial approach prioritizes readability with calm spacing and professional restraint, avoiding decorative elements.",
       "usage": "Perfect for presenting frequently asked questions in a scannable, digestible format. Users can quickly locate relevant information through clear question headings and expandable answers. Ideal for support pages, product explanations, or policy clarifications.",
       "audienceFit": "Appeals to established businesses, professional services, and B2B companies that value credibility over flashiness. Resonates with audiences seeking straightforward information without distractions, particularly in finance, consulting, healthcare, or enterprise software sectors."
+    }
+  },
+  {
+    "id": "faq-search-01",
+    "name": "FAQ Search",
+    "category": "faq",
+    "purpose": [
+      "faq"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "minimal",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "friendly"
+    ],
+    "layout": "centered",
+    "density": "medium",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 160
+      },
+      {
+        "name": "searchPlaceholder",
+        "type": "text",
+        "maxLength": 80,
+        "optional": true
+      },
+      {
+        "name": "emptyStateText",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "items",
+        "type": "list",
+        "maxItems": 24,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "question",
+              "type": "text",
+              "maxLength": 140
+            },
+            {
+              "name": "answer",
+              "type": "text",
+              "maxLength": 600
+            },
+            {
+              "name": "tags",
+              "type": "list",
+              "maxItems": 8,
+              "optional": true,
+              "itemSchema": {
+                "type": "text",
+                "maxLength": 24
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [],
+    "pairsPoorly": [
+      "faq-accordion-01",
+      "faq-minimal-01",
+      "faq-solutions-01",
+      "faq-tabbed-01"
+    ],
+    "description": "A search-driven FAQ section with live keyword filtering and inline match highlighting, ideal for help centers and large knowledge bases where customers need to find specific answers fast. Combines a prominent search bar with an accordion result list and a graceful empty state.",
+    "descriptions": {
+      "descriptive": "Full-width section anchored by a single rounded search input with a leading magnifier icon and inline clear button. Below sits a divider-line accordion that filters live as the user types, with matched substrings highlighted in a subtle primary tint inside both questions and answers.",
+      "usage": "Best for product help centers, support pages, and policy hubs where the FAQ list grows past ten items. Use when scanning is the primary user task — the search-first pattern outperforms category browsing once a library exceeds roughly twelve questions.",
+      "audienceFit": "Ideal for SaaS platforms, fintech, and B2B tools whose customers arrive with a specific question already in mind. Appeals to power users and admins who prefer typing a keyword over scrolling, and to support teams who want to deflect tickets without forcing visitors to read every entry."
     }
   },
   {

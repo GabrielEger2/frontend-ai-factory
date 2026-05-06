@@ -1,0 +1,84 @@
+{
+  "id": "faq-categorized-01",
+  "name": "FAQ Categorized",
+  "category": "faq",
+  "purpose": ["faq"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["modern", "editorial", "corporate"],
+  "mood": ["professional", "trustworthy", "calm"],
+  "layout": "split",
+  "density": "medium",
+  "imageWeight": 0,
+  "slots": [
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "maxLength": 160
+    },
+    {
+      "name": "categories",
+      "type": "list",
+      "maxItems": 6,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          {
+            "name": "label",
+            "type": "text",
+            "maxLength": 32
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "maxLength": 160,
+            "optional": true
+          },
+          {
+            "name": "questions",
+            "type": "list",
+            "maxItems": 8,
+            "itemSchema": {
+              "type": "object",
+              "fields": [
+                {
+                  "name": "question",
+                  "type": "text",
+                  "maxLength": 140
+                },
+                {
+                  "name": "answer",
+                  "type": "text",
+                  "maxLength": 600
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [],
+  "pairsPoorly": [
+    "faq-accordion-01",
+    "faq-minimal-01",
+    "faq-solutions-01",
+    "faq-tabbed-01"
+  ],
+  "description": "An FAQ section with a vertical category rail and a paired question accordion, ideal for help centers and policy hubs that group naturally into topic buckets. The sidebar collapses to a horizontal scroll strip below md, and category switching cross-fades the question list with a spring-driven active-state marker.",
+  "descriptions": {
+    "descriptive": "Two-column editorial layout: a slim left rail with category labels and live question counts, paired with a divider-line accordion of the active category's questions. Active-state is communicated by a spring-physics primary marker rail and a tinted question count chip, with a cross-fade transition between categories.",
+    "usage": "Use when an FAQ library exceeds twelve questions and groups cleanly into three to six distinct topic areas — Billing, Security, Implementation, etc. The sidebar acts as a content map, helping visitors locate the right bucket before they read individual questions.",
+    "audienceFit": "Strong fit for B2B SaaS, fintech, and regulated industries where customers ask category-shaped questions (legal, security, compliance, billing) and value being able to mentally pre-filter before reading. Works equally well on dedicated help-center pages and as the bottom-of-funnel section on long pricing or product pages."
+  }
+}

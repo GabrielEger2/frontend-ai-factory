@@ -19,7 +19,9 @@ export { default as CarouselTestimonialAvatarPeek } from "./carousel/CarouselTes
 
 // Contact
 export { default as ContactBookingEmbed } from "./contact/ContactBookingEmbed";
+export { default as ContactChatEmbed } from "./contact/ContactChatEmbed";
 export { default as ContactLocationsMap } from "./contact/ContactLocationsMap";
+export { default as ContactMultiStep } from "./contact/ContactMultiStep";
 export { default as ContactShapesForm } from "./contact/ContactShapesForm";
 export { default as ContactSplitForm } from "./contact/ContactSplitForm";
 export { default as ContactSupportTabs } from "./contact/ContactSupportTabs";
@@ -36,7 +38,9 @@ export { default as NewsletterCapture } from "./cta/NewsletterCapture";
 
 // FAQ
 export { default as FaqAccordion } from "./faq/FaqAccordion";
+export { default as FaqCategorized } from "./faq/FaqCategorized";
 export { default as FaqMinimal } from "./faq/FaqMinimal";
+export { default as FaqSearch } from "./faq/FaqSearch";
 export { default as FaqSolutions } from "./faq/FaqSolutions";
 export { default as FaqTabbed } from "./faq/FaqTabbed";
 
@@ -132,7 +136,9 @@ import CarouselHorizontalScroll from "./carousel/CarouselHorizontalScroll";
 import CarouselSwipe from "./carousel/CarouselSwipe";
 import CarouselTestimonialAvatarPeek from "./carousel/CarouselTestimonialAvatarPeek";
 import ContactBookingEmbed from "./contact/ContactBookingEmbed";
+import ContactChatEmbed from "./contact/ContactChatEmbed";
 import ContactLocationsMap from "./contact/ContactLocationsMap";
+import ContactMultiStep from "./contact/ContactMultiStep";
 import ContactShapesForm from "./contact/ContactShapesForm";
 import ContactSplitForm from "./contact/ContactSplitForm";
 import ContactSupportTabs from "./contact/ContactSupportTabs";
@@ -145,7 +151,9 @@ import CtaMinimalStrip from "./cta/CtaMinimalStrip";
 import CtaStickyBanner from "./cta/CtaStickyBanner";
 import NewsletterCapture from "./cta/NewsletterCapture";
 import FaqAccordion from "./faq/FaqAccordion";
+import FaqCategorized from "./faq/FaqCategorized";
 import FaqMinimal from "./faq/FaqMinimal";
+import FaqSearch from "./faq/FaqSearch";
 import FaqSolutions from "./faq/FaqSolutions";
 import FaqTabbed from "./faq/FaqTabbed";
 import FooterColumnsSocial from "./footers/FooterColumnsSocial";
@@ -225,8 +233,10 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "carousel-swipe-01": CarouselSwipe,
   "carousel-testimonial-avatar-peek-01": CarouselTestimonialAvatarPeek,
   "contact-booking-embed-01": ContactBookingEmbed,
+  "contact-chat-embed-01": ContactChatEmbed,
   "contact-contact-locations-map-01": ContactLocationsMap,
   "contact-contact-shapes-form-01": ContactShapesForm,
+  "contact-multi-step-01": ContactMultiStep,
   "contact-split-form-01": ContactSplitForm,
   "contact-support-tabs-01": ContactSupportTabs,
   "cta-countdown-01": CtaCountdown,
@@ -238,7 +248,9 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "cta-newsletter-capture-01": NewsletterCapture,
   "cta-sticky-banner-01": CtaStickyBanner,
   "faq-accordion-01": FaqAccordion,
+  "faq-categorized-01": FaqCategorized,
   "faq-minimal-01": FaqMinimal,
+  "faq-search-01": FaqSearch,
   "faq-solutions-01": FaqSolutions,
   "faq-tabbed-01": FaqTabbed,
   "footer-columns-social-01": FooterColumnsSocial,

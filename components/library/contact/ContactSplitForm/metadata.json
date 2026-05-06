@@ -123,7 +123,9 @@
     "contact-contact-locations-map-01",
     "contact-contact-shapes-form-01",
     "contact-booking-embed-01",
-    "contact-support-tabs-01"
+    "contact-support-tabs-01",
+    "contact-chat-embed-01",
+    "contact-multi-step-01"
   ],
   "description": "Practical split-layout contact section: full form on the left (name, email, optional company and topic select, message), structured info column on the right with phone, email, WhatsApp, address, and a tabular hours table. Higher-density counterpart to ContactShapesForm.",
   "descriptions": {

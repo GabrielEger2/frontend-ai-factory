@@ -94,7 +94,9 @@
     "contact-contact-locations-map-01",
     "contact-contact-shapes-form-01",
     "contact-split-form-01",
-    "contact-booking-embed-01"
+    "contact-booking-embed-01",
+    "contact-chat-embed-01",
+    "contact-multi-step-01"
   ],
   "description": "Routing-style contact section with category tabs (Sales / Support / Press / Partnerships). Each tab surfaces its own channel list (email, phone, chat, booking link) and an optional per-tab CTA — the visitor self-routes instead of submitting one generic form.",
   "descriptions": {

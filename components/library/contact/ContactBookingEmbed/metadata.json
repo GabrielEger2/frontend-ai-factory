@@ -81,7 +81,9 @@
     "contact-contact-locations-map-01",
     "contact-contact-shapes-form-01",
     "contact-split-form-01",
-    "contact-support-tabs-01"
+    "contact-support-tabs-01",
+    "contact-chat-embed-01",
+    "contact-multi-step-01"
   ],
   "description": "Calendar-embed contact section that hosts a Cal.com / Calendly / SavvyCal iframe alongside an editorial context column with what-to-expect bullets and an optional email-instead fallback CTA.",
   "descriptions": {
