@@ -81,6 +81,9 @@ export const CANONICAL_PURPOSE: readonly string[] = [
   "story",
   "location-display",
   "magazine-opener",
+  "pricing",
+  "gallery",
+  "comparison",
 ];
 
 export const CANONICAL_CATEGORY: readonly string[] = [
@@ -96,6 +99,9 @@ export const CANONICAL_CATEGORY: readonly string[] = [
   "carousel",
   "layout/grid",
   "layout/split",
+  "pricing",
+  "team",
+  "gallery",
 ];
 
 export const MIN_TAG_FLOOR = 3;

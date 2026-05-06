@@ -1,0 +1,104 @@
+{
+  "id": "pricing-single-price-01",
+  "name": "Pricing Single Price",
+  "category": "pricing",
+  "purpose": ["pricing", "services", "products", "cta"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["editorial", "modern", "luxury", "minimal"],
+  "mood": ["elegant", "trustworthy", "professional"],
+  "layout": "split",
+  "density": "medium",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "label", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 380,
+      "optional": true
+    },
+    {
+      "name": "highlights",
+      "type": "list",
+      "maxItems": 6,
+      "optional": true,
+      "itemSchema": { "type": "text", "maxLength": 80 }
+    },
+    {
+      "name": "proof",
+      "type": "text",
+      "maxLength": 140,
+      "optional": true
+    },
+    { "name": "packageName", "type": "text", "maxLength": 40 },
+    {
+      "name": "packageNote",
+      "type": "text",
+      "maxLength": 40,
+      "optional": true
+    },
+    { "name": "price", "type": "text", "maxLength": 24 },
+    {
+      "name": "cadence",
+      "type": "text",
+      "maxLength": 24,
+      "optional": true
+    },
+    {
+      "name": "originalPrice",
+      "type": "text",
+      "maxLength": 24,
+      "optional": true
+    },
+    {
+      "name": "discountBadge",
+      "type": "text",
+      "maxLength": 40,
+      "optional": true
+    },
+    {
+      "name": "inclusions",
+      "type": "list",
+      "maxItems": 8,
+      "itemSchema": { "type": "text", "maxLength": 100 }
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 30 },
+    { "name": "ctaUrl", "type": "url" },
+    {
+      "name": "secondaryCtaText",
+      "type": "text",
+      "maxLength": 40,
+      "optional": true
+    },
+    {
+      "name": "secondaryCtaUrl",
+      "type": "url",
+      "optional": true
+    },
+    { "name": "footnote", "type": "text", "maxLength": 220, "optional": true }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "faq-minimal-01",
+    "faq-accordion-01",
+    "testimonial-spotlight-quote-01",
+    "stats-kpi-grid-01"
+  ],
+  "pairsPoorly": [
+    "pricing-tier-cards-01",
+    "pricing-comparison-table-01",
+    "layout-pricing-tiers-01"
+  ],
+  "description": "Editorial split with long-form copy on the left and one anchored price card on the right. Designed for agency packages, single-product apps, or annual flat-rate deals where comparing tiers is theatre. The card sticks while the body scrolls past it.",
+  "descriptions": {
+    "descriptive": "Asymmetric 3-of-5 / 2-of-5 grid: a left-aligned editorial column with headline, body, two-up highlight bullets, and a quoted proof line; a sticky dark price card on the right with monospaced headline price, optional original-price strike-through, an inclusion checklist, primary CTA, and an optional secondary text link. Soft primary tint glow in the card corner, no neon or rainbow gradients.",
+    "usage": "Use when there is exactly one offer to sell — productised services, agency retainers, single-app one-time fees, course bundles, or founders-rate annual deals. Goes well after a long-form features section and before FAQ. Avoid placing alongside a tier-card or comparison-table block; the page should commit to one mental model.",
+    "audienceFit": "Boutique agencies, premium one-product apps, course creators, B2B services with a single flagship deliverable. Best for buyers who already know what they want and need price + scope at once."
+  }
+}

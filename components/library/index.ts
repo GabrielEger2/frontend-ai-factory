@@ -76,6 +76,13 @@ export { default as IconListSplit } from "./layouts/split/IconListSplit";
 export { default as ImageText } from "./layouts/split/ImageText";
 export { default as StatementSplit } from "./layouts/split/StatementSplit";
 
+// Pricing
+export { default as PricingComparisonTable } from "./pricing/PricingComparisonTable";
+export { default as PricingFreemiumLadder } from "./pricing/PricingFreemiumLadder";
+export { default as PricingMonthlyAnnualToggle } from "./pricing/PricingMonthlyAnnualToggle";
+export { default as PricingSinglePrice } from "./pricing/PricingSinglePrice";
+export { default as PricingTierCards } from "./pricing/PricingTierCards";
+
 // Motion
 export { default as MotionMarquee } from "./motion/MotionMarquee";
 export { default as MotionScrollNarrative } from "./motion/MotionScrollNarrative";
@@ -154,6 +161,11 @@ import EditorialFramedSplit from "./layouts/split/EditorialFramedSplit";
 import IconListSplit from "./layouts/split/IconListSplit";
 import ImageText from "./layouts/split/ImageText";
 import StatementSplit from "./layouts/split/StatementSplit";
+import PricingComparisonTable from "./pricing/PricingComparisonTable";
+import PricingFreemiumLadder from "./pricing/PricingFreemiumLadder";
+import PricingMonthlyAnnualToggle from "./pricing/PricingMonthlyAnnualToggle";
+import PricingSinglePrice from "./pricing/PricingSinglePrice";
+import PricingTierCards from "./pricing/PricingTierCards";
 import MotionMarquee from "./motion/MotionMarquee";
 import MotionScrollNarrative from "./motion/MotionScrollNarrative";
 import ParallaxContent from "./motion/ParallaxContent";
@@ -237,6 +249,11 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "layout-stackedsplit-01": StackedSplit,
   "layout-statementsplit-01": StatementSplit,
   "motion-marquee-01": MotionMarquee,
+  "pricing-comparison-table-01": PricingComparisonTable,
+  "pricing-freemium-ladder-01": PricingFreemiumLadder,
+  "pricing-monthly-annual-toggle-01": PricingMonthlyAnnualToggle,
+  "pricing-single-price-01": PricingSinglePrice,
+  "pricing-tier-cards-01": PricingTierCards,
   "motion-scroll-narrative-01": MotionScrollNarrative,
   "navbar-dock-01": NavbarDock,
   "navbar-mega-panel-01": NavbarMegaPanel,

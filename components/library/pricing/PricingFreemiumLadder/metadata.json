@@ -1,0 +1,75 @@
+{
+  "id": "pricing-freemium-ladder-01",
+  "name": "Pricing Freemium Ladder",
+  "category": "pricing",
+  "purpose": ["pricing", "products", "story"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "editorial", "playful", "bold"],
+  "mood": ["energetic", "friendly", "trustworthy"],
+  "layout": "asymmetric",
+  "density": "medium",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "label", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 220,
+      "optional": true
+    },
+    {
+      "name": "steps",
+      "type": "list",
+      "maxItems": 5,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "name", "type": "text", "maxLength": 30 },
+          { "name": "price", "type": "text", "maxLength": 20 },
+          {
+            "name": "cadence",
+            "type": "text",
+            "maxLength": 24,
+            "optional": true
+          },
+          {
+            "name": "audience",
+            "type": "text",
+            "maxLength": 80,
+            "optional": true
+          },
+          {
+            "name": "unlocks",
+            "type": "list",
+            "maxItems": 5,
+            "itemSchema": { "type": "text", "maxLength": 80 }
+          },
+          { "name": "ctaText", "type": "text", "maxLength": 28 },
+          { "name": "ctaUrl", "type": "url" },
+          { "name": "recommended", "type": "boolean", "optional": true }
+        ]
+      }
+    },
+    { "name": "footnote", "type": "text", "maxLength": 200, "optional": true }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "faq-accordion-01",
+    "faq-minimal-01",
+    "cta-minimal-strip-01",
+    "stats-kpi-grid-01"
+  ],
+  "pairsPoorly": ["pricing-tier-cards-01", "layout-pricing-tiers-01"],
+  "description": "A staircase visualization where each tier sits one rung higher than the previous, connected by a dashed climb line. Reads as a journey instead of three brochure cards — useful for products with a true freemium funnel where the buyer needs to see the climb.",
+  "descriptions": {
+    "descriptive": "Cards positioned absolutely on a fixed-height stage so each step rises 80px above the previous one and shifts ~17% to the right. A dashed diagonal SVG line traces the climb. The recommended step inverts to a dark surface and lifts into a higher z-index, with a small primary 'Start here' pill that anchors the eye.",
+    "usage": "Use on freemium SaaS, creator tools, or developer products where the value of the funnel is the climb itself. Lands well between problem framing and FAQ; pairs poorly with the brochure-card pricing variants — pick one mental model per page.",
+    "audienceFit": "Self-serve buyers, indie hackers, and developer-tooling evaluators who appreciate seeing the full progression at once. Suits playful and bold brands; less suited to procurement-led B2B where a flat comparison table reads faster."
+  }
+}
