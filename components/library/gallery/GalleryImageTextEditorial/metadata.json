@@ -1,0 +1,78 @@
+{
+  "id": "gallery-image-text-editorial-01",
+  "name": "Image-Text Editorial Gallery",
+  "category": "gallery",
+  "purpose": ["gallery", "story", "showcase", "portfolio"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["editorial", "modern", "luxury"],
+  "mood": ["elegant", "calm", "trustworthy"],
+  "layout": "split",
+  "density": "low",
+  "imageWeight": 0.55,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 60, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 240,
+      "optional": true
+    },
+    {
+      "name": "entries",
+      "type": "list",
+      "maxItems": 6,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          {
+            "name": "label",
+            "type": "text",
+            "maxLength": 30,
+            "optional": true
+          },
+          { "name": "heading", "type": "text", "maxLength": 100 },
+          { "name": "body", "type": "text", "maxLength": 600 },
+          { "name": "image", "type": "image", "aspectRatio": "4:5" },
+          { "name": "imageAlt", "type": "text", "maxLength": 120 },
+          {
+            "name": "imageCaption",
+            "type": "text",
+            "maxLength": 120,
+            "optional": true
+          },
+          {
+            "name": "imageAspect",
+            "type": "text",
+            "optional": true,
+            "enum": ["4:5", "3:4", "1:1", "3:2", "16:9"]
+          }
+        ]
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-bakery-editorial-01",
+    "hero-hero-bold-editorial-01",
+    "testimonial-spotlight-quote-01",
+    "cta-cta-editorial-split-01",
+    "footer-mega-01"
+  ],
+  "pairsPoorly": [
+    "gallery-masonry-01",
+    "gallery-portfolio-strip-01",
+    "layout-zigzag-alternating-split-01"
+  ],
+  "description": "Magazine-style alternating image-and-caption spread. Each entry zig-zags the image side and applies a small vertical offset so the column drifts like an editorial layout. Serif headlines pair with sans-serif body.",
+  "descriptions": {
+    "descriptive": "A 12-column grid where the image takes 7 columns and the copy takes 5, alternating sides per entry. The image column carries a small translate-y offset (positive on reversed rows, negative on default rows) so the page drifts vertically and avoids the generic flush-row rhythm. A 1px hairline rule sits above each entry label, evoking magazine separators. Headings use the serif stack; body and labels stay in sans for contrast.",
+    "usage": "Use as the deep-narrative section on portfolio sites, brand storytelling pages, magazine archives, hospitality experience pages, and craft-led commerce. Place after a brand-statement hero. Avoid stacking with another zigzag layout (ZigzagAlternatingSplit) — they read as the same beat repeated.",
+    "audienceFit": "Editorial brands, hotels and restaurants, fashion houses with story-led marketing, longform-friendly portfolios, conferences with documented programming. Suits visitors who came to read, not to scan."
+  }
+}

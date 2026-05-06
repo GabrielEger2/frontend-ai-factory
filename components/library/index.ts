@@ -83,6 +83,13 @@ export { default as PricingMonthlyAnnualToggle } from "./pricing/PricingMonthlyA
 export { default as PricingSinglePrice } from "./pricing/PricingSinglePrice";
 export { default as PricingTierCards } from "./pricing/PricingTierCards";
 
+// Gallery
+export { default as GalleryCaseStudy } from "./gallery/GalleryCaseStudy";
+export { default as GalleryImageTextEditorial } from "./gallery/GalleryImageTextEditorial";
+export { default as GalleryLightboxGrid } from "./gallery/GalleryLightboxGrid";
+export { default as GalleryMasonry } from "./gallery/GalleryMasonry";
+export { default as GalleryPortfolioStrip } from "./gallery/GalleryPortfolioStrip";
+
 // Motion
 export { default as MotionMarquee } from "./motion/MotionMarquee";
 export { default as MotionScrollNarrative } from "./motion/MotionScrollNarrative";
@@ -166,6 +173,11 @@ import PricingFreemiumLadder from "./pricing/PricingFreemiumLadder";
 import PricingMonthlyAnnualToggle from "./pricing/PricingMonthlyAnnualToggle";
 import PricingSinglePrice from "./pricing/PricingSinglePrice";
 import PricingTierCards from "./pricing/PricingTierCards";
+import GalleryCaseStudy from "./gallery/GalleryCaseStudy";
+import GalleryImageTextEditorial from "./gallery/GalleryImageTextEditorial";
+import GalleryLightboxGrid from "./gallery/GalleryLightboxGrid";
+import GalleryMasonry from "./gallery/GalleryMasonry";
+import GalleryPortfolioStrip from "./gallery/GalleryPortfolioStrip";
 import MotionMarquee from "./motion/MotionMarquee";
 import MotionScrollNarrative from "./motion/MotionScrollNarrative";
 import ParallaxContent from "./motion/ParallaxContent";
@@ -254,6 +266,11 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "pricing-monthly-annual-toggle-01": PricingMonthlyAnnualToggle,
   "pricing-single-price-01": PricingSinglePrice,
   "pricing-tier-cards-01": PricingTierCards,
+  "gallery-case-study-01": GalleryCaseStudy,
+  "gallery-image-text-editorial-01": GalleryImageTextEditorial,
+  "gallery-lightbox-grid-01": GalleryLightboxGrid,
+  "gallery-masonry-01": GalleryMasonry,
+  "gallery-portfolio-strip-01": GalleryPortfolioStrip,
   "motion-scroll-narrative-01": MotionScrollNarrative,
   "navbar-dock-01": NavbarDock,
   "navbar-mega-panel-01": NavbarMegaPanel,

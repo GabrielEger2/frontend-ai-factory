@@ -1,0 +1,77 @@
+{
+  "id": "gallery-lightbox-grid-01",
+  "name": "Lightbox Grid Gallery",
+  "category": "gallery",
+  "purpose": ["gallery", "portfolio", "showcase", "products"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["modern", "minimal", "editorial"],
+  "mood": ["professional", "elegant", "calm"],
+  "layout": "grid",
+  "density": "medium",
+  "imageWeight": 0.75,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 220,
+      "optional": true
+    },
+    {
+      "name": "columns",
+      "type": "text",
+      "optional": true,
+      "enum": ["2", "3", "4"]
+    },
+    {
+      "name": "items",
+      "type": "list",
+      "maxItems": 24,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "image", "type": "image", "aspectRatio": "1:1" },
+          { "name": "imageAlt", "type": "text", "maxLength": 120 },
+          {
+            "name": "fullImage",
+            "type": "image",
+            "aspectRatio": "auto",
+            "optional": true
+          },
+          {
+            "name": "caption",
+            "type": "text",
+            "maxLength": 200,
+            "optional": true
+          },
+          {
+            "name": "meta",
+            "type": "text",
+            "maxLength": 80,
+            "optional": true
+          }
+        ]
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-spotlight-center-01",
+    "hero-grid-gallery-01",
+    "cta-cta-editorial-split-01",
+    "footer-pulse-01"
+  ],
+  "pairsPoorly": ["gallery-masonry-01", "carousel-horizontal-scroll-01"],
+  "description": "Uniform aspect-square thumbnail grid with a keyboard-driven lightbox modal. Click opens; Escape closes; Arrow keys navigate. Body scroll locks during overlay.",
+  "descriptions": {
+    "descriptive": "A clean square-aspect grid (2, 3, or 4 columns) where each tile is a button — no decorative chrome, just a hover scale and a focusable zoom-in glyph. Click opens a 5xl-wide lightbox with backdrop-blur, prev/next chevrons, caption + meta, and a focus-trapped close. Keyboard navigation (Esc, ←, →) is wired into a single window listener that mounts only while the modal is open.",
+    "usage": "Use on product photo galleries, conference recap pages, event lookbooks, real-estate listings, and any segment where the click-to-zoom interaction is part of the buyer's evaluation. Place after a hero or testimonial section. Avoid pairing with another gallery in the same flow — visitors only need one viewing pattern.",
+    "audienceFit": "E-commerce with high product photography standards, real-estate listings, conference and venue marketing, photographer client galleries, archival showcase pages."
+  }
+}

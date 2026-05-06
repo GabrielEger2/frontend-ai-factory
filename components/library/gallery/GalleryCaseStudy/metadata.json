@@ -1,0 +1,104 @@
+{
+  "id": "gallery-case-study-01",
+  "name": "Case Study Gallery",
+  "category": "gallery",
+  "purpose": ["gallery", "portfolio", "showcase", "story", "stats"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["editorial", "modern", "corporate"],
+  "mood": ["professional", "trustworthy", "elegant"],
+  "layout": "split",
+  "density": "low",
+  "imageWeight": 0.5,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 60, "optional": true },
+    { "name": "title", "type": "text", "maxLength": 100 },
+    { "name": "summary", "type": "text", "maxLength": 240 },
+    { "name": "heroImage", "type": "image", "aspectRatio": "16:9" },
+    { "name": "heroImageAlt", "type": "text", "maxLength": 120 },
+    {
+      "name": "meta",
+      "type": "list",
+      "maxItems": 6,
+      "optional": true,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "label", "type": "text", "maxLength": 20 },
+          { "name": "value", "type": "text", "maxLength": 50 }
+        ]
+      }
+    },
+    {
+      "name": "chapters",
+      "type": "list",
+      "maxItems": 5,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "label", "type": "text", "maxLength": 24 },
+          { "name": "heading", "type": "text", "maxLength": 100 },
+          { "name": "body", "type": "text", "maxLength": 600 },
+          {
+            "name": "image",
+            "type": "image",
+            "aspectRatio": "3:2",
+            "optional": true
+          },
+          {
+            "name": "imageAlt",
+            "type": "text",
+            "maxLength": 120,
+            "optional": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "metrics",
+      "type": "list",
+      "maxItems": 4,
+      "optional": true,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "value", "type": "text", "maxLength": 20 },
+          { "name": "label", "type": "text", "maxLength": 80 }
+        ]
+      }
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 30, "optional": true },
+    { "name": "ctaUrl", "type": "url", "optional": true },
+    {
+      "name": "ctaVariant",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-hero-bold-editorial-01",
+    "hero-asymmetric-stack-01",
+    "testimonial-spotlight-quote-01",
+    "stats-count-up-01",
+    "cta-cta-editorial-split-01"
+  ],
+  "pairsPoorly": ["gallery-masonry-01", "gallery-portfolio-strip-01"],
+  "description": "Long-form case study with hero image, project meta strip, alternating zig-zag chapters (problem / approach / result), and an organic-numbers metric band. Generous editorial spacing throughout.",
+  "descriptions": {
+    "descriptive": "Hero image at 16:9 anchors a wide centered column. Below, an underlined meta strip lists client / role / year / team in mono caps. Three chapters alternate image-left then image-right at lg breakpoint and stack on mobile. A dark metric band lifts the outcomes in mono numerals — designed for organic numbers (47.2 percent, 3,847) rather than rounded vanity stats. Closing CTA is left-aligned to keep the editorial rhythm.",
+    "usage": "Use as a standalone case study page or as the centerpiece of a portfolio detail route. Place after a hero brand-statement and before related work or a closing CTA. Avoid pairing with a masonry or portfolio-strip gallery on the same page — those serve the index view, not the deep dive.",
+    "audienceFit": "B2B agencies showing client work, design studios with longer narratives, consultancies with quantified outcomes, internal-tool teams documenting transformation projects. Suits readers who want depth, not a gallery wall."
+  }
+}

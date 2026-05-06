@@ -1,0 +1,78 @@
+{
+  "id": "gallery-masonry-01",
+  "name": "Masonry Gallery",
+  "category": "gallery",
+  "purpose": ["gallery", "portfolio", "showcase"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["editorial", "modern", "playful", "bold"],
+  "mood": ["energetic", "elegant", "friendly"],
+  "layout": "asymmetric",
+  "density": "medium",
+  "imageWeight": 0.85,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 220,
+      "optional": true
+    },
+    {
+      "name": "columns",
+      "type": "text",
+      "optional": true,
+      "enum": ["3", "4"]
+    },
+    {
+      "name": "items",
+      "type": "list",
+      "maxItems": 18,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "image", "type": "image", "aspectRatio": "auto" },
+          { "name": "imageAlt", "type": "text", "maxLength": 120 },
+          {
+            "name": "title",
+            "type": "text",
+            "maxLength": 80,
+            "optional": true
+          },
+          {
+            "name": "category",
+            "type": "text",
+            "maxLength": 30,
+            "optional": true
+          },
+          {
+            "name": "shape",
+            "type": "text",
+            "optional": true,
+            "enum": ["default", "tall", "wide"]
+          },
+          { "name": "href", "type": "url", "optional": true }
+        ]
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-bakery-editorial-01",
+    "hero-grid-gallery-01",
+    "cta-cta-editorial-split-01",
+    "footer-mega-01"
+  ],
+  "pairsPoorly": ["layout-cardgrid-01", "layout-simplegrid-01"],
+  "description": "Pinterest-style asymmetric multi-column gallery built on CSS columns. Each tile picks a shape (tall, wide, square) and reveals title plus category on hover or focus.",
+  "descriptions": {
+    "descriptive": "True masonry via CSS `columns` so tiles flow into the shortest column without layout JavaScript. Each tile carries a shape bias (`tall`, `wide`, default square), giving the wall an organic rhythm. A bottom-anchored gradient surfaces title and category on hover and on keyboard focus, so meta stays discoverable without cluttering the static state.",
+    "usage": "Use as the work-wall on portfolio sites, editorial archives, lookbooks, and product photography indexes. Place after a brand-statement hero and before a closing CTA. Avoid pairing with another rigid grid layout (CardGrid, SimpleGrid) on the same page — the visual rhythm cancels out.",
+    "audienceFit": "Photographers, illustrators, design studios, fashion and lifestyle brands, hospitality groups — any segment where image-density itself is the pitch."
+  }
+}
