@@ -1,0 +1,85 @@
+{
+  "id": "layout-icon-feature-grid-01",
+  "name": "Icon Feature Grid",
+  "category": "layout/grid",
+  "purpose": ["features", "services", "benefits", "products"],
+  "acceptsStyleKit": {
+    "card": true,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "editorial", "corporate"],
+  "mood": ["professional", "trustworthy", "energetic"],
+  "layout": "asymmetric",
+  "density": "medium",
+  "imageWeight": 0.05,
+  "slots": [
+    { "name": "label", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 90 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 220,
+      "optional": true
+    },
+    {
+      "name": "features",
+      "type": "list",
+      "maxItems": 8,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          {
+            "name": "icon",
+            "type": "text",
+            "optional": true,
+            "enum": [
+              "zap",
+              "shield",
+              "layers",
+              "target",
+              "cpu",
+              "branch",
+              "clock",
+              "trending",
+              "users",
+              "box",
+              "chart",
+              "heart",
+              "award",
+              "globe",
+              "lock",
+              "compass"
+            ]
+          },
+          { "name": "title", "type": "text", "maxLength": 80 },
+          { "name": "description", "type": "text", "maxLength": 240 },
+          { "name": "emphasize", "type": "boolean", "optional": true }
+        ]
+      }
+    },
+    {
+      "name": "variant",
+      "type": "text",
+      "optional": true,
+      "enum": ["bento", "zigzag"]
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 30, "optional": true },
+    { "name": "ctaUrl", "type": "url", "optional": true }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-split-image-01",
+    "hero-geometric-01",
+    "layout-process-timeline-01",
+    "layout-pricing-tiers-01"
+  ],
+  "pairsPoorly": ["layout-simplegrid-01"],
+  "description": "Icon-driven feature grid rendered as an asymmetric bento (one wide hero card + smaller tiles) or alternating zigzag — explicitly avoids the three-equal-card horizontal row that screams AI default.",
+  "descriptions": {
+    "descriptive": "A 6-column desktop grid where the lead feature spans four columns as a dark emphasized card, and the remaining tiles fall into a 3-up rhythm with periodic 4-column wider cards interrupting the cadence. Icons are softly tinted in a primary-coloured rounded square; the emphasized card inverts to a high-contrast surface.",
+    "usage": "Default landing-page features section for SaaS, productised services, and B2B product pages — anywhere you want 4-7 capabilities laid out without falling into the symmetrical 3-card row. The bento variant pairs with editorial heroes; zigzag suits content-heavy briefs that want a calmer rhythm.",
+    "audienceFit": "B2B SaaS, infrastructure tooling, design systems, and enterprise solution pages. The asymmetric structure rewards skim-readers (one big card with the lead claim) without burying secondary capabilities."
+  }
+}

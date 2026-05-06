@@ -1,0 +1,60 @@
+{
+  "id": "layout-logo-cloud-01",
+  "name": "Logo Cloud",
+  "category": "layout/grid",
+  "purpose": ["testimonials", "brand-statement", "showcase"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["modern", "minimal", "corporate"],
+  "mood": ["professional", "trustworthy", "calm"],
+  "layout": "horizontal",
+  "density": "low",
+  "imageWeight": 0.2,
+  "slots": [
+    { "name": "label", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 120, "optional": true },
+    {
+      "name": "logos",
+      "type": "list",
+      "maxItems": 16,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "name", "type": "text", "maxLength": 60 },
+          { "name": "src", "type": "image", "aspectRatio": "auto" },
+          { "name": "href", "type": "url", "optional": true }
+        ]
+      }
+    },
+    {
+      "name": "variant",
+      "type": "text",
+      "optional": true,
+      "enum": ["marquee", "grid"]
+    },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["subtle", "stark"]
+    }
+  ],
+  "mobileBehavior": "scroll",
+  "pairsWell": [
+    "hero-split-image-01",
+    "hero-geometric-01",
+    "stats-count-up-01",
+    "layout-simplegrid-01"
+  ],
+  "pairsPoorly": [],
+  "description": "A horizontal trust bar that displays customer, partner, or media logos as either an infinite marquee or a static grid — the universal social-proof slot that fits between hero and feature sections.",
+  "descriptions": {
+    "descriptive": "A clean strip of brand marks rendered with subtle opacity and grayscale by default, lifting to full color on hover. The marquee variant scrolls at a slow constant velocity with edge-fade masks, while the grid variant sets logos in a calm 4-to-6 column matrix.",
+    "usage": "Place immediately after the hero or before pricing to absorb the 'who else trusts you' question without a testimonial commitment. The marquee variant scales gracefully past 8 logos; the grid variant is for curated selections of 4-8.",
+    "audienceFit": "Universal — B2B SaaS courting evaluators, agencies showcasing client portfolios, media-heavy editorial sites, and consumer brands citing press mentions all use this slot the same way."
+  }
+}

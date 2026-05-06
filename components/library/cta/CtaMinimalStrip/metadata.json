@@ -1,0 +1,68 @@
+{
+  "id": "cta-minimal-strip-01",
+  "name": "Minimal CTA Strip",
+  "category": "cta",
+  "purpose": ["cta", "lead-capture"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "minimal", "corporate"],
+  "mood": ["professional", "calm", "trustworthy"],
+  "layout": "centered",
+  "density": "low",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "label", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 220,
+      "optional": true
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 30 },
+    { "name": "ctaUrl", "type": "url" },
+    {
+      "name": "secondaryText",
+      "type": "text",
+      "maxLength": 30,
+      "optional": true
+    },
+    { "name": "secondaryUrl", "type": "url", "optional": true },
+    {
+      "name": "layoutVariant",
+      "type": "text",
+      "optional": true,
+      "enum": ["centered", "inline", "bordered"]
+    },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["neutral", "muted", "inverse"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "faq-accordion-01",
+    "faq-minimal-01",
+    "footer-pulse-01",
+    "footer-reveal-01",
+    "layout-pricing-tiers-01"
+  ],
+  "pairsPoorly": [
+    "cta-cta-collage-duo-01",
+    "cta-cta-editorial-split-01",
+    "cta-image-backdrop-01",
+    "cta-newsletter-capture-01"
+  ],
+  "description": "A restrained centered or inline CTA strip without decorative imagery — for sites whose existing visual hierarchy doesn't need another image block at the closing ask.",
+  "descriptions": {
+    "descriptive": "Three quiet variants of the same idea: a centered headline-and-button block, a horizontal strip with copy left and CTA right, or a bordered version framed by hairline rules. Optional secondary text-link CTA appears beside the primary button.",
+    "usage": "Use as a closing CTA after an image-heavy hero or a feature section that already carries the visual load. The inline variant pairs well above the footer; the bordered variant works between content sections that don't need a tonal break.",
+    "audienceFit": "Editorial sites, B2B SaaS that have already shown product visuals, services pages, and any site whose brand voice rejects 'one more big image' at the bottom. Defaults safely across luxury, corporate, and minimal briefs."
+  }
+}

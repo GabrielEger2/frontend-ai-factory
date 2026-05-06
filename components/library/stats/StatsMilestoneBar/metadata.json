@@ -1,0 +1,66 @@
+{
+  "id": "stats-milestone-bar-01",
+  "name": "Milestone Bar",
+  "category": "stats",
+  "purpose": ["stats", "about", "story"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["modern", "editorial", "corporate"],
+  "mood": ["professional", "trustworthy", "calm"],
+  "layout": "horizontal",
+  "density": "medium",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "label", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100, "optional": true },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 220,
+      "optional": true
+    },
+    {
+      "name": "milestones",
+      "type": "list",
+      "maxItems": 8,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "marker", "type": "text", "maxLength": 12 },
+          { "name": "title", "type": "text", "maxLength": 80 },
+          {
+            "name": "description",
+            "type": "text",
+            "maxLength": 200,
+            "optional": true
+          },
+          {
+            "name": "metric",
+            "type": "text",
+            "maxLength": 30,
+            "optional": true
+          }
+        ]
+      }
+    },
+    { "name": "footnote", "type": "text", "maxLength": 120, "optional": true }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "stats-count-up-01",
+    "stats-kpi-grid-01",
+    "layout-process-timeline-01",
+    "layout-authorsplit-01"
+  ],
+  "pairsPoorly": [],
+  "description": "Horizontal milestone rail for company history, funding journeys, and 'how we got here' narratives — collapses to a vertical timeline on mobile so the rail metaphor never breaks responsively.",
+  "descriptions": {
+    "descriptive": "A thin horizontal hairline rail with anchor dots at each milestone, monospaced markers (years or quarter labels) above bold short titles. Optional metric chips and one-line descriptions hang under each anchor. Mobile collapses to a left-rail vertical timeline.",
+    "usage": "Best on About pages, investor decks rendered as web pages, and anniversary or product-launch retrospectives. Pair after a brand-statement hero and before a team or testimonial section to ground the story in concrete dates.",
+    "audienceFit": "Established companies, funded startups telling their journey, and brand-led services pages where the trust signal comes from longevity. Reads as confident without sliding into self-congratulatory language."
+  }
+}

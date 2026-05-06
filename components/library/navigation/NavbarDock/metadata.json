@@ -1,0 +1,77 @@
+{
+  "id": "navbar-dock-01",
+  "name": "Magnify Dock Navbar",
+  "category": "navigation",
+  "purpose": ["navigation"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "playful", "editorial"],
+  "mood": ["elegant", "friendly", "energetic"],
+  "layout": "horizontal",
+  "density": "low",
+  "imageWeight": 0,
+  "slots": [
+    {
+      "name": "logo",
+      "type": "image",
+      "aspectRatio": "auto",
+      "optional": true
+    },
+    {
+      "name": "links",
+      "type": "list",
+      "maxItems": 6,
+      "itemSchema": {
+        "text": {
+          "type": "text",
+          "maxLength": 24
+        },
+        "href": {
+          "type": "url"
+        },
+        "icon": {
+          "type": "text",
+          "enum": [
+            "home",
+            "work",
+            "projects",
+            "about",
+            "contact",
+            "layers",
+            "briefcase"
+          ]
+        }
+      }
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 24,
+      "optional": true
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    }
+  ],
+  "mobileBehavior": "collapse",
+  "pairsWell": ["footer-pulse-01", "footer-reveal-01"],
+  "pairsPoorly": [],
+  "description": "A floating bottom-anchored dock with cursor-driven icon magnification, paired with a quiet top bar for the logo and CTA. Built for portfolio sites and creative studios that want navigation to feel tactile and modern without dominating the page.",
+  "descriptions": {
+    "descriptive": "A macOS-style dock pinned to the bottom centre of the viewport. Each icon scales smoothly toward the cursor through spring physics, with a tooltip label appearing above the hovered tile. The top of the page is reserved for a minimal logo and a single optional CTA, keeping the hero composition clear.",
+    "usage": "Best for portfolio sites, creative agencies, and product landing pages where the navigation can feel like a controlled flourish rather than a utility bar. Pair with image-led heroes and editorial layouts where horizontal top-bar real estate is at a premium.",
+    "audienceFit": "Resonates with design-forward audiences and product-curious visitors who recognise the dock metaphor instantly. Less appropriate for utility-heavy SaaS or compliance-driven enterprise sites where conventional top navigation reduces friction."
+  }
+}

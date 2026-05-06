@@ -1,0 +1,86 @@
+{
+  "id": "layout-pricing-tiers-01",
+  "name": "Pricing Tiers",
+  "category": "layout/grid",
+  "purpose": ["services", "products", "cta"],
+  "acceptsStyleKit": {
+    "card": true,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "corporate", "minimal"],
+  "mood": ["professional", "trustworthy", "serious"],
+  "layout": "grid",
+  "density": "medium",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "label", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 220,
+      "optional": true
+    },
+    {
+      "name": "billingToggle",
+      "type": "object",
+      "optional": true,
+      "fields": [
+        { "name": "monthly", "type": "text", "maxLength": 16 },
+        { "name": "yearly", "type": "text", "maxLength": 16 },
+        { "name": "activeIsYearly", "type": "boolean", "optional": true }
+      ]
+    },
+    {
+      "name": "tiers",
+      "type": "list",
+      "maxItems": 4,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "name", "type": "text", "maxLength": 30 },
+          {
+            "name": "description",
+            "type": "text",
+            "maxLength": 140,
+            "optional": true
+          },
+          { "name": "price", "type": "text", "maxLength": 20 },
+          {
+            "name": "cadence",
+            "type": "text",
+            "maxLength": 24,
+            "optional": true
+          },
+          {
+            "name": "badge",
+            "type": "text",
+            "maxLength": 24,
+            "optional": true
+          },
+          { "name": "ctaText", "type": "text", "maxLength": 30 },
+          { "name": "ctaUrl", "type": "url" },
+          {
+            "name": "features",
+            "type": "list",
+            "maxItems": 8,
+            "itemSchema": { "type": "text", "maxLength": 80 }
+          },
+          { "name": "featured", "type": "boolean", "optional": true }
+        ]
+      }
+    },
+    { "name": "footnote", "type": "text", "maxLength": 160, "optional": true }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": ["faq-accordion-01", "faq-minimal-01", "layout-simplegrid-01"],
+  "pairsPoorly": [],
+  "description": "A focused pricing-tier comparison with two to four tiers, one optional 'most popular' tier emphasised, inclusive and excluded feature lines, and per-tier CTAs — designed for SaaS, services, and subscription products that sell through a clear price page.",
+  "descriptions": {
+    "descriptive": "Side-by-side pricing cards with disciplined typography, monospaced price numerals, and a dark featured tier that pulls focus through contrast rather than ornament. Inclusive features render with a primary-tinted check; excluded ones with a muted X — making scanability the first job.",
+    "usage": "Anchor a SaaS or service site where the buying decision turns on plan comparison. Place near the bottom of the page after problem framing and feature deep-dives, then follow with FAQ to absorb objections before the final CTA.",
+    "audienceFit": "B2B SaaS, agencies with productised services, fintech subscriptions, and creative tooling. Suits evaluators who scan plans before reading copy and need price + scope visible above the fold of the section."
+  }
+}

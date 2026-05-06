@@ -1,0 +1,92 @@
+{
+  "id": "stats-kpi-grid-01",
+  "name": "KPI Grid",
+  "category": "stats",
+  "purpose": ["stats", "benefits", "showcase"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["modern", "minimal", "corporate"],
+  "mood": ["professional", "trustworthy", "serious"],
+  "layout": "grid",
+  "density": "high",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "label", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100, "optional": true },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 220,
+      "optional": true
+    },
+    {
+      "name": "metrics",
+      "type": "list",
+      "maxItems": 6,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "value", "type": "number" },
+          { "name": "decimals", "type": "number", "optional": true },
+          {
+            "name": "prefix",
+            "type": "text",
+            "maxLength": 6,
+            "optional": true
+          },
+          {
+            "name": "suffix",
+            "type": "text",
+            "maxLength": 10,
+            "optional": true
+          },
+          { "name": "label", "type": "text", "maxLength": 60 },
+          {
+            "name": "caption",
+            "type": "text",
+            "maxLength": 100,
+            "optional": true
+          },
+          {
+            "name": "delta",
+            "type": "text",
+            "maxLength": 16,
+            "optional": true
+          },
+          {
+            "name": "trend",
+            "type": "text",
+            "optional": true,
+            "enum": ["up", "down", "flat"]
+          }
+        ]
+      }
+    },
+    {
+      "name": "variant",
+      "type": "text",
+      "optional": true,
+      "enum": ["divided", "boxed"]
+    },
+    { "name": "footnote", "type": "text", "maxLength": 120, "optional": true },
+    { "name": "duration", "type": "number", "optional": true }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-geometric-01",
+    "hero-split-image-01",
+    "layout-icon-feature-grid-01",
+    "layout-process-timeline-01"
+  ],
+  "pairsPoorly": ["stats-count-up-01"],
+  "description": "Dashboard-density KPI grid with monospaced numerals, trend deltas, and divider-line grouping — the comparison-first stats slot that complements the count-up hero metric panel.",
+  "descriptions": {
+    "descriptive": "Three-to-six metrics arranged on a divided grid (no card boxes by default) with tabular monospaced numerals, prefix/suffix support, and tinted up/down/flat trend pills next to each value. The boxed variant softens density when the section sits between visually loud neighbours.",
+    "usage": "Drop into product, results, or about pages where comparison is the point — month-over-month conversion, uptime, scale figures. Pair after a hero or before pricing; complements count-up stats rather than replacing them.",
+    "audienceFit": "B2B SaaS product pages, fintech operator dashboards, agency case-study tear-sheets, and infrastructure platforms whose buyers expect numerical proof rather than emotional copy."
+  }
+}

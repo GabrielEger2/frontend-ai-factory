@@ -1,0 +1,155 @@
+{
+  "id": "navbar-mega-panel-01",
+  "name": "Mega Panel Navbar",
+  "category": "navigation",
+  "purpose": ["navigation"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "corporate", "minimal"],
+  "mood": ["professional", "trustworthy", "serious"],
+  "layout": "horizontal",
+  "density": "medium",
+  "imageWeight": 0.05,
+  "slots": [
+    {
+      "name": "logo",
+      "type": "image",
+      "aspectRatio": "auto",
+      "optional": true
+    },
+    {
+      "name": "links",
+      "type": "list",
+      "maxItems": 6,
+      "itemSchema": {
+        "text": {
+          "type": "text",
+          "maxLength": 30
+        },
+        "href": {
+          "type": "url"
+        },
+        "panel": {
+          "type": "list",
+          "optional": true,
+          "maxItems": 1,
+          "itemSchema": {
+            "groups": {
+              "type": "list",
+              "maxItems": 3,
+              "itemSchema": {
+                "title": {
+                  "type": "text",
+                  "maxLength": 30
+                },
+                "items": {
+                  "type": "list",
+                  "maxItems": 6,
+                  "itemSchema": {
+                    "label": {
+                      "type": "text",
+                      "maxLength": 40
+                    },
+                    "description": {
+                      "type": "text",
+                      "maxLength": 80,
+                      "optional": true
+                    },
+                    "href": {
+                      "type": "url"
+                    },
+                    "badge": {
+                      "type": "text",
+                      "maxLength": 12,
+                      "optional": true
+                    }
+                  }
+                }
+              }
+            },
+            "feature": {
+              "type": "list",
+              "optional": true,
+              "maxItems": 1,
+              "itemSchema": {
+                "eyebrow": {
+                  "type": "text",
+                  "maxLength": 24,
+                  "optional": true
+                },
+                "title": {
+                  "type": "text",
+                  "maxLength": 60
+                },
+                "description": {
+                  "type": "text",
+                  "maxLength": 140,
+                  "optional": true
+                },
+                "href": {
+                  "type": "url"
+                },
+                "ctaLabel": {
+                  "type": "text",
+                  "maxLength": 24,
+                  "optional": true
+                },
+                "image": {
+                  "type": "image",
+                  "aspectRatio": "16:10",
+                  "optional": true
+                },
+                "imageAlt": {
+                  "type": "text",
+                  "maxLength": 120,
+                  "optional": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "signInText",
+      "type": "text",
+      "maxLength": 20,
+      "optional": true
+    },
+    {
+      "name": "signInUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 24,
+      "optional": true
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    }
+  ],
+  "mobileBehavior": "collapse",
+  "pairsWell": ["footer-pulse-01", "footer-reveal-01"],
+  "pairsPoorly": [],
+  "description": "A wide flat top bar that opens a structured multi-column mega panel on hover, ideal for SaaS products and enterprise sites with deep information architecture that need to surface featured content alongside grouped link lists.",
+  "descriptions": {
+    "descriptive": "A clean horizontal top bar that reveals a full-width mega panel on hover, organising links into titled columns with optional descriptions, badges, and a featured card on the right. The panel sits on a soft backdrop-blur surface with subtle borders and disciplined typography hierarchy.",
+    "usage": "Best for sites with multiple product surfaces, solution categories, or large resource libraries that need to expose deep navigation without overwhelming the top bar. The featured card slot is ideal for pinning launches, case studies, or signature articles in context.",
+    "audienceFit": "Fits B2B SaaS, enterprise platforms, fintech, and developer tooling brands selling to evaluators who scan for breadth before depth. The dense panel rewards skim-readers without sacrificing the calm of a minimal collapsed state."
+  }
+}

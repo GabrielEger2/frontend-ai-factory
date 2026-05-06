@@ -1,0 +1,79 @@
+{
+  "id": "cta-newsletter-capture-01",
+  "name": "Newsletter Capture",
+  "category": "cta",
+  "purpose": ["lead-capture", "cta"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "minimal", "editorial"],
+  "mood": ["professional", "calm", "friendly"],
+  "layout": "split",
+  "density": "low",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "label", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 90 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 220,
+      "optional": true
+    },
+    {
+      "name": "emailPlaceholder",
+      "type": "text",
+      "maxLength": 60,
+      "optional": true
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 24, "optional": true },
+    { "name": "formAction", "type": "url", "optional": true },
+    {
+      "name": "perks",
+      "type": "list",
+      "maxItems": 4,
+      "optional": true,
+      "itemSchema": { "type": "text", "maxLength": 80 }
+    },
+    {
+      "name": "disclaimer",
+      "type": "text",
+      "maxLength": 200,
+      "optional": true
+    },
+    {
+      "name": "successMessage",
+      "type": "text",
+      "maxLength": 160,
+      "optional": true
+    },
+    {
+      "name": "layoutVariant",
+      "type": "text",
+      "optional": true,
+      "enum": ["split", "stacked"]
+    },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["neutral", "inverse"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": ["footer-pulse-01", "footer-reveal-01", "faq-accordion-01"],
+  "pairsPoorly": [
+    "cta-cta-collage-duo-01",
+    "cta-cta-editorial-split-01",
+    "cta-image-backdrop-01"
+  ],
+  "description": "A focused pre-footer email-capture section with a single inline form, perk bullets, and an inline success state — designed to slot above the footer for newsletters, product waitlists, and community signups.",
+  "descriptions": {
+    "descriptive": "A wide rounded form pill with a single email field and a high-contrast submit button, framed by a calm headline and three perk bullets. Submission swaps the form for an animated success card without a page navigation, keeping the rest of the section stable.",
+    "usage": "Drop above the footer when the page primary action is content subscription rather than purchase. Pair with a focused headline and 2-3 perk bullets that answer 'what do I actually receive' rather than vague brand promises.",
+    "audienceFit": "Suits newsletters, indie media, communities, product waitlists, and B2B blogs that convert evaluators slowly. The inverse tone works for high-attention launches; neutral tone is the safer default for editorial sites."
+  }
+}
