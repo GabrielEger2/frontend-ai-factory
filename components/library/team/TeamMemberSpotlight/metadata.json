@@ -1,0 +1,63 @@
+{
+  "id": "team-member-spotlight-01",
+  "name": "Team Member Spotlight",
+  "category": "team",
+  "purpose": ["team", "about", "story", "testimonials"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["editorial", "modern", "luxury", "bold"],
+  "mood": ["elegant", "professional", "trustworthy"],
+  "layout": "split",
+  "density": "low",
+  "imageWeight": 0.4,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 80, "optional": true },
+    { "name": "memberName", "type": "text", "maxLength": 60 },
+    { "name": "memberRole", "type": "text", "maxLength": 80 },
+    { "name": "quote", "type": "text", "maxLength": 320 },
+    { "name": "context", "type": "text", "maxLength": 80, "optional": true },
+    { "name": "image", "type": "image", "aspectRatio": "4:5" },
+    { "name": "imageAlt", "type": "text", "maxLength": 120 },
+    {
+      "name": "credentials",
+      "type": "list",
+      "maxItems": 4,
+      "optional": true,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "value", "type": "text", "maxLength": 12 },
+          { "name": "label", "type": "text", "maxLength": 30 }
+        ]
+      }
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 30, "optional": true },
+    { "name": "ctaUrl", "type": "url", "optional": true },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["neutral", "muted", "inverse"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "team-leadership-grid-01",
+    "team-carousel-01",
+    "stats-count-up-01",
+    "testimonial-logo-quote-ribbon-01",
+    "cta-cta-editorial-split-01"
+  ],
+  "pairsPoorly": ["testimonial-spotlight-quote-01", "team-founder-split-01"],
+  "description": "Featured-member spotlight with hero-sized pull quote, 4:5 portrait, name, role, optional context line, KPI credential row (years, projects, etc.) and optional CTA. Three tones: neutral, muted, inverse.",
+  "descriptions": {
+    "descriptive": "A single-member spotlight where the quote does the heavy lifting. The right column carries an oversized pull-quote (24-36px) with a soft serif open-quote glyph behind it, an attribution row separated by a 1px divider, and an optional KPI strip with monospaced numerals (years in role, projects shipped, satisfaction). The left column holds a tall 4:5 portrait. A `tone` prop swaps between calm neutral, soft muted surface, and inverse (dark surface, light text) for editorial impact.",
+    "usage": "Use to feature one team member with weight — a new hire announcement, a department-lead introduction, a founder spotlight when a full FounderSplit is too long. Place after a values or process section and before a CTA. Avoid stacking next to TestimonialSpotlightQuote or TeamFounderSplit — they cover the same beat.",
+    "audienceFit": "Mid-market service businesses that want to give one expert a hero moment, healthcare practices spotlighting a specialist, agencies announcing senior hires, and editorial sites running 'meet the team' columns."
+  }
+}

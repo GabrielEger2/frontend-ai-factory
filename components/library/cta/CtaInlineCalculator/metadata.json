@@ -1,0 +1,134 @@
+{
+  "id": "cta-inline-calculator-01",
+  "name": "CTA Inline Calculator",
+  "category": "cta",
+  "purpose": ["cta", "lead-capture"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "corporate", "minimal"],
+  "mood": ["professional", "trustworthy", "calm"],
+  "layout": "split",
+  "density": "high",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 90 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 240,
+      "optional": true
+    },
+    {
+      "name": "inputs",
+      "type": "list",
+      "maxItems": 4,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "key", "type": "text", "maxLength": 30 },
+          { "name": "label", "type": "text", "maxLength": 60 },
+          { "name": "min", "type": "number" },
+          { "name": "max", "type": "number" },
+          { "name": "step", "type": "number" },
+          { "name": "defaultValue", "type": "number" },
+          { "name": "unit", "type": "text", "maxLength": 12, "optional": true },
+          {
+            "name": "format",
+            "type": "text",
+            "optional": true,
+            "enum": ["currency", "percent", "integer", "decimal"]
+          },
+          {
+            "name": "currency",
+            "type": "text",
+            "maxLength": 3,
+            "optional": true
+          },
+          {
+            "name": "hint",
+            "type": "text",
+            "maxLength": 120,
+            "optional": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "outputs",
+      "type": "list",
+      "maxItems": 4,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "label", "type": "text", "maxLength": 60 },
+          { "name": "compute", "type": "function" },
+          {
+            "name": "format",
+            "type": "text",
+            "optional": true,
+            "enum": ["currency", "percent", "integer", "decimal"]
+          },
+          {
+            "name": "currency",
+            "type": "text",
+            "maxLength": 3,
+            "optional": true
+          },
+          { "name": "unit", "type": "text", "maxLength": 12, "optional": true },
+          {
+            "name": "caption",
+            "type": "text",
+            "maxLength": 160,
+            "optional": true
+          },
+          { "name": "primary", "type": "boolean", "optional": true }
+        ]
+      }
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 30 },
+    { "name": "ctaUrl", "type": "url" },
+    {
+      "name": "secondaryText",
+      "type": "text",
+      "maxLength": 30,
+      "optional": true
+    },
+    { "name": "secondaryUrl", "type": "url", "optional": true },
+    {
+      "name": "footnote",
+      "type": "text",
+      "maxLength": 240,
+      "optional": true
+    },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["neutral", "muted"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "faq-accordion-01",
+    "footer-mega-01",
+    "footer-pulse-01",
+    "stats-kpi-grid-01"
+  ],
+  "pairsPoorly": [
+    "cta-cta-collage-duo-01",
+    "cta-image-backdrop-01",
+    "cta-newsletter-capture-01",
+    "cta-countdown-01"
+  ],
+  "description": "An interactive estimate widget paired with a primary CTA — the visitor adjusts sliders for inputs like loan amount or seat count and sees the computed result in tabular font-mono. Inputs ride along to the destination URL as querystring params for form pre-fill.",
+  "descriptions": {
+    "descriptive": "Asymmetric two-column layout: a copy column on the left with eyebrow, headline, description, and labelled range sliders that update instantly with min/max ticks rendered as small mono labels; a result panel on the right with a primary numeric output rendered as the hero numeral, optional secondary outputs in a 2-column grid, and a primary CTA whose href carries the slider values as querystring parameters for downstream pre-fill.",
+    "usage": "Use when the conversion benefits from the visitor seeing a tangible number against their own inputs before the form ask — mortgage payments, savings projections, plan totals, freight estimates. Keep it to 1–4 inputs and a single hero output. The footnote is the right place for assumptions that would otherwise clutter the result panel.",
+    "audienceFit": "Strong fit for fintech, insurance, B2B SaaS pricing pages, freight, real estate, and any segment whose customers expect to see a number before they share contact details. Consumer brands without quantified benefits should reach for CtaTestimonialPaired or CtaFormInline instead. The `outputs[].compute` slot is a function and is not AI-fillable — leave it as a developer-supplied slot."
+  }
+}

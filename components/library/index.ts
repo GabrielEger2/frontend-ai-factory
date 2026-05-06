@@ -90,6 +90,12 @@ export { default as GalleryLightboxGrid } from "./gallery/GalleryLightboxGrid";
 export { default as GalleryMasonry } from "./gallery/GalleryMasonry";
 export { default as GalleryPortfolioStrip } from "./gallery/GalleryPortfolioStrip";
 
+// Team
+export { default as TeamCarousel } from "./team/TeamCarousel";
+export { default as TeamFounderSplit } from "./team/TeamFounderSplit";
+export { default as TeamLeadershipGrid } from "./team/TeamLeadershipGrid";
+export { default as TeamMemberSpotlight } from "./team/TeamMemberSpotlight";
+
 // Motion
 export { default as MotionMarquee } from "./motion/MotionMarquee";
 export { default as MotionScrollNarrative } from "./motion/MotionScrollNarrative";
@@ -178,6 +184,10 @@ import GalleryImageTextEditorial from "./gallery/GalleryImageTextEditorial";
 import GalleryLightboxGrid from "./gallery/GalleryLightboxGrid";
 import GalleryMasonry from "./gallery/GalleryMasonry";
 import GalleryPortfolioStrip from "./gallery/GalleryPortfolioStrip";
+import TeamCarousel from "./team/TeamCarousel";
+import TeamFounderSplit from "./team/TeamFounderSplit";
+import TeamLeadershipGrid from "./team/TeamLeadershipGrid";
+import TeamMemberSpotlight from "./team/TeamMemberSpotlight";
 import MotionMarquee from "./motion/MotionMarquee";
 import MotionScrollNarrative from "./motion/MotionScrollNarrative";
 import ParallaxContent from "./motion/ParallaxContent";
@@ -271,6 +281,10 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "gallery-lightbox-grid-01": GalleryLightboxGrid,
   "gallery-masonry-01": GalleryMasonry,
   "gallery-portfolio-strip-01": GalleryPortfolioStrip,
+  "team-carousel-01": TeamCarousel,
+  "team-founder-split-01": TeamFounderSplit,
+  "team-leadership-grid-01": TeamLeadershipGrid,
+  "team-member-spotlight-01": TeamMemberSpotlight,
   "motion-scroll-narrative-01": MotionScrollNarrative,
   "navbar-dock-01": NavbarDock,
   "navbar-mega-panel-01": NavbarMegaPanel,

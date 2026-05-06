@@ -1,0 +1,68 @@
+{
+  "id": "cta-video-backdrop-01",
+  "name": "CTA Video Backdrop",
+  "category": "cta",
+  "purpose": ["cta", "brand-statement"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["bold", "editorial", "modern"],
+  "mood": ["energetic", "elegant", "trustworthy"],
+  "layout": "stacked",
+  "density": "low",
+  "imageWeight": 0.85,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 80 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 200,
+      "optional": true
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 30 },
+    { "name": "ctaUrl", "type": "url" },
+    {
+      "name": "secondaryText",
+      "type": "text",
+      "maxLength": 30,
+      "optional": true
+    },
+    { "name": "secondaryUrl", "type": "url", "optional": true },
+    { "name": "videoSrc", "type": "url" },
+    { "name": "videoSrcWebm", "type": "url", "optional": true },
+    { "name": "poster", "type": "image", "aspectRatio": "16:9" },
+    { "name": "videoAriaLabel", "type": "text", "maxLength": 160 },
+    { "name": "overlayOpacity", "type": "number", "optional": true },
+    {
+      "name": "align",
+      "type": "text",
+      "optional": true,
+      "enum": ["left", "center"]
+    },
+    { "name": "minHeight", "type": "text", "optional": true },
+    { "name": "showControls", "type": "boolean", "optional": true }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "faq-accordion-01",
+    "footer-mega-01",
+    "footer-pulse-01",
+    "stats-count-up-01"
+  ],
+  "pairsPoorly": [
+    "cta-image-backdrop-01",
+    "cta-cta-collage-duo-01",
+    "cta-cta-editorial-split-01",
+    "hero-video-backdrop-01"
+  ],
+  "description": "A high-impact CTA section with a looping muted background video, layered overlay, and a calm copy column with primary and secondary actions. Pauses on prefers-reduced-motion and surfaces play/mute controls so visitors can opt into or out of the motion.",
+  "descriptions": {
+    "descriptive": "A full-bleed section with a muted, autoplaying background video and a darkening overlay. A left-aligned copy column carries an eyebrow, oversized headline, supporting paragraph, and primary + secondary CTAs. Bottom-right pill houses a play/pause and mute toggle that floats above the video without blocking the headline.",
+    "usage": "Reach for it once per page at most — typically the closing conversion moment on a product launch or brand-led landing page. Pair with a 5–8 second loop encoded under 3 MB; static poster handles slow connections and reduced-motion preferences gracefully.",
+    "audienceFit": "Best for product launches, premium consumer goods, hospitality, and creative agencies whose differentiation hinges on motion and atmosphere. Avoid on dense B2B SaaS pages where motion competes with feature comprehension."
+  }
+}

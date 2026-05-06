@@ -1,0 +1,69 @@
+{
+  "id": "team-carousel-01",
+  "name": "Team Carousel",
+  "category": "team",
+  "purpose": ["team", "about", "showcase"],
+  "acceptsStyleKit": {
+    "card": true,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["modern", "playful", "editorial", "bold"],
+  "mood": ["friendly", "energetic", "professional"],
+  "layout": "scroll",
+  "density": "medium",
+  "imageWeight": 0.55,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 220,
+      "optional": true
+    },
+    {
+      "name": "members",
+      "type": "list",
+      "maxItems": 16,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "name", "type": "text", "maxLength": 60 },
+          { "name": "role", "type": "text", "maxLength": 60 },
+          {
+            "name": "tagline",
+            "type": "text",
+            "maxLength": 140,
+            "optional": true
+          },
+          { "name": "image", "type": "image", "aspectRatio": "4:5" },
+          { "name": "imageAlt", "type": "text", "maxLength": 120 },
+          { "name": "href", "type": "url", "optional": true },
+          {
+            "name": "meta",
+            "type": "text",
+            "maxLength": 30,
+            "optional": true
+          }
+        ]
+      }
+    }
+  ],
+  "mobileBehavior": "scroll",
+  "pairsWell": [
+    "hero-marquee-strip-01",
+    "hero-asymmetric-stack-01",
+    "team-founder-split-01",
+    "stats-count-up-01",
+    "cta-minimal-strip-01"
+  ],
+  "pairsPoorly": ["carousel-cards-01", "carousel-horizontal-scroll-01"],
+  "description": "Horizontally-scrolling team carousel with peek. Snap-x cards, prev/next arrows in the header on desktop, keyboard arrow-key support, mobile-friendly swipe with arrows below the strip.",
+  "descriptions": {
+    "descriptive": "A scroll-snap carousel of fixed-width team cards (320px default, configurable via `cardWidth`) that peek into the viewport so the user understands there are more members to swipe to. Each card shows a 4:5 portrait, a small meta chip (department, location, tenure), and a clean text block. Desktop shows prev/next arrows in the section header that disable at the ends; mobile shows the same arrows under the carousel and supports native horizontal swipe. The track is keyboard-focusable and responds to arrow keys.",
+    "usage": "Use when a team is too big to grid (more than ~10 people) or when the team page needs more energy than a static grid. Place after a brand-statement hero or under a leadership grid as a 'meet the rest of the team' beat. Avoid pairing with another horizontal-scroll carousel — same gesture twice in a row reads as filler.",
+    "audienceFit": "Mid-size studios and agencies, growth-stage startups, healthcare clinics with many practitioners, hospitality groups with multi-location staff, and any segment where the team is meaningfully large but each member still matters."
+  }
+}

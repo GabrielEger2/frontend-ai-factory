@@ -1,0 +1,108 @@
+{
+  "id": "cta-testimonial-paired-01",
+  "name": "CTA Testimonial Paired",
+  "category": "cta",
+  "purpose": ["cta", "testimonials", "lead-capture"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "editorial", "corporate"],
+  "mood": ["professional", "trustworthy", "calm"],
+  "layout": "split",
+  "density": "medium",
+  "imageWeight": 0.15,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 90 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 240,
+      "optional": true
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 30 },
+    { "name": "ctaUrl", "type": "url" },
+    {
+      "name": "secondaryText",
+      "type": "text",
+      "maxLength": 30,
+      "optional": true
+    },
+    { "name": "secondaryUrl", "type": "url", "optional": true },
+    {
+      "name": "perks",
+      "type": "list",
+      "maxItems": 4,
+      "optional": true,
+      "itemSchema": { "type": "text", "maxLength": 80 }
+    },
+    { "name": "quote", "type": "text", "maxLength": 240 },
+    { "name": "authorName", "type": "text", "maxLength": 60 },
+    { "name": "authorRole", "type": "text", "maxLength": 80 },
+    {
+      "name": "authorImage",
+      "type": "image",
+      "aspectRatio": "1:1",
+      "optional": true
+    },
+    {
+      "name": "authorImageAlt",
+      "type": "text",
+      "maxLength": 120,
+      "optional": true
+    },
+    {
+      "name": "attribution",
+      "type": "text",
+      "maxLength": 60,
+      "optional": true
+    },
+    {
+      "name": "metricValue",
+      "type": "text",
+      "maxLength": 16,
+      "optional": true
+    },
+    {
+      "name": "metricLabel",
+      "type": "text",
+      "maxLength": 40,
+      "optional": true
+    },
+    {
+      "name": "layoutVariant",
+      "type": "text",
+      "optional": true,
+      "enum": ["split", "stacked"]
+    },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["neutral", "muted", "inverse"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "faq-accordion-01",
+    "footer-mega-01",
+    "footer-pulse-01",
+    "stats-kpi-grid-01"
+  ],
+  "pairsPoorly": [
+    "cta-cta-collage-duo-01",
+    "cta-cta-editorial-split-01",
+    "cta-image-backdrop-01",
+    "cta-newsletter-capture-01",
+    "testimonial-spotlight-quote-01"
+  ],
+  "description": "A primary call-to-action paired with an embedded customer quote and optional KPI, so the conversion ask sits next to a fragment of social proof that answers 'why should I trust this' in the same eye-fixation.",
+  "descriptions": {
+    "descriptive": "Asymmetric two-column layout: a calm copy column on the left with eyebrow, headline, supporting paragraph, primary CTA, optional secondary link, and check-bullet perks; a quote card on the right with an oversized open-quote glyph, optional KPI numeral in font-mono, the testimonial body, and a portrait + attribution footer. Three tones (neutral, muted, inverse) and a stacked layout for narrower contexts.",
+    "usage": "Use as the closing CTA on landing pages, pricing pages, and case-study indexes where the primary friction is trust rather than awareness. Pair the metric numeral with a quantifiable, organic outcome ('47.2% lift', '9 weeks to ROI') rather than a round vanity number.",
+    "audienceFit": "Fits B2B SaaS, professional services, agencies, and any segment whose customers buy on credibility. The inverse tone leans into high-attention launches; muted tone is the safer default for content-led pages."
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "id": "team-founder-split-01",
+  "name": "Founder Split",
+  "category": "team",
+  "purpose": ["team", "about", "story", "brand-statement"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["editorial", "modern", "luxury", "classic"],
+  "mood": ["elegant", "trustworthy", "professional"],
+  "layout": "split",
+  "density": "low",
+  "imageWeight": 0.45,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100 },
+    { "name": "founderName", "type": "text", "maxLength": 60 },
+    { "name": "founderRole", "type": "text", "maxLength": 80 },
+    {
+      "name": "bioParagraphs",
+      "type": "list",
+      "maxItems": 3,
+      "itemSchema": { "type": "text", "maxLength": 480 }
+    },
+    { "name": "image", "type": "image", "aspectRatio": "4:5" },
+    { "name": "imageAlt", "type": "text", "maxLength": 120 },
+    {
+      "name": "signatureImage",
+      "type": "image",
+      "aspectRatio": "auto",
+      "optional": true
+    },
+    {
+      "name": "signatureAlt",
+      "type": "text",
+      "maxLength": 80,
+      "optional": true
+    },
+    {
+      "name": "credentials",
+      "type": "list",
+      "maxItems": 6,
+      "optional": true,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "label", "type": "text", "maxLength": 60 },
+          { "name": "href", "type": "url", "optional": true }
+        ]
+      }
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 30, "optional": true },
+    { "name": "ctaUrl", "type": "url", "optional": true },
+    {
+      "name": "secondaryCtaText",
+      "type": "text",
+      "maxLength": 30,
+      "optional": true
+    },
+    { "name": "secondaryCtaUrl", "type": "url", "optional": true },
+    {
+      "name": "portraitSide",
+      "type": "text",
+      "optional": true,
+      "enum": ["left", "right"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-hero-bold-editorial-01",
+    "hero-spotlight-center-01",
+    "team-leadership-grid-01",
+    "testimonial-spotlight-quote-01",
+    "cta-cta-editorial-split-01"
+  ],
+  "pairsPoorly": ["layout-authorsplit-01", "layout-statementsplit-01"],
+  "description": "Editorial single-founder split. Tall 4:5 portrait beside an extended multi-paragraph bio, optional signature image, credential chips, primary and secondary CTAs. Portrait can swap sides via portraitSide.",
+  "descriptions": {
+    "descriptive": "A two-column editorial split that frames one person as the page. The copy column carries an eyebrow, balanced headline, an attribution block separated by a primary-tinted vertical rule, one to three bio paragraphs in a 60ch measure, and a signature row that prefers an actual signature image but falls back to a typed serif `— Name`. Optional credential chips render as monospaced uppercase pills. The portrait column is a tall 4:5 rounded image with a soft caption ribbon. Side can be flipped with `portraitSide`.",
+    "usage": "Use on About pages, founder-led service sites, and personal-brand portfolios. Place after a brand-statement hero and before social proof. Pair with TeamLeadershipGrid below to widen out from one founder to the rest of the team. Avoid pairing with another author-split layout (AuthorSplit, StatementSplit) — same rhythm twice in a row reads as filler.",
+    "audienceFit": "Founder-led professional services, solo consultancies, boutique studios, premium personal brands, executive coaches, and investor-facing leadership pages."
+  }
+}

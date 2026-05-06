@@ -1,0 +1,83 @@
+{
+  "id": "team-leadership-grid-01",
+  "name": "Leadership Grid",
+  "category": "team",
+  "purpose": ["team", "about", "brand-statement"],
+  "acceptsStyleKit": {
+    "card": true,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "editorial", "corporate", "minimal"],
+  "mood": ["professional", "trustworthy", "elegant"],
+  "layout": "grid",
+  "density": "medium",
+  "imageWeight": 0.6,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 220,
+      "optional": true
+    },
+    {
+      "name": "columns",
+      "type": "text",
+      "optional": true,
+      "enum": ["3", "4"]
+    },
+    {
+      "name": "cardMood",
+      "type": "text",
+      "optional": true,
+      "enum": ["calm", "framed"]
+    },
+    {
+      "name": "members",
+      "type": "list",
+      "maxItems": 12,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "name", "type": "text", "maxLength": 60 },
+          { "name": "role", "type": "text", "maxLength": 60 },
+          {
+            "name": "tagline",
+            "type": "text",
+            "maxLength": 140,
+            "optional": true
+          },
+          { "name": "image", "type": "image", "aspectRatio": "4:5" },
+          { "name": "imageAlt", "type": "text", "maxLength": 120 },
+          { "name": "href", "type": "url", "optional": true },
+          {
+            "name": "location",
+            "type": "text",
+            "maxLength": 40,
+            "optional": true
+          }
+        ]
+      }
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 30, "optional": true },
+    { "name": "ctaUrl", "type": "url", "optional": true }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-hero-bold-editorial-01",
+    "hero-asymmetric-stack-01",
+    "stats-kpi-grid-01",
+    "cta-cta-editorial-split-01",
+    "footer-mega-01"
+  ],
+  "pairsPoorly": ["layout-cardgrid-01", "layout-simplegrid-01"],
+  "description": "Portrait grid for leadership pages. 4:5 portraits, name, role, optional tagline and location chip; 3- or 4-column desktop, single column on mobile, calm or framed card mood.",
+  "descriptions": {
+    "descriptive": "A portrait grid that prioritises faces over chrome. Each member card is a 4:5 portrait with a soft scale on hover, a small location chip in the upper-left, and a clean text block underneath: name in semibold, role in primary tint, optional one-line tagline in muted body. The grid runs 4-up on xl, 3-up on lg, 2-up on sm, and stacks below md. A `cardMood` prop swaps between borderless calm cards and framed cards on bg-base-100 for sites that want explicit grouping.",
+    "usage": "Place on About / Team pages after a brand-statement hero and before a process or values section. Works as the first social-proof beat for service businesses where the team is the product. Avoid pairing with another generic card-grid on the same page — pick one rhythm.",
+    "audienceFit": "Agencies, professional-services firms, boutique consultancies, founder-led SMBs, law and architecture practices, and any segment where the human roster is part of the pitch."
+  }
+}

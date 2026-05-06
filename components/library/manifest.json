@@ -10412,6 +10412,554 @@
     }
   },
   {
+    "id": "team-carousel-01",
+    "name": "Team Carousel",
+    "category": "team",
+    "purpose": [
+      "team",
+      "about",
+      "showcase"
+    ],
+    "acceptsStyleKit": {
+      "card": true,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "playful",
+      "editorial",
+      "bold"
+    ],
+    "mood": [
+      "friendly",
+      "energetic",
+      "professional"
+    ],
+    "layout": "scroll",
+    "density": "medium",
+    "imageWeight": 0.55,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 220,
+        "optional": true
+      },
+      {
+        "name": "members",
+        "type": "list",
+        "maxItems": 16,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "name",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "role",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "tagline",
+              "type": "text",
+              "maxLength": 140,
+              "optional": true
+            },
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "4:5"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "href",
+              "type": "url",
+              "optional": true
+            },
+            {
+              "name": "meta",
+              "type": "text",
+              "maxLength": 30,
+              "optional": true
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "scroll",
+    "pairsWell": [
+      "hero-marquee-strip-01",
+      "hero-asymmetric-stack-01",
+      "team-founder-split-01",
+      "stats-count-up-01",
+      "cta-minimal-strip-01"
+    ],
+    "pairsPoorly": [
+      "carousel-cards-01",
+      "carousel-horizontal-scroll-01"
+    ],
+    "description": "Horizontally-scrolling team carousel with peek. Snap-x cards, prev/next arrows in the header on desktop, keyboard arrow-key support, mobile-friendly swipe with arrows below the strip.",
+    "descriptions": {
+      "descriptive": "A scroll-snap carousel of fixed-width team cards (320px default, configurable via `cardWidth`) that peek into the viewport so the user understands there are more members to swipe to. Each card shows a 4:5 portrait, a small meta chip (department, location, tenure), and a clean text block. Desktop shows prev/next arrows in the section header that disable at the ends; mobile shows the same arrows under the carousel and supports native horizontal swipe. The track is keyboard-focusable and responds to arrow keys.",
+      "usage": "Use when a team is too big to grid (more than ~10 people) or when the team page needs more energy than a static grid. Place after a brand-statement hero or under a leadership grid as a 'meet the rest of the team' beat. Avoid pairing with another horizontal-scroll carousel — same gesture twice in a row reads as filler.",
+      "audienceFit": "Mid-size studios and agencies, growth-stage startups, healthcare clinics with many practitioners, hospitality groups with multi-location staff, and any segment where the team is meaningfully large but each member still matters."
+    }
+  },
+  {
+    "id": "team-founder-split-01",
+    "name": "Founder Split",
+    "category": "team",
+    "purpose": [
+      "team",
+      "about",
+      "story",
+      "brand-statement"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "editorial",
+      "modern",
+      "luxury",
+      "classic"
+    ],
+    "mood": [
+      "elegant",
+      "trustworthy",
+      "professional"
+    ],
+    "layout": "split",
+    "density": "low",
+    "imageWeight": 0.45,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "founderName",
+        "type": "text",
+        "maxLength": 60
+      },
+      {
+        "name": "founderRole",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "bioParagraphs",
+        "type": "list",
+        "maxItems": 3,
+        "itemSchema": {
+          "type": "text",
+          "maxLength": 480
+        }
+      },
+      {
+        "name": "image",
+        "type": "image",
+        "aspectRatio": "4:5"
+      },
+      {
+        "name": "imageAlt",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "signatureImage",
+        "type": "image",
+        "aspectRatio": "auto",
+        "optional": true
+      },
+      {
+        "name": "signatureAlt",
+        "type": "text",
+        "maxLength": 80,
+        "optional": true
+      },
+      {
+        "name": "credentials",
+        "type": "list",
+        "maxItems": 6,
+        "optional": true,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "href",
+              "type": "url",
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "portraitSide",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "left",
+          "right"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-hero-bold-editorial-01",
+      "hero-spotlight-center-01",
+      "team-leadership-grid-01",
+      "testimonial-spotlight-quote-01",
+      "cta-cta-editorial-split-01"
+    ],
+    "pairsPoorly": [
+      "layout-authorsplit-01",
+      "layout-statementsplit-01"
+    ],
+    "description": "Editorial single-founder split. Tall 4:5 portrait beside an extended multi-paragraph bio, optional signature image, credential chips, primary and secondary CTAs. Portrait can swap sides via portraitSide.",
+    "descriptions": {
+      "descriptive": "A two-column editorial split that frames one person as the page. The copy column carries an eyebrow, balanced headline, an attribution block separated by a primary-tinted vertical rule, one to three bio paragraphs in a 60ch measure, and a signature row that prefers an actual signature image but falls back to a typed serif `— Name`. Optional credential chips render as monospaced uppercase pills. The portrait column is a tall 4:5 rounded image with a soft caption ribbon. Side can be flipped with `portraitSide`.",
+      "usage": "Use on About pages, founder-led service sites, and personal-brand portfolios. Place after a brand-statement hero and before social proof. Pair with TeamLeadershipGrid below to widen out from one founder to the rest of the team. Avoid pairing with another author-split layout (AuthorSplit, StatementSplit) — same rhythm twice in a row reads as filler.",
+      "audienceFit": "Founder-led professional services, solo consultancies, boutique studios, premium personal brands, executive coaches, and investor-facing leadership pages."
+    }
+  },
+  {
+    "id": "team-leadership-grid-01",
+    "name": "Leadership Grid",
+    "category": "team",
+    "purpose": [
+      "team",
+      "about",
+      "brand-statement"
+    ],
+    "acceptsStyleKit": {
+      "card": true,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "editorial",
+      "corporate",
+      "minimal"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "elegant"
+    ],
+    "layout": "grid",
+    "density": "medium",
+    "imageWeight": 0.6,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 220,
+        "optional": true
+      },
+      {
+        "name": "columns",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "3",
+          "4"
+        ]
+      },
+      {
+        "name": "cardMood",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "calm",
+          "framed"
+        ]
+      },
+      {
+        "name": "members",
+        "type": "list",
+        "maxItems": 12,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "name",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "role",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "tagline",
+              "type": "text",
+              "maxLength": 140,
+              "optional": true
+            },
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "4:5"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "href",
+              "type": "url",
+              "optional": true
+            },
+            {
+              "name": "location",
+              "type": "text",
+              "maxLength": 40,
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-hero-bold-editorial-01",
+      "hero-asymmetric-stack-01",
+      "stats-kpi-grid-01",
+      "cta-cta-editorial-split-01",
+      "footer-mega-01"
+    ],
+    "pairsPoorly": [
+      "layout-cardgrid-01",
+      "layout-simplegrid-01"
+    ],
+    "description": "Portrait grid for leadership pages. 4:5 portraits, name, role, optional tagline and location chip; 3- or 4-column desktop, single column on mobile, calm or framed card mood.",
+    "descriptions": {
+      "descriptive": "A portrait grid that prioritises faces over chrome. Each member card is a 4:5 portrait with a soft scale on hover, a small location chip in the upper-left, and a clean text block underneath: name in semibold, role in primary tint, optional one-line tagline in muted body. The grid runs 4-up on xl, 3-up on lg, 2-up on sm, and stacks below md. A `cardMood` prop swaps between borderless calm cards and framed cards on bg-base-100 for sites that want explicit grouping.",
+      "usage": "Place on About / Team pages after a brand-statement hero and before a process or values section. Works as the first social-proof beat for service businesses where the team is the product. Avoid pairing with another generic card-grid on the same page — pick one rhythm.",
+      "audienceFit": "Agencies, professional-services firms, boutique consultancies, founder-led SMBs, law and architecture practices, and any segment where the human roster is part of the pitch."
+    }
+  },
+  {
+    "id": "team-member-spotlight-01",
+    "name": "Team Member Spotlight",
+    "category": "team",
+    "purpose": [
+      "team",
+      "about",
+      "story",
+      "testimonials"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "editorial",
+      "modern",
+      "luxury",
+      "bold"
+    ],
+    "mood": [
+      "elegant",
+      "professional",
+      "trustworthy"
+    ],
+    "layout": "split",
+    "density": "low",
+    "imageWeight": 0.4,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80,
+        "optional": true
+      },
+      {
+        "name": "memberName",
+        "type": "text",
+        "maxLength": 60
+      },
+      {
+        "name": "memberRole",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "quote",
+        "type": "text",
+        "maxLength": 320
+      },
+      {
+        "name": "context",
+        "type": "text",
+        "maxLength": 80,
+        "optional": true
+      },
+      {
+        "name": "image",
+        "type": "image",
+        "aspectRatio": "4:5"
+      },
+      {
+        "name": "imageAlt",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "credentials",
+        "type": "list",
+        "maxItems": 4,
+        "optional": true,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "value",
+              "type": "text",
+              "maxLength": 12
+            },
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 30
+            }
+          ]
+        }
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "neutral",
+          "muted",
+          "inverse"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "team-leadership-grid-01",
+      "team-carousel-01",
+      "stats-count-up-01",
+      "testimonial-logo-quote-ribbon-01",
+      "cta-cta-editorial-split-01"
+    ],
+    "pairsPoorly": [
+      "testimonial-spotlight-quote-01",
+      "team-founder-split-01"
+    ],
+    "description": "Featured-member spotlight with hero-sized pull quote, 4:5 portrait, name, role, optional context line, KPI credential row (years, projects, etc.) and optional CTA. Three tones: neutral, muted, inverse.",
+    "descriptions": {
+      "descriptive": "A single-member spotlight where the quote does the heavy lifting. The right column carries an oversized pull-quote (24-36px) with a soft serif open-quote glyph behind it, an attribution row separated by a 1px divider, and an optional KPI strip with monospaced numerals (years in role, projects shipped, satisfaction). The left column holds a tall 4:5 portrait. A `tone` prop swaps between calm neutral, soft muted surface, and inverse (dark surface, light text) for editorial impact.",
+      "usage": "Use to feature one team member with weight — a new hire announcement, a department-lead introduction, a founder spotlight when a full FounderSplit is too long. Place after a values or process section and before a CTA. Avoid stacking next to TestimonialSpotlightQuote or TeamFounderSplit — they cover the same beat.",
+      "audienceFit": "Mid-market service businesses that want to give one expert a hero moment, healthcare practices spotlighting a specialist, agencies announcing senior hires, and editorial sites running 'meet the team' columns."
+    }
+  },
+  {
     "id": "layout-infinitescroll-01",
     "name": "Infinite Scroll",
     "category": "testimonial",
