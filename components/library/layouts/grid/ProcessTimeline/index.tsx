@@ -119,7 +119,7 @@ function VerticalStep({ step, index, isLast }: VerticalStepProps) {
             </span>
           )}
           {step.duration && (
-            <span className="text-xs font-mono text-base-content/50">
+            <span className="text-xs font-mono text-base-content/60">
               {step.duration}
             </span>
           )}
@@ -164,7 +164,7 @@ function HorizontalStep({ step, index }: HorizontalStepProps) {
         {step.description}
       </p>
       {step.duration && (
-        <span className="font-mono text-xs text-base-content/50">
+        <span className="font-mono text-xs text-base-content/60">
           {step.duration}
         </span>
       )}

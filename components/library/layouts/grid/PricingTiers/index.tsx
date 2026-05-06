@@ -115,14 +115,14 @@ function FeatureLine({ raw }: { raw: string }) {
     <li
       className={cn(
         "flex items-start gap-3 text-sm leading-relaxed",
-        excluded ? "text-base-content/40" : "text-base-content/80",
+        excluded ? "text-base-content/60" : "text-base-content/80",
       )}
     >
       <span
         className={cn(
           "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full",
           excluded
-            ? "bg-base-200 text-base-content/40"
+            ? "bg-base-200 text-base-content/60"
             : "bg-primary/10 text-primary",
         )}
         aria-hidden="true"
@@ -203,7 +203,7 @@ function TierCard({ tier, ctaVariant, ctaColorScheme }: TierCardProps) {
           <span
             className={cn(
               "text-sm",
-              featured ? "text-base-100/60" : "text-base-content/50",
+              featured ? "text-base-100/60" : "text-base-content/60",
             )}
           >
             {tier.cadence}
@@ -351,7 +351,7 @@ export default function PricingTiers({
         </motion.div>
 
         {footnote && (
-          <p className="mt-10 text-center text-sm text-base-content/50">
+          <p className="mt-10 text-center text-sm text-base-content/60">
             {footnote}
           </p>
         )}

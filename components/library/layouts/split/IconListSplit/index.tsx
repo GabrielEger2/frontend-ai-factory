@@ -108,7 +108,7 @@ function LogoImage({ logo, index }: LogoImageProps) {
       src={safeImg.src}
       onError={safeImg.onError}
       alt={logo.imageAlt}
-      className="h-8 max-w-[140px] object-contain opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0"
+      className="h-8 max-w-[140px] object-contain opacity-80 transition-all hover:opacity-100"
       loading="lazy"
     />
   );

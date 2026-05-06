@@ -195,7 +195,7 @@ function FeaturedItemCard({ item, index }: FeaturedItemCardProps) {
         {(item.price || item.discountPrice) && (
           <div className="flex items-center gap-2 text-[10px]">
             {item.price && item.discountPrice && (
-              <span className="text-base-content/40 line-through">
+              <span className="text-base-content/60 line-through">
                 {item.price}
               </span>
             )}

@@ -172,7 +172,7 @@ export default function HeroNewsroomTicker({
                 <span className={cn("font-semibold", TREND_TINT[trend])}>
                   {item.value}
                 </span>
-                <span className="text-base-content/30" aria-hidden="true">
+                <span className="text-base-content/60" aria-hidden="true">
                   ·
                 </span>
               </span>

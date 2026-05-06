@@ -173,7 +173,7 @@ function Card({
 }) {
   return (
     <div
-      className="relative shrink-0 cursor-pointer transition-transform hover:-translate-y-1"
+      className="relative shrink-0"
       style={{
         width: cardWidth,
         marginRight: cardGap,

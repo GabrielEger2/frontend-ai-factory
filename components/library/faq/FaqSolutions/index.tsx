@@ -106,7 +106,7 @@ function SolutionItem({
           duration: shouldReduceMotion ? 0 : 0.25,
           ease: "easeOut",
         }}
-        className="relative z-20 flex flex-col justify-between rounded-[7px] bg-base-100 p-6"
+        className="relative z-20 flex flex-col justify-between rounded-lg bg-base-100 p-6"
       >
         <div>
           <p

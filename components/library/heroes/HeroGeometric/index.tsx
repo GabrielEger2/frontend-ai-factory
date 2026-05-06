@@ -105,7 +105,7 @@ function AvatarImage({ avatar, index }: AvatarImageProps) {
   return (
     <img
       className={cn(
-        "h-7 w-7 rounded-full border-[3px] border-base-100 bg-base-200 object-cover",
+        "h-7 w-7 rounded-full border-2 border-base-100 bg-base-200 object-cover",
         index > 0 && "-ml-2",
       )}
       src={safeImg.src}
