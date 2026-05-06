@@ -25,7 +25,7 @@ const SampleLogo = () => (
       fontSize="18"
       fontWeight="bold"
     >
-      Acme
+      Lumen Press
     </text>
   </svg>
 );

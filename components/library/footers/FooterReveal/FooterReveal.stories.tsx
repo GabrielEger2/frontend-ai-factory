@@ -20,7 +20,7 @@ const SampleLogo = () => (
       fontSize="18"
       fontWeight="bold"
     >
-      Acme
+      Holloway & Co
     </text>
   </svg>
 );
@@ -63,8 +63,8 @@ export const RealEstate: Story = {
     phoneUrl: "tel:+15551234567",
     phoneText: "+1 (555) 123-4567",
     emailUrl:
-      "mailto:contact@acmerealty.com?subject=Website%20inquiry&body=Hello%2C%20I'm%20interested.",
-    emailText: "contact@acmerealty.com",
+      "mailto:contact@driftwoodrealty.com?subject=Website%20inquiry&body=Hello%2C%20I'm%20interested.",
+    emailText: "contact@driftwoodrealty.com",
     addressText: "123 Main Street\nNew York, NY 10001",
     addressMapsUrl:
       "https://www.google.com/maps/search/?api=1&query=123+Main+Street+New+York",
@@ -96,7 +96,7 @@ export const RealEstate: Story = {
       { network: "linkedin", url: "https://linkedin.com", label: "LinkedIn" },
       { network: "facebook", url: "https://facebook.com", label: "Facebook" },
     ],
-    companyName: "Acme Realty",
+    companyName: "Driftwood Realty",
     ctaText: "Schedule a Visit",
     ctaUrl: "#schedule",
     ctaStyle: "slide",
@@ -110,8 +110,8 @@ export const FreelancerPortfolio: Story = {
     whatsappUrl:
       "https://wa.me/15559876543?text=Hi%2C%20I%20saw%20your%20portfolio.",
     whatsappText: "+1 (555) 987-6543",
-    emailUrl: "mailto:hello@janedoe.dev",
-    emailText: "hello@janedoe.dev",
+    emailUrl: "mailto:hello@nadiahaddad.dev",
+    emailText: "hello@nadiahaddad.dev",
     navColumns: [
       {
         title: "Links",
@@ -129,7 +129,7 @@ export const FreelancerPortfolio: Story = {
         label: "Instagram",
       },
     ],
-    companyName: "Jane Doe",
+    companyName: "Nadia Haddad",
   },
 };
 

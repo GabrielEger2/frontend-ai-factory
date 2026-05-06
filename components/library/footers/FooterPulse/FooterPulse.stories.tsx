@@ -209,6 +209,6 @@ export const FreelancerPortfolio: Story = {
       },
       { network: "linkedin", url: "https://linkedin.com", label: "LinkedIn" },
     ],
-    companyName: "Jane Doe",
+    companyName: "Hiroshi Tanaka",
   },
 };

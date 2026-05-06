@@ -56,10 +56,10 @@ const DEFAULT_HERO_SHUFFLE_CARDS: NonNullable<HeroShuffleCardsProps["cards"]> =
   [
     {
       image: "https://picsum.photos/seed/heroshufflecards-card-0/350/450",
-      imageAlt: "Sarah Chen",
+      imageAlt: "Maya Okonkwo",
       quote:
         "Felt like the team had been with us for years. Three weeks in and the redesign was already paying for itself.",
-      author: "Sarah Chen — Head of Growth at Acme",
+      author: "Maya Okonkwo — Head of Growth at Beacon Labs",
     },
     {
       image: "https://picsum.photos/seed/heroshufflecards-card-1/350/450",

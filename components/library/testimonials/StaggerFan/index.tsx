@@ -38,9 +38,9 @@ export interface StaggerFanProps {
 const DEFAULT_STAGGER_TESTIMONIALS: TestimonialItem[] = [
   {
     image: "https://picsum.photos/seed/staggerfan-testimonial-0/80/80",
-    imageAlt: "Sarah Chen",
-    name: "Sarah Chen",
-    title: "Head of Growth at Acme",
+    imageAlt: "Aisha Bello",
+    name: "Aisha Bello",
+    title: "Head of Growth at Tideline",
     quote:
       "We doubled our pipeline in the first quarter. The team was responsive, sharp, and frankly a delight to work with.",
   },

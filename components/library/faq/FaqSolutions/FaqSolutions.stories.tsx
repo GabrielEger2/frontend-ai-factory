@@ -58,7 +58,7 @@ export const SoftwareSegments: Story = {
       {
         title: "For Enterprise",
         description:
-          "SSO, SCIM provisioning, audit logs, and a 99.99% uptime SLA. Dedicated account managers ensure smooth onboarding for teams of any size, with custom training workshops included.",
+          "SSO, SCIM provisioning, audit logs, and a 99.92% uptime SLA. Dedicated account managers ensure smooth onboarding for teams of any size, with custom training workshops included.",
         ctaText: "Contact sales",
         ctaUrl: "/contact",
         image: "https://placehold.co/700x500",

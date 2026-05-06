@@ -39,9 +39,9 @@ const DEFAULT_INFINITE_SCROLL_ROWS: [
   [
     {
       image: "https://picsum.photos/seed/infinitescroll-r0-0/80/80",
-      imageAlt: "Sarah Chen",
-      name: "Sarah Chen",
-      title: "Head of Growth at Acme",
+      imageAlt: "Camila Reyes",
+      name: "Camila Reyes",
+      title: "Head of Growth at Foxtrot Studio",
       quote:
         "We doubled our pipeline in the first quarter. The team was responsive, sharp, and a delight to work with.",
     },
