@@ -137,7 +137,7 @@ const COLUMN_MAP = {
 function renderBaseCards(
   cards: FeatureCardItem[],
   ctaVariant?: CtaVariant,
-  ctaColorScheme?: string,
+  ctaColorScheme?: ColorScheme,
 ) {
   return cards.map((card, i) => (
     <CardBase
@@ -149,6 +149,8 @@ function renderBaseCards(
       ctaText={card.ctaText}
       ctaUrl={card.ctaUrl}
       badge={card.badge}
+      ctaVariant={ctaVariant}
+      ctaColorScheme={ctaColorScheme}
     />
   ));
 }
