@@ -3179,6 +3179,182 @@
     }
   },
   {
+    "id": "footer-columns-social-01",
+    "name": "Columns & Social Footer",
+    "category": "footer",
+    "purpose": [
+      "footer",
+      "navigation",
+      "brand-statement"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": true,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "corporate",
+      "minimal"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "calm"
+    ],
+    "layout": "multi-column",
+    "density": "medium",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "logoText",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "tagline",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "navColumns",
+        "type": "list",
+        "maxItems": 4,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 30
+            },
+            {
+              "name": "links",
+              "type": "list",
+              "maxItems": 6,
+              "itemSchema": {
+                "type": "object",
+                "fields": [
+                  {
+                    "name": "text",
+                    "type": "text",
+                    "maxLength": 40
+                  },
+                  {
+                    "name": "href",
+                    "type": "url"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "socialHandles",
+        "type": "list",
+        "maxItems": 6,
+        "optional": true,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "network",
+              "type": "text",
+              "enum": [
+                "instagram",
+                "linkedin",
+                "facebook",
+                "whatsapp",
+                "twitter",
+                "youtube",
+                "tiktok",
+                "google",
+                "pinterest",
+                "telegram"
+              ]
+            },
+            {
+              "name": "url",
+              "type": "url"
+            },
+            {
+              "name": "handle",
+              "type": "text",
+              "maxLength": 40
+            },
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 60
+            }
+          ]
+        }
+      },
+      {
+        "name": "socialHeading",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "companyName",
+        "type": "text",
+        "maxLength": 80,
+        "optional": true
+      },
+      {
+        "name": "legalLinks",
+        "type": "list",
+        "maxItems": 5,
+        "optional": true,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "text",
+              "type": "text",
+              "maxLength": 40
+            },
+            {
+              "name": "href",
+              "type": "url"
+            }
+          ]
+        }
+      },
+      {
+        "name": "regionLabel",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "cta-cta-editorial-split-01",
+      "cta-minimal-strip-01",
+      "faq-accordion-01",
+      "stats-count-up-01",
+      "testimonial-spotlight-quote-01"
+    ],
+    "pairsPoorly": [
+      "footer-mega-01",
+      "footer-pulse-01",
+      "footer-reveal-01",
+      "footer-minimal-strip-01"
+    ],
+    "description": "A medium-density utility footer with a brand block, up to four sitemap columns, and a dedicated social column rendering each network as a handle-style card. No newsletter form — pair above with a closing CTA section. Sits on bg-base-200 for quieter visual weight than FooterMega.",
+    "descriptions": {
+      "descriptive": "Top section is a five-column grid: a brand block (logo, tagline, optional region pill), three sitemap columns, and a social column where each network renders as a small handle card (icon + display handle + arrow chevron). Bottom row carries copyright and optional inline legal links. Renders on bg-base-200 with bg-base-100 surfaces for the social handle cards — noticeably quieter than FooterMega's bg-neutral treatment.",
+      "usage": "Use as the site-wide footer for product, marketplace, or content sites that want strong social discoverability without a newsletter capture row. The page must already carry a closing CTA above this footer (CtaMinimalStrip, CtaEditorialSplit). Don't stack with another footer — pick exactly one footer per generated site.",
+      "audienceFit": "B2C product brands, marketplaces, creator-led brands, and SMBs whose social presence (Instagram, TikTok, WhatsApp) is the primary follow-on channel and deserves more than a row of generic icons."
+    }
+  },
+  {
     "id": "footer-mega-01",
     "name": "Mega Footer",
     "category": "footer",
@@ -3373,6 +3549,8 @@
       "testimonial-spotlight-quote-01"
     ],
     "pairsPoorly": [
+      "footer-columns-social-01",
+      "footer-minimal-strip-01",
       "footer-pulse-01",
       "footer-reveal-01"
     ],
@@ -3381,6 +3559,144 @@
       "descriptive": "Three stacked sections: a newsletter section with eyebrow / headline / description on the left and an inline form (or a check-icon success state) on the right; a sitemap with the brand block plus up to four navigation columns, each link supporting an optional 'New' / count badge; and a bottom bar with copyright, optional legal links, and a row of social icons. Renders on bg-neutral with hairline neutral-content/10 dividers between sections.",
       "usage": "Use as the site-wide footer when the page already carries a closing CTA (CtaMinimalStrip, CtaCountdown). Don't stack with FooterPulse or FooterReveal — pick exactly one footer per generated site.",
       "audienceFit": "B2B SaaS, fintech, marketplaces, and content-heavy publishers whose footers carry real navigation work — sitemap, trust links, and an active newsletter list."
+    }
+  },
+  {
+    "id": "footer-minimal-strip-01",
+    "name": "Minimal Strip Footer",
+    "category": "footer",
+    "purpose": [
+      "footer",
+      "brand-statement"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": true,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "minimal",
+      "modern",
+      "editorial"
+    ],
+    "mood": [
+      "calm",
+      "professional",
+      "elegant"
+    ],
+    "layout": "single-row",
+    "density": "low",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "logoText",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "caption",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      },
+      {
+        "name": "companyName",
+        "type": "text",
+        "maxLength": 80,
+        "optional": true
+      },
+      {
+        "name": "copyrightSuffix",
+        "type": "text",
+        "maxLength": 80,
+        "optional": true
+      },
+      {
+        "name": "legalLinks",
+        "type": "list",
+        "maxItems": 3,
+        "optional": true,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "text",
+              "type": "text",
+              "maxLength": 30
+            },
+            {
+              "name": "href",
+              "type": "url"
+            }
+          ]
+        }
+      },
+      {
+        "name": "socialLinks",
+        "type": "list",
+        "maxItems": 6,
+        "optional": true,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "network",
+              "type": "text",
+              "enum": [
+                "instagram",
+                "linkedin",
+                "facebook",
+                "whatsapp",
+                "twitter",
+                "youtube",
+                "tiktok",
+                "google",
+                "pinterest",
+                "telegram"
+              ]
+            },
+            {
+              "name": "url",
+              "type": "url"
+            },
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 60
+            }
+          ]
+        }
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "neutral",
+          "subtle"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "cta-cta-editorial-split-01",
+      "cta-image-backdrop-01",
+      "cta-minimal-strip-01",
+      "hero-spotlight-center-01",
+      "testimonial-spotlight-quote-01"
+    ],
+    "pairsPoorly": [
+      "footer-mega-01",
+      "footer-pulse-01",
+      "footer-reveal-01"
+    ],
+    "description": "A single-line site-bottom strip — brand mark, copyright, optional inline legal links, and a small row of social icons. Restrained, calm, takes up minimal vertical space. The right footer when the rest of the page already does the heavy storytelling lifting.",
+    "descriptions": {
+      "descriptive": "One stretched flex row on desktop with three slots: logo + copyright on the left, optional legal links in the center, and a row of social icon buttons on the right. Collapses to a centered three-line stack below md:. Two visual tones — `neutral` (bg-neutral / neutral-content text, the default) or `subtle` (bg-base-100 with a hairline top border). No newsletter, no sitemap — only what the page minimally needs to legally close out.",
+      "usage": "Use as the site-wide footer for portfolio sites, agency one-pagers, single-product launch pages, or any layout where a closing CTA section already exists above. Don't pair with FooterMega/FooterPulse/FooterReveal — pick exactly one footer per generated site.",
+      "audienceFit": "Design studios, freelancers, photographers, single-page launch sites, and any brand whose visual identity is already strong enough that the footer's job is to disappear into it."
     }
   },
   {
@@ -3568,7 +3884,12 @@
       "faq-accordion-01",
       "navbar-pill-01"
     ],
-    "pairsPoorly": [],
+    "pairsPoorly": [
+      "footer-columns-social-01",
+      "footer-mega-01",
+      "footer-minimal-strip-01",
+      "footer-reveal-01"
+    ],
     "description": "A clean, magazine-style footer with refined typography and minimal visual elements that builds credibility for editorial websites, publishing platforms, and content-focused businesses requiring professional authority.",
     "descriptions": {
       "descriptive": "A streamlined footer with generous whitespace and typography-forward design. Features clean sans-serif text hierarchy, subtle dividing lines, and restrained color palette. The editorial influence shows in careful text spacing and journalistic information architecture that feels both sophisticated and uncluttered.",
@@ -3754,7 +4075,12 @@
     "pairsWell": [
       "faq-accordion-01"
     ],
-    "pairsPoorly": [],
+    "pairsPoorly": [
+      "footer-columns-social-01",
+      "footer-mega-01",
+      "footer-minimal-strip-01",
+      "footer-pulse-01"
+    ],
     "description": "A modern footer that elegantly reveals itself as users scroll, featuring clean typography and minimal design elements. Perfect for editorial sites, professional services, and brands seeking a sophisticated, trustworthy presence.",
     "descriptions": {
       "descriptive": "A sleek footer that emerges smoothly as users scroll, featuring clean typography and generous white space. The minimal design uses subtle shadows and refined spacing to create an editorial magazine aesthetic with polished, understated elegance.",

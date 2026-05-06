@@ -1,0 +1,96 @@
+{
+  "id": "footer-minimal-strip-01",
+  "name": "Minimal Strip Footer",
+  "category": "footer",
+  "purpose": ["footer", "brand-statement"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["minimal", "modern", "editorial"],
+  "mood": ["calm", "professional", "elegant"],
+  "layout": "single-row",
+  "density": "low",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "logoText", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "caption", "type": "text", "maxLength": 60, "optional": true },
+    {
+      "name": "companyName",
+      "type": "text",
+      "maxLength": 80,
+      "optional": true
+    },
+    {
+      "name": "copyrightSuffix",
+      "type": "text",
+      "maxLength": 80,
+      "optional": true
+    },
+    {
+      "name": "legalLinks",
+      "type": "list",
+      "maxItems": 3,
+      "optional": true,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "text", "type": "text", "maxLength": 30 },
+          { "name": "href", "type": "url" }
+        ]
+      }
+    },
+    {
+      "name": "socialLinks",
+      "type": "list",
+      "maxItems": 6,
+      "optional": true,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          {
+            "name": "network",
+            "type": "text",
+            "enum": [
+              "instagram",
+              "linkedin",
+              "facebook",
+              "whatsapp",
+              "twitter",
+              "youtube",
+              "tiktok",
+              "google",
+              "pinterest",
+              "telegram"
+            ]
+          },
+          { "name": "url", "type": "url" },
+          { "name": "label", "type": "text", "maxLength": 60 }
+        ]
+      }
+    },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["neutral", "subtle"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "cta-cta-editorial-split-01",
+    "cta-image-backdrop-01",
+    "cta-minimal-strip-01",
+    "hero-spotlight-center-01",
+    "testimonial-spotlight-quote-01"
+  ],
+  "pairsPoorly": ["footer-mega-01", "footer-pulse-01", "footer-reveal-01"],
+  "description": "A single-line site-bottom strip — brand mark, copyright, optional inline legal links, and a small row of social icons. Restrained, calm, takes up minimal vertical space. The right footer when the rest of the page already does the heavy storytelling lifting.",
+  "descriptions": {
+    "descriptive": "One stretched flex row on desktop with three slots: logo + copyright on the left, optional legal links in the center, and a row of social icon buttons on the right. Collapses to a centered three-line stack below md:. Two visual tones — `neutral` (bg-neutral / neutral-content text, the default) or `subtle` (bg-base-100 with a hairline top border). No newsletter, no sitemap — only what the page minimally needs to legally close out.",
+    "usage": "Use as the site-wide footer for portfolio sites, agency one-pagers, single-product launch pages, or any layout where a closing CTA section already exists above. Don't pair with FooterMega/FooterPulse/FooterReveal — pick exactly one footer per generated site.",
+    "audienceFit": "Design studios, freelancers, photographers, single-page launch sites, and any brand whose visual identity is already strong enough that the footer's job is to disappear into it."
+  }
+}

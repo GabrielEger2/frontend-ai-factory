@@ -2,25 +2,15 @@
   "id": "footer-pulse-01",
   "name": "Pulse Editorial Footer",
   "category": "footer",
-  "purpose": [
-    "footer"
-  ],
+  "purpose": ["footer"],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
     "textDecoration": false,
     "button": true
   },
-  "style": [
-    "modern",
-    "editorial",
-    "minimal"
-  ],
-  "mood": [
-    "professional",
-    "elegant",
-    "trustworthy"
-  ],
+  "style": ["modern", "editorial", "minimal"],
+  "mood": ["professional", "elegant", "trustworthy"],
   "layout": "multi-column",
   "density": "medium",
   "imageWeight": 0.05,
@@ -157,13 +147,7 @@
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "default",
-        "slide",
-        "dotExpand",
-        "drawOutline",
-        "glow"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
     },
     {
       "name": "locationLabel",
@@ -179,11 +163,13 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "faq-accordion-01",
-    "navbar-pill-01"
+  "pairsWell": ["faq-accordion-01", "navbar-pill-01"],
+  "pairsPoorly": [
+    "footer-columns-social-01",
+    "footer-mega-01",
+    "footer-minimal-strip-01",
+    "footer-reveal-01"
   ],
-  "pairsPoorly": [],
   "description": "A clean, magazine-style footer with refined typography and minimal visual elements that builds credibility for editorial websites, publishing platforms, and content-focused businesses requiring professional authority.",
   "descriptions": {
     "descriptive": "A streamlined footer with generous whitespace and typography-forward design. Features clean sans-serif text hierarchy, subtle dividing lines, and restrained color palette. The editorial influence shows in careful text spacing and journalistic information architecture that feels both sophisticated and uncluttered.",

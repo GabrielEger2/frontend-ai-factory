@@ -2,25 +2,15 @@
   "id": "footer-reveal-01",
   "name": "Sticky Reveal Footer",
   "category": "footer",
-  "purpose": [
-    "footer"
-  ],
+  "purpose": ["footer"],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
     "textDecoration": false,
     "button": true
   },
-  "style": [
-    "modern",
-    "editorial",
-    "minimal"
-  ],
-  "mood": [
-    "professional",
-    "elegant",
-    "trustworthy"
-  ],
+  "style": ["modern", "editorial", "minimal"],
+  "mood": ["professional", "elegant", "trustworthy"],
   "layout": "multi-column",
   "density": "medium",
   "imageWeight": 0.08,
@@ -151,32 +141,23 @@
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "default",
-        "slide",
-        "dotExpand",
-        "drawOutline",
-        "glow"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
     },
     {
       "name": "height",
       "type": "number",
       "optional": true,
-      "enum": [
-        350,
-        400,
-        450,
-        500,
-        550
-      ]
+      "enum": [350, 400, 450, 500, 550]
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "faq-accordion-01"
+  "pairsWell": ["faq-accordion-01"],
+  "pairsPoorly": [
+    "footer-columns-social-01",
+    "footer-mega-01",
+    "footer-minimal-strip-01",
+    "footer-pulse-01"
   ],
-  "pairsPoorly": [],
   "description": "A modern footer that elegantly reveals itself as users scroll, featuring clean typography and minimal design elements. Perfect for editorial sites, professional services, and brands seeking a sophisticated, trustworthy presence.",
   "descriptions": {
     "descriptive": "A sleek footer that emerges smoothly as users scroll, featuring clean typography and generous white space. The minimal design uses subtle shadows and refined spacing to create an editorial magazine aesthetic with polished, understated elegance.",

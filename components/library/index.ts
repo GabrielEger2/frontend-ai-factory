@@ -41,7 +41,9 @@ export { default as FaqSolutions } from "./faq/FaqSolutions";
 export { default as FaqTabbed } from "./faq/FaqTabbed";
 
 // Footers
+export { default as FooterColumnsSocial } from "./footers/FooterColumnsSocial";
 export { default as FooterMega } from "./footers/FooterMega";
+export { default as FooterMinimalStrip } from "./footers/FooterMinimalStrip";
 export { default as FooterPulse } from "./footers/FooterPulse";
 export { default as FooterReveal } from "./footers/FooterReveal";
 
@@ -146,7 +148,9 @@ import FaqAccordion from "./faq/FaqAccordion";
 import FaqMinimal from "./faq/FaqMinimal";
 import FaqSolutions from "./faq/FaqSolutions";
 import FaqTabbed from "./faq/FaqTabbed";
+import FooterColumnsSocial from "./footers/FooterColumnsSocial";
 import FooterMega from "./footers/FooterMega";
+import FooterMinimalStrip from "./footers/FooterMinimalStrip";
 import FooterPulse from "./footers/FooterPulse";
 import FooterReveal from "./footers/FooterReveal";
 import HeroAsymmetricStack from "./heroes/HeroAsymmetricStack";
@@ -237,7 +241,9 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "faq-minimal-01": FaqMinimal,
   "faq-solutions-01": FaqSolutions,
   "faq-tabbed-01": FaqTabbed,
+  "footer-columns-social-01": FooterColumnsSocial,
   "footer-mega-01": FooterMega,
+  "footer-minimal-strip-01": FooterMinimalStrip,
   "footer-pulse-01": FooterPulse,
   "footer-reveal-01": FooterReveal,
   "hero-hero-bold-editorial-01": HeroBoldEditorial,

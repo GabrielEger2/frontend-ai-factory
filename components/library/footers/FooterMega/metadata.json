@@ -145,7 +145,12 @@
     "stats-count-up-01",
     "testimonial-spotlight-quote-01"
   ],
-  "pairsPoorly": ["footer-pulse-01", "footer-reveal-01"],
+  "pairsPoorly": [
+    "footer-columns-social-01",
+    "footer-minimal-strip-01",
+    "footer-pulse-01",
+    "footer-reveal-01"
+  ],
   "description": "A high-density 'mega-footer' with a newsletter capture row, a 4-5 column sitemap, a copyright line, optional legal links and a social row. Sits on the neutral surface tokens and is the canonical site-bottom for content-heavy product pages.",
   "descriptions": {
     "descriptive": "Three stacked sections: a newsletter section with eyebrow / headline / description on the left and an inline form (or a check-icon success state) on the right; a sitemap with the brand block plus up to four navigation columns, each link supporting an optional 'New' / count badge; and a bottom bar with copyright, optional legal links, and a row of social icons. Renders on bg-neutral with hairline neutral-content/10 dividers between sections.",
