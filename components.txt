@@ -1,79 +1,138 @@
 SiteGen Component Library — Missing Components
 ================================================
-Snapshot date: 2026-05-06 (refreshed after CTA / testimonial / contact /
-carousel / motion / stats / faq / footer batch.)
-Current state: 71 / ~75 (target from .claude/CLAUDE.md)
-Gap: 0 across the canonical 12 categories — every category sits at or
-above its target (only `layout/grid` is +2 over, see follow-up #2).
-All 71 metadata.json files pass `npm run validate:metadata`.
-TypeScript `tsc --noEmit` passes clean across all new components.
-`npm run build:manifest` writes 71 entries.
+Snapshot date: 2026-05-06
+Current state: 76 / ~112 (target from .claude/rules/domains/components.md)
+Gap: 36 components across 15 categories (3 brand-new categories)
 
 Coverage vs target
 ------------------
-Category        Target  OnDisk  Gap
-hero            15      15      done
-layout/split    8       8       done
-cta             8       8       done
-testimonial     6       6       done
-contact         5       5       done
-carousel        5       5       done
-motion          4       4       done
-stats           4       4       done
-faq             4       4       done
-footer          3       3       done
-navigation      4       4       done
-layout/grid     4       6       +2 over
+Category         Target  OnDisk  Gap
+pricing (new)    5       0       -5
+gallery (new)    5       0       -5
+team (new)       4       0       -4
+cta              12      8       -4
+hero             18      15      -3
+testimonial      8       6       -2
+footer           5       3       -2
+faq              6       4       -2
+contact          7       5       -2
+navigation       6       4       -2
+carousel         7       5       -2
+motion           6       4       -2
+layout/grid      8       6       -2
+layout/split     10      8       -2
+stats            5       4       -1
 
-Components added in this batch (16)
------------------------------------
-CTA (3)
-  - cta/CtaCountdown — `cta-countdown-01` — live countdown to a deadline
-  - cta/CtaDualOfferSplit — `cta-dual-offer-split-01` — two side-by-side offer cards
-  - cta/CtaStickyBanner — `cta-sticky-banner-01` — fixed-bottom CTA, scroll-triggered
+Missing components (suggested)
+------------------------------
 
-Testimonial (3)
-  - testimonials/TestimonialVideoCard — `testimonial-video-card-01` — 1-3 video tiles + lightbox iframe
-  - testimonials/TestimonialSpotlightQuote — `testimonial-spotlight-quote-01` — hero pull-quote
-  - testimonials/TestimonialLogoQuoteRibbon — `testimonial-logo-quote-ribbon-01` — logo strip + cross-fading quote
+Pricing (-5) — NEW CATEGORY, build from scratch
+  - PricingTierCards — 3-column tier cards with feature lists, "most popular" highlight
+  - PricingComparisonTable — full feature-row × tier-column matrix
+  - PricingFreemiumLadder — visual ladder/staircase showing tier progression
+  - PricingSinglePrice — solo card for one-product / agency packages
+  - PricingMonthlyAnnualToggle — animated billing-cycle switch with discount badge
+  Note: when this category lands, migrate `layout/grid/PricingTiers` into it.
 
-Contact (3)
-  - contact/ContactSplitForm — `contact-split-form-01` — form + structured info column
-  - contact/ContactBookingEmbed — `contact-booking-embed-01` — Cal.com/Calendly iframe
-  - contact/ContactSupportTabs — `contact-support-tabs-01` — sales/support/press routing tabs
+Gallery (-5) — NEW CATEGORY, build from scratch
+  - GalleryMasonry — Pinterest-style asymmetric grid
+  - GalleryLightboxGrid — uniform grid with click-to-expand modal
+  - GalleryCaseStudy — long-form case-study layout (problem / solution / result)
+  - GalleryPortfolioStrip — horizontal-scroll portfolio with hover meta
+  - GalleryImageTextEditorial — alternating image + caption editorial spread
 
-Carousel (2)
-  - carousel/CarouselBeforeAfter — `carousel-before-after-01` — drag-reveal comparison slider
-  - carousel/CarouselTestimonialAvatarPeek — `carousel-testimonial-avatar-peek-01` — hero quote + avatar strip
+Team (-4) — NEW CATEGORY, build from scratch
+  - TeamLeadershipGrid — portrait grid with role / name / short title
+  - TeamFounderSplit — single-founder split with extended bio + signature
+  - TeamCarousel — horizontally-scrolling team cards with peek
+  - TeamMemberSpotlight — featured member with quote + credentials
 
-Motion (2)
-  - motion/MotionMarquee — `motion-marquee-01` — words / logos / badges scrolling ticker
-  - motion/MotionScrollNarrative — `motion-scroll-narrative-01` — pinned-image narrative
+CTA (-4)
+  - CtaTestimonialPaired — CTA with embedded social-proof quote
+  - CtaVideoBackdrop — looping video behind primary CTA
+  - CtaInlineCalculator — interactive estimate widget (mortgage / savings / quote)
+  - CtaFormInline — form-as-CTA with inline lead-capture fields
 
-Stats (1)
-  - stats/StatsChart — `stats-chart-01` — animated bar chart or sparkline trend
+Hero (-3)
+  - HeroDeviceChrome — product screenshot in browser / device frame
+  - HeroKineticType — large animated typography with morphing words
+  - HeroIllustration — spot-art / illustration-driven hero for playful brands
 
-FAQ (1)
-  - faq/FaqTabbed — `faq-tabbed-01` — categorized FAQ with animated underline tab strip
+Testimonial (-2)
+  - TestimonialMasonryQuotes — Pinterest-style mass social-proof wall
+  - TestimonialMetricCard — testimonial paired with quantified KPI outcome
 
-Footer (1)
-  - footers/FooterMega — `footer-mega-01` — newsletter + 4-col sitemap + legal/social bar
+Footer (-2)
+  - FooterMinimalStrip — single-line copyright + social icons
+  - FooterColumnsSocial — multi-column utility footer with social handles
 
-Structural follow-ups (unchanged)
----------------------------------
-1. `variants/` directories: CLAUDE.md describes them as optional ("same
-   component, different density/color mode"), but 0 of 71 components have one.
-   Decision needed: drop the convention from CLAUDE.md, or seed dense/dark
-   variants for 2-3 high-value components (e.g. HeroSplitImage,
-   CtaEditorialSplit, FaqAccordion).
+FAQ (-2)
+  - FaqSearch — search-driven with live filter and keyword highlight
+  - FaqCategorized — sidebar category navigation + grouped questions
 
-2. layout/grid is over target (6 vs 4). PricingTiers, ProcessTimeline,
-   LogoCloud, IconFeatureGrid arguably belong in their own categories
-   (`pricing`, `process`, `partners`, `features`). Decision needed: raise the
-   layout/grid target in CLAUDE.md, or split these into dedicated categories
-   matching how their `purpose[]` already tags them.
+Contact (-2)
+  - ContactChatEmbed — embedded chat / WhatsApp / Intercom widget
+  - ContactMultiStep — wizard-style routing form (sales / support / partnership)
 
-3. The total of 71 is *under* the ~75 target only because hero already
-   ships 15 (= target) and layout/grid is +2 over. Future additions
-   should focus on the structural follow-ups above rather than padding
-   counts.
+Navigation (-2)
+  - NavbarTransparentOverlay — transparent over hero, solidifies on scroll
+  - NavbarSideRail — vertical fixed left/right rail (portfolio / docs sites)
+
+Carousel (-2)
+  - CarouselThumbnailNav — main image with thumbnail strip (e-com)
+  - CarouselFullBleedSlider — edge-to-edge image rotator with caption overlay
+
+Motion (-2)
+  - MotionRevealOnScroll — staggered text/element reveal on scroll
+  - MotionPinnedSection — pinned canvas with scroll-driven content swap
+
+Layout/grid (-2)
+  - GridBentoLayout — bento-box asymmetric feature grid
+  - GridFeatureCompare — comparison grid (rows = features, cols = options)
+
+Layout/split (-2)
+  - ComparisonSplit — IMPLEMENT the existing empty folder at
+    `components/library/layouts/split/ComparisonSplit/` (us vs them, side-by-side)
+  - SplitQuoteImage — large editorial quote with portrait / imagery split
+
+Stats (-1)
+  - StatsTimelineMilestones — year-by-year achievement timeline with stats
+
+Structural follow-ups
+---------------------
+1. New category enablement (paired commit required before any component
+   can declare these categories):
+   - Add `pricing | team | gallery` to validator category enum.
+   - Add to FLOW_ORDER in `agents/scripts/generate-pair-scores.ts`.
+   - Add to dashboard category facets.
+
+2. New purpose tokens needed (paired commit per rules-doc convention):
+   - `pricing`     — pricing-tier / comparison-table / freemium slots
+   - `gallery`     — masonry / lightbox / case-study slots
+   - `comparison`  — side-by-side feature comparisons (also unblocks ComparisonSplit)
+   Update: rules doc canonical list, `CANONICAL_PURPOSE` in
+   `components/scripts/validate-metadata.ts`, and the matching constant in
+   `components/tests/metadata-schema.test.ts` — all in the same commit.
+
+3. Manifest ID hygiene — drift from naming convention, fix when convenient:
+   - Duplicated category prefix:
+       hero-hero-bold-editorial-01, cta-cta-collage-duo-01,
+       cta-cta-editorial-split-01, contact-contact-locations-map-01,
+       contact-contact-shapes-form-01
+   - Wrong prefix on testimonials (using `layout-`):
+       layout-infinitescroll-01, layout-stackedsplit-01, layout-staggerfan-01
+       → should be `testimonial-...`
+   - Wrong prefix on motion (using `layout-`):
+       layout-parallaxcontent-01, layout-stickycards-01
+       → should be `motion-...`
+
+4. Variants — only 4 heroes currently have `variants/` (geometric,
+   parallax-images, shuffle-cards, split-image). Either drop the
+   variants convention from the rules doc, or seed compact/airy variants
+   for top-picked components (HeroBoldEditorial, HeroVideoBackdrop,
+   CtaEditorialSplit, CtaImageBackdrop, FooterMega).
+
+5. layout/grid migration — when `pricing` ships, move PricingTiers
+   from `layout/grid` to `pricing`. If LogoCloud / award-style trust
+   components grow past 3, consider promoting them out of `layout/grid`
+   into a dedicated `trust` category (currently NOT in the targets).
