@@ -81,6 +81,16 @@ const DEFAULT_HERO_SHUFFLE_CARDS: NonNullable<HeroShuffleCardsProps["cards"]> =
 /*  Card sub-component                                                 */
 /* ------------------------------------------------------------------ */
 
+/*
+ * Card — kept bespoke intentionally.
+ *
+ * Drag/fan/stack mechanics (motion.div with drag, dragElastic, stacking x/rotateZ)
+ * are specific to this hero interaction and cannot live in a shared primitive.
+ * `TestimonialCard` is the closest primitive but requires `name`+`title` as separate
+ * strings; this component uses a single `author` field ("Name — Role"). None of
+ * TestimonialCard's three layouts use circular-avatar + centered quote + drag.
+ * A `CardQuote` primitive is deferred until a second consumer appears.
+ */
 interface CardProps {
   image: string;
   imageAlt: string;
