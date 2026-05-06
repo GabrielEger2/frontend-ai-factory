@@ -194,7 +194,7 @@ export default function HeroGeometric({
   return (
     <section
       className={cn(
-        "relative isolate flex w-full items-center overflow-hidden bg-base-100 min-h-screen",
+        "relative isolate flex w-full items-center overflow-hidden bg-base-100 min-h-[100dvh]",
         className,
       )}
     >

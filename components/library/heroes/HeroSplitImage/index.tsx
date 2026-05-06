@@ -284,10 +284,8 @@ export default function HeroSplitImage({
   return (
     <section
       className={cn(
-        "relative flex w-full items-center overflow-hidden bg-base-100 min-h-screen",
+        "relative flex w-full items-center overflow-hidden bg-base-100 min-h-[100dvh]",
         variant === "hero-split-image-01-compact" && "bg-base-300",
-        gridBackground &&
-          "bg-[length:60px_60px] bg-[image:linear-gradient(to_right,var(--tw-gradient-stops)),linear-gradient(to_bottom,var(--tw-gradient-stops))]",
         className,
       )}
     >

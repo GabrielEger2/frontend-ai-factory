@@ -246,7 +246,7 @@ export default function HeroShuffleCards({
   return (
     <section
       className={cn(
-        "w-full overflow-hidden text-base-content min-h-screen items-center flex bg-base-100",
+        "w-full overflow-hidden text-base-content min-h-[100dvh] items-center flex bg-base-100",
         className,
       )}
     >

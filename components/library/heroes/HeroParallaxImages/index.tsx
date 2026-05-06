@@ -156,7 +156,7 @@ function CenterImage({
   if (shouldReduceMotion) {
     return (
       <div
-        className="sticky top-0 h-screen w-full"
+        className="sticky top-0 h-[100dvh] w-full"
         role="img"
         aria-label={alt}
         style={{
@@ -171,7 +171,7 @@ function CenterImage({
 
   return (
     <motion.div
-      className="sticky top-0 h-screen w-full"
+      className="sticky top-0 h-[100dvh] w-full"
       role="img"
       aria-label={alt}
       style={{
@@ -342,7 +342,7 @@ export default function HeroParallaxImages({
         )}
 
         {/* Floating parallax images */}
-        <div className="mx-auto max-w-5xl px-4 pt-[200px]">
+        <div className="mx-auto max-w-5xl px-4 pt-52">
           {parallaxImages.map((img, i) => (
             <ParallaxImg
               key={i}

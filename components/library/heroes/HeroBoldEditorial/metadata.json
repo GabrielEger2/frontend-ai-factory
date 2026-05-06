@@ -2,27 +2,15 @@
   "id": "hero-hero-bold-editorial-01",
   "name": "Bold Editorial Hero",
   "category": "hero",
-  "purpose": [
-    "hero",
-    "brand-statement",
-    "magazine-opener"
-  ],
+  "purpose": ["hero", "brand-statement", "magazine-opener"],
   "acceptsStyleKit": {
     "card": false,
     "background": true,
     "textDecoration": true,
     "button": true
   },
-  "style": [
-    "editorial",
-    "bold",
-    "luxury"
-  ],
-  "mood": [
-    "elegant",
-    "serious",
-    "trustworthy"
-  ],
+  "style": ["editorial", "bold", "luxury"],
+  "mood": ["elegant", "serious", "trustworthy"],
   "layout": "asymmetric",
   "density": "low",
   "imageWeight": 0.15,
@@ -92,24 +80,13 @@
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "default",
-        "slide",
-        "dotExpand",
-        "drawOutline",
-        "glow"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
     },
     {
       "name": "ctaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "accent",
-        "neutral"
-      ]
+      "enum": ["primary", "secondary", "accent", "neutral"]
     },
     {
       "name": "secondaryCtaText",
@@ -126,35 +103,19 @@
       "name": "secondaryCtaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "default",
-        "slide",
-        "dotExpand",
-        "drawOutline",
-        "glow"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
     },
     {
       "name": "secondaryCtaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "accent",
-        "neutral"
-      ]
+      "enum": ["primary", "secondary", "accent", "neutral"]
     },
     {
       "name": "accentColorScheme",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "accent",
-        "neutral"
-      ]
+      "enum": ["primary", "secondary", "accent", "neutral"]
     }
   ],
   "mobileBehavior": "stack",
@@ -167,7 +128,8 @@
     "hero-split-image-01",
     "hero-geometric-01",
     "hero-shuffle-cards-01",
-    "hero-parallax-images-01"
+    "hero-parallax-images-01",
+    "hero-bakery-editorial-01"
   ],
   "description": "A magazine-inspired hero section with sophisticated typography and editorial layout that positions brands as authoritative industry leaders. Perfect for luxury businesses, professional services, and publications seeking to establish credibility and gravitas.",
   "descriptions": {

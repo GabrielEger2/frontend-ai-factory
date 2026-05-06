@@ -1,14 +1,14 @@
 SiteGen Component Library — Missing Components
 ================================================
 Snapshot date: 2026-05-06
-Current state: 43 / ~75 (target from .claude/CLAUDE.md)
-Gap: 32 components
-All 43 existing components pass `npm run validate:metadata`.
+Current state: 44 / ~75 (target from .claude/CLAUDE.md)
+Gap: 31 components
+All 44 existing components pass `npm run validate:metadata`.
 
 Coverage vs target
 ------------------
 Category        Target  OnDisk  Gap
-hero            15      5       -10
+hero            15      6       -9
 layout/split    8       5       -3
 cta             8       5       -3
 testimonial     6       3       -3
