@@ -1,5 +1,132 @@
 [
   {
+    "id": "carousel-before-after-01",
+    "name": "Before/After Carousel",
+    "category": "carousel",
+    "purpose": [
+      "portfolio",
+      "showcase",
+      "products"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "editorial",
+      "bold"
+    ],
+    "mood": [
+      "professional",
+      "energetic",
+      "trustworthy"
+    ],
+    "layout": "scroll",
+    "density": "medium",
+    "imageWeight": 0.7,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100,
+        "optional": true
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "items",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 80
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 200,
+              "optional": true
+            },
+            {
+              "name": "beforeImage",
+              "type": "image",
+              "aspectRatio": "16:10"
+            },
+            {
+              "name": "beforeAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "afterImage",
+              "type": "image",
+              "aspectRatio": "16:10"
+            },
+            {
+              "name": "afterAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "beforeLabel",
+              "type": "text",
+              "maxLength": 16,
+              "optional": true
+            },
+            {
+              "name": "afterLabel",
+              "type": "text",
+              "maxLength": 16,
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "initialPosition",
+        "type": "number",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "scroll",
+    "pairsWell": [
+      "hero-hero-bold-editorial-01",
+      "hero-split-image-01",
+      "stats-count-up-01",
+      "testimonial-spotlight-quote-01",
+      "cta-minimal-strip-01"
+    ],
+    "pairsPoorly": [
+      "carousel-cards-01",
+      "carousel-horizontal-scroll-01",
+      "carousel-swipe-01",
+      "carousel-testimonial-avatar-peek-01"
+    ],
+    "description": "Horizontally-scrolling carousel of before/after image comparison sliders. Each card is pointer-draggable with keyboard support and labelled before/after pills, useful for restoration, redesign, transformation, and physical-result portfolios.",
+    "descriptions": {
+      "descriptive": "Snap-x horizontal track on every viewport; each slide is a 16:10 surface with the after image full-bleed and the before image clipped from the left by a draggable handle. Keyboard arrows (and Home/End) move the handle in 4% increments. Pagination dots and prev/next chevrons sit under the track.",
+      "usage": "Use for any 'we changed this' portfolio — interior renovations, brand refreshes, logo redesigns, before-and-after marketing visuals. Place after a hero or below a stats panel, never alongside another image-heavy carousel on the same page.",
+      "audienceFit": "Architecture and interior design firms, restoration trades, branding agencies, dental and medical aesthetic clinics, photo retouchers, and marketing agencies whose case studies live on transformation imagery."
+    }
+  },
+  {
     "id": "carousel-cards-01",
     "name": "Card Carousel",
     "category": "carousel",
@@ -302,6 +429,260 @@
     }
   },
   {
+    "id": "carousel-testimonial-avatar-peek-01",
+    "name": "Testimonial Avatar Peek Carousel",
+    "category": "carousel",
+    "purpose": [
+      "testimonials",
+      "showcase"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "editorial",
+      "modern",
+      "luxury"
+    ],
+    "mood": [
+      "elegant",
+      "professional",
+      "trustworthy"
+    ],
+    "layout": "centered",
+    "density": "medium",
+    "imageWeight": 0.25,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100,
+        "optional": true
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "items",
+        "type": "list",
+        "maxItems": 7,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "1:1"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "name",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 100
+            },
+            {
+              "name": "quote",
+              "type": "text",
+              "maxLength": 320
+            },
+            {
+              "name": "caption",
+              "type": "text",
+              "maxLength": 140,
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "autoAdvanceMs",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "defaultIndex",
+        "type": "number",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-hero-bold-editorial-01",
+      "hero-spotlight-center-01",
+      "stats-count-up-01",
+      "cta-minimal-strip-01",
+      "faq-tabbed-01"
+    ],
+    "pairsPoorly": [
+      "carousel-cards-01",
+      "carousel-horizontal-scroll-01",
+      "carousel-swipe-01",
+      "carousel-before-after-01",
+      "layout-stackedsplit-01",
+      "layout-staggerfan-01",
+      "layout-infinitescroll-01",
+      "testimonial-spotlight-quote-01"
+    ],
+    "description": "Editorial testimonial carousel: one hero pull-quote at a time, with an avatar strip below that 'peeks' all participants. The active avatar is larger and primary-ringed; clicking any avatar cross-fades the matching quote.",
+    "descriptions": {
+      "descriptive": "Center-stage blockquote with a serif open-quote glyph cross-fades on author change. Below a hairline rule, an avatar strip of 3-7 round portraits shows the cast — active avatar is 80px and primary-ringed, the rest sit at 56-64px and 65% opacity. Auto-advances every 7s by default, pauses on hover, and supports left/right keyboard navigation.",
+      "usage": "Use when you have 3-7 high-quality testimonials and want a premium-feeling rotation rather than a wall of cards or a generic dot-paginated carousel. Sits well after a hero or before a closing FAQ; do not stack with other testimonial sections on the same page.",
+      "audienceFit": "Premium B2B SaaS, agencies, professional services, and editorial-leaning brand pages whose social proof reads better as a curated rotation than as a wall of cards."
+    }
+  },
+  {
+    "id": "contact-booking-embed-01",
+    "name": "Booking Embed",
+    "category": "contact",
+    "purpose": [
+      "contact",
+      "lead-capture"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "minimal",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "calm",
+      "friendly"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 240,
+        "optional": true
+      },
+      {
+        "name": "embedUrl",
+        "type": "url"
+      },
+      {
+        "name": "providerLabel",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "embedMinHeight",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "details",
+        "type": "list",
+        "maxItems": 5,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "icon",
+              "type": "text",
+              "optional": true,
+              "enum": [
+                "check",
+                "clock",
+                "video"
+              ]
+            },
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 140,
+              "optional": true
+            }
+          ]
+        },
+        "optional": true
+      },
+      {
+        "name": "fallbackPromptText",
+        "type": "text",
+        "maxLength": 140,
+        "optional": true
+      },
+      {
+        "name": "fallbackEmailUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "fallbackEmailText",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-split-image-01",
+      "hero-hero-bold-editorial-01",
+      "testimonial-spotlight-quote-01",
+      "faq-tabbed-01",
+      "footer-pulse-01"
+    ],
+    "pairsPoorly": [
+      "contact-contact-locations-map-01",
+      "contact-contact-shapes-form-01",
+      "contact-split-form-01",
+      "contact-support-tabs-01"
+    ],
+    "description": "Calendar-embed contact section that hosts a Cal.com / Calendly / SavvyCal iframe alongside an editorial context column with what-to-expect bullets and an optional email-instead fallback CTA.",
+    "descriptions": {
+      "descriptive": "Two-column split: editorial copy and a What-to-expect bullet list (with check / clock / video icons) sit on the left; the booking iframe lives in a rounded surface on the right with a min-height so the available slots render without clipping. An optional fallback CTA below the bullets links to email when the visitor prefers it.",
+      "usage": "Use as the primary booking surface for sales calls, intro consults, or content meetings. Drop it into /book, /demo, or /contact pages. Pair with a calm hero and a single closing FAQ — don't stack against another contact section.",
+      "audienceFit": "Founders selling time, B2B SaaS demo flows, consultants with intro calls, conference speakers booking media, and any segment whose first conversion is a 30-minute call rather than a self-serve signup."
+    }
+  },
+  {
     "id": "contact-contact-locations-map-01",
     "name": "Contact Locations with Map",
     "category": "contact",
@@ -552,6 +933,360 @@
     }
   },
   {
+    "id": "contact-split-form-01",
+    "name": "Split Contact Form",
+    "category": "contact",
+    "purpose": [
+      "contact",
+      "lead-capture",
+      "location-display"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "minimal",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "calm",
+      "trustworthy"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 240,
+        "optional": true
+      },
+      {
+        "name": "namePlaceholder",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      },
+      {
+        "name": "emailPlaceholder",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      },
+      {
+        "name": "companyPlaceholder",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      },
+      {
+        "name": "topicLabel",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "topicOptions",
+        "type": "list",
+        "maxItems": 8,
+        "itemSchema": {
+          "type": "text",
+          "maxLength": 60
+        },
+        "optional": true
+      },
+      {
+        "name": "messagePlaceholder",
+        "type": "text",
+        "maxLength": 120,
+        "optional": true
+      },
+      {
+        "name": "submitText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "consentText",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "infoTitle",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      },
+      {
+        "name": "phoneUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "phoneText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "emailUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "emailText",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      },
+      {
+        "name": "whatsappUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "whatsappText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "addressText",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "addressMapsUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "hours",
+        "type": "list",
+        "maxItems": 7,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 24
+            },
+            {
+              "name": "value",
+              "type": "text",
+              "maxLength": 30
+            }
+          ]
+        },
+        "optional": true
+      },
+      {
+        "name": "hoursNote",
+        "type": "text",
+        "maxLength": 140,
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-split-image-01",
+      "hero-hero-bold-editorial-01",
+      "faq-tabbed-01",
+      "footer-pulse-01",
+      "footer-reveal-01"
+    ],
+    "pairsPoorly": [
+      "contact-contact-locations-map-01",
+      "contact-contact-shapes-form-01",
+      "contact-booking-embed-01",
+      "contact-support-tabs-01"
+    ],
+    "description": "Practical split-layout contact section: full form on the left (name, email, optional company and topic select, message), structured info column on the right with phone, email, WhatsApp, address, and a tabular hours table. Higher-density counterpart to ContactShapesForm.",
+    "descriptions": {
+      "descriptive": "Two-column section with the form left and an elevated info aside right. Form fields are labelled with small uppercase mono labels and pair with the SiteGen CtaButton. Info column lists phone / email / WhatsApp / address rows with iconified pills, plus an optional weekly hours table separated by a hairline rule.",
+      "usage": "Primary contact section for service businesses with a real address and real hours. Drop in /contact pages, on /about as a closing block, or above the footer on long marketing pages. Use ContactBookingEmbed instead when scheduling is the actual goal.",
+      "audienceFit": "Brick-and-mortar service businesses (clinics, agencies, studios), B2B teams that want to publish hours and channels, and any site whose buyers compare 'how do I reach a human' across competitors."
+    }
+  },
+  {
+    "id": "contact-support-tabs-01",
+    "name": "Support Tabs Contact",
+    "category": "contact",
+    "purpose": [
+      "contact",
+      "lead-capture"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "minimal",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "friendly",
+      "trustworthy"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 240,
+        "optional": true
+      },
+      {
+        "name": "tabs",
+        "type": "list",
+        "maxItems": 5,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 30
+            },
+            {
+              "name": "icon",
+              "type": "text",
+              "optional": true,
+              "enum": [
+                "headphones",
+                "briefcase",
+                "user",
+                "help",
+                "smartphone",
+                "calendar"
+              ]
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 200
+            },
+            {
+              "name": "channels",
+              "type": "list",
+              "maxItems": 4,
+              "itemSchema": {
+                "type": "object",
+                "fields": [
+                  {
+                    "name": "icon",
+                    "type": "text",
+                    "optional": true,
+                    "enum": [
+                      "mail",
+                      "phone",
+                      "message",
+                      "calendar"
+                    ]
+                  },
+                  {
+                    "name": "label",
+                    "type": "text",
+                    "maxLength": 30
+                  },
+                  {
+                    "name": "value",
+                    "type": "text",
+                    "maxLength": 80
+                  },
+                  {
+                    "name": "href",
+                    "type": "url",
+                    "optional": true
+                  },
+                  {
+                    "name": "caption",
+                    "type": "text",
+                    "maxLength": 100,
+                    "optional": true
+                  }
+                ]
+              }
+            },
+            {
+              "name": "ctaText",
+              "type": "text",
+              "maxLength": 30,
+              "optional": true
+            },
+            {
+              "name": "ctaUrl",
+              "type": "url",
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "defaultTabIndex",
+        "type": "number",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-split-image-01",
+      "hero-hero-bold-editorial-01",
+      "faq-tabbed-01",
+      "footer-pulse-01",
+      "footer-reveal-01"
+    ],
+    "pairsPoorly": [
+      "contact-contact-locations-map-01",
+      "contact-contact-shapes-form-01",
+      "contact-split-form-01",
+      "contact-booking-embed-01"
+    ],
+    "description": "Routing-style contact section with category tabs (Sales / Support / Press / Partnerships). Each tab surfaces its own channel list (email, phone, chat, booking link) and an optional per-tab CTA — the visitor self-routes instead of submitting one generic form.",
+    "descriptions": {
+      "descriptive": "A vertical pill tab list on the left animates a soft active background between options; the right panel shows the selected tab's description, a divider-separated channel list (email, phone, live chat, calendar) and an optional CTA. Each channel row is clickable when href is present.",
+      "usage": "Use as the contact section for any company that legitimately routes inquiries across departments — sales, support, press, partnerships, careers. Avoid when there's truly only one inbox; use ContactSplitForm or ContactShapesForm instead.",
+      "audienceFit": "Mid-to-late-stage B2B SaaS, marketplaces, larger agencies, and any organization with multi-department intake. Defaults to a calm corporate tone, adapts cleanly to friendlier brands by changing the tab labels and copy."
+    }
+  },
+  {
     "id": "cta-cta-collage-duo-01",
     "name": "CTA Collage Duo",
     "category": "cta",
@@ -687,6 +1422,287 @@
       "descriptive": "A dynamic two-panel layout featuring bold typography and editorial-style imagery with modern geometric elements. The design balances high-contrast visuals with clean whitespace, creating an energetic yet trustworthy feel through friendly color palettes and confident messaging hierarchy.",
       "usage": "Perfect for capturing leads while reinforcing brand identity on landing pages or homepage sections. Use when you need to present dual value propositions or split-test different calls-to-action, combining brand storytelling with conversion-focused elements.",
       "audienceFit": "Ideal for creative agencies, lifestyle brands, or forward-thinking B2B companies targeting millennials and Gen Z. Appeals to businesses that balance professionalism with personality, particularly those in design, wellness, or innovative service sectors."
+    }
+  },
+  {
+    "id": "cta-countdown-01",
+    "name": "Countdown CTA",
+    "category": "cta",
+    "purpose": [
+      "cta",
+      "lead-capture"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": true,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "bold",
+      "modern",
+      "editorial"
+    ],
+    "mood": [
+      "energetic",
+      "professional",
+      "serious"
+    ],
+    "layout": "centered",
+    "density": "medium",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 220,
+        "optional": true
+      },
+      {
+        "name": "endsAt",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "endedText",
+        "type": "text",
+        "maxLength": 160,
+        "optional": true
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url"
+      },
+      {
+        "name": "secondaryText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "secondaryUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "neutral",
+          "muted",
+          "inverse"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-hero-bold-editorial-01",
+      "hero-shuffle-cards-01",
+      "footer-pulse-01",
+      "footer-reveal-01",
+      "layout-pricing-tiers-01"
+    ],
+    "pairsPoorly": [
+      "cta-cta-collage-duo-01",
+      "cta-cta-editorial-split-01",
+      "cta-image-backdrop-01",
+      "cta-minimal-strip-01",
+      "cta-newsletter-capture-01"
+    ],
+    "description": "Urgency CTA with a live ticking countdown to a fixed deadline — for launches, sale endings, and registration cutoffs. Includes neutral, muted, and inverse tone variants and a graceful post-deadline state.",
+    "descriptions": {
+      "descriptive": "Centered headline-and-CTA block anchored by a four-block live countdown (days, hours, minutes, seconds) ticking every second to a configured ISO timestamp. Three tone variants: neutral on bg-base-100, muted on bg-base-200, and a high-impact inverse on bg-base-content. After the deadline, the timer collapses to a calm fallback message instead of negative values.",
+      "usage": "Drop into pages tied to a real deadline — product launch, conference registration cutoff, limited-edition sale, application window. Place near the bottom of a launch page or inline above a pricing block. Pair with footer-pulse or footer-reveal at page close.",
+      "audienceFit": "Product launches, event sites, e-commerce drops, and any segment where genuine scarcity (not manufactured urgency) is the lever. Inverse tone matches editorial-bold briefs; neutral and muted suit corporate and minimal."
+    }
+  },
+  {
+    "id": "cta-dual-offer-split-01",
+    "name": "Dual-Offer Split CTA",
+    "category": "cta",
+    "purpose": [
+      "cta",
+      "lead-capture",
+      "services"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "corporate",
+      "editorial"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "calm"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100,
+        "optional": true
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 220,
+        "optional": true
+      },
+      {
+        "name": "primary",
+        "type": "object",
+        "fields": [
+          {
+            "name": "eyebrow",
+            "type": "text",
+            "maxLength": 30,
+            "optional": true
+          },
+          {
+            "name": "title",
+            "type": "text",
+            "maxLength": 80
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "maxLength": 240
+          },
+          {
+            "name": "ctaText",
+            "type": "text",
+            "maxLength": 30
+          },
+          {
+            "name": "ctaUrl",
+            "type": "url"
+          },
+          {
+            "name": "bullets",
+            "type": "list",
+            "maxItems": 4,
+            "itemSchema": {
+              "type": "text",
+              "maxLength": 80
+            },
+            "optional": true
+          },
+          {
+            "name": "footnote",
+            "type": "text",
+            "maxLength": 100,
+            "optional": true
+          }
+        ]
+      },
+      {
+        "name": "secondary",
+        "type": "object",
+        "fields": [
+          {
+            "name": "eyebrow",
+            "type": "text",
+            "maxLength": 30,
+            "optional": true
+          },
+          {
+            "name": "title",
+            "type": "text",
+            "maxLength": 80
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "maxLength": 240
+          },
+          {
+            "name": "ctaText",
+            "type": "text",
+            "maxLength": 30
+          },
+          {
+            "name": "ctaUrl",
+            "type": "url"
+          },
+          {
+            "name": "bullets",
+            "type": "list",
+            "maxItems": 4,
+            "itemSchema": {
+              "type": "text",
+              "maxLength": 80
+            },
+            "optional": true
+          },
+          {
+            "name": "footnote",
+            "type": "text",
+            "maxLength": 100,
+            "optional": true
+          }
+        ]
+      },
+      {
+        "name": "emphasis",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "balanced",
+          "primary-led"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-split-image-01",
+      "hero-hero-bold-editorial-01",
+      "layout-pricing-tiers-01",
+      "faq-tabbed-01",
+      "footer-pulse-01"
+    ],
+    "pairsPoorly": [
+      "cta-cta-collage-duo-01",
+      "cta-cta-editorial-split-01",
+      "cta-image-backdrop-01",
+      "cta-minimal-strip-01"
+    ],
+    "description": "Two side-by-side CTA cards offering the visitor a clear choice — typically self-serve vs. assisted, free vs. enterprise, or audience A vs. audience B. Optional primary-led emphasis tints the first card on bg-primary.",
+    "descriptions": {
+      "descriptive": "Mirrored card layout with eyebrow, title, description, optional bullet list, CTA, and footnote per side. Two emphasis modes: balanced (both cards on bg-base-100 with a hairline ring) or primary-led (left card on bg-primary, right card neutral). Cards stagger in on view at 80ms intervals.",
+      "usage": "Use when the page must offer two genuinely different paths and either is a valid choice — most often self-serve vs. talk-to-sales, but also founder-vs-agency, free-vs-enterprise, or hire-vs-license. Place near the bottom of long marketing pages.",
+      "audienceFit": "B2B SaaS routing buyers to the right path, agency sites separating audiences, marketplaces with two-sided users, and any segmented-audience site whose buyers self-identify clearly."
     }
   },
   {
@@ -1069,6 +2085,116 @@
     }
   },
   {
+    "id": "cta-sticky-banner-01",
+    "name": "Sticky Bottom Banner CTA",
+    "category": "cta",
+    "purpose": [
+      "cta",
+      "lead-capture"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "minimal",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "calm",
+      "friendly"
+    ],
+    "layout": "centered",
+    "density": "low",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "badge",
+        "type": "text",
+        "maxLength": 16,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 160,
+        "optional": true
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 24
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url"
+      },
+      {
+        "name": "secondaryText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "secondaryUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "appearAfterPx",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "dismissible",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "neutral",
+          "muted",
+          "inverse",
+          "primary"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-hero-bold-editorial-01",
+      "hero-split-image-01",
+      "layout-pricing-tiers-01",
+      "faq-tabbed-01"
+    ],
+    "pairsPoorly": [
+      "cta-cta-collage-duo-01",
+      "cta-cta-editorial-split-01",
+      "cta-image-backdrop-01",
+      "cta-minimal-strip-01",
+      "cta-newsletter-capture-01",
+      "cta-countdown-01",
+      "cta-dual-offer-split-01"
+    ],
+    "description": "A fixed-bottom sticky banner CTA that slides in after a scroll threshold and offers a one-line nudge with a primary action and optional secondary link. Includes a dismiss control and four tone variants.",
+    "descriptions": {
+      "descriptive": "A pill-shaped banner that slides up from the bottom of the viewport once the visitor passes a configurable scroll depth. One-line headline, optional inline description on desktop, primary CTA, optional secondary text link, and an X dismiss control. Four tones — neutral, muted, inverse, and primary — and respects the site's CtaButton variant via styleKit.",
+      "usage": "Use as a persistent low-friction reminder on long marketing pages — newsletter signup, free-trial start, demo booking. Pair with a longer in-flow CTA section (CtaEditorialSplit, CtaCountdown) so the sticky banner is the safety net rather than the primary ask.",
+      "audienceFit": "Editorial sites with long scrolls, B2B SaaS marketing pages, content-heavy publishers running newsletter signups, and any site whose conversions skew below the fold."
+    }
+  },
+  {
     "id": "cta-newsletter-capture-01",
     "name": "Newsletter Capture",
     "category": "cta",
@@ -1429,6 +2555,322 @@
       "descriptive": "Clean, structured FAQ layout with bold typography and generous white space. Features editorial-style headings with strong contrast and modern geometric elements. The design emphasizes readability through clear hierarchy and professional spacing, creating an energetic yet organized visual rhythm.",
       "usage": "Deploy when customers need quick answers to common questions without navigating away from key pages. Ideal for reducing support tickets and building confidence during decision-making moments. Works best on product pages, pricing sections, or dedicated help areas.",
       "audienceFit": "Perfect for B2B software companies, consulting firms, and professional service providers targeting decision-makers who value efficiency and transparency. Appeals to businesses that want to project expertise while maintaining approachable customer communication."
+    }
+  },
+  {
+    "id": "faq-tabbed-01",
+    "name": "Tabbed FAQ",
+    "category": "faq",
+    "purpose": [
+      "faq",
+      "showcase"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "minimal",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "calm",
+      "trustworthy"
+    ],
+    "layout": "stacked",
+    "density": "medium",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "categories",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 30
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 160,
+              "optional": true
+            },
+            {
+              "name": "questions",
+              "type": "list",
+              "maxItems": 10,
+              "itemSchema": {
+                "type": "object",
+                "fields": [
+                  {
+                    "name": "question",
+                    "type": "text",
+                    "maxLength": 140
+                  },
+                  {
+                    "name": "answer",
+                    "type": "text",
+                    "maxLength": 600
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "defaultCategoryIndex",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "defaultOpenQuestionIndex",
+        "type": "number",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "scroll",
+    "pairsWell": [
+      "cta-minimal-strip-01",
+      "cta-newsletter-capture-01",
+      "footer-pulse-01",
+      "footer-reveal-01",
+      "layout-pricing-tiers-01"
+    ],
+    "pairsPoorly": [
+      "faq-accordion-01",
+      "faq-minimal-01",
+      "faq-solutions-01"
+    ],
+    "description": "A tabbed FAQ that groups questions into named categories (Billing, Security, Implementation) with an animated underline tab strip and a cross-fading accordion panel per tab.",
+    "descriptions": {
+      "descriptive": "Horizontal tab strip with an animated underline marks the active category; selecting a tab cross-fades the underlying accordion. Each tab carries an optional one-line description and its own short list of question/answer pairs.",
+      "usage": "Use when total question count exceeds roughly ten and the questions split cleanly into segments — pricing, privacy, implementation, support. Pair after a pricing tier section or before a closing CTA strip.",
+      "audienceFit": "B2B SaaS, fintech, and infrastructure companies whose buyers ask layered questions across distinct concern areas. Defaults to a calm, corporate tone but adapts cleanly to editorial or services briefs."
+    }
+  },
+  {
+    "id": "footer-mega-01",
+    "name": "Mega Footer",
+    "category": "footer",
+    "purpose": [
+      "footer",
+      "lead-capture",
+      "navigation"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "modern",
+      "corporate",
+      "editorial"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "calm"
+    ],
+    "layout": "stacked",
+    "density": "high",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "logoText",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "tagline",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "newsletterEyebrow",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "newsletterHeadline",
+        "type": "text",
+        "maxLength": 100,
+        "optional": true
+      },
+      {
+        "name": "newsletterDescription",
+        "type": "text",
+        "maxLength": 240,
+        "optional": true
+      },
+      {
+        "name": "newsletterPlaceholder",
+        "type": "text",
+        "maxLength": 60,
+        "optional": true
+      },
+      {
+        "name": "newsletterCtaText",
+        "type": "text",
+        "maxLength": 24,
+        "optional": true
+      },
+      {
+        "name": "newsletterPrivacyText",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "newsletterSuccessText",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "navColumns",
+        "type": "list",
+        "maxItems": 5,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 30
+            },
+            {
+              "name": "links",
+              "type": "list",
+              "maxItems": 8,
+              "itemSchema": {
+                "type": "object",
+                "fields": [
+                  {
+                    "name": "text",
+                    "type": "text",
+                    "maxLength": 40
+                  },
+                  {
+                    "name": "href",
+                    "type": "url"
+                  },
+                  {
+                    "name": "badge",
+                    "type": "text",
+                    "maxLength": 14,
+                    "optional": true
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "companyName",
+        "type": "text",
+        "maxLength": 80,
+        "optional": true
+      },
+      {
+        "name": "legalLinks",
+        "type": "list",
+        "maxItems": 5,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "text",
+              "type": "text",
+              "maxLength": 40
+            },
+            {
+              "name": "href",
+              "type": "url"
+            }
+          ]
+        },
+        "optional": true
+      },
+      {
+        "name": "socialLinks",
+        "type": "list",
+        "maxItems": 8,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "network",
+              "type": "text",
+              "enum": [
+                "instagram",
+                "linkedin",
+                "facebook",
+                "whatsapp",
+                "twitter",
+                "youtube",
+                "tiktok",
+                "google",
+                "pinterest",
+                "telegram"
+              ]
+            },
+            {
+              "name": "url",
+              "type": "url"
+            },
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 60
+            }
+          ]
+        },
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "cta-minimal-strip-01",
+      "cta-newsletter-capture-01",
+      "faq-tabbed-01",
+      "stats-count-up-01",
+      "testimonial-spotlight-quote-01"
+    ],
+    "pairsPoorly": [
+      "footer-pulse-01",
+      "footer-reveal-01"
+    ],
+    "description": "A high-density 'mega-footer' with a newsletter capture row, a 4-5 column sitemap, a copyright line, optional legal links and a social row. Sits on the neutral surface tokens and is the canonical site-bottom for content-heavy product pages.",
+    "descriptions": {
+      "descriptive": "Three stacked sections: a newsletter section with eyebrow / headline / description on the left and an inline form (or a check-icon success state) on the right; a sitemap with the brand block plus up to four navigation columns, each link supporting an optional 'New' / count badge; and a bottom bar with copyright, optional legal links, and a row of social icons. Renders on bg-neutral with hairline neutral-content/10 dividers between sections.",
+      "usage": "Use as the site-wide footer when the page already carries a closing CTA (CtaMinimalStrip, CtaCountdown). Don't stack with FooterPulse or FooterReveal — pick exactly one footer per generated site.",
+      "audienceFit": "B2B SaaS, fintech, marketplaces, and content-heavy publishers whose footers carry real navigation work — sitemap, trust links, and an active newsletter list."
     }
   },
   {
@@ -5934,6 +7376,531 @@
     }
   },
   {
+    "id": "layout-vertical-timeline-split-01",
+    "name": "Vertical Timeline Split",
+    "category": "layout/split",
+    "style": [
+      "editorial",
+      "modern",
+      "minimal",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "calm"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "imageWeight": 0,
+    "purpose": [
+      "about",
+      "story",
+      "process",
+      "stats"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 320
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "events",
+        "type": "list",
+        "maxItems": 8,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "marker",
+              "type": "text",
+              "maxLength": 40
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 100
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 320
+            },
+            {
+              "name": "metric",
+              "type": "text",
+              "maxLength": 30,
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "colorScheme",
+        "type": "text",
+        "enum": [
+          "light",
+          "dark"
+        ],
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-hero-bold-editorial-01",
+      "stats-count-up-01",
+      "stats-milestone-bar-01",
+      "layout-authorsplit-01",
+      "cta-cta-editorial-split-01"
+    ],
+    "pairsPoorly": [
+      "layout-process-timeline-01",
+      "carousel-cards-01"
+    ],
+    "description": "A two-column section with a sticky narrative on the left and a vertical timeline of dated events on the right, designed for company histories, roadmap reveals, and milestone retrospectives.",
+    "descriptions": {
+      "descriptive": "Asymmetric split with a sticky narrative column on the left and a vertical timeline on the right. Each timeline entry combines a monospaced marker, an optional metric chip, a heading, and a short body. A single hairline runs the full height of the timeline, intersected by ringed nodes at every event. Generous vertical spacing creates a calm reading rhythm without the heaviness of cards.",
+      "usage": "Use to walk readers through an ordered sequence of moments — company milestones, product changelog highlights, regulatory timelines, or a roadmap reveal. Best when the reader benefits from seeing the full arc at a glance while focusing on one event at a time. Skip when events are unordered or when the dataset is large enough to warrant a real archive page.",
+      "audienceFit": "Resonates with B2B audiences who care about track record — investors, enterprise procurement teams, and partner sales. Fits established service firms, scaling SaaS, and craft-led brands with a story worth slowing down for. Less suited to consumer ecommerce or campaign landing pages, where dense feature cards convert faster than narrative."
+    }
+  },
+  {
+    "id": "layout-zigzag-alternating-split-01",
+    "name": "Zigzag Alternating Split",
+    "category": "layout/split",
+    "style": [
+      "editorial",
+      "modern",
+      "minimal",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "calm",
+      "elegant"
+    ],
+    "layout": "split",
+    "density": "medium",
+    "imageWeight": 0.4,
+    "purpose": [
+      "features",
+      "services",
+      "process",
+      "story",
+      "benefits"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 120,
+        "optional": true
+      },
+      {
+        "name": "intro",
+        "type": "text",
+        "maxLength": 280,
+        "optional": true
+      },
+      {
+        "name": "sections",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "eyebrow",
+              "type": "text",
+              "maxLength": 40,
+              "optional": true
+            },
+            {
+              "name": "heading",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 320
+            },
+            {
+              "name": "bullets",
+              "type": "list",
+              "maxItems": 5,
+              "optional": true,
+              "itemSchema": {
+                "type": "text",
+                "maxLength": 120
+              }
+            },
+            {
+              "name": "ctaText",
+              "type": "text",
+              "maxLength": 30,
+              "optional": true
+            },
+            {
+              "name": "ctaUrl",
+              "type": "url",
+              "optional": true
+            },
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "4:3"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            }
+          ]
+        }
+      },
+      {
+        "name": "firstSide",
+        "type": "text",
+        "enum": [
+          "left",
+          "right"
+        ],
+        "optional": true
+      },
+      {
+        "name": "colorScheme",
+        "type": "text",
+        "enum": [
+          "light",
+          "dark"
+        ],
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-split-image-01",
+      "hero-hero-bold-editorial-01",
+      "stats-count-up-01",
+      "cta-cta-editorial-split-01",
+      "layout-iconlistsplit-01"
+    ],
+    "pairsPoorly": [
+      "layout-cardgrid-01",
+      "layout-imagetext-01"
+    ],
+    "description": "A multi-row alternating image and text layout where each row swaps the image side, ideal for process steps, feature tours, and brand narratives that benefit from visual rhythm.",
+    "descriptions": {
+      "descriptive": "Multiple rows of paired image and text where each row alternates the image side, creating a clear left-right reading rhythm. Generous vertical spacing separates rows, and each row supports an optional eyebrow, bullet list, and per-row CTA. Image corners are softly rounded, typography hierarchy is restrained, and the overall composition reads as a narrated sequence rather than a feature dump.",
+      "usage": "Use when you have 2 to 5 related stages, features, or chapters that share a structure but benefit from visual variety. Ideal for process explanations, end-to-end feature tours, founder stories told in beats, or service offerings where each item deserves its own image. Avoid when items have no narrative order or when a denser grid would communicate the same information faster.",
+      "audienceFit": "Fits B2B service firms, agencies, and product teams whose buying audience expects to read carefully before deciding. Resonates with consultancies, design studios, manufacturers explaining their craft, and SaaS companies whose differentiator is process. Less suited to ecommerce or quick-conversion landing pages where dense feature grids outperform sequential reading."
+    }
+  },
+  {
+    "id": "motion-marquee-01",
+    "name": "Marquee Ticker",
+    "category": "motion",
+    "purpose": [
+      "showcase",
+      "brand-statement",
+      "features"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "bold",
+      "editorial",
+      "modern"
+    ],
+    "mood": [
+      "energetic",
+      "professional",
+      "friendly"
+    ],
+    "layout": "scroll",
+    "density": "low",
+    "imageWeight": 0.2,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100,
+        "optional": true
+      },
+      {
+        "name": "variant",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "words",
+          "logos",
+          "badges"
+        ]
+      },
+      {
+        "name": "rows",
+        "type": "list",
+        "maxItems": 3,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "items",
+              "type": "list",
+              "maxItems": 24,
+              "itemSchema": {
+                "type": "object",
+                "fields": [
+                  {
+                    "name": "text",
+                    "type": "text",
+                    "maxLength": 60,
+                    "optional": true
+                  },
+                  {
+                    "name": "href",
+                    "type": "url",
+                    "optional": true
+                  },
+                  {
+                    "name": "src",
+                    "type": "image",
+                    "optional": true
+                  },
+                  {
+                    "name": "alt",
+                    "type": "text",
+                    "maxLength": 80,
+                    "optional": true
+                  }
+                ]
+              }
+            },
+            {
+              "name": "direction",
+              "type": "text",
+              "optional": true,
+              "enum": [
+                "left",
+                "right"
+              ]
+            },
+            {
+              "name": "durationSec",
+              "type": "number",
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "fadeEdges",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "neutral",
+          "muted",
+          "inverse"
+        ]
+      },
+      {
+        "name": "spacing",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "compact"
+        ]
+      }
+    ],
+    "mobileBehavior": "scroll",
+    "pairsWell": [
+      "hero-hero-bold-editorial-01",
+      "hero-split-image-01",
+      "stats-count-up-01",
+      "testimonial-spotlight-quote-01",
+      "cta-minimal-strip-01"
+    ],
+    "pairsPoorly": [
+      "hero-marquee-strip-01",
+      "hero-newsroom-ticker-01",
+      "layout-logo-cloud-01",
+      "layout-infinitescroll-01"
+    ],
+    "description": "A single-section motion ticker with three variants — large editorial words, customer logos, or pill badges. 1-3 rows can scroll independently in opposite directions, with optional edge fades and three tone surfaces.",
+    "descriptions": {
+      "descriptive": "Full-bleed scrolling row(s) under an optional eyebrow / headline. Variant 'words' renders large editorial text (clamp from 2.25rem to 5rem) separated by bullets; 'logos' renders translucent customer logos; 'badges' renders rounded pill tags that scroll across one or two rows in alternating directions. Edge fades clip the page-edge padding. Animations halt cleanly when prefers-reduced-motion is set.",
+      "usage": "Use as a visual breath between content sections — list capabilities, signal scale via logos, or surface a tech/skill stack. Place between a hero and the first content block, or between a stats section and a closing CTA. Don't co-locate with the marquee-style hero variants.",
+      "audienceFit": "Editorial-leaning brands, agencies, B2B SaaS announcing partner integrations, conferences with sponsor recognition, and any segment whose 'we do many things' deserves a moving rather than gridded display."
+    }
+  },
+  {
+    "id": "motion-scroll-narrative-01",
+    "name": "Scroll-Pinned Narrative",
+    "category": "motion",
+    "purpose": [
+      "process",
+      "story",
+      "showcase",
+      "features"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "editorial",
+      "modern",
+      "luxury"
+    ],
+    "mood": [
+      "elegant",
+      "professional",
+      "calm"
+    ],
+    "layout": "split",
+    "density": "low",
+    "imageWeight": 0.5,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100,
+        "optional": true
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "steps",
+        "type": "list",
+        "maxItems": 5,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 16,
+              "optional": true
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 100
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 360
+            },
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "4:5",
+              "optional": true
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120,
+              "optional": true
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-hero-bold-editorial-01",
+      "hero-spotlight-center-01",
+      "stats-count-up-01",
+      "testimonial-spotlight-quote-01",
+      "cta-minimal-strip-01"
+    ],
+    "pairsPoorly": [
+      "layout-stickycards-01",
+      "layout-parallaxcontent-01",
+      "layout-process-timeline-01",
+      "motion-marquee-01"
+    ],
+    "description": "Scroll-pinned narrative section: 3-5 numbered steps scroll past on the left while a single 4:5 image panel pins on the right and cross-fades between step images as each block enters the viewport. On mobile the layout collapses to inline stacked steps.",
+    "descriptions": {
+      "descriptive": "Two-column layout on desktop: the left column scrolls a vertical sequence of numbered steps (label, title, description), while the right column pins via sticky positioning and renders one image at a time. Each step image is mounted into the pinned slot with opacity and a subtle 1.04 -> 1 scale transform driven by useScroll progress. Below the lg breakpoint the section becomes a clean stacked story — each step renders inline with its own image, no pinning, no cross-fade.",
+      "usage": "Use to walk a visitor through a process, methodology, or product story that benefits from staying anchored — agency processes, onboarding flows, brand narratives, scientific protocols. Place mid-page after a calm hero; do not stack against StickyCards or ParallaxContent.",
+      "audienceFit": "Editorial and luxury brands, agency methodology pages, premium B2B SaaS storytelling, and any page where the narrative gain from pinning outweighs the cost of giving up vertical real estate."
+    }
+  },
+  {
     "id": "layout-parallaxcontent-01",
     "name": "Parallax Content",
     "category": "motion",
@@ -6531,6 +8498,186 @@
       "descriptive": "A streamlined horizontal navigation bar that remains fixed at the top of the viewport while scrolling. Features clean typography, generous white space, and subtle shadow effects. The minimal design uses corporate color schemes with well-spaced menu items and refined hover states that maintain visual hierarchy.",
       "usage": "Essential for websites requiring constant access to main navigation regardless of scroll position. Perfect for long-form content sites, multi-page corporate websites, and service platforms where users need to navigate between sections without returning to the top of the page.",
       "audienceFit": "Ideal for established B2B companies, professional service firms, and corporate enterprises seeking to project reliability and competence. Appeals to business audiences who value efficiency and expect polished, convention-following interfaces that facilitate quick decision-making."
+    }
+  },
+  {
+    "id": "stats-chart-01",
+    "name": "Chart Stats",
+    "category": "stats",
+    "purpose": [
+      "stats",
+      "showcase",
+      "benefits"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "editorial",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "serious"
+    ],
+    "layout": "split",
+    "density": "high",
+    "imageWeight": 0,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100,
+        "optional": true
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 220,
+        "optional": true
+      },
+      {
+        "name": "variant",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "bars",
+          "sparkline"
+        ]
+      },
+      {
+        "name": "bars",
+        "type": "list",
+        "maxItems": 8,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "value",
+              "type": "number"
+            },
+            {
+              "name": "suffix",
+              "type": "text",
+              "maxLength": 8,
+              "optional": true
+            },
+            {
+              "name": "decimals",
+              "type": "number",
+              "optional": true
+            },
+            {
+              "name": "caption",
+              "type": "text",
+              "maxLength": 80,
+              "optional": true
+            },
+            {
+              "name": "tone",
+              "type": "text",
+              "optional": true,
+              "enum": [
+                "primary",
+                "accent",
+                "neutral"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "sparklineMetric",
+        "type": "text",
+        "maxLength": 24,
+        "optional": true
+      },
+      {
+        "name": "sparklineCaption",
+        "type": "text",
+        "maxLength": 80,
+        "optional": true
+      },
+      {
+        "name": "sparklineTrend",
+        "type": "text",
+        "maxLength": 24,
+        "optional": true
+      },
+      {
+        "name": "sparklineTrendDirection",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "up",
+          "down",
+          "flat"
+        ]
+      },
+      {
+        "name": "sparklinePoints",
+        "type": "list",
+        "maxItems": 24,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 12
+            },
+            {
+              "name": "value",
+              "type": "number"
+            }
+          ]
+        }
+      },
+      {
+        "name": "duration",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "footnote",
+        "type": "text",
+        "maxLength": 140,
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-split-image-01",
+      "hero-hero-bold-editorial-01",
+      "layout-pricing-tiers-01",
+      "layout-icon-feature-grid-01",
+      "cta-minimal-strip-01"
+    ],
+    "pairsPoorly": [
+      "stats-count-up-01",
+      "stats-kpi-grid-01"
+    ],
+    "description": "Two chart-style stats variants: an animated horizontal bar chart with count-up labels, or a single-line sparkline with a headline metric and trend pill — for sites that need comparative or longitudinal proof rather than hero numbers.",
+    "descriptions": {
+      "descriptive": "Variant switch between bars and sparkline. Bars: split layout with up to eight rows, each animating its fill width and counting up its label as it scrolls into view. Sparkline: a 12-point trend line that draws on view, paired with a large headline metric and a tinted up/down/flat trend pill.",
+      "usage": "Use when the page needs comparative numbers (year-over-year, multi-channel, multi-product) or a longitudinal trend (ARR over twelve months, signups over a year). Pairs naturally after a results-focused hero or before a pricing block; complements rather than replaces the count-up and KPI grid stats.",
+      "audienceFit": "B2B SaaS results pages, fintech operator dashboards, marketing case-study tear-sheets, and any site whose buyers want a number with shape — not just a single dramatic figure."
     }
   },
   {
@@ -7141,6 +9288,352 @@
       "descriptive": "A dynamic testimonial layout where customer reviews are arranged in an offset, fan-like pattern with bold typography and vibrant accent colors. Cards cascade at playful angles with generous white space, creating visual movement and energy through asymmetrical positioning.",
       "usage": "Perfect for showcasing customer testimonials when you want to break from traditional grid layouts. Use this to highlight positive reviews in an engaging way that encourages users to read multiple testimonials and builds social proof through visual excitement.",
       "audienceFit": "Ideal for creative agencies, lifestyle brands, tech startups, and consumer-facing businesses targeting younger demographics. Appeals to companies that want to appear approachable and innovative while maintaining professionalism in their social proof presentation."
+    }
+  },
+  {
+    "id": "testimonial-logo-quote-ribbon-01",
+    "name": "Logo + Quote Ribbon",
+    "category": "testimonial",
+    "purpose": [
+      "testimonials",
+      "showcase"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "minimal",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "calm"
+    ],
+    "layout": "stacked",
+    "density": "low",
+    "imageWeight": 0.1,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100,
+        "optional": true
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "items",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "logo",
+              "type": "image"
+            },
+            {
+              "name": "logoAlt",
+              "type": "text",
+              "maxLength": 80
+            },
+            {
+              "name": "quote",
+              "type": "text",
+              "maxLength": 200
+            },
+            {
+              "name": "authorName",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "authorTitle",
+              "type": "text",
+              "maxLength": 100
+            }
+          ]
+        }
+      },
+      {
+        "name": "defaultActiveIndex",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "neutral",
+          "muted"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-hero-bold-editorial-01",
+      "hero-split-image-01",
+      "hero-spotlight-center-01",
+      "layout-pricing-tiers-01",
+      "stats-count-up-01"
+    ],
+    "pairsPoorly": [
+      "layout-stackedsplit-01",
+      "layout-staggerfan-01",
+      "layout-infinitescroll-01",
+      "testimonial-spotlight-quote-01",
+      "layout-logo-cloud-01"
+    ],
+    "description": "Compact social-proof ribbon — a row of customer logos doubles as a tab strip; clicking a logo cross-fades a one-line pull-quote underneath. The tightest testimonial slot in the library.",
+    "descriptions": {
+      "descriptive": "Six-up logo grid sits between hairline rules; the active logo carries full opacity while the others sit at 50%. Below the strip, a one-line blockquote with author name and title cross-fades whenever a different logo is selected.",
+      "usage": "Use as compact social proof above pricing or below a hero — when you have brand-name customers but don't want to commit a full testimonial section. Replaces the generic 'Trusted by' logo cloud while doing the same recognition work.",
+      "audienceFit": "B2B SaaS with marquee logos, agency portfolios listing client brands, conference sponsor recognition, and any site whose customers carry recognition value on their own."
+    }
+  },
+  {
+    "id": "testimonial-spotlight-quote-01",
+    "name": "Spotlight Quote Testimonial",
+    "category": "testimonial",
+    "purpose": [
+      "testimonials",
+      "brand-statement"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "editorial",
+      "luxury",
+      "modern"
+    ],
+    "mood": [
+      "elegant",
+      "trustworthy",
+      "professional"
+    ],
+    "layout": "split",
+    "density": "low",
+    "imageWeight": 0.35,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "quote",
+        "type": "text",
+        "maxLength": 400
+      },
+      {
+        "name": "authorName",
+        "type": "text",
+        "maxLength": 60
+      },
+      {
+        "name": "authorTitle",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "authorImage",
+        "type": "image",
+        "aspectRatio": "4:5",
+        "optional": true
+      },
+      {
+        "name": "authorImageAlt",
+        "type": "text",
+        "maxLength": 120,
+        "optional": true
+      },
+      {
+        "name": "companyLogo",
+        "type": "image",
+        "optional": true
+      },
+      {
+        "name": "companyLogoAlt",
+        "type": "text",
+        "maxLength": 80,
+        "optional": true
+      },
+      {
+        "name": "caption",
+        "type": "text",
+        "maxLength": 140,
+        "optional": true
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "neutral",
+          "muted",
+          "inverse"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-hero-bold-editorial-01",
+      "hero-split-image-01",
+      "hero-spotlight-center-01",
+      "layout-pricing-tiers-01",
+      "cta-minimal-strip-01"
+    ],
+    "pairsPoorly": [
+      "layout-stackedsplit-01",
+      "layout-staggerfan-01",
+      "layout-infinitescroll-01",
+      "testimonial-logo-quote-ribbon-01"
+    ],
+    "description": "Hero-sized single testimonial — one customer's voice carries the section. Generous whitespace, large pull-quote typography, calm portrait, and a decorative serif open-quote glyph.",
+    "descriptions": {
+      "descriptive": "Two-column editorial layout with the pull-quote left and a 4:5 portrait right on desktop; on mobile the portrait appears as an inline avatar beside the author block. Optional eyebrow, company logo, and caption row. Three tone variants (neutral, muted, inverse) for editorial dark slabs.",
+      "usage": "Use when one customer's voice deserves a full section — a marquee enterprise win, a founder testimonial, or an editorial-style brand quote. Place after a hero or before pricing. Do not stack with other testimonial sections — pick one carrier voice per page.",
+      "audienceFit": "Premium B2B SaaS, agency portfolios, professional-services sites, and editorial-leaning brand pages whose social proof reads better as one strong voice than as a wall of cards."
+    }
+  },
+  {
+    "id": "testimonial-video-card-01",
+    "name": "Video Testimonial Card",
+    "category": "testimonial",
+    "purpose": [
+      "testimonials",
+      "showcase"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "editorial",
+      "bold"
+    ],
+    "mood": [
+      "energetic",
+      "trustworthy",
+      "professional"
+    ],
+    "layout": "grid",
+    "density": "medium",
+    "imageWeight": 0.55,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100,
+        "optional": true
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "items",
+        "type": "list",
+        "maxItems": 3,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "poster",
+              "type": "image",
+              "aspectRatio": "16:9"
+            },
+            {
+              "name": "posterAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "videoUrl",
+              "type": "url"
+            },
+            {
+              "name": "duration",
+              "type": "text",
+              "maxLength": 8,
+              "optional": true
+            },
+            {
+              "name": "quote",
+              "type": "text",
+              "maxLength": 240
+            },
+            {
+              "name": "authorName",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "authorTitle",
+              "type": "text",
+              "maxLength": 100
+            },
+            {
+              "name": "caption",
+              "type": "text",
+              "maxLength": 140,
+              "optional": true
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-hero-bold-editorial-01",
+      "hero-split-image-01",
+      "stats-count-up-01",
+      "cta-minimal-strip-01",
+      "faq-tabbed-01"
+    ],
+    "pairsPoorly": [
+      "layout-stackedsplit-01",
+      "layout-staggerfan-01",
+      "layout-infinitescroll-01",
+      "testimonial-spotlight-quote-01"
+    ],
+    "description": "1-3 video testimonial tiles with poster thumbnails, hover-scale interaction, and a lightbox iframe player. The first tile gets priority width (4:5 portrait on desktop) when three are shown.",
+    "descriptions": {
+      "descriptive": "Tile grid with a play button, gradient legibility scrim, and an optional duration pill. Click opens a 5xl-max lightbox dialog with an autoplaying iframe (YouTube, Vimeo, or direct mp4) and a focus-trapped close control. One tile, two equal tiles, or one priority tile + two stacked secondary tiles.",
+      "usage": "Use when video testimony does work words can't — case-study walk-throughs, customer quote reels, founder retrospectives. Place after a hero or stats section; pair with a closing CTA strip or FAQ tabs at page bottom.",
+      "audienceFit": "B2B SaaS with strong customer narratives, agencies showcasing case studies, conference recap pages, and any segment whose social proof reads better in motion than as static text."
     }
   }
 ]

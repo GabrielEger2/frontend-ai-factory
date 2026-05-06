@@ -1,0 +1,92 @@
+{
+  "id": "contact-booking-embed-01",
+  "name": "Booking Embed",
+  "category": "contact",
+  "purpose": ["contact", "lead-capture"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "minimal", "corporate"],
+  "mood": ["professional", "calm", "friendly"],
+  "layout": "split",
+  "density": "medium",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 240,
+      "optional": true
+    },
+    { "name": "embedUrl", "type": "url" },
+    {
+      "name": "providerLabel",
+      "type": "text",
+      "maxLength": 40,
+      "optional": true
+    },
+    { "name": "embedMinHeight", "type": "number", "optional": true },
+    {
+      "name": "details",
+      "type": "list",
+      "maxItems": 5,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          {
+            "name": "icon",
+            "type": "text",
+            "optional": true,
+            "enum": ["check", "clock", "video"]
+          },
+          { "name": "label", "type": "text", "maxLength": 60 },
+          {
+            "name": "description",
+            "type": "text",
+            "maxLength": 140,
+            "optional": true
+          }
+        ]
+      },
+      "optional": true
+    },
+    {
+      "name": "fallbackPromptText",
+      "type": "text",
+      "maxLength": 140,
+      "optional": true
+    },
+    { "name": "fallbackEmailUrl", "type": "url", "optional": true },
+    {
+      "name": "fallbackEmailText",
+      "type": "text",
+      "maxLength": 60,
+      "optional": true
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-split-image-01",
+    "hero-hero-bold-editorial-01",
+    "testimonial-spotlight-quote-01",
+    "faq-tabbed-01",
+    "footer-pulse-01"
+  ],
+  "pairsPoorly": [
+    "contact-contact-locations-map-01",
+    "contact-contact-shapes-form-01",
+    "contact-split-form-01",
+    "contact-support-tabs-01"
+  ],
+  "description": "Calendar-embed contact section that hosts a Cal.com / Calendly / SavvyCal iframe alongside an editorial context column with what-to-expect bullets and an optional email-instead fallback CTA.",
+  "descriptions": {
+    "descriptive": "Two-column split: editorial copy and a What-to-expect bullet list (with check / clock / video icons) sit on the left; the booking iframe lives in a rounded surface on the right with a min-height so the available slots render without clipping. An optional fallback CTA below the bullets links to email when the visitor prefers it.",
+    "usage": "Use as the primary booking surface for sales calls, intro consults, or content meetings. Drop it into /book, /demo, or /contact pages. Pair with a calm hero and a single closing FAQ — don't stack against another contact section.",
+    "audienceFit": "Founders selling time, B2B SaaS demo flows, consultants with intro calls, conference speakers booking media, and any segment whose first conversion is a 30-minute call rather than a self-serve signup."
+  }
+}

@@ -11,27 +11,37 @@
 import type { ComponentType } from "react";
 
 // Carousel
+export { default as CarouselBeforeAfter } from "./carousel/CarouselBeforeAfter";
 export { default as CarouselCards } from "./carousel/CarouselCards";
 export { default as CarouselHorizontalScroll } from "./carousel/CarouselHorizontalScroll";
 export { default as CarouselSwipe } from "./carousel/CarouselSwipe";
+export { default as CarouselTestimonialAvatarPeek } from "./carousel/CarouselTestimonialAvatarPeek";
 
 // Contact
+export { default as ContactBookingEmbed } from "./contact/ContactBookingEmbed";
 export { default as ContactLocationsMap } from "./contact/ContactLocationsMap";
 export { default as ContactShapesForm } from "./contact/ContactShapesForm";
+export { default as ContactSplitForm } from "./contact/ContactSplitForm";
+export { default as ContactSupportTabs } from "./contact/ContactSupportTabs";
 
 // CTA
 export { default as CtaCollageDuo } from "./cta/CtaCollageDuo";
+export { default as CtaCountdown } from "./cta/CtaCountdown";
+export { default as CtaDualOfferSplit } from "./cta/CtaDualOfferSplit";
 export { default as CtaEditorialSplit } from "./cta/CtaEditorialSplit";
 export { default as CtaImageBackdrop } from "./cta/CtaImageBackdrop";
 export { default as CtaMinimalStrip } from "./cta/CtaMinimalStrip";
+export { default as CtaStickyBanner } from "./cta/CtaStickyBanner";
 export { default as NewsletterCapture } from "./cta/NewsletterCapture";
 
 // FAQ
 export { default as FaqAccordion } from "./faq/FaqAccordion";
 export { default as FaqMinimal } from "./faq/FaqMinimal";
 export { default as FaqSolutions } from "./faq/FaqSolutions";
+export { default as FaqTabbed } from "./faq/FaqTabbed";
 
 // Footers
+export { default as FooterMega } from "./footers/FooterMega";
 export { default as FooterPulse } from "./footers/FooterPulse";
 export { default as FooterReveal } from "./footers/FooterReveal";
 
@@ -67,6 +77,8 @@ export { default as ImageText } from "./layouts/split/ImageText";
 export { default as StatementSplit } from "./layouts/split/StatementSplit";
 
 // Motion
+export { default as MotionMarquee } from "./motion/MotionMarquee";
+export { default as MotionScrollNarrative } from "./motion/MotionScrollNarrative";
 export { default as ParallaxContent } from "./motion/ParallaxContent";
 export { default as StickyCards } from "./motion/StickyCards";
 
@@ -74,6 +86,9 @@ export { default as StickyCards } from "./motion/StickyCards";
 export { default as InfiniteScroll } from "./testimonials/InfiniteScroll";
 export { default as StackedSplit } from "./testimonials/StackedSplit";
 export { default as StaggerFan } from "./testimonials/StaggerFan";
+export { default as TestimonialLogoQuoteRibbon } from "./testimonials/TestimonialLogoQuoteRibbon";
+export { default as TestimonialSpotlightQuote } from "./testimonials/TestimonialSpotlightQuote";
+export { default as TestimonialVideoCard } from "./testimonials/TestimonialVideoCard";
 
 // Navigation
 export { default as NavbarDock } from "./navigation/NavbarDock";
@@ -81,6 +96,7 @@ export { default as NavbarMegaPanel } from "./navigation/NavbarMegaPanel";
 export { default as NavbarSticky } from "./navigation/NavbarSticky";
 
 // Stats
+export { default as StatsChart } from "./stats/StatsChart";
 export { default as StatsCountUp } from "./stats/StatsCountUp";
 export { default as StatsKpiGrid } from "./stats/StatsKpiGrid";
 export { default as StatsMilestoneBar } from "./stats/StatsMilestoneBar";
@@ -88,19 +104,29 @@ export { default as StatsMilestoneBar } from "./stats/StatsMilestoneBar";
 // Re-import defaults into a local namespace for the id→component map.
 // (Named exports above are what consumers import; this map is for
 // dynamic lookup by blueprint IDs — used by BlueprintPreview.)
+import CarouselBeforeAfter from "./carousel/CarouselBeforeAfter";
 import CarouselCards from "./carousel/CarouselCards";
 import CarouselHorizontalScroll from "./carousel/CarouselHorizontalScroll";
 import CarouselSwipe from "./carousel/CarouselSwipe";
+import CarouselTestimonialAvatarPeek from "./carousel/CarouselTestimonialAvatarPeek";
+import ContactBookingEmbed from "./contact/ContactBookingEmbed";
 import ContactLocationsMap from "./contact/ContactLocationsMap";
 import ContactShapesForm from "./contact/ContactShapesForm";
+import ContactSplitForm from "./contact/ContactSplitForm";
+import ContactSupportTabs from "./contact/ContactSupportTabs";
 import CtaCollageDuo from "./cta/CtaCollageDuo";
+import CtaCountdown from "./cta/CtaCountdown";
+import CtaDualOfferSplit from "./cta/CtaDualOfferSplit";
 import CtaEditorialSplit from "./cta/CtaEditorialSplit";
 import CtaImageBackdrop from "./cta/CtaImageBackdrop";
 import CtaMinimalStrip from "./cta/CtaMinimalStrip";
+import CtaStickyBanner from "./cta/CtaStickyBanner";
 import NewsletterCapture from "./cta/NewsletterCapture";
 import FaqAccordion from "./faq/FaqAccordion";
 import FaqMinimal from "./faq/FaqMinimal";
 import FaqSolutions from "./faq/FaqSolutions";
+import FaqTabbed from "./faq/FaqTabbed";
+import FooterMega from "./footers/FooterMega";
 import FooterPulse from "./footers/FooterPulse";
 import FooterReveal from "./footers/FooterReveal";
 import HeroAsymmetricStack from "./heroes/HeroAsymmetricStack";
@@ -128,14 +154,20 @@ import EditorialFramedSplit from "./layouts/split/EditorialFramedSplit";
 import IconListSplit from "./layouts/split/IconListSplit";
 import ImageText from "./layouts/split/ImageText";
 import StatementSplit from "./layouts/split/StatementSplit";
+import MotionMarquee from "./motion/MotionMarquee";
+import MotionScrollNarrative from "./motion/MotionScrollNarrative";
 import ParallaxContent from "./motion/ParallaxContent";
 import StickyCards from "./motion/StickyCards";
 import InfiniteScroll from "./testimonials/InfiniteScroll";
 import StackedSplit from "./testimonials/StackedSplit";
 import StaggerFan from "./testimonials/StaggerFan";
+import TestimonialLogoQuoteRibbon from "./testimonials/TestimonialLogoQuoteRibbon";
+import TestimonialSpotlightQuote from "./testimonials/TestimonialSpotlightQuote";
+import TestimonialVideoCard from "./testimonials/TestimonialVideoCard";
 import NavbarDock from "./navigation/NavbarDock";
 import NavbarMegaPanel from "./navigation/NavbarMegaPanel";
 import NavbarSticky from "./navigation/NavbarSticky";
+import StatsChart from "./stats/StatsChart";
 import StatsCountUp from "./stats/StatsCountUp";
 import StatsKpiGrid from "./stats/StatsKpiGrid";
 import StatsMilestoneBar from "./stats/StatsMilestoneBar";
@@ -149,19 +181,29 @@ import StatsMilestoneBar from "./stats/StatsMilestoneBar";
  * blueprint and the assembler writes them into generated source.
  */
 export const componentsById: Record<string, ComponentType<any>> = {
+  "carousel-before-after-01": CarouselBeforeAfter,
   "carousel-cards-01": CarouselCards,
   "carousel-horizontal-scroll-01": CarouselHorizontalScroll,
   "carousel-swipe-01": CarouselSwipe,
+  "carousel-testimonial-avatar-peek-01": CarouselTestimonialAvatarPeek,
+  "contact-booking-embed-01": ContactBookingEmbed,
   "contact-contact-locations-map-01": ContactLocationsMap,
   "contact-contact-shapes-form-01": ContactShapesForm,
+  "contact-split-form-01": ContactSplitForm,
+  "contact-support-tabs-01": ContactSupportTabs,
+  "cta-countdown-01": CtaCountdown,
   "cta-cta-collage-duo-01": CtaCollageDuo,
   "cta-cta-editorial-split-01": CtaEditorialSplit,
+  "cta-dual-offer-split-01": CtaDualOfferSplit,
   "cta-image-backdrop-01": CtaImageBackdrop,
   "cta-minimal-strip-01": CtaMinimalStrip,
   "cta-newsletter-capture-01": NewsletterCapture,
+  "cta-sticky-banner-01": CtaStickyBanner,
   "faq-accordion-01": FaqAccordion,
   "faq-minimal-01": FaqMinimal,
   "faq-solutions-01": FaqSolutions,
+  "faq-tabbed-01": FaqTabbed,
+  "footer-mega-01": FooterMega,
   "footer-pulse-01": FooterPulse,
   "footer-reveal-01": FooterReveal,
   "hero-hero-bold-editorial-01": HeroBoldEditorial,
@@ -194,10 +236,16 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "layout-imagetext-01": ImageText,
   "layout-stackedsplit-01": StackedSplit,
   "layout-statementsplit-01": StatementSplit,
+  "motion-marquee-01": MotionMarquee,
+  "motion-scroll-narrative-01": MotionScrollNarrative,
   "navbar-dock-01": NavbarDock,
   "navbar-mega-panel-01": NavbarMegaPanel,
   "navbar-sticky-01": NavbarSticky,
+  "stats-chart-01": StatsChart,
   "stats-count-up-01": StatsCountUp,
   "stats-kpi-grid-01": StatsKpiGrid,
   "stats-milestone-bar-01": StatsMilestoneBar,
+  "testimonial-logo-quote-ribbon-01": TestimonialLogoQuoteRibbon,
+  "testimonial-spotlight-quote-01": TestimonialSpotlightQuote,
+  "testimonial-video-card-01": TestimonialVideoCard,
 };

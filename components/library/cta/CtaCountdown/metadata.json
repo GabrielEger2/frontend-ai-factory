@@ -1,0 +1,70 @@
+{
+  "id": "cta-countdown-01",
+  "name": "Countdown CTA",
+  "category": "cta",
+  "purpose": ["cta", "lead-capture"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["bold", "modern", "editorial"],
+  "mood": ["energetic", "professional", "serious"],
+  "layout": "centered",
+  "density": "medium",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 220,
+      "optional": true
+    },
+    { "name": "endsAt", "type": "text", "maxLength": 30 },
+    {
+      "name": "endedText",
+      "type": "text",
+      "maxLength": 160,
+      "optional": true
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 30 },
+    { "name": "ctaUrl", "type": "url" },
+    {
+      "name": "secondaryText",
+      "type": "text",
+      "maxLength": 30,
+      "optional": true
+    },
+    { "name": "secondaryUrl", "type": "url", "optional": true },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["neutral", "muted", "inverse"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-hero-bold-editorial-01",
+    "hero-shuffle-cards-01",
+    "footer-pulse-01",
+    "footer-reveal-01",
+    "layout-pricing-tiers-01"
+  ],
+  "pairsPoorly": [
+    "cta-cta-collage-duo-01",
+    "cta-cta-editorial-split-01",
+    "cta-image-backdrop-01",
+    "cta-minimal-strip-01",
+    "cta-newsletter-capture-01"
+  ],
+  "description": "Urgency CTA with a live ticking countdown to a fixed deadline — for launches, sale endings, and registration cutoffs. Includes neutral, muted, and inverse tone variants and a graceful post-deadline state.",
+  "descriptions": {
+    "descriptive": "Centered headline-and-CTA block anchored by a four-block live countdown (days, hours, minutes, seconds) ticking every second to a configured ISO timestamp. Three tone variants: neutral on bg-base-100, muted on bg-base-200, and a high-impact inverse on bg-base-content. After the deadline, the timer collapses to a calm fallback message instead of negative values.",
+    "usage": "Drop into pages tied to a real deadline — product launch, conference registration cutoff, limited-edition sale, application window. Place near the bottom of a launch page or inline above a pricing block. Pair with footer-pulse or footer-reveal at page close.",
+    "audienceFit": "Product launches, event sites, e-commerce drops, and any segment where genuine scarcity (not manufactured urgency) is the lever. Inverse tone matches editorial-bold briefs; neutral and muted suit corporate and minimal."
+  }
+}

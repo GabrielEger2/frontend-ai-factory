@@ -1,0 +1,80 @@
+{
+  "id": "faq-tabbed-01",
+  "name": "Tabbed FAQ",
+  "category": "faq",
+  "purpose": ["faq", "showcase"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["modern", "minimal", "corporate"],
+  "mood": ["professional", "calm", "trustworthy"],
+  "layout": "stacked",
+  "density": "medium",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "headline", "type": "text", "maxLength": 100 },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "maxLength": 200,
+      "optional": true
+    },
+    {
+      "name": "categories",
+      "type": "list",
+      "maxItems": 6,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "label", "type": "text", "maxLength": 30 },
+          {
+            "name": "description",
+            "type": "text",
+            "maxLength": 160,
+            "optional": true
+          },
+          {
+            "name": "questions",
+            "type": "list",
+            "maxItems": 10,
+            "itemSchema": {
+              "type": "object",
+              "fields": [
+                { "name": "question", "type": "text", "maxLength": 140 },
+                { "name": "answer", "type": "text", "maxLength": 600 }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "defaultCategoryIndex",
+      "type": "number",
+      "optional": true
+    },
+    {
+      "name": "defaultOpenQuestionIndex",
+      "type": "number",
+      "optional": true
+    }
+  ],
+  "mobileBehavior": "scroll",
+  "pairsWell": [
+    "cta-minimal-strip-01",
+    "cta-newsletter-capture-01",
+    "footer-pulse-01",
+    "footer-reveal-01",
+    "layout-pricing-tiers-01"
+  ],
+  "pairsPoorly": ["faq-accordion-01", "faq-minimal-01", "faq-solutions-01"],
+  "description": "A tabbed FAQ that groups questions into named categories (Billing, Security, Implementation) with an animated underline tab strip and a cross-fading accordion panel per tab.",
+  "descriptions": {
+    "descriptive": "Horizontal tab strip with an animated underline marks the active category; selecting a tab cross-fades the underlying accordion. Each tab carries an optional one-line description and its own short list of question/answer pairs.",
+    "usage": "Use when total question count exceeds roughly ten and the questions split cleanly into segments — pricing, privacy, implementation, support. Pair after a pricing tier section or before a closing CTA strip.",
+    "audienceFit": "B2B SaaS, fintech, and infrastructure companies whose buyers ask layered questions across distinct concern areas. Defaults to a calm, corporate tone but adapts cleanly to editorial or services briefs."
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "id": "footer-mega-01",
+  "name": "Mega Footer",
+  "category": "footer",
+  "purpose": ["footer", "lead-capture", "navigation"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "corporate", "editorial"],
+  "mood": ["professional", "trustworthy", "calm"],
+  "layout": "stacked",
+  "density": "high",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "logoText", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "tagline", "type": "text", "maxLength": 200, "optional": true },
+    {
+      "name": "newsletterEyebrow",
+      "type": "text",
+      "maxLength": 30,
+      "optional": true
+    },
+    {
+      "name": "newsletterHeadline",
+      "type": "text",
+      "maxLength": 100,
+      "optional": true
+    },
+    {
+      "name": "newsletterDescription",
+      "type": "text",
+      "maxLength": 240,
+      "optional": true
+    },
+    {
+      "name": "newsletterPlaceholder",
+      "type": "text",
+      "maxLength": 60,
+      "optional": true
+    },
+    {
+      "name": "newsletterCtaText",
+      "type": "text",
+      "maxLength": 24,
+      "optional": true
+    },
+    {
+      "name": "newsletterPrivacyText",
+      "type": "text",
+      "maxLength": 200,
+      "optional": true
+    },
+    {
+      "name": "newsletterSuccessText",
+      "type": "text",
+      "maxLength": 200,
+      "optional": true
+    },
+    {
+      "name": "navColumns",
+      "type": "list",
+      "maxItems": 5,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "title", "type": "text", "maxLength": 30 },
+          {
+            "name": "links",
+            "type": "list",
+            "maxItems": 8,
+            "itemSchema": {
+              "type": "object",
+              "fields": [
+                { "name": "text", "type": "text", "maxLength": 40 },
+                { "name": "href", "type": "url" },
+                {
+                  "name": "badge",
+                  "type": "text",
+                  "maxLength": 14,
+                  "optional": true
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "companyName",
+      "type": "text",
+      "maxLength": 80,
+      "optional": true
+    },
+    {
+      "name": "legalLinks",
+      "type": "list",
+      "maxItems": 5,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "text", "type": "text", "maxLength": 40 },
+          { "name": "href", "type": "url" }
+        ]
+      },
+      "optional": true
+    },
+    {
+      "name": "socialLinks",
+      "type": "list",
+      "maxItems": 8,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          {
+            "name": "network",
+            "type": "text",
+            "enum": [
+              "instagram",
+              "linkedin",
+              "facebook",
+              "whatsapp",
+              "twitter",
+              "youtube",
+              "tiktok",
+              "google",
+              "pinterest",
+              "telegram"
+            ]
+          },
+          { "name": "url", "type": "url" },
+          { "name": "label", "type": "text", "maxLength": 60 }
+        ]
+      },
+      "optional": true
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "cta-minimal-strip-01",
+    "cta-newsletter-capture-01",
+    "faq-tabbed-01",
+    "stats-count-up-01",
+    "testimonial-spotlight-quote-01"
+  ],
+  "pairsPoorly": ["footer-pulse-01", "footer-reveal-01"],
+  "description": "A high-density 'mega-footer' with a newsletter capture row, a 4-5 column sitemap, a copyright line, optional legal links and a social row. Sits on the neutral surface tokens and is the canonical site-bottom for content-heavy product pages.",
+  "descriptions": {
+    "descriptive": "Three stacked sections: a newsletter section with eyebrow / headline / description on the left and an inline form (or a check-icon success state) on the right; a sitemap with the brand block plus up to four navigation columns, each link supporting an optional 'New' / count badge; and a bottom bar with copyright, optional legal links, and a row of social icons. Renders on bg-neutral with hairline neutral-content/10 dividers between sections.",
+    "usage": "Use as the site-wide footer when the page already carries a closing CTA (CtaMinimalStrip, CtaCountdown). Don't stack with FooterPulse or FooterReveal — pick exactly one footer per generated site.",
+    "audienceFit": "B2B SaaS, fintech, marketplaces, and content-heavy publishers whose footers carry real navigation work — sitemap, trust links, and an active newsletter list."
+  }
+}

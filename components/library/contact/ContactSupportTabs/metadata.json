@@ -1,0 +1,105 @@
+{
+  "id": "contact-support-tabs-01",
+  "name": "Support Tabs Contact",
+  "category": "contact",
+  "purpose": ["contact", "lead-capture"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "minimal", "corporate"],
+  "mood": ["professional", "friendly", "trustworthy"],
+  "layout": "split",
+  "density": "medium",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100 },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 240,
+      "optional": true
+    },
+    {
+      "name": "tabs",
+      "type": "list",
+      "maxItems": 5,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "label", "type": "text", "maxLength": 30 },
+          {
+            "name": "icon",
+            "type": "text",
+            "optional": true,
+            "enum": [
+              "headphones",
+              "briefcase",
+              "user",
+              "help",
+              "smartphone",
+              "calendar"
+            ]
+          },
+          { "name": "description", "type": "text", "maxLength": 200 },
+          {
+            "name": "channels",
+            "type": "list",
+            "maxItems": 4,
+            "itemSchema": {
+              "type": "object",
+              "fields": [
+                {
+                  "name": "icon",
+                  "type": "text",
+                  "optional": true,
+                  "enum": ["mail", "phone", "message", "calendar"]
+                },
+                { "name": "label", "type": "text", "maxLength": 30 },
+                { "name": "value", "type": "text", "maxLength": 80 },
+                { "name": "href", "type": "url", "optional": true },
+                {
+                  "name": "caption",
+                  "type": "text",
+                  "maxLength": 100,
+                  "optional": true
+                }
+              ]
+            }
+          },
+          {
+            "name": "ctaText",
+            "type": "text",
+            "maxLength": 30,
+            "optional": true
+          },
+          { "name": "ctaUrl", "type": "url", "optional": true }
+        ]
+      }
+    },
+    { "name": "defaultTabIndex", "type": "number", "optional": true }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-split-image-01",
+    "hero-hero-bold-editorial-01",
+    "faq-tabbed-01",
+    "footer-pulse-01",
+    "footer-reveal-01"
+  ],
+  "pairsPoorly": [
+    "contact-contact-locations-map-01",
+    "contact-contact-shapes-form-01",
+    "contact-split-form-01",
+    "contact-booking-embed-01"
+  ],
+  "description": "Routing-style contact section with category tabs (Sales / Support / Press / Partnerships). Each tab surfaces its own channel list (email, phone, chat, booking link) and an optional per-tab CTA — the visitor self-routes instead of submitting one generic form.",
+  "descriptions": {
+    "descriptive": "A vertical pill tab list on the left animates a soft active background between options; the right panel shows the selected tab's description, a divider-separated channel list (email, phone, live chat, calendar) and an optional CTA. Each channel row is clickable when href is present.",
+    "usage": "Use as the contact section for any company that legitimately routes inquiries across departments — sales, support, press, partnerships, careers. Avoid when there's truly only one inbox; use ContactSplitForm or ContactShapesForm instead.",
+    "audienceFit": "Mid-to-late-stage B2B SaaS, marketplaces, larger agencies, and any organization with multi-department intake. Defaults to a calm corporate tone, adapts cleanly to friendlier brands by changing the tab labels and copy."
+  }
+}

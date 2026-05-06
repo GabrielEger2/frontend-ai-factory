@@ -1,0 +1,122 @@
+{
+  "id": "stats-chart-01",
+  "name": "Chart Stats",
+  "category": "stats",
+  "purpose": ["stats", "showcase", "benefits"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["modern", "editorial", "corporate"],
+  "mood": ["professional", "trustworthy", "serious"],
+  "layout": "split",
+  "density": "high",
+  "imageWeight": 0,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100, "optional": true },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 220,
+      "optional": true
+    },
+    {
+      "name": "variant",
+      "type": "text",
+      "optional": true,
+      "enum": ["bars", "sparkline"]
+    },
+    {
+      "name": "bars",
+      "type": "list",
+      "maxItems": 8,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "label", "type": "text", "maxLength": 60 },
+          { "name": "value", "type": "number" },
+          {
+            "name": "suffix",
+            "type": "text",
+            "maxLength": 8,
+            "optional": true
+          },
+          { "name": "decimals", "type": "number", "optional": true },
+          {
+            "name": "caption",
+            "type": "text",
+            "maxLength": 80,
+            "optional": true
+          },
+          {
+            "name": "tone",
+            "type": "text",
+            "optional": true,
+            "enum": ["primary", "accent", "neutral"]
+          }
+        ]
+      }
+    },
+    {
+      "name": "sparklineMetric",
+      "type": "text",
+      "maxLength": 24,
+      "optional": true
+    },
+    {
+      "name": "sparklineCaption",
+      "type": "text",
+      "maxLength": 80,
+      "optional": true
+    },
+    {
+      "name": "sparklineTrend",
+      "type": "text",
+      "maxLength": 24,
+      "optional": true
+    },
+    {
+      "name": "sparklineTrendDirection",
+      "type": "text",
+      "optional": true,
+      "enum": ["up", "down", "flat"]
+    },
+    {
+      "name": "sparklinePoints",
+      "type": "list",
+      "maxItems": 24,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "label", "type": "text", "maxLength": 12 },
+          { "name": "value", "type": "number" }
+        ]
+      }
+    },
+    { "name": "duration", "type": "number", "optional": true },
+    {
+      "name": "footnote",
+      "type": "text",
+      "maxLength": 140,
+      "optional": true
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-split-image-01",
+    "hero-hero-bold-editorial-01",
+    "layout-pricing-tiers-01",
+    "layout-icon-feature-grid-01",
+    "cta-minimal-strip-01"
+  ],
+  "pairsPoorly": ["stats-count-up-01", "stats-kpi-grid-01"],
+  "description": "Two chart-style stats variants: an animated horizontal bar chart with count-up labels, or a single-line sparkline with a headline metric and trend pill — for sites that need comparative or longitudinal proof rather than hero numbers.",
+  "descriptions": {
+    "descriptive": "Variant switch between bars and sparkline. Bars: split layout with up to eight rows, each animating its fill width and counting up its label as it scrolls into view. Sparkline: a 12-point trend line that draws on view, paired with a large headline metric and a tinted up/down/flat trend pill.",
+    "usage": "Use when the page needs comparative numbers (year-over-year, multi-channel, multi-product) or a longitudinal trend (ARR over twelve months, signups over a year). Pairs naturally after a results-focused hero or before a pricing block; complements rather than replaces the count-up and KPI grid stats.",
+    "audienceFit": "B2B SaaS results pages, fintech operator dashboards, marketing case-study tear-sheets, and any site whose buyers want a number with shape — not just a single dramatic figure."
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "id": "testimonial-logo-quote-ribbon-01",
+  "name": "Logo + Quote Ribbon",
+  "category": "testimonial",
+  "purpose": ["testimonials", "showcase"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["modern", "minimal", "corporate"],
+  "mood": ["professional", "trustworthy", "calm"],
+  "layout": "stacked",
+  "density": "low",
+  "imageWeight": 0.1,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100, "optional": true },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "maxLength": 200,
+      "optional": true
+    },
+    {
+      "name": "items",
+      "type": "list",
+      "maxItems": 6,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "logo", "type": "image" },
+          { "name": "logoAlt", "type": "text", "maxLength": 80 },
+          { "name": "quote", "type": "text", "maxLength": 200 },
+          { "name": "authorName", "type": "text", "maxLength": 60 },
+          { "name": "authorTitle", "type": "text", "maxLength": 100 }
+        ]
+      }
+    },
+    { "name": "defaultActiveIndex", "type": "number", "optional": true },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["neutral", "muted"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-hero-bold-editorial-01",
+    "hero-split-image-01",
+    "hero-spotlight-center-01",
+    "layout-pricing-tiers-01",
+    "stats-count-up-01"
+  ],
+  "pairsPoorly": [
+    "layout-stackedsplit-01",
+    "layout-staggerfan-01",
+    "layout-infinitescroll-01",
+    "testimonial-spotlight-quote-01",
+    "layout-logo-cloud-01"
+  ],
+  "description": "Compact social-proof ribbon — a row of customer logos doubles as a tab strip; clicking a logo cross-fades a one-line pull-quote underneath. The tightest testimonial slot in the library.",
+  "descriptions": {
+    "descriptive": "Six-up logo grid sits between hairline rules; the active logo carries full opacity while the others sit at 50%. Below the strip, a one-line blockquote with author name and title cross-fades whenever a different logo is selected.",
+    "usage": "Use as compact social proof above pricing or below a hero — when you have brand-name customers but don't want to commit a full testimonial section. Replaces the generic 'Trusted by' logo cloud while doing the same recognition work.",
+    "audienceFit": "B2B SaaS with marquee logos, agency portfolios listing client brands, conference sponsor recognition, and any site whose customers carry recognition value on their own."
+  }
+}

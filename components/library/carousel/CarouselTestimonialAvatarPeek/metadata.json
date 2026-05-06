@@ -1,0 +1,74 @@
+{
+  "id": "carousel-testimonial-avatar-peek-01",
+  "name": "Testimonial Avatar Peek Carousel",
+  "category": "carousel",
+  "purpose": ["testimonials", "showcase"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["editorial", "modern", "luxury"],
+  "mood": ["elegant", "professional", "trustworthy"],
+  "layout": "centered",
+  "density": "medium",
+  "imageWeight": 0.25,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100, "optional": true },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "maxLength": 200,
+      "optional": true
+    },
+    {
+      "name": "items",
+      "type": "list",
+      "maxItems": 7,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "image", "type": "image", "aspectRatio": "1:1" },
+          { "name": "imageAlt", "type": "text", "maxLength": 120 },
+          { "name": "name", "type": "text", "maxLength": 60 },
+          { "name": "title", "type": "text", "maxLength": 100 },
+          { "name": "quote", "type": "text", "maxLength": 320 },
+          {
+            "name": "caption",
+            "type": "text",
+            "maxLength": 140,
+            "optional": true
+          }
+        ]
+      }
+    },
+    { "name": "autoAdvanceMs", "type": "number", "optional": true },
+    { "name": "defaultIndex", "type": "number", "optional": true }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-hero-bold-editorial-01",
+    "hero-spotlight-center-01",
+    "stats-count-up-01",
+    "cta-minimal-strip-01",
+    "faq-tabbed-01"
+  ],
+  "pairsPoorly": [
+    "carousel-cards-01",
+    "carousel-horizontal-scroll-01",
+    "carousel-swipe-01",
+    "carousel-before-after-01",
+    "layout-stackedsplit-01",
+    "layout-staggerfan-01",
+    "layout-infinitescroll-01",
+    "testimonial-spotlight-quote-01"
+  ],
+  "description": "Editorial testimonial carousel: one hero pull-quote at a time, with an avatar strip below that 'peeks' all participants. The active avatar is larger and primary-ringed; clicking any avatar cross-fades the matching quote.",
+  "descriptions": {
+    "descriptive": "Center-stage blockquote with a serif open-quote glyph cross-fades on author change. Below a hairline rule, an avatar strip of 3-7 round portraits shows the cast — active avatar is 80px and primary-ringed, the rest sit at 56-64px and 65% opacity. Auto-advances every 7s by default, pauses on hover, and supports left/right keyboard navigation.",
+    "usage": "Use when you have 3-7 high-quality testimonials and want a premium-feeling rotation rather than a wall of cards or a generic dot-paginated carousel. Sits well after a hero or before a closing FAQ; do not stack with other testimonial sections on the same page.",
+    "audienceFit": "Premium B2B SaaS, agencies, professional services, and editorial-leaning brand pages whose social proof reads better as a curated rotation than as a wall of cards."
+  }
+}

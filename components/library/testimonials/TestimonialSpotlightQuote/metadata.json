@@ -1,0 +1,73 @@
+{
+  "id": "testimonial-spotlight-quote-01",
+  "name": "Spotlight Quote Testimonial",
+  "category": "testimonial",
+  "purpose": ["testimonials", "brand-statement"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["editorial", "luxury", "modern"],
+  "mood": ["elegant", "trustworthy", "professional"],
+  "layout": "split",
+  "density": "low",
+  "imageWeight": 0.35,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "quote", "type": "text", "maxLength": 400 },
+    { "name": "authorName", "type": "text", "maxLength": 60 },
+    { "name": "authorTitle", "type": "text", "maxLength": 100 },
+    {
+      "name": "authorImage",
+      "type": "image",
+      "aspectRatio": "4:5",
+      "optional": true
+    },
+    {
+      "name": "authorImageAlt",
+      "type": "text",
+      "maxLength": 120,
+      "optional": true
+    },
+    {
+      "name": "companyLogo",
+      "type": "image",
+      "optional": true
+    },
+    {
+      "name": "companyLogoAlt",
+      "type": "text",
+      "maxLength": 80,
+      "optional": true
+    },
+    { "name": "caption", "type": "text", "maxLength": 140, "optional": true },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["neutral", "muted", "inverse"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-hero-bold-editorial-01",
+    "hero-split-image-01",
+    "hero-spotlight-center-01",
+    "layout-pricing-tiers-01",
+    "cta-minimal-strip-01"
+  ],
+  "pairsPoorly": [
+    "layout-stackedsplit-01",
+    "layout-staggerfan-01",
+    "layout-infinitescroll-01",
+    "testimonial-logo-quote-ribbon-01"
+  ],
+  "description": "Hero-sized single testimonial — one customer's voice carries the section. Generous whitespace, large pull-quote typography, calm portrait, and a decorative serif open-quote glyph.",
+  "descriptions": {
+    "descriptive": "Two-column editorial layout with the pull-quote left and a 4:5 portrait right on desktop; on mobile the portrait appears as an inline avatar beside the author block. Optional eyebrow, company logo, and caption row. Three tone variants (neutral, muted, inverse) for editorial dark slabs.",
+    "usage": "Use when one customer's voice deserves a full section — a marquee enterprise win, a founder testimonial, or an editorial-style brand quote. Place after a hero or before pricing. Do not stack with other testimonial sections — pick one carrier voice per page.",
+    "audienceFit": "Premium B2B SaaS, agency portfolios, professional-services sites, and editorial-leaning brand pages whose social proof reads better as one strong voice than as a wall of cards."
+  }
+}
