@@ -296,6 +296,73 @@ These are the ONE exception to the "no inline styles" rule:
 >
 ```
 
+## The Primitive-Receiving Rule
+
+Library components **compose** UI primitives (`@ui/Button`, `@ui/Card`, etc.) **internally**. They do NOT receive primitives as props.
+
+### Why this is a hard rule
+
+The AI pipeline serializes slot content as JSON before the assembler stitches a generated site. JSON can carry strings, urls, image paths, and arrays — it cannot carry `ReactNode`. Every slot prop must round-trip through JSON.
+
+If a component accepts `cta?: ReactNode`, the Content Agent has nothing reasonable to put there, and the assembler can't construct it deterministically. The pipeline breaks.
+
+### The rule
+
+```tsx
+// CORRECT — slots are plain data, primitive composed inside
+import { Button } from "@ui/button";
+
+export interface CtaBannerProps {
+  headline: string;
+  subheadline: string;
+  ctaText: string;
+  ctaUrl: string;
+  ctaVariant?: "primary" | "secondary" | "arrow";  // flexes the internal primitive
+  className?: string;
+}
+
+export default function CtaBanner({
+  headline, subheadline, ctaText, ctaUrl, ctaVariant = "primary", className,
+}: CtaBannerProps) {
+  return (
+    <section className={cn("...", className)}>
+      <h2>{headline}</h2>
+      <p>{subheadline}</p>
+      <Button variant={ctaVariant} asChild>
+        <a href={ctaUrl}>{ctaText}</a>
+      </Button>
+    </section>
+  );
+}
+```
+
+```tsx
+// WRONG — ReactNode slot, breaks the AI pipeline
+export interface CtaBannerProps {
+  headline: string;
+  subheadline: string;
+  cta: ReactNode;          // assembler can't fill this
+  renderCta?: () => ReactNode;  // also wrong
+}
+```
+
+### What components MAY accept
+
+- **Plain data slots** — `string`, `string[]`, image-path strings, urls, structured arrays (`Array<{ image, quote, author }>`)
+- **`className?: string`** — for outer composition only
+- **Variant props** — `ctaVariant?: "primary" | "arrow"`, `tone?: "light" | "dark"`, `density?: "compact" | "default"` — flex the internally-composed primitive without exposing it
+- **Optional toggle props** — `headlineRotatingWords?: string[]`, `emailPlaceholder?: string` — drive feature variations the Content Agent can opt into
+
+### What components MUST NOT accept
+
+- `ReactNode` / `React.ReactElement` content slots
+- `renderX?: () => ReactNode` render-prop callbacks
+- Children for content slots — `children` is reserved for true wrapper components, which library components are not
+
+### Animation-state inline styles are still the exception
+
+The "no inline styles" rule has one carve-out for Framer Motion `style={{ x, y, rotate }}` driven by motion values — see the example at the end of "Adapted Component" above. That's not a primitive being received as a prop; it's a dynamic value from the component's own animation state.
+
 ## Utility Pattern — cn() usage
 
 ```tsx
