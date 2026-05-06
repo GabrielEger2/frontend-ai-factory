@@ -1,0 +1,98 @@
+{
+  "id": "layout-vertical-timeline-split-01",
+  "name": "Vertical Timeline Split",
+  "category": "layout/split",
+  "style": ["editorial", "modern", "minimal", "corporate"],
+  "mood": ["professional", "trustworthy", "calm"],
+  "layout": "split",
+  "density": "medium",
+  "imageWeight": 0,
+  "purpose": ["about", "story", "process", "stats"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "slots": [
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "maxLength": 40,
+      "optional": true
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 120
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 320
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 30,
+      "optional": true
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "events",
+      "type": "list",
+      "maxItems": 8,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          {
+            "name": "marker",
+            "type": "text",
+            "maxLength": 40
+          },
+          {
+            "name": "title",
+            "type": "text",
+            "maxLength": 100
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "maxLength": 320
+          },
+          {
+            "name": "metric",
+            "type": "text",
+            "maxLength": 30,
+            "optional": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "colorScheme",
+      "type": "text",
+      "enum": ["light", "dark"],
+      "optional": true
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-hero-bold-editorial-01",
+    "stats-count-up-01",
+    "stats-milestone-bar-01",
+    "layout-authorsplit-01",
+    "cta-cta-editorial-split-01"
+  ],
+  "pairsPoorly": ["layout-process-timeline-01", "carousel-cards-01"],
+  "description": "A two-column section with a sticky narrative on the left and a vertical timeline of dated events on the right, designed for company histories, roadmap reveals, and milestone retrospectives.",
+  "descriptions": {
+    "descriptive": "Asymmetric split with a sticky narrative column on the left and a vertical timeline on the right. Each timeline entry combines a monospaced marker, an optional metric chip, a heading, and a short body. A single hairline runs the full height of the timeline, intersected by ringed nodes at every event. Generous vertical spacing creates a calm reading rhythm without the heaviness of cards.",
+    "usage": "Use to walk readers through an ordered sequence of moments — company milestones, product changelog highlights, regulatory timelines, or a roadmap reveal. Best when the reader benefits from seeing the full arc at a glance while focusing on one event at a time. Skip when events are unordered or when the dataset is large enough to warrant a real archive page.",
+    "audienceFit": "Resonates with B2B audiences who care about track record — investors, enterprise procurement teams, and partner sales. Fits established service firms, scaling SaaS, and craft-led brands with a story worth slowing down for. Less suited to consumer ecommerce or campaign landing pages, where dense feature cards convert faster than narrative."
+  }
+}
