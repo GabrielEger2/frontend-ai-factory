@@ -11,6 +11,10 @@ const meta: Meta<typeof StatsCountUp> = {
     duration: {
       control: { type: "range", min: 0.5, max: 5, step: 0.5 },
     },
+    highlightColorScheme: {
+      control: "select",
+      options: ["primary", "secondary", "accent", "neutral"],
+    },
   },
 };
 export default meta;

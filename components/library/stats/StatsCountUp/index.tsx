@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { animate, motion, useInView, useReducedMotion } from "framer-motion";
 import { cn } from "@lib/utils";
+import { Highlighter } from "@ui/text-decorations/Highlighter";
+import { type ColorScheme } from "@ui/button";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -26,6 +28,8 @@ export interface StatsCountUpProps {
   headline?: string;
   /** Optional highlighted word/phrase within the headline */
   headlineHighlight?: string;
+  /** Color scheme for the Highlighter wrapping `headlineHighlight`. Defaults to "primary". */
+  highlightColorScheme?: ColorScheme;
   /** Array of stats to display — each animates independently on scroll */
   stats?: StatItem[];
   /** Animation duration in seconds. Defaults to 2.5 */
@@ -100,12 +104,37 @@ function Divider() {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+function renderHighlightedHeadline(
+  headline: string,
+  highlightWord: string,
+  scheme: ColorScheme,
+): React.ReactNode {
+  const lowerHeadline = headline.toLowerCase();
+  const lowerWord = highlightWord.toLowerCase();
+  const idx = lowerHeadline.indexOf(lowerWord);
+  if (idx === -1) return headline;
+  return (
+    <>
+      {headline.slice(0, idx)}
+      <Highlighter action="highlight" colorScheme={scheme} triggerOnView>
+        {headline.slice(idx, idx + highlightWord.length)}
+      </Highlighter>
+      {headline.slice(idx + highlightWord.length)}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
 export default function StatsCountUp({
   headline,
   headlineHighlight,
+  highlightColorScheme = "primary",
   stats = DEFAULT_STATS,
   duration = DEFAULT_DURATION,
   className,
@@ -114,16 +143,16 @@ export default function StatsCountUp({
 
   const renderedHeadline = (() => {
     if (!headline) return null;
-    if (!headlineHighlight || !headline.includes(headlineHighlight)) {
+    if (
+      !headlineHighlight ||
+      !headline.toLowerCase().includes(headlineHighlight.toLowerCase())
+    ) {
       return <>{headline}</>;
     }
-    const idx = headline.indexOf(headlineHighlight);
-    return (
-      <>
-        {headline.slice(0, idx)}
-        <span className="text-primary">{headlineHighlight}</span>
-        {headline.slice(idx + headlineHighlight.length)}
-      </>
+    return renderHighlightedHeadline(
+      headline,
+      headlineHighlight,
+      highlightColorScheme,
     );
   })();
 
