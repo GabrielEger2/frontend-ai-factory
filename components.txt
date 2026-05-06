@@ -1,20 +1,91 @@
-  Missing categories entirely                                                                                                                                          
-  - Pricing — no pricing tables anywhere. Blocks any SaaS/services site.                                                                                               
-  - Logo cloud / trust bar — universal social proof slot, currently nothing fits.                                                                                      
-  - Process / steps / timeline — no numbered "how it works" component for B2B narratives.                                                                              
-  - Newsletter / pre-footer capture — lead-capture is in your purpose tokens but no component fulfills it outside the contact form.                                    
-                                                                                                                                                                       
-  Thinnest existing categories (functional, not just count)
-  - stats: 1 — only StatsCountUp. No comparison stats, KPI grid, or milestone bar — and stats components punch way above their weight in composition.
-  - layouts/grid: 2 — CardGrid + SimpleGrid only. You're missing the icon-feature grid that 80% of features/services/benefits sections need. This one gap is probably
-  your biggest blocker because so many purpose tokens (features, services, benefits, products, team) route through grids.
-  - cta: 3 — all editorial/image-heavy. No minimal centered CTA or inline strip variant for sites whose style doesn't want another image block.
-  - navigation: 2 navbars — no mega-menu or mobile drawer pattern for content-heavy sites.
+SiteGen Component Library — Missing Components
+================================================
+Snapshot date: 2026-05-06
+Current state: 43 / ~75 (target from .claude/CLAUDE.md)
+Gap: 32 components
+All 43 existing components pass `npm run validate:metadata`.
 
-  Where I'd focus first
-  If the goal is to unblock the composer for the widest range of generated sites, I'd build icon-feature grid + pricing table + logo cloud + a minimal CTA before
-  adding more heroes. Heroes feel scarce (5/15) but you can already compose a usable page with what you have; without pricing/features-grid/logos, whole site
-  archetypes are unreachable.
+Coverage vs target
+------------------
+Category        Target  OnDisk  Gap
+hero            15      5       -10
+layout/split    8       5       -3
+cta             8       5       -3
+testimonial     6       3       -3
+contact         5       2       -3
+carousel        5       3       -2
+motion          4       2       -2
+stats           4       3       -1
+faq             4       3       -1
+footer          3       2       -1
+navigation      4       4       done
+layout/grid     4       6       +2 over
 
-  The tradeoff: hero variety drives the visual first impression of demos to clients, so if your near-term constraint is "demo wow factor" rather than "site archetype
-  coverage," prioritizing 3-4 more hero variants instead is defensible.
+Missing components (suggested)
+------------------------------
+
+Hero (-10)
+  - Video / looping background hero
+  - Gradient or aurora animated hero
+  - Kinetic typography hero (animated text)
+  - Product-screenshot hero with browser/device chrome
+  - Before/after slider hero
+  - Scroll-driven reveal hero
+  - Terminal / code-block hero (dev-tool brands)
+  - Dual-CTA centered hero
+  - Stats-driven hero (headline + KPI row)
+  - Illustration / spot-art hero
+
+Layout/split (-3)
+  - Zigzag alternating sections (multi-row image+text)
+  - Vertical timeline split
+  - Side-by-side comparison split (us vs them)
+
+CTA (-3)
+  - Countdown CTA (urgency / launch)
+  - Dual-offer split CTA (two side-by-side cards)
+  - Sticky bottom banner CTA
+
+Testimonial (-3)
+  - Video testimonial card
+  - Single spotlight quote (hero-sized)
+  - Logo + quote ribbon (compact social proof)
+
+Contact (-3)
+  - Split contact (form + info column with hours/phone/email)
+  - Booking embed (Cal.com / Calendly)
+  - Support tabs (sales / support / press routing)
+
+Carousel (-2)
+  - Before/after image slider
+  - Testimonial carousel with avatar peek
+
+Motion (-2)
+  - Marquee / ticker (logos, words, badges)
+  - Scroll-pinned narrative section
+
+Stats (-1)
+  - Chart-style stats (bars or sparkline)
+
+FAQ (-1)
+  - Tabbed / categorized FAQ
+
+Footer (-1)
+  - Mega-footer with newsletter + sitemap columns
+
+Navigation
+  - Done (4/4 vs target).
+
+Structural follow-ups
+---------------------
+1. `variants/` directories: CLAUDE.md describes them as optional ("same
+   component, different density/color mode"), but 0 of 43 components have one.
+   Decision needed: drop the convention from CLAUDE.md, or seed dense/dark
+   variants for 2-3 high-value components (e.g. HeroSplitImage,
+   CtaEditorialSplit, FaqAccordion).
+
+2. layout/grid is over target (6 vs 4). PricingTiers, ProcessTimeline,
+   LogoCloud, IconFeatureGrid arguably belong in their own categories
+   (`pricing`, `process`, `partners`, `features`). Decision needed: raise the
+   layout/grid target in CLAUDE.md, or split these into dedicated categories
+   matching how their `purpose[]` already tags them.
