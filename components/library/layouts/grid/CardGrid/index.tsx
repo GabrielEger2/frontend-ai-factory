@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@lib/utils";
 import type { StyleKit, CardStyle } from "@lib/style-kit";
-import { buttonStyles, type CtaVariant } from "@ui/button";
+import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
 import CardBase from "@ui/cards/CardBase";
 import { CardFlip } from "@ui/cards/CardFlip";
 import { CardRevealSlide } from "@ui/cards/CardRevealSlide";
@@ -11,28 +11,6 @@ import { CardMagic } from "@ui/cards/CardMagic";
 import { CardProduct } from "@ui/cards/CardProduct";
 import { CardOutlineGrid } from "@ui/cards/CardOutline";
 import { useSafeImageSrc } from "@ui/useSafeImageSrc";
-
-/* ------------------------------------------------------------------ */
-/*  Helpers                                                            */
-/* ------------------------------------------------------------------ */
-
-/** Map CtaVariant → buttonStyles Variant (best-effort downgrade). */
-function toButtonVariant(
-  v?: CtaVariant,
-): "primary" | "secondary" | "accent" | "outline" | "ghost" | "link" | "glow" {
-  switch (v) {
-    case "glow":
-      return "primary";
-    case "slide":
-      return "accent";
-    case "drawOutline":
-      return "outline";
-    case "dotExpand":
-      return "link";
-    default:
-      return "primary";
-  }
-}
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -212,7 +190,7 @@ function renderFlipCards(
   cards: FlipCardItem[],
   flipDirection: "horizontal" | "vertical",
   ctaVariant?: CtaVariant,
-  ctaColorScheme?: string,
+  ctaColorScheme?: ColorScheme,
 ) {
   return cards.map((card, i) => (
     <CardFlip
@@ -229,15 +207,14 @@ function renderFlipCards(
             {card.backDescription}
           </p>
           {card.backCtaText && card.backCtaUrl && (
-            <a
+            <CtaButton
+              variant={ctaVariant}
+              colorScheme={ctaColorScheme}
               href={card.backCtaUrl}
-              className={buttonStyles({
-                variant: toButtonVariant(ctaVariant),
-                size: "sm",
-              })}
+              className="text-sm"
             >
               {card.backCtaText}
-            </a>
+            </CtaButton>
           )}
         </div>
       }
@@ -263,10 +240,12 @@ function MagicCardBody({
   card,
   index,
   ctaVariant,
+  ctaColorScheme,
 }: {
   card: FeatureCardItem;
   index: number;
   ctaVariant?: CtaVariant;
+  ctaColorScheme?: ColorScheme;
 }) {
   const safeImg = useSafeImageSrc(
     card.image,
@@ -288,16 +267,14 @@ function MagicCardBody({
       <h3 className="text-lg font-semibold text-base-content">{card.title}</h3>
       <p className="text-sm text-base-content/60">{card.description}</p>
       {card.ctaText && card.ctaUrl && (
-        <a
+        <CtaButton
+          variant={ctaVariant}
+          colorScheme={ctaColorScheme}
           href={card.ctaUrl}
-          className={buttonStyles({
-            variant: toButtonVariant(ctaVariant),
-            size: "sm",
-            className: "mt-1 self-start",
-          })}
+          className="mt-1 self-start text-sm"
         >
           {card.ctaText}
-        </a>
+        </CtaButton>
       )}
     </div>
   );
@@ -307,11 +284,16 @@ function renderMagicCards(
   cards: FeatureCardItem[],
   mode: "gradient" | "orb",
   ctaVariant?: CtaVariant,
-  ctaColorScheme?: string,
+  ctaColorScheme?: ColorScheme,
 ) {
   return cards.map((card, i) => (
     <CardMagic key={i} mode={mode}>
-      <MagicCardBody card={card} index={i} ctaVariant={ctaVariant} />
+      <MagicCardBody
+        card={card}
+        index={i}
+        ctaVariant={ctaVariant}
+        ctaColorScheme={ctaColorScheme}
+      />
     </CardMagic>
   ));
 }
