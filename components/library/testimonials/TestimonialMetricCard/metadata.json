@@ -1,0 +1,105 @@
+{
+  "id": "testimonial-metric-card-01",
+  "name": "Metric Outcome Testimonial",
+  "category": "testimonial",
+  "purpose": ["testimonials", "stats", "showcase"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["modern", "corporate", "editorial"],
+  "mood": ["professional", "trustworthy", "serious"],
+  "layout": "grid",
+  "density": "medium",
+  "imageWeight": 0.15,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100, "optional": true },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "maxLength": 220,
+      "optional": true
+    },
+    {
+      "name": "items",
+      "type": "list",
+      "maxItems": 3,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "metricValue", "type": "number" },
+          { "name": "metricDecimals", "type": "number", "optional": true },
+          {
+            "name": "metricPrefix",
+            "type": "text",
+            "maxLength": 4,
+            "optional": true
+          },
+          {
+            "name": "metricSuffix",
+            "type": "text",
+            "maxLength": 12,
+            "optional": true
+          },
+          { "name": "metricLabel", "type": "text", "maxLength": 60 },
+          {
+            "name": "metricCaption",
+            "type": "text",
+            "maxLength": 80,
+            "optional": true
+          },
+          { "name": "quote", "type": "text", "maxLength": 280 },
+          { "name": "authorName", "type": "text", "maxLength": 60 },
+          { "name": "authorTitle", "type": "text", "maxLength": 100 },
+          { "name": "authorImage", "type": "image", "optional": true },
+          {
+            "name": "authorImageAlt",
+            "type": "text",
+            "maxLength": 120,
+            "optional": true
+          },
+          { "name": "companyLogo", "type": "image", "optional": true },
+          {
+            "name": "companyLogoAlt",
+            "type": "text",
+            "maxLength": 80,
+            "optional": true
+          }
+        ]
+      }
+    },
+    { "name": "countUpDuration", "type": "number", "optional": true },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["neutral", "muted", "inverse"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-hero-bold-editorial-01",
+    "hero-split-image-01",
+    "hero-spotlight-center-01",
+    "stats-count-up-01",
+    "stats-kpi-grid-01",
+    "layout-pricing-tiers-01",
+    "cta-minimal-strip-01"
+  ],
+  "pairsPoorly": [
+    "layout-stackedsplit-01",
+    "layout-staggerfan-01",
+    "layout-infinitescroll-01",
+    "testimonial-spotlight-quote-01",
+    "stats-milestone-bar-01"
+  ],
+  "description": "Testimonial paired with a quantified KPI. Each card leads with a large count-up metric (animated on scroll) followed by a hairline rule, the customer quote, and attribution. Use when the story is 'what changed' — case studies whose proof is the number, not the brand.",
+  "descriptions": {
+    "descriptive": "1-3 cards in a 1/2/3-column grid with a stagger fade-in. Each card opens with a 5xl-6xl tabular-nums metric that animates from zero on scroll, an uppercase label, an optional caption, a hairline divider, the pull-quote with serif quote glyphs, and an author footer with avatar, name, title, and optional company logo. Three tones (neutral, muted, inverse) with an editorial dark slab variant.",
+    "usage": "Use as a quantified social-proof block — case-study highlights, customer ROI tiles, or audited outcome reports. Place after a hero or below a features grid; pair upstream with a Stats KPI grid to set baseline numbers, downstream with a closing CTA. Do not stack with the Spotlight Quote or Stagger Fan testimonials.",
+    "audienceFit": "Enterprise B2B SaaS, professional services with measurable outcomes, healthcare and fintech case-study pages, agencies whose pitch is performance numbers, and any segment where proof is best expressed as a metric + a single sentence."
+  }
+}
