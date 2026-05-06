@@ -38,8 +38,8 @@ export interface NavbarPillProps {
   ctaText?: string;
   /** CTA destination URL */
   ctaUrl?: string;
-  /** CTA button style — "default" uses the standard filled button, others use animated variants. "arrow" keeps the inline pill+arrow look from the reference. */
-  ctaStyle?: CtaStyle | "arrow";
+  /** CTA button style — "default" uses the standard filled button, others use animated variants. */
+  ctaStyle?: CtaStyle;
   /** Pixel threshold after which the bar tightens / increases its glass blur */
   scrollThreshold?: number;
   /** When true, uses `sticky` positioning instead of `fixed` so the bar stays inside its containing block (used by the editor preview) */
@@ -83,22 +83,6 @@ function BrandMark() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Arrow CTA — inline pill with sliding arrow (matches the reference) */
-/* ------------------------------------------------------------------ */
-
-function ArrowCta({ text, url }: { text: string; url: string }) {
-  return (
-    <a
-      href={url}
-      className="group inline-flex items-center gap-2 rounded-full border border-base-content/30 px-4 py-2 text-sm transition-all duration-300 ease-out hover:border-base-content hover:bg-base-content hover:text-base-100"
-    >
-      <span>{text}</span>
-      <FiArrowRight className="transition-transform duration-300 group-hover:translate-x-0.5" />
-    </a>
-  );
-}
-
-/* ------------------------------------------------------------------ */
 /*  CTA dispatcher                                                     */
 /* ------------------------------------------------------------------ */
 
@@ -109,10 +93,8 @@ function NavbarCta({
 }: {
   text: string;
   url: string;
-  style: CtaStyle | "arrow";
+  style: CtaStyle;
 }) {
-  if (style === "arrow") return <ArrowCta text={text} url={url} />;
-
   return (
     <CtaButton
       variant={style}

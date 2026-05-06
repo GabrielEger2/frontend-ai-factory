@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { FiArrowRight } from "react-icons/fi";
 import { cn } from "@lib/utils";
 
 /* ------------------------------------------------------------------ */
@@ -282,7 +283,8 @@ export type CtaVariant =
   | "slide"
   | "dotExpand"
   | "drawOutline"
-  | "glow";
+  | "glow"
+  | "arrow";
 export type ColorScheme = "primary" | "secondary" | "accent" | "neutral";
 
 export interface CtaButtonProps {
@@ -377,6 +379,21 @@ export function CtaButton({
         </Button>
       );
     }
+    case "arrow":
+      // colorScheme intentionally ignored — border-fill hover is always base-content-based, not token-colored.
+      return (
+        <a
+          href={href}
+          onClick={onClick}
+          className={cn(
+            "group inline-flex items-center gap-2 rounded-full border border-base-content/30 px-4 py-2 text-sm transition-all duration-300 ease-out hover:border-base-content hover:bg-base-content hover:text-base-100",
+            className,
+          )}
+        >
+          <span>{children}</span>
+          <FiArrowRight className="transition-transform duration-300 group-hover:translate-x-0.5" />
+        </a>
+      );
     default:
       if (href) {
         return (
