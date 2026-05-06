@@ -36,6 +36,19 @@ with search filtering, one compact and one expanded style
 
 ## Steps
 
+### 0. Set the dials
+
+Read `references/taste-dials.md` and pick values for this generation:
+
+1. Look up the per-category preset (e.g., `hero` → variance 7–9, motion 6–8, density 3–4).
+2. Apply brief overrides — "minimal" lowers all three, "editorial" raises variance, "data-dense" raises density, etc.
+3. State your choice in one line, e.g.:
+
+   > Dials: VARIANCE 8 / MOTION 7 / DENSITY 4 (hero category, brief says "editorial premium")
+
+4. If `MOTION_INTENSITY ≥ 6`, you're in premium-motion territory — also load the "Premium Motion" section of `references/animation.md` for spring physics and `useMotionValue` patterns.
+5. If `DESIGN_VARIANCE ≥ 4`, the mandatory mobile single-column collapse rule applies (see `taste-dials.md` § Mobile Override).
+
 ### 1. Infer component name and category
 
 The user won't pass structured names like `component HeroMinimal hero`. Infer from the brief + code:
@@ -263,7 +276,20 @@ Before finishing:
 - If using `<Button>`, verify it exists at `@ui/button`
 - If using `framer-motion`, verify it's in dependencies
 
-### 9. Verify
+### 9. Anti-slop check
+
+Run through `references/anti-slop.md` before declaring done. Specifically verify:
+
+- [ ] No `#000` literal black, no neon glows, no rainbow-gradient H1s
+- [ ] No 3-equal-card horizontal row (use zig-zag, asymmetric grid, or horizontal scroll)
+- [ ] No always-centered hero when `DESIGN_VARIANCE > 4`
+- [ ] No "John Doe" / "Acme" / "Nexus" — Storybook content uses contextual realistic names and brand
+- [ ] No `99.99%` / `1234567` — use organic, messy numbers
+- [ ] No filler verbs ("Elevate", "Seamless", "Unleash", "Next-Gen") in story copy
+- [ ] No raw `unsplash.com/...` URLs — use `placehold.co` or `picsum.photos/seed/...`
+- [ ] If `MOTION_INTENSITY ≥ 6`: spring physics on hover/press, `useMotionValue` (not `useState`) for mouse-driven values, perpetual loops are `React.memo`'d in leaf clients
+
+### 10. Component verify
 
 Run through this checklist:
 
@@ -273,17 +299,21 @@ Run through this checklist:
 - [ ] `cn()` used for all conditional/dynamic classes
 - [ ] `"use client"` present if using hooks, Framer Motion, or event handlers
 - [ ] Props interface matches slots in `metadata.json`
+- [ ] Slots are JSON-serializable (string/url/image-path/array) — NO `ReactNode` content slots, NO `renderX?` callbacks
+- [ ] Primitives (`@ui/Button`, etc.) composed INTERNALLY; flex via variant props (`ctaVariant?`)
 - [ ] Every hardcoded string from reference code is now a prop
 - [ ] Every requested variation has its own Storybook export
 - [ ] Story content is realistic and contextual, not placeholder
 - [ ] Accessible — semantic HTML, ARIA where needed, alt text on images
-- [ ] Mobile-responsive — stacks on small screens
+- [ ] Mobile-responsive — stacks on small screens; if variance ≥ 4, single-column < 768px
+- [ ] No `h-screen` for full-height (use `min-h-[100dvh]`)
 - [ ] Optional props drive feature toggling (typewriter, email, etc.)
 - [ ] Sub-components have typed props
 
-### 10. Report
+### 11. Report
 
 After creating all files, summarize:
+- Dials chosen (`VARIANCE / MOTION / DENSITY`) and why
 - Component path and category
 - Slots defined (count and names)
 - Story variants created (list each export name and what it tests)

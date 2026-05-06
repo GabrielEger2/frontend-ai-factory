@@ -2,6 +2,8 @@
 
 These are explicit things to AVOID. LLMs tend toward these defaults — fight the bias.
 
+> **See also:** [`anti-slop.md`](./anti-slop.md) — the AI-tells forbidden-pattern list (banned aesthetics, banned content names, banned brand clichés, banned external resources). That file complements this one and applies to all new component generation.
+
 ## Styling Anti-Patterns
 
 - **Raw Tailwind colors instead of semantic tokens.** `text-gray-500` breaks theme switching. Use `text-base-content/60`. `bg-blue-600` breaks palettes. Use `bg-primary`.
@@ -22,6 +24,7 @@ These are explicit things to AVOID. LLMs tend toward these defaults — fight th
 - **Inline styles.** Never use `style={{}}`. Use Tailwind classes with `cn()`.
 - **Importing between library components.** Library components should be self-contained. Share patterns via `@ui/` primitives, not cross-imports.
 - **Over-abstracting slot content.** Slots should map directly to visible content areas. Don't create abstract slot hierarchies.
+- **`ReactNode` for content slots.** Slots stay plain data — `string`, `string[]`, image-path strings, urls. Never `cta?: ReactNode` or `renderCta?: () => ReactNode`. Components compose `@ui/Button`, `@ui/Card`, etc. **internally**. The AI assembler ships JSON, not JSX. See `component-patterns.md` § The Primitive-Receiving Rule.
 
 ## Animation Anti-Patterns
 
@@ -30,6 +33,10 @@ These are explicit things to AVOID. LLMs tend toward these defaults — fight th
 - **Duration > 300ms for UI feedback.** Keep interactions snappy. 150-200ms for toggles, 200-300ms for panels.
 - **Layout shift from animations.** Always set explicit dimensions or use `layout` prop so surrounding content doesn't jump.
 - **Missing `AnimatePresence`.** If a component conditionally renders and you want exit animation, wrap with `AnimatePresence`.
+- **`h-screen` for full-height sections.** Use `min-h-[100dvh]`. iOS Safari's collapsing address bar causes layout jumps with `100vh`/`h-screen`.
+- **Animating dimensional properties.** Never animate `top`, `left`, `width`, `height`, `margin` — they trigger reflow. Use `transform` (`x`, `y`, `scale`, `rotate`) and `opacity` only; they're GPU-accelerated.
+- **Perpetual animations in shared components.** Pulse / Float / Shimmer loops MUST be wrapped in `React.memo` and isolated to their own leaf client component. Otherwise they re-render the parent subtree 60×/sec and tank Lighthouse.
+- **`useState` for mouse-driven values.** For magnetic buttons, parallax tilt, mouse-following effects — use `useMotionValue` + `useTransform`, never `useState`. State updates trigger React re-renders on every pointer event and collapse on mobile.
 
 ## UX Anti-Patterns
 
