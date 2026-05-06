@@ -67,7 +67,7 @@ function TileImage({ tile, seed, w, h, className }: TileImageProps) {
         loading="lazy"
       />
       {tile.caption && (
-        <span className="pointer-events-none absolute bottom-3 left-3 rounded-full border border-white/20 bg-black/40 px-3 py-1 text-[10px] font-medium uppercase tracking-widest text-white backdrop-blur-sm">
+        <span className="pointer-events-none absolute bottom-3 left-3 rounded-full border border-neutral-content/20 bg-neutral/60 px-3 py-1 text-[10px] font-medium uppercase tracking-widest text-neutral-content backdrop-blur-sm">
           {tile.caption}
         </span>
       )}

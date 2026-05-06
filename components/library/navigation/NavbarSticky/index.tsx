@@ -209,24 +209,17 @@ function MobileMenuDropdown({
 
   return (
     <div className="border-b border-base-300 text-base-content">
-      <div
+      <button
+        type="button"
         className="flex w-full cursor-pointer items-center justify-between py-6 text-start text-xl font-medium"
         onClick={() => setOpen(!open)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            setOpen(!open);
-          }
-        }}
-        role="button"
-        tabIndex={0}
         aria-expanded={open}
       >
         <span className={cn(open && "text-primary")}>{children}</span>
         <motion.div animate={{ rotate: open ? 180 : 0 }}>
           <FiChevronDown />
         </motion.div>
-      </div>
+      </button>
 
       <AnimatePresence>
         {open && FlyoutContent && (

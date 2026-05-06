@@ -193,7 +193,7 @@ export default function HeroVideoBackdrop({
 
       {/* Bottom metadata strip */}
       {metaItems && metaItems.length > 0 && (
-        <div className="absolute inset-x-0 bottom-0 z-10 hidden border-t border-white/10 bg-neutral/40 backdrop-blur-md md:block">
+        <div className="absolute inset-x-0 bottom-0 z-10 hidden border-t border-base-content/10 bg-neutral/40 backdrop-blur-md md:block">
           <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-3 md:px-8 lg:px-12">
             {metaItems.slice(0, 4).map((item, i) => (
               <span

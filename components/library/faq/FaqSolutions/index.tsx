@@ -91,16 +91,9 @@ function SolutionItem({
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div
+    <button
+      type="button"
       onClick={onSelect}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onSelect();
-        }
-      }}
-      role="button"
-      tabIndex={0}
       aria-expanded={isOpen}
       className="relative cursor-pointer overflow-hidden rounded-lg p-0.5 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ring-offset-base-100"
     >
@@ -168,7 +161,7 @@ function SolutionItem({
       />
       {/* Inactive background */}
       <div className="absolute inset-0 z-0 rounded-lg bg-base-300" />
-    </div>
+    </button>
   );
 }
 
