@@ -128,6 +128,16 @@ interface CardProps {
   index: number;
 }
 
+/*
+ * Card — kept bespoke intentionally.
+ *
+ * This card is a fixed-square (300×300 → 450×450) full-bleed image tile with
+ * an optional glassmorphism overlay. Its dimensions are architecturally coupled
+ * to the scroll track's layout — passing them via a shared primitive would be
+ * a 1:1 pass-through with no code savings. `acceptsStyleKit.card: false` and
+ * there is no CTA, badge, or interactive content. A `CardImageOverlay` primitive
+ * would only be warranted if a second consumer with the same shape appeared.
+ */
 function Card({ item, index }: CardProps) {
   const safeImg = useSafeImageSrc(
     item.image,
