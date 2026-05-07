@@ -120,11 +120,11 @@ Structural follow-ups
 
 3. Manifest ID hygiene — drift from naming convention, fix when convenient:
    - Duplicated category prefix:
-       hero-hero-bold-editorial-01, cta-cta-collage-duo-01,
-       cta-cta-editorial-split-01, contact-contact-locations-map-01,
-       contact-contact-shapes-form-01
+       hero-hero-bold-editorial-01, cta-collage-duo-01,
+       cta-editorial-split-01, contact-locations-map-01,
+       contact-shapes-form-01
    - Wrong prefix on testimonials (using `layout-`):
-       layout-infinitescroll-01, layout-stackedsplit-01, layout-staggerfan-01
+       testimonial-infinitescroll-01, testimonial-stackedsplit-01, testimonial-staggerfan-01
        → should be `testimonial-...`
 
 4. Variants — only 4 heroes currently have `variants/` (geometric,
