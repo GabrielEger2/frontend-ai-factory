@@ -1,28 +1,16 @@
 {
   "id": "carousel-cards-01",
   "name": "Card Carousel",
-  "category": "carousel",
-  "purpose": [
-    "features",
-    "products",
-    "testimonials"
-  ],
+  "category": "content",
+  "purpose": ["features", "products", "testimonials"],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
     "textDecoration": true,
     "button": true
   },
-  "style": [
-    "modern",
-    "corporate",
-    "editorial"
-  ],
-  "mood": [
-    "professional",
-    "trustworthy",
-    "friendly"
-  ],
+  "style": ["modern", "corporate", "editorial"],
+  "mood": ["professional", "trustworthy", "friendly"],
   "layout": "stacked",
   "density": "medium",
   "imageWeight": 0,
@@ -42,12 +30,7 @@
       "name": "highlightColorScheme",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "accent",
-        "neutral"
-      ]
+      "enum": ["primary", "secondary", "accent", "neutral"]
     },
     {
       "name": "revealHeadline",
@@ -75,24 +58,13 @@
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "default",
-        "slide",
-        "dotExpand",
-        "drawOutline",
-        "glow"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
     },
     {
       "name": "ctaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "accent",
-        "neutral"
-      ]
+      "enum": ["primary", "secondary", "accent", "neutral"]
     },
     {
       "name": "cards",
@@ -132,9 +104,7 @@
   ],
   "mobileBehavior": "scroll",
   "pairsWell": [],
-  "pairsPoorly": [
-    "carousel-swipe-01"
-  ],
+  "pairsPoorly": [],
   "description": "A sleek rotating card display that showcases multiple content pieces in an organized, professional layout. Perfect for corporate websites displaying product features, client testimonials, or service offerings with a clean, trustworthy aesthetic.",
   "descriptions": {
     "descriptive": "Clean card-based carousel with structured layouts featuring generous whitespace and professional typography. Cards display content in organized grids with subtle shadows and rounded corners. Editorial influence shows through balanced text hierarchy and refined spacing that feels polished yet approachable.",
