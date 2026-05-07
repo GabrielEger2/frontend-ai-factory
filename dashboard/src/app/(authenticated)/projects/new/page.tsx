@@ -16,7 +16,6 @@ import {
 import { createProject } from "@/lib/actions/create-project";
 import { SUPPORTED_SEGMENTS, SEGMENT_LABELS } from "@/types/project";
 import {
-  TONE_KEYWORDS,
   COMPANY_SIZES,
   RANKED_OBJECTIVE_IDS,
   RANKED_OBJECTIVE_LABELS,
@@ -28,7 +27,6 @@ import {
   type CompanySize,
   type PrimaryCta,
 } from "@/lib/constants";
-import { selectableCategories } from "@/lib/manifest-utils";
 import { FormProgressSidebar } from "./_components/FormProgressSidebar";
 import { QuickFillButton } from "./_components/QuickFillButton";
 import type { PresetValues } from "./_presets";
@@ -206,13 +204,6 @@ interface BrandColorEntry {
   error: string | null;
 }
 
-function formatCategoryLabel(category: string): string {
-  return category
-    .split("/")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" / ");
-}
-
 /* ─── Address → single-line string ───────────────────────────────── */
 function formatAddress(a: AddressInput): string {
   const streetLine = [a.street.trim(), a.number.trim()]
@@ -313,7 +304,6 @@ export default function NewProjectPage() {
   const [doNots, setDoNots] = useState("");
 
   // Brand & tone
-  const [brandToneKeywords, setBrandToneKeywords] = useState<string[]>([]);
   const [rankedObjectives, setRankedObjectives] = useState<
     Array<{ id: string; rank: number }>
   >([]);
@@ -338,10 +328,6 @@ export default function NewProjectPage() {
   // Audience
   const [idealPublic, setIdealPublic] = useState("");
 
-  // Site sections
-  const [desiredSections, setDesiredSections] = useState<string[]>([]);
-  const [sectionsError, setSectionsError] = useState<string | null>(null);
-
   // Contact info — structured
   const [businessHours, setBusinessHours] =
     useState<Record<DayId, DayHours>>(EMPTY_HOURS);
@@ -355,8 +341,6 @@ export default function NewProjectPage() {
   // Social links
   const [socialLinks, setSocialLinks] = useState<SocialLinkRow[]>([]);
   const [socialErrors, setSocialErrors] = useState<Record<number, string>>({});
-
-  const categories = useMemo(() => selectableCategories(), []);
 
   const sections = useMemo(() => {
     const defs = [
@@ -379,7 +363,6 @@ export default function NewProjectPage() {
         id: "brand",
         label: "Brand voice",
         isDone:
-          brandToneKeywords.length > 0 ||
           rankedObjectives.length > 0 ||
           moodTags.length > 0 ||
           styleTags.length > 0,
@@ -394,11 +377,6 @@ export default function NewProjectPage() {
         id: "constraints",
         label: "Constraints",
         isDone: Boolean(doNots.trim()),
-      },
-      {
-        id: "sections",
-        label: "Site sections",
-        isDone: desiredSections.length > 0,
       },
       {
         id: "contact",
@@ -420,14 +398,12 @@ export default function NewProjectPage() {
     segment,
     mainService,
     idealPublic,
-    brandToneKeywords,
     rankedObjectives,
     moodTags,
     styleTags,
     brandColorsEnabled,
     inspirationSites,
     doNots,
-    desiredSections,
     emailValue,
     phone,
   ]);
@@ -494,12 +470,6 @@ export default function NewProjectPage() {
       const { [index]: _omit, ...rest } = prev;
       return rest;
     });
-  }
-
-  function toggleToneKeyword(tag: string) {
-    setBrandToneKeywords((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
-    );
   }
 
   function toggleMoodTag(tag: string) {
@@ -579,15 +549,6 @@ export default function NewProjectPage() {
     });
   }
 
-  function toggleDesired(category: string) {
-    setSectionsError(null);
-    setDesiredSections((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category],
-    );
-  }
-
   function updateAddress<K extends keyof AddressInput>(key: K, value: string) {
     setAddress((prev) => ({ ...prev, [key]: value }));
     if (key === "zip") setZipError(null);
@@ -629,7 +590,6 @@ export default function NewProjectPage() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    setSectionsError(null);
 
     // Brand color validation — every entry's hex must match HEX_RE
     let brandColorsValid = true;
@@ -758,8 +718,6 @@ export default function NewProjectPage() {
           inspirationSites.map((s) => s.trim()).filter(Boolean).length > 0
             ? inspirationSites.map((s) => s.trim()).filter(Boolean)
             : undefined,
-        brandToneKeywords:
-          brandToneKeywords.length > 0 ? brandToneKeywords : undefined,
         objectives:
           rankedObjectives.length > 0
             ? [...rankedObjectives]
@@ -781,8 +739,6 @@ export default function NewProjectPage() {
         keyResults: keyResults.trim() || undefined,
         idealPublic: idealPublic.trim() || undefined,
         doNots: doNots.trim() || undefined,
-        desiredSections:
-          desiredSections.length > 0 ? desiredSections : undefined,
         businessHours: hoursString,
         address: addressString,
         phone: phoneTrim || undefined,
@@ -1027,31 +983,6 @@ export default function NewProjectPage() {
               </p>
             </header>
             <div className="flex flex-col gap-6">
-              <div>
-                <p className="block text-sm font-medium text-slate-700 mb-2">
-                  Brand tone (free-form)
-                </p>
-                <p className="text-xs text-slate-500 mb-2">
-                  Choose words that describe the brand&apos;s personality.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {TONE_KEYWORDS.map((tag) => {
-                    const selected = brandToneKeywords.includes(tag);
-                    return (
-                      <button
-                        key={tag}
-                        type="button"
-                        aria-pressed={selected}
-                        onClick={() => toggleToneKeyword(tag)}
-                        className={pillClasses(selected)}
-                      >
-                        {tag}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
               <div>
                 <p className="block text-sm font-medium text-slate-700 mb-2">
                   Objectives (ranked)
@@ -1551,46 +1482,6 @@ export default function NewProjectPage() {
                   className={inputClasses}
                 />
               </div>
-            </div>
-          </section>
-
-          {/* ── Site sections ──────────────────────────────────────── */}
-          <section className={sectionClasses}>
-            <header className={sectionHeaderClasses}>
-              <h2 className={sectionTitleClasses}>Site sections</h2>
-              <p className={sectionSubtitleClasses}>
-                Pick which kinds of sections must appear in the generated site.
-                Navigation and footer are always included.
-              </p>
-            </header>
-            <div className="flex flex-col gap-6">
-              <div>
-                <p className="block text-sm font-medium text-slate-700 mb-2">
-                  Sections to include
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {categories.map((category) => {
-                    const selected = desiredSections.includes(category);
-                    return (
-                      <button
-                        key={`incl-${category}`}
-                        type="button"
-                        aria-pressed={selected}
-                        onClick={() => toggleDesired(category)}
-                        className={pillClasses(selected)}
-                      >
-                        {formatCategoryLabel(category)}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {sectionsError && (
-                <p className={errorTextClasses} role="alert">
-                  {sectionsError}
-                </p>
-              )}
             </div>
           </section>
 
