@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-07T17:19:52.054Z",
+  "generatedAt": "2026-05-07T18:01:57.829Z",
   "componentCount": 58,
   "pairCount": 1653,
   "pairs": [
@@ -11,7 +11,7 @@
     {
       "a": "carousel-before-after-01",
       "b": "carousel-thumbnail-nav-01",
-      "score": 0.59
+      "score": 0.51
     },
     {
       "a": "carousel-before-after-01",
@@ -131,12 +131,12 @@
     {
       "a": "carousel-before-after-01",
       "b": "gallery-lightbox-grid-01",
-      "score": 0.6
+      "score": 0.52
     },
     {
       "a": "carousel-before-after-01",
       "b": "gallery-masonry-01",
-      "score": 0.61
+      "score": 0.53
     },
     {
       "a": "carousel-before-after-01",
@@ -251,17 +251,17 @@
     {
       "a": "carousel-before-after-01",
       "b": "team-founder-split-01",
-      "score": 0.59
+      "score": 0.51
     },
     {
       "a": "carousel-before-after-01",
       "b": "team-leadership-grid-01",
-      "score": 0.54
+      "score": 0.47
     },
     {
       "a": "carousel-before-after-01",
       "b": "team-member-spotlight-01",
-      "score": 0.62
+      "score": 0.54
     },
     {
       "a": "carousel-before-after-01",
@@ -676,12 +676,12 @@
     {
       "a": "carousel-thumbnail-nav-01",
       "b": "gallery-case-study-01",
-      "score": 0.74
+      "score": 0.66
     },
     {
       "a": "carousel-thumbnail-nav-01",
       "b": "gallery-image-text-editorial-01",
-      "score": 0.69
+      "score": 0.61
     },
     {
       "a": "carousel-thumbnail-nav-01",
@@ -741,12 +741,12 @@
     {
       "a": "carousel-thumbnail-nav-01",
       "b": "layout-comparisonsplit-01",
-      "score": 0.65
+      "score": 0.57
     },
     {
       "a": "carousel-thumbnail-nav-01",
       "b": "layout-editorial-framed-split-01",
-      "score": 0.7
+      "score": 0.62
     },
     {
       "a": "carousel-thumbnail-nav-01",
@@ -821,27 +821,27 @@
     {
       "a": "carousel-thumbnail-nav-01",
       "b": "testimonial-infinitescroll-01",
-      "score": 0.55
+      "score": 0.39
     },
     {
       "a": "carousel-thumbnail-nav-01",
       "b": "testimonial-masonry-quotes-01",
-      "score": 0.52
+      "score": 0.36
     },
     {
       "a": "carousel-thumbnail-nav-01",
       "b": "testimonial-metric-card-01",
-      "score": 0.57
+      "score": 0.41
     },
     {
       "a": "carousel-thumbnail-nav-01",
       "b": "testimonial-spotlight-quote-01",
-      "score": 0.66
+      "score": 0.5
     },
     {
       "a": "carousel-thumbnail-nav-01",
       "b": "testimonial-video-card-01",
-      "score": 0.57
+      "score": 0.41
     },
     {
       "a": "contact-booking-embed-01",
@@ -5471,12 +5471,12 @@
     {
       "a": "gallery-case-study-01",
       "b": "gallery-lightbox-grid-01",
-      "score": 0.69
+      "score": 0.61
     },
     {
       "a": "gallery-case-study-01",
       "b": "gallery-masonry-01",
-      "score": 0.6
+      "score": 0.52
     },
     {
       "a": "gallery-case-study-01",
@@ -5591,17 +5591,17 @@
     {
       "a": "gallery-case-study-01",
       "b": "team-founder-split-01",
-      "score": 0.53
+      "score": 0.46
     },
     {
       "a": "gallery-case-study-01",
       "b": "team-leadership-grid-01",
-      "score": 0.67
+      "score": 0.59
     },
     {
       "a": "gallery-case-study-01",
       "b": "team-member-spotlight-01",
-      "score": 0.53
+      "score": 0.46
     },
     {
       "a": "gallery-case-study-01",
@@ -5631,12 +5631,12 @@
     {
       "a": "gallery-image-text-editorial-01",
       "b": "gallery-lightbox-grid-01",
-      "score": 0.69
+      "score": 0.61
     },
     {
       "a": "gallery-image-text-editorial-01",
       "b": "gallery-masonry-01",
-      "score": 0.6
+      "score": 0.52
     },
     {
       "a": "gallery-image-text-editorial-01",
@@ -5751,17 +5751,17 @@
     {
       "a": "gallery-image-text-editorial-01",
       "b": "team-founder-split-01",
-      "score": 0.52
+      "score": 0.44
     },
     {
       "a": "gallery-image-text-editorial-01",
       "b": "team-leadership-grid-01",
-      "score": 0.59
+      "score": 0.51
     },
     {
       "a": "gallery-image-text-editorial-01",
       "b": "team-member-spotlight-01",
-      "score": 0.52
+      "score": 0.44
     },
     {
       "a": "gallery-image-text-editorial-01",
@@ -5841,12 +5841,12 @@
     {
       "a": "gallery-lightbox-grid-01",
       "b": "layout-comparisonsplit-01",
-      "score": 0.65
+      "score": 0.57
     },
     {
       "a": "gallery-lightbox-grid-01",
       "b": "layout-editorial-framed-split-01",
-      "score": 0.65
+      "score": 0.57
     },
     {
       "a": "gallery-lightbox-grid-01",
@@ -5921,27 +5921,27 @@
     {
       "a": "gallery-lightbox-grid-01",
       "b": "testimonial-infinitescroll-01",
-      "score": 0.56
+      "score": 0.4
     },
     {
       "a": "gallery-lightbox-grid-01",
       "b": "testimonial-masonry-quotes-01",
-      "score": 0.47
+      "score": 0.31
     },
     {
       "a": "gallery-lightbox-grid-01",
       "b": "testimonial-metric-card-01",
-      "score": 0.46
+      "score": 0.3
     },
     {
       "a": "gallery-lightbox-grid-01",
       "b": "testimonial-spotlight-quote-01",
-      "score": 0.61
+      "score": 0.45
     },
     {
       "a": "gallery-lightbox-grid-01",
       "b": "testimonial-video-card-01",
-      "score": 0.46
+      "score": 0.3
     },
     {
       "a": "gallery-masonry-01",
@@ -5991,12 +5991,12 @@
     {
       "a": "gallery-masonry-01",
       "b": "layout-comparisonsplit-01",
-      "score": 0.49
+      "score": 0.41
     },
     {
       "a": "gallery-masonry-01",
       "b": "layout-editorial-framed-split-01",
-      "score": 0.54
+      "score": 0.46
     },
     {
       "a": "gallery-masonry-01",
@@ -6071,27 +6071,27 @@
     {
       "a": "gallery-masonry-01",
       "b": "testimonial-infinitescroll-01",
-      "score": 0.57
+      "score": 0.41
     },
     {
       "a": "gallery-masonry-01",
       "b": "testimonial-masonry-quotes-01",
-      "score": 0.58
+      "score": 0.42
     },
     {
       "a": "gallery-masonry-01",
       "b": "testimonial-metric-card-01",
-      "score": 0.45
+      "score": 0.29
     },
     {
       "a": "gallery-masonry-01",
       "b": "testimonial-spotlight-quote-01",
-      "score": 0.54
+      "score": 0.38
     },
     {
       "a": "gallery-masonry-01",
       "b": "testimonial-video-card-01",
-      "score": 0.53
+      "score": 0.37
     },
     {
       "a": "hero-asymmetric-stack-01",
@@ -7281,17 +7281,17 @@
     {
       "a": "layout-comparisonsplit-01",
       "b": "team-founder-split-01",
-      "score": 0.49
+      "score": 0.41
     },
     {
       "a": "layout-comparisonsplit-01",
       "b": "team-leadership-grid-01",
-      "score": 0.58
+      "score": 0.5
     },
     {
       "a": "layout-comparisonsplit-01",
       "b": "team-member-spotlight-01",
-      "score": 0.49
+      "score": 0.41
     },
     {
       "a": "layout-comparisonsplit-01",
@@ -7376,17 +7376,17 @@
     {
       "a": "layout-editorial-framed-split-01",
       "b": "team-founder-split-01",
-      "score": 0.57
+      "score": 0.5
     },
     {
       "a": "layout-editorial-framed-split-01",
       "b": "team-leadership-grid-01",
-      "score": 0.6
+      "score": 0.52
     },
     {
       "a": "layout-editorial-framed-split-01",
       "b": "team-member-spotlight-01",
-      "score": 0.54
+      "score": 0.46
     },
     {
       "a": "layout-editorial-framed-split-01",

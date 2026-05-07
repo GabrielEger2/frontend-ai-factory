@@ -87,6 +87,7 @@ const FLOW_ORDER: string[] = [
   "cta",
   "testimonial",
   "content",
+  "products",
   "gallery",
   "team",
   "pricing",
