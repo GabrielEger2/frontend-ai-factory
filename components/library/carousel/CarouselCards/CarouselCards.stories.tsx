@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import CarouselCards from "./index";
 
 const meta: Meta<typeof CarouselCards> = {
-  title: "Carousel/CarouselCards",
+  title: "Content/CarouselCards",
   component: CarouselCards,
   parameters: {
     layout: "fullscreen",

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import GalleryCaseStudy from "./index";
 
 const meta: Meta<typeof GalleryCaseStudy> = {
-  title: "Gallery/GalleryCaseStudy",
+  title: "Content/GalleryCaseStudy",
   component: GalleryCaseStudy,
   parameters: { layout: "fullscreen" },
   argTypes: {
