@@ -13,7 +13,7 @@ The library spans 12 active categories. Counts below reflect what is on disk in 
 
 | Category | Count | Components |
 |---|---|---|
-| hero | 11 | Asymmetric stack, bakery editorial, bold editorial, carousel full-bleed slider, device chrome, grid gallery, newsroom ticker, polaroid collage, split form, split image, video backdrop |
+| hero | 10 | Asymmetric stack, bakery editorial, carousel full-bleed slider, device chrome, grid gallery, newsroom ticker, polaroid collage, split form, split image, video backdrop |
 | testimonial | 5 | Infinite scroll, masonry quotes, metric card, spotlight quote, video card |
 | footer | 4 | Columns social, mega, pulse, reveal |
 | cta | 7 | Dual offer split, hover reveal list, image backdrop, inline calculator, sticky image list, testimonial paired, video backdrop |
@@ -26,7 +26,7 @@ The library spans 12 active categories. Counts below reflect what is on disk in 
 | team | 3 | Founder split, leadership grid, member spotlight |
 | gallery | 4 | Carousel thumbnail nav, lightbox grid, masonry, portfolio strip |
 
-Total on disk: 62 components across 12 active categories.
+Total on disk: 61 components across 12 active categories.
 
 The previous `motion`, `layout/grid`, `layout/split`, and `carousel` categories have been retired. `layout/split`'s surviving components were migrated to `content`; `motion` and `layout/grid` had all their components removed; `carousel`'s 4 components were redistributed to `content` (CarouselBeforeAfter, CarouselCards), `hero` (CarouselFullBleedSlider), and `gallery` (CarouselThumbnailNav).
 
@@ -106,7 +106,7 @@ portfolio, showcase, cta, lead-capture, brand-statement, story,
 location-display, magazine-opener, pricing, gallery, comparison
 ```
 
-`magazine-opener` is included to cover HeroBoldEditorial's existing usage. `pricing`, `gallery`, and `comparison` were added when those categories landed — `pricing` for tier cards / comparison tables / freemium ladders, `gallery` for masonry / lightbox / case-study showcases, `comparison` for side-by-side feature/option layouts (used by ComparisonSplit). Sentence-format values (e.g. `"brand storytelling"`, `"editorial conversion"`) fail the validator's whitespace check and the canonical-list subset check.
+`magazine-opener` is used by HeroAsymmetricStack and HeroNewsroomTicker. `pricing`, `gallery`, and `comparison` were added when those categories landed — `pricing` for tier cards / comparison tables / freemium ladders, `gallery` for masonry / lightbox / case-study showcases, `comparison` for side-by-side feature/option layouts (used by ComparisonSplit). Sentence-format values (e.g. `"brand storytelling"`, `"editorial conversion"`) fail the validator's whitespace check and the canonical-list subset check.
 
 ### Extending purpose[]
 
