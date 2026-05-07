@@ -300,6 +300,18 @@ export default function NewProjectPage() {
   >([]);
   const [primaryCta, setPrimaryCta] = useState<PrimaryCta | "">("");
 
+  // Offer
+  const [mainService, setMainService] = useState("");
+  const [whatMakesSpecial, setWhatMakesSpecial] = useState<string[]>([
+    "",
+    "",
+    "",
+  ]);
+  const [whatMakesSpecialErrors, setWhatMakesSpecialErrors] = useState<
+    Record<number, string>
+  >({});
+  const [keyResults, setKeyResults] = useState("");
+
   // Site sections
   const [desiredSections, setDesiredSections] = useState<string[]>([]);
   const [sectionsError, setSectionsError] = useState<string | null>(null);
@@ -333,6 +345,11 @@ export default function NewProjectPage() {
         isDone: brandToneKeywords.length > 0 || rankedObjectives.length > 0,
       },
       {
+        id: "offer",
+        label: "Offer",
+        isDone: Boolean(mainService.trim()),
+      },
+      {
         id: "sections",
         label: "Site sections",
         isDone: desiredSections.length > 0,
@@ -364,6 +381,7 @@ export default function NewProjectPage() {
     description,
     brandToneKeywords,
     rankedObjectives,
+    mainService,
     desiredSections,
     phone,
     emailValue,
@@ -387,6 +405,30 @@ export default function NewProjectPage() {
     setBrandToneKeywords((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
+  }
+
+  function updateBullet(index: number, value: string) {
+    setWhatMakesSpecial((prev) =>
+      prev.map((b, i) => (i === index ? value : b)),
+    );
+    setWhatMakesSpecialErrors((prev) => {
+      const { [index]: _omit, ...rest } = prev;
+      return rest;
+    });
+  }
+
+  function addBullet() {
+    setWhatMakesSpecial((prev) => (prev.length < 5 ? [...prev, ""] : prev));
+  }
+
+  function removeBullet(index: number) {
+    setWhatMakesSpecial((prev) =>
+      prev.length > 3 ? prev.filter((_, i) => i !== index) : prev,
+    );
+    setWhatMakesSpecialErrors((prev) => {
+      const { [index]: _omit, ...rest } = prev;
+      return rest;
+    });
   }
 
   function toggleRankedObjective(id: string) {
@@ -508,11 +550,21 @@ export default function NewProjectPage() {
     });
     setSocialErrors(newSocialErrors);
 
+    // What makes special — bullet length validation
+    const newBulletErrors: Record<number, string> = {};
+    whatMakesSpecial.forEach((bullet, i) => {
+      if (bullet.trim().length > 120) {
+        newBulletErrors[i] = "Keep each bullet under 120 characters.";
+      }
+    });
+    setWhatMakesSpecialErrors(newBulletErrors);
+
     if (
       phoneErr ||
       emailErr ||
       zipErr ||
-      Object.keys(newSocialErrors).length > 0
+      Object.keys(newSocialErrors).length > 0 ||
+      Object.keys(newBulletErrors).length > 0
     ) {
       return;
     }
@@ -549,6 +601,12 @@ export default function NewProjectPage() {
         rankedObjectives:
           rankedObjectives.length > 0 ? rankedObjectives : undefined,
         primaryCta: primaryCta || undefined,
+        mainService: mainService.trim() || undefined,
+        whatMakesSpecial:
+          whatMakesSpecial.map((s) => s.trim()).filter(Boolean).length > 0
+            ? whatMakesSpecial.map((s) => s.trim()).filter(Boolean)
+            : undefined,
+        keyResults: keyResults.trim() || undefined,
         desiredSections:
           desiredSections.length > 0 ? desiredSections : undefined,
         businessHours: hoursString,
@@ -932,6 +990,95 @@ export default function NewProjectPage() {
                     ))}
                   </div>
                 </fieldset>
+              </div>
+            </div>
+          </section>
+
+          {/* ── Offer ──────────────────────────────────────────────── */}
+          <section className={sectionClasses}>
+            <header className={sectionHeaderClasses}>
+              <h2 className={sectionTitleClasses}>Offer</h2>
+              <p className={sectionSubtitleClasses}>
+                Describe what you sell and what makes it worth choosing.
+              </p>
+            </header>
+            <div className="flex flex-col gap-6">
+              <div>
+                <label htmlFor="mainService" className={labelClasses}>
+                  Main service
+                </label>
+                <input
+                  id="mainService"
+                  type="text"
+                  value={mainService}
+                  onChange={(e) => setMainService(e.target.value)}
+                  placeholder="The headline thing you sell or do"
+                  className={inputClasses}
+                />
+              </div>
+
+              <div>
+                <p className="block text-sm font-medium text-slate-700 mb-1">
+                  What makes you special
+                </p>
+                <p className="text-xs text-slate-500 mb-2">
+                  3 to 5 short bullets. Max 120 characters each.
+                </p>
+                <div className="flex flex-col gap-2">
+                  {whatMakesSpecial.map((bullet, i) => (
+                    <div key={i} className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          aria-label={`Bullet ${i + 1}`}
+                          value={bullet}
+                          onChange={(e) => updateBullet(i, e.target.value)}
+                          maxLength={120}
+                          placeholder={`Bullet ${i + 1}`}
+                          className={inputClasses}
+                        />
+                        {whatMakesSpecial.length > 3 && (
+                          <button
+                            type="button"
+                            onClick={() => removeBullet(i)}
+                            aria-label={`Remove bullet ${i + 1}`}
+                            className="rounded-md border border-slate-300 px-2 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors shrink-0"
+                          >
+                            ×
+                          </button>
+                        )}
+                      </div>
+                      {whatMakesSpecialErrors[i] && (
+                        <p className={errorTextClasses} role="alert">
+                          {whatMakesSpecialErrors[i]}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                {whatMakesSpecial.length < 5 && (
+                  <button
+                    type="button"
+                    onClick={addBullet}
+                    className="mt-2 rounded-md border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                  >
+                    + Add bullet
+                  </button>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="keyResults" className={labelClasses}>
+                  Key results <span className="text-slate-400">(optional)</span>
+                </label>
+                <textarea
+                  id="keyResults"
+                  rows={3}
+                  value={keyResults}
+                  onChange={(e) => setKeyResults(e.target.value)}
+                  placeholder="Stats, proof-points or outcomes (used for stats sections)"
+                  className={inputClasses}
+                />
               </div>
             </div>
           </section>
