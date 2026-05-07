@@ -24,16 +24,14 @@ The library now spans 15 canonical categories. `Current` reflects what is on dis
 | carousel | 5 | 7 | Before/after, cards, horizontal scroll, swipe, testimonial avatar peek |
 | motion | 2 | 6 | Marquee, scroll narrative — planned: reveal-on-scroll, pinned-section, parallax-story-section, sticky-card-panel (parallax + sticky-cards multi-section wrappers extracted to `components/wrappers/`) |
 | layout/grid | 6 | 8 | Card grid, icon feature grid, logo cloud, pricing tiers*, process timeline, simple grid |
-| layout/split | 8 | 10 | Author, comparison†, editorial framed, icon list, image text, statement, vertical timeline, zigzag alternating |
+| layout/split | 9 | 10 | Author, comparison, editorial framed, icon list, image text, statement, vertical timeline, zigzag alternating |
 | **pricing** ⭐ new | 0 | 5 | Planned: tier cards, comparison table, freemium ladder, single-price card, monthly/annual toggle |
 | **team** ⭐ new | 0 | 4 | Planned: leadership grid, founder split, team carousel, member spotlight |
 | **gallery** ⭐ new | 0 | 5 | Planned: masonry, lightbox grid, case-study layout, portfolio strip, image-text editorial |
 
 \* `PricingTiers` and `LogoCloud` currently live under `layout/grid`. When the dedicated `pricing` category is implemented, plan to migrate `PricingTiers` over (and optionally promote logo/trust components to their own category if they grow past 3).
 
-† `layouts/split/ComparisonSplit/` exists as an empty folder. It must either be implemented (preferred — feeds the new `comparison` purpose) or removed. The validator should fail on empty component dirs going forward.
-
-Total on disk: ~74 components across 12 active categories.
+Total on disk: 99 components across 15 active categories.
 Target: ~112 components across 15 active categories.
 
 `components/wrappers/` (separate from `components/library/`) holds hand-authored page-template wrappers that accept `React.ReactNode` for nested content slots — currently `ParallaxContent` and `StickyCards`. These are NOT Composer-pickable and have no `metadata.json`. Use them only when hand-composing a Next.js page.
