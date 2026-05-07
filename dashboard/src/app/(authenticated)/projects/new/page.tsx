@@ -30,6 +30,8 @@ import {
 } from "@/lib/constants";
 import { selectableCategories } from "@/lib/manifest-utils";
 import { FormProgressSidebar } from "./_components/FormProgressSidebar";
+import { QuickFillButton } from "./_components/QuickFillButton";
+import type { PresetValues } from "./_presets";
 
 /* ─── Validators ─────────────────────────────────────────────────── */
 const HEX_RE = /^#?[0-9a-fA-F]{6}$/;
@@ -361,16 +363,7 @@ export default function NewProjectPage() {
       {
         id: "company",
         label: "Company basics",
-        isDone: Boolean(companyName.trim() && segment && description.trim()),
-      },
-      {
-        id: "brand",
-        label: "Brand & tone",
-        isDone:
-          brandToneKeywords.length > 0 ||
-          rankedObjectives.length > 0 ||
-          moodTags.length > 0 ||
-          styleTags.length > 0,
+        isDone: Boolean(companyName.trim() && segment.trim()),
       },
       {
         id: "offer",
@@ -383,10 +376,24 @@ export default function NewProjectPage() {
         isDone: Boolean(idealPublic.trim()),
       },
       {
+        id: "brand",
+        label: "Brand voice",
+        isDone:
+          brandToneKeywords.length > 0 ||
+          rankedObjectives.length > 0 ||
+          moodTags.length > 0 ||
+          styleTags.length > 0,
+      },
+      {
         id: "visual",
         label: "Visual",
         isDone:
           brandColorsEnabled || inspirationSites.some((s) => s.trim() !== ""),
+      },
+      {
+        id: "constraints",
+        label: "Constraints",
+        isDone: Boolean(doNots.trim()),
       },
       {
         id: "sections",
@@ -395,14 +402,8 @@ export default function NewProjectPage() {
       },
       {
         id: "contact",
-        label: "Contact info",
-        isDone: Boolean(
-          phone.trim() ||
-          emailValue.trim() ||
-          address.street.trim() ||
-          address.zip.trim() ||
-          address.city.trim(),
-        ),
+        label: "Contact",
+        isDone: Boolean(emailValue.trim() || phone.trim()),
       },
     ];
     let foundActive = false;
@@ -417,21 +418,18 @@ export default function NewProjectPage() {
   }, [
     companyName,
     segment,
-    description,
+    mainService,
+    idealPublic,
     brandToneKeywords,
     rankedObjectives,
     moodTags,
     styleTags,
-    mainService,
-    idealPublic,
     brandColorsEnabled,
     inspirationSites,
+    doNots,
     desiredSections,
-    phone,
     emailValue,
-    address.street,
-    address.zip,
-    address.city,
+    phone,
   ]);
 
   function updateBrandColor(index: number, raw: string) {
@@ -799,6 +797,53 @@ export default function NewProjectPage() {
         setError(result.error);
       }
     });
+  }
+
+  function handlePresetSelect(preset: PresetValues) {
+    setCompanyName(preset.companyName);
+    setSegment(preset.segment);
+    setNiche(preset.niche ?? "");
+    setRegion(preset.region);
+    setCompanySize(preset.companySize);
+    setDescription(preset.description);
+    setPrimaryCta(preset.primaryCta);
+    setMainService(preset.mainService);
+    setWhatMakesSpecial(
+      preset.whatMakesSpecial.length >= 3
+        ? preset.whatMakesSpecial
+        : [
+            ...preset.whatMakesSpecial,
+            ...Array(3 - preset.whatMakesSpecial.length).fill(""),
+          ],
+    );
+    setKeyResults(preset.keyResults ?? "");
+    setIdealPublic(preset.idealPublic);
+    setMoodTags(preset.moodTags);
+    setStyleTags(preset.styleTags);
+    setVoiceTone(preset.voiceTone);
+    setSlogan(preset.slogan ?? "");
+    if (preset.hasBrandColor && preset.brandColors.length > 0) {
+      setBrandColorsEnabled(true);
+      setBrandColors(
+        preset.brandColors.map((hex) => ({ hex, hexInput: hex, error: null })),
+      );
+    } else {
+      setBrandColorsEnabled(false);
+      setBrandColors([]);
+    }
+    setColorsToAvoid(preset.colorsToAvoid?.join(", ") ?? "");
+    setInspirationSites(
+      preset.inspirationSites && preset.inspirationSites.length >= 2
+        ? preset.inspirationSites
+        : [
+            ...(preset.inspirationSites ?? []),
+            ...Array(2 - (preset.inspirationSites?.length ?? 0)).fill(""),
+          ],
+    );
+    setDoNots(preset.doNots ?? "");
+    setRankedObjectives(preset.rankedObjectives);
+    if (preset.phone) setPhone(preset.phone);
+    if (preset.emailValue) setEmailValue(preset.emailValue);
   }
 
   /* ─── Shared classes ─────────────────────────────────────────── */
@@ -1916,6 +1961,7 @@ export default function NewProjectPage() {
         </form>
         <FormProgressSidebar sections={sections} />
       </div>
+      <QuickFillButton onSelect={handlePresetSelect} />
     </div>
   );
 }
