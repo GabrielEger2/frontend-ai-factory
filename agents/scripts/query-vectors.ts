@@ -38,6 +38,8 @@ import { getEmbedding } from "../shared/embeddings";
 import { getQdrantClient } from "../shared/qdrant-client";
 import { DEFAULT_SKELETON, type Skeleton } from "../composer/defaultSkeleton";
 import { rerankCandidates, DEFAULT_RERANK_WEIGHTS } from "../composer/rerank";
+import { planSkeleton } from "../composer/skeletonPlanner";
+import type { ComposerAgentInput } from "../composer/types";
 import { COMPONENT_METADATA } from "../assembler/component-sources.generated";
 import type { CandidateComponent } from "../composer/prompt";
 import type { StyleOutput } from "../shared/types";
@@ -400,6 +402,100 @@ function transplantLabels(oldPath: string, newLines: object[]): object[] {
     }
     return { ...line, pickId: saved };
   });
+}
+
+/* ------------------------------------------------------------------ */
+/*  Per-brief skeleton resolver (cache + LLM + fallback)               */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Resolves the skeleton to use for --capture mode. Order of preference:
+ * 1. If --replan: delete cache for this slug, then proceed.
+ * 2. If cached skeleton JSON exists at agents/eval/skeletons/<slug>.json
+ *    AND not --offline: read and return.
+ * 3. If !offline: call planSkeleton (LLM), write cache, return result.
+ * 4. Fallback: FALLBACK_SKELETONS[slug] ?? DEFAULT_SKELETON.
+ *
+ * Note: planSkeleton never throws — it returns DEFAULT_SKELETON on
+ * error. If you suspect a bad cache from a failed LLM call, run
+ * with --replan. To clear all caches: rm agents/eval/skeletons/*.json
+ */
+async function resolveSkeletonForCapture(
+  slug: string,
+  queryText: string,
+  styleOutput: StyleOutput,
+  opts: { offline: boolean; replan: boolean },
+): Promise<Skeleton> {
+  const cacheDir = path.resolve(__dirname, "../eval/skeletons");
+  const cacheFile = path.join(cacheDir, `${slug}.json`);
+
+  if (opts.replan && fs.existsSync(cacheFile)) {
+    fs.rmSync(cacheFile, { force: true });
+    console.log(`[skeleton] cleared cache for ${slug} (--replan)`);
+  }
+
+  if (!opts.offline && fs.existsSync(cacheFile)) {
+    try {
+      const cached = JSON.parse(
+        fs.readFileSync(cacheFile, "utf-8"),
+      ) as Skeleton;
+      if (Array.isArray(cached) && cached.length > 0) {
+        console.log(
+          `[skeleton] using cached skeleton for ${slug} (${cached.length} slots)`,
+        );
+        return cached;
+      }
+    } catch {
+      console.warn(
+        `[skeleton] cached skeleton for ${slug} unreadable; will re-plan`,
+      );
+    }
+  }
+
+  if (!opts.offline) {
+    try {
+      const apiKey = await getClaudeApiKey();
+      const briefData = CAPTURE_BRIEFS[slug];
+      const composerInput = {
+        projectId: `capture__${slug}`,
+        status: "composing",
+        companyName: briefData?.companyName ?? slug,
+        segment: briefData?.segment ?? queryText,
+        description: queryText,
+        desiredSections: null,
+        brandToneKeywords: briefData?.toneKeywords ?? [],
+        objectives: null,
+        pageType: undefined,
+        researchOutput: {
+          segment: briefData?.segment ?? queryText,
+          targetAudience: briefData?.targetAudience ?? "",
+          toneKeywords: briefData?.toneKeywords ?? [],
+          competitorInsights: "",
+          differentiators: [],
+          companySummary: queryText,
+        },
+        styleOutput,
+      } as unknown as ComposerAgentInput;
+
+      const skeleton = await planSkeleton(composerInput, apiKey);
+      fs.mkdirSync(cacheDir, { recursive: true });
+      fs.writeFileSync(cacheFile, JSON.stringify(skeleton, null, 2), "utf-8");
+      console.log(
+        `[skeleton] LLM-planned ${skeleton.length} slots for ${slug} → cached at ${cacheFile}`,
+      );
+      return skeleton;
+    } catch (err) {
+      console.warn(
+        `[skeleton] LLM call failed for ${slug}: ${(err as Error).message}; using fallback`,
+      );
+    }
+  }
+
+  const fallback = FALLBACK_SKELETONS[slug] ?? DEFAULT_SKELETON;
+  console.log(
+    `[skeleton] using fallback archetype for ${slug} (${fallback.length} slots, ${opts.offline ? "offline" : "no-cache"})`,
+  );
+  return fallback;
 }
 
 /* ------------------------------------------------------------------ */
