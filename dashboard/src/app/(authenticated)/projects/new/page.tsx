@@ -307,6 +307,9 @@ export default function NewProjectPage() {
     Record<number, string>
   >({});
 
+  // Constraints
+  const [doNots, setDoNots] = useState("");
+
   // Brand & tone
   const [brandToneKeywords, setBrandToneKeywords] = useState<string[]>([]);
   const [rankedObjectives, setRankedObjectives] = useState<
@@ -779,6 +782,7 @@ export default function NewProjectPage() {
             : undefined,
         keyResults: keyResults.trim() || undefined,
         idealPublic: idealPublic.trim() || undefined,
+        doNots: doNots.trim() || undefined,
         desiredSections:
           desiredSections.length > 0 ? desiredSections : undefined,
         businessHours: hoursString,
@@ -1474,6 +1478,31 @@ export default function NewProjectPage() {
                   value={idealPublic}
                   onChange={(e) => setIdealPublic(e.target.value)}
                   placeholder="e.g. Small business owners in Brazil who need an online presence fast"
+                  className={inputClasses}
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* ── Constraints ────────────────────────────────────────── */}
+          <section className={sectionClasses}>
+            <header className={sectionHeaderClasses}>
+              <h2 className={sectionTitleClasses}>Constraints</h2>
+              <p className={sectionSubtitleClasses}>
+                Anything the AI must not do or include.
+              </p>
+            </header>
+            <div className="flex flex-col gap-6">
+              <div>
+                <label htmlFor="doNots" className={labelClasses}>
+                  Do-nots
+                </label>
+                <textarea
+                  id="doNots"
+                  rows={3}
+                  value={doNots}
+                  onChange={(e) => setDoNots(e.target.value)}
+                  placeholder="e.g. No stock photos of handshakes. Don't mention pricing. Avoid religious imagery."
                   className={inputClasses}
                 />
               </div>
