@@ -50,10 +50,11 @@ Use these as defaults when the brief doesn't override. Tune ±1 based on style/m
 | `cta` | 6–8 | 6–7 | 3–5 | Motion sells action — magnetic buttons, tactile press feedback |
 | `testimonial` | 5–7 | 5–7 | 4–5 | Stagger reveals are the standard pattern |
 | `carousel` | 5–7 | 7–9 | 4–6 | Motion is the feature |
-| `motion` | 7–9 | 8–10 | 3–5 | Sticky-stack, parallax, scroll-driven |
 | `stats` | 4–6 | 4–6 | 6–8 | Mono numerals (`font-mono`), tighter spacing, count-up reveal |
-| `features` (`layout/grid`) | 5–7 | 4–6 | 4–6 | **Forbidden:** 3-equal-card horizontal row. Use zig-zag, asymmetric grid, or horizontal scroll |
-| `services` (`layout/split`) | 6–8 | 4–6 | 4–6 | Split layouts are explicitly the category — lean into asymmetry |
+| `content` | 6–8 | 4–6 | 4–6 | Editorial split layouts — lean into asymmetry, zig-zag rhythm |
+| `gallery` | 6–8 | 5–7 | 5–7 | Image-led; masonry, lightbox, case-study reveals |
+| `pricing` | 4–6 | 3–5 | 5–7 | Clarity wins; comparison rows and tier cards stay legible |
+| `team` | 5–7 | 4–6 | 4–6 | Editorial portraits; founder split or leadership grid |
 | `faq` | 3–5 | 3–4 | 4–6 | Calm, readable. Motion only on accordion expand |
 | `contact` | 4–6 | 3–5 | 4–6 | Form clarity over flourish; map can carry motion |
 | `navigation` | 5–7 | 5–7 | 5–7 | Pill, sticky, dock magnification — motion adds polish here |

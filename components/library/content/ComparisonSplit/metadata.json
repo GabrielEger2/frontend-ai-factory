@@ -1,28 +1,16 @@
 {
   "id": "layout-comparisonsplit-01",
   "name": "Comparison Split",
-  "category": "layout/split",
-  "purpose": [
-    "comparison",
-    "features",
-    "benefits"
-  ],
+  "category": "content",
+  "purpose": ["comparison", "features", "benefits"],
   "acceptsStyleKit": {
     "card": false,
     "background": true,
     "textDecoration": false,
     "button": true
   },
-  "style": [
-    "modern",
-    "corporate",
-    "minimal"
-  ],
-  "mood": [
-    "professional",
-    "trustworthy",
-    "calm"
-  ],
+  "style": ["modern", "corporate", "minimal"],
+  "mood": ["professional", "trustworthy", "calm"],
   "layout": "split",
   "density": "medium",
   "imageWeight": 0,

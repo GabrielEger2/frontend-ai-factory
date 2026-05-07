@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import EditorialFramedSplit from "./index";
 
 const meta: Meta<typeof EditorialFramedSplit> = {
-  title: "Layout/Split/EditorialFramedSplit",
+  title: "Content/EditorialFramedSplit",
   component: EditorialFramedSplit,
   parameters: { layout: "fullscreen" },
   argTypes: {

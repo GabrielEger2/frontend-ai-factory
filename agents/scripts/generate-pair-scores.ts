@@ -80,19 +80,15 @@ interface MetadataJson {
 
 /**
  * Natural page-flow order for website sections.
- * Categories that share a base (e.g. layout/grid, layout/scroll, layout/split)
- * all map to the same flow position.
  */
 const FLOW_ORDER: string[] = [
   "hero",
   "navigation",
   "cta",
   "testimonial",
-  "layout/grid",
-  "layout/split",
+  "content",
   "gallery",
   "team",
-  "motion",
   "carousel",
   "pricing",
   "faq",
@@ -103,17 +99,10 @@ const FLOW_ORDER: string[] = [
 
 /**
  * Map a component category to its flow-order index.
- * Sub-categories like "layout/grid" map to the "layout" position.
  */
 function flowIndex(category: string): number {
-  // Try exact match first
   const exact = FLOW_ORDER.indexOf(category);
   if (exact !== -1) return exact;
-
-  // Try base category (before the slash)
-  const base = category.split("/")[0];
-  const baseIdx = FLOW_ORDER.indexOf(base);
-  if (baseIdx !== -1) return baseIdx;
 
   // Unknown category — place in middle
   return Math.floor(FLOW_ORDER.length / 2);

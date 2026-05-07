@@ -1,7 +1,7 @@
 {
   "id": "layout-zigzag-alternating-split-01",
   "name": "Zigzag Alternating Split",
-  "category": "layout/split",
+  "category": "content",
   "style": ["editorial", "modern", "minimal", "corporate"],
   "mood": ["professional", "trustworthy", "calm", "elegant"],
   "layout": "split",

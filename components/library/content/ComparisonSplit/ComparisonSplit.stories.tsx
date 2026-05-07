@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import ComparisonSplit from "./index";
 
 const meta: Meta<typeof ComparisonSplit> = {
-  title: "Layout/Split/ComparisonSplit",
+  title: "Content/ComparisonSplit",
   component: ComparisonSplit,
   parameters: { layout: "fullscreen" },
   argTypes: {

@@ -9,30 +9,27 @@ Each component lives in `components/library/<category>/<ComponentName>/`:
 
 ## Categories
 
-The library now spans 15 canonical categories. `Current` reflects what is on disk in `components/library/` today; `Target` is the next milestone the composer should be able to draw from.
+The library spans 13 active categories. Counts below reflect what is on disk in `components/library/` today.
 
-| Category | Current | Target | Examples (current + planned) |
-|---|---|---|---|
-| hero | 15 | 18 | Bold editorial, geometric, parallax images, polaroid collage, shuffle cards, split image, terminal console, video backdrop |
-| testimonial | 6 | 8 | Infinite scroll, stacked split, stagger fan, logo-quote ribbon, spotlight quote, video card |
-| footer | 3 | 5 | Mega, pulse, reveal — planned: minimal-strip, multi-column-social |
-| cta | 8 | 12 | Collage duo, countdown, dual-offer split, editorial split, image backdrop, minimal strip, sticky banner, newsletter capture |
-| faq | 4 | 6 | Accordion, minimal, solutions, tabbed — planned: search-driven, categorized |
-| contact | 5 | 7 | Booking embed, locations map, shapes form, split form, support tabs |
-| navigation | 4 | 6 | Dock, mega-panel, pill, sticky — planned: transparent-overlay, side-rail |
-| stats | 4 | 5 | Chart, count-up, KPI grid, milestone bar |
-| carousel | 5 | 7 | Before/after, cards, horizontal scroll, swipe, testimonial avatar peek |
-| motion | 2 | 6 | Marquee, scroll narrative — planned: reveal-on-scroll, pinned-section, parallax-story-section, sticky-card-panel (parallax + sticky-cards multi-section wrappers extracted to `components/wrappers/`) |
-| layout/grid | 6 | 8 | Card grid, icon feature grid, logo cloud, pricing tiers*, process timeline, simple grid |
-| layout/split | 9 | 10 | Author, comparison, editorial framed, icon list, image text, statement, vertical timeline, zigzag alternating |
-| **pricing** ⭐ new | 0 | 5 | Planned: tier cards, comparison table, freemium ladder, single-price card, monthly/annual toggle |
-| **team** ⭐ new | 0 | 4 | Planned: leadership grid, founder split, team carousel, member spotlight |
-| **gallery** ⭐ new | 0 | 5 | Planned: masonry, lightbox grid, case-study layout, portfolio strip, image-text editorial |
+| Category | Count | Components |
+|---|---|---|
+| hero | 10 | Asymmetric stack, bakery editorial, bold editorial, device chrome, grid gallery, newsroom ticker, polaroid collage, split form, split image, video backdrop |
+| testimonial | 5 | Infinite scroll, masonry quotes, metric card, spotlight quote, video card |
+| footer | 4 | Columns social, mega, pulse, reveal |
+| cta | 7 | Dual offer split, hover reveal list, image backdrop, inline calculator, sticky image list, testimonial paired, video backdrop |
+| faq | 3 | Categorized, solutions, tabbed |
+| contact | 7 | Booking embed, chat embed, locations map, multi-step, shapes form, split form, support tabs |
+| navigation | 4 | Dock, mega-panel, pill, sticky |
+| stats | 3 | Chart, count-up, KPI grid |
+| carousel | 4 | Before/after, cards, full-bleed slider, thumbnail nav |
+| content | 3 | Comparison split, editorial framed split, zigzag alternating split |
+| pricing | 4 | Freemium ladder, monthly/annual toggle, single price, tier cards |
+| team | 3 | Founder split, leadership grid, member spotlight |
+| gallery | 5 | Case study, image-text editorial, lightbox grid, masonry, portfolio strip |
 
-\* `PricingTiers` and `LogoCloud` currently live under `layout/grid`. When the dedicated `pricing` category is implemented, plan to migrate `PricingTiers` over (and optionally promote logo/trust components to their own category if they grow past 3).
+Total on disk: 62 components across 13 active categories.
 
-Total on disk: 99 components across 15 active categories.
-Target: ~112 components across 15 active categories.
+The previous `motion`, `layout/grid`, and `layout/split` categories have been retired. `layout/split`'s surviving components were migrated to `content`; `motion` and `layout/grid` had all their components removed.
 
 `components/wrappers/` (separate from `components/library/`) holds hand-authored page-template wrappers that accept `React.ReactNode` for nested content slots — currently `ParallaxContent` and `StickyCards`. These are NOT Composer-pickable and have no `metadata.json`. Use them only when hand-composing a Next.js page.
 
@@ -42,15 +39,13 @@ The `"category"` field in `metadata.json` MUST be one of these singular values (
 
 ```
 hero | testimonial | footer | cta | faq | contact |
-navigation | stats | motion | carousel | layout/grid | layout/split |
+navigation | stats | carousel | content |
 pricing | team | gallery
 ```
 
 Plural variants like `"footers"`, `"testimonials"`, `"heroes"` are NOT permitted in the `category` field. The category field is what drives downstream consumers (FLOW_ORDER in `agents/scripts/generate-pair-scores.ts`, composer agent's flow ordering, dashboard category facets), so a mismatch silently breaks pair scoring.
 
-`pricing`, `team`, and `gallery` are newly added and currently have **zero on-disk components**. Before any component declares one of these as `category`, the value must also be added to the validator's category enum, FLOW_ORDER in `agents/scripts/generate-pair-scores.ts`, and the dashboard's category facet list, in the same commit.
-
-Directory names (`components/library/footers/...`) may remain plural — only the `category` value inside `metadata.json` is constrained.
+Directory names (`components/library/footers/...`, `components/library/heroes/...`, `components/library/testimonials/...`) may differ from the canonical category value — only the `category` value inside `metadata.json` is constrained.
 
 ## Metadata Schema
 
@@ -109,22 +104,10 @@ Every component declares a non-empty `purpose[]` array. Values MUST come from th
 hero, navigation, footer, faq, contact, testimonials, stats,
 features, services, products, about, team, process, benefits,
 portfolio, showcase, cta, lead-capture, brand-statement, story,
-location-display, magazine-opener
+location-display, magazine-opener, pricing, gallery, comparison
 ```
 
-`magazine-opener` is included to cover HeroBoldEditorial's existing usage. Sentence-format values (e.g. `"brand storytelling"`, `"editorial conversion"`) fail the validator's whitespace check and the canonical-list subset check.
-
-### Pending purpose tokens (not yet in validator)
-
-The new `pricing`, `team`, and `gallery` categories will need three additional tokens to describe their slot intent. They are listed here for planning only — do **not** use them in any `metadata.json` until they are added to the validator and tests in the same commit (see "Extending purpose[]" below).
-
-```
-pricing       — pricing tier, comparison table, freemium ladder slots
-gallery       — masonry, lightbox, image-grid, case-study showcase slots
-comparison    — side-by-side feature/option comparisons (also unblocks the empty ComparisonSplit)
-```
-
-Until those are merged through the canonical list, components built for the new categories should reuse the closest existing token (`benefits`, `showcase`, `portfolio`) and be flagged for a follow-up purpose-tag pass.
+`magazine-opener` is included to cover HeroBoldEditorial's existing usage. `pricing`, `gallery`, and `comparison` were added when those categories landed — `pricing` for tier cards / comparison tables / freemium ladders, `gallery` for masonry / lightbox / case-study showcases, `comparison` for side-by-side feature/option layouts (used by ComparisonSplit). Sentence-format values (e.g. `"brand storytelling"`, `"editorial conversion"`) fail the validator's whitespace check and the canonical-list subset check.
 
 ### Extending purpose[]
 

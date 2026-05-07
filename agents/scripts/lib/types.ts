@@ -42,9 +42,10 @@ export const MetadataSchema = z.object({
     "carousel",
     "stats",
     "testimonial",
-    "motion",
-    "layout/grid",
-    "layout/split",
+    "content",
+    "pricing",
+    "team",
+    "gallery",
   ]),
   purpose: z.array(z.string()).min(1),
   acceptsStyleKit: z.object({
@@ -138,10 +139,10 @@ export type ClaudeResponse = z.infer<typeof ClaudeResponseSchema>;
 /* ------------------------------------------------------------------ */
 //
 // The `category` value strings do NOT all match their on-disk directory
-// names. The biggest asymmetry: `category: "layout/grid"` is stored at
-// `components/library/layouts/grid/` (note the trailing `s` on
-// `layouts`). This single source of truth resolves every category to
-// its directory segment relative to `components/library/`.
+// names — e.g. `category: "hero"` lives at `components/library/heroes/`,
+// `category: "testimonial"` at `components/library/testimonials/`. This
+// single source of truth resolves every category to its directory
+// segment relative to `components/library/`.
 //
 
 export const CATEGORY_TO_DIR: Record<Category, string> = {
@@ -154,10 +155,10 @@ export const CATEGORY_TO_DIR: Record<Category, string> = {
   carousel: "carousel",
   stats: "stats",
   testimonial: "testimonials",
-  motion: "motion",
-  // `layouts/` (plural) on disk vs `layout/...` (singular) in the category value
-  "layout/grid": "layouts/grid",
-  "layout/split": "layouts/split",
+  content: "content",
+  pricing: "pricing",
+  team: "team",
+  gallery: "gallery",
 };
 
 /* ------------------------------------------------------------------ */
@@ -185,7 +186,8 @@ export const CATEGORY_TO_PREFIX: Record<Category, string> = {
   carousel: "carousel",
   stats: "stats",
   testimonial: "layout", // frozen IDs — prefix mismatch acceptable
-  motion: "layout", // frozen IDs — prefix mismatch acceptable
-  "layout/grid": "layout",
-  "layout/split": "layout",
+  content: "content",
+  pricing: "pricing",
+  team: "team",
+  gallery: "gallery",
 };
