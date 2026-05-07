@@ -162,6 +162,8 @@ async function main(): Promise<void> {
 
   const moodTags = (STYLE_OUTPUT.mood ?? []).join(", ");
 
+  const newFixtureLines: object[] = [];
+
   const axes = ["descriptive", "usage", "audienceFit"] as const;
   type Axis = (typeof axes)[number];
 
@@ -341,11 +343,7 @@ async function main(): Promise<void> {
         pickId: null,
       };
 
-      fs.appendFileSync(
-        fixturePath,
-        JSON.stringify(fixtureLine) + "\n",
-        "utf-8",
-      );
+      newFixtureLines.push(fixtureLine);
       console.log(
         `[capture] wrote fixture line for slot=${slot.category} → ${fixturePath}`,
       );
@@ -383,6 +381,14 @@ async function main(): Promise<void> {
     console.log(`| rerankScore      | ${fmt(debug?.rerankScore)} |`);
 
     pickedCandidates.push(top);
+  }
+
+  if (captureMode && fixturePath) {
+    fs.writeFileSync(
+      fixturePath,
+      newFixtureLines.map((l) => JSON.stringify(l)).join("\n") + "\n",
+      "utf-8",
+    );
   }
 }
 
