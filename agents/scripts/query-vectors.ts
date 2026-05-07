@@ -31,6 +31,8 @@
  * tuning for Stage 4 of the composer eval loop.
  */
 
+import * as fs from "fs";
+import * as path from "path";
 import { getEmbedding } from "../shared/embeddings";
 import { getQdrantClient } from "../shared/qdrant-client";
 import { DEFAULT_SKELETON } from "../composer/defaultSkeleton";
@@ -49,6 +51,7 @@ let brief: string | undefined;
 let moodOverride: string[] | undefined;
 let styleOverride: string[] | undefined;
 let densityOverride: string | undefined;
+let captureSlug: string | undefined;
 
 const splitCsv = (raw: string): string[] =>
   raw
@@ -64,6 +67,8 @@ for (let i = 0; i < argv.length; i++) {
     styleOverride = splitCsv(argv[++i]);
   } else if (arg === "--density" && i + 1 < argv.length) {
     densityOverride = argv[++i].trim();
+  } else if (arg === "--capture" && i + 1 < argv.length) {
+    captureSlug = argv[++i];
   } else if (!arg.startsWith("--") && brief === undefined) {
     brief = arg;
   }
@@ -71,9 +76,17 @@ for (let i = 0; i < argv.length; i++) {
 
 if (!brief) {
   console.error(
-    'Usage: ts-node scripts/query-vectors.ts "<brief>" [--mood a,b,c] [--style a,b,c] [--density low|medium|high]',
+    'Usage: ts-node scripts/query-vectors.ts "<brief>" [--mood a,b,c] [--style a,b,c] [--density low|medium|high] [--capture <slug>]',
   );
   process.exit(1);
+}
+
+const captureMode = captureSlug !== undefined;
+const fixturePath = captureMode
+  ? path.resolve(__dirname, "../eval/fixtures", `${captureSlug}.jsonl`)
+  : undefined;
+if (fixturePath) {
+  fs.mkdirSync(path.dirname(fixturePath), { recursive: true });
 }
 
 /* ------------------------------------------------------------------ */
@@ -156,7 +169,13 @@ async function main(): Promise<void> {
   // see real prior picks (mirrors the handler's greedy loop).
   const pickedCandidates: CandidateComponent[] = [];
 
-  for (const slot of DEFAULT_SKELETON) {
+  for (
+    let skeletonIdx = 0;
+    skeletonIdx < DEFAULT_SKELETON.length;
+    skeletonIdx++
+  ) {
+    const slot = DEFAULT_SKELETON[skeletonIdx];
+    if (captureMode && slot.category === "navigation") continue;
     // Mirrors agents/composer/handler.ts:564 phrasing exactly so debug runs
     // produce the same embeddings the production composer would.
     const slotQuery = `${slot.category} for ${queryText}; mood: ${moodTags}; needs: ${slot.purpose}`;
@@ -174,7 +193,7 @@ async function main(): Promise<void> {
       axes.map((axis) =>
         client.search("components", {
           vector: { name: axis, vector: slotVector },
-          limit: 3,
+          limit: captureMode ? 5 : 3,
           with_payload: true,
           filter,
         }),
@@ -300,6 +319,37 @@ async function main(): Promise<void> {
     );
     const top = reranked[0];
     if (!top) continue;
+
+    if (captureMode && fixturePath) {
+      const captureSource: "vector" | "fallback" = slotCandidates.every(
+        (c) => c.source === "vector",
+      )
+        ? "vector"
+        : "fallback";
+
+      const fixtureLine = {
+        fixtureId: `${captureSlug}__${slot.category}`,
+        brief: queryText,
+        mood: STYLE_OUTPUT.mood ?? [],
+        style: STYLE_OUTPUT.style ?? [],
+        density: STYLE_OUTPUT.density ?? "medium",
+        slotCategory: slot.category,
+        skeletonIndex: skeletonIdx,
+        captureSource,
+        candidates: slotCandidates,
+        previouslyPicked: pickedCandidates.map((c) => c.id),
+        pickId: null,
+      };
+
+      fs.appendFileSync(
+        fixturePath,
+        JSON.stringify(fixtureLine) + "\n",
+        "utf-8",
+      );
+      console.log(
+        `[capture] wrote fixture line for slot=${slot.category} → ${fixturePath}`,
+      );
+    }
 
     // _rerankDebug is attached via a type cast inside rerank.ts so it does
     // not leak into the LLM-facing CandidateComponent interface.
