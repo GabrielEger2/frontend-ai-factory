@@ -14,6 +14,7 @@ export const SkeletonSlotSchema = z.object({
     "pricing",
     "team",
     "gallery",
+    "products",
   ]),
   purpose: z.string(),
   notes: z.string().optional(),
@@ -42,8 +43,10 @@ export const SkeletonSchema = z.array(SkeletonSlotSchema);
 export const DEFAULT_SKELETON: Skeleton = [
   { category: "navigation", purpose: "brand navigation" },
   { category: "hero", purpose: "brand statement" },
+  { category: "products", purpose: "showcase products or signature offerings" },
   { category: "content", purpose: "showcase services or features" },
   { category: "testimonial", purpose: "social proof" },
   { category: "cta", purpose: "lead capture" },
+  { category: "contact", purpose: "location and contact info" },
   { category: "footer", purpose: "site navigation footer" },
 ];
