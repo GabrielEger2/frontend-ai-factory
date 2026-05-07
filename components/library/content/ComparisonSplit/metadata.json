@@ -97,7 +97,7 @@
     "pricing-tier-cards-01",
     "stats-kpi-grid-01"
   ],
-  "pairsPoorly": ["layout-zigzag-alternating-split-01"],
+  "pairsPoorly": [],
   "descriptions": {
     "descriptive": "Clean two-column layout with balanced visual weight and generous whitespace. Features structured comparison elements with modern typography and subtle dividers. Minimal color palette emphasizes content hierarchy while maintaining professional polish through restrained design choices.",
     "usage": "Perfect for side-by-side product comparisons, service tier breakdowns, or before/after scenarios. Helps users evaluate options by presenting structured feature lists, pricing plans, or benefit comparisons in an easy-to-scan format that supports decision-making.",

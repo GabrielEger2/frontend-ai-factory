@@ -67,9 +67,6 @@ export const SLOT_PATTERN_MAP: Record<string, SlotPatternConfig> = {
     textDecorationHandled: true,
     revealSlotName: "revealDisplayWord",
   },
-  "carousel-cards-01": {
-    textDecorationHandled: true,
-  },
   "contact-locations-map-01": {
     backgroundSlot: "backgroundVariant",
     textDecorationHandled: true,

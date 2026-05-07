@@ -62,11 +62,7 @@
     "testimonial-spotlight-quote-01",
     "footer-mega-01"
   ],
-  "pairsPoorly": [
-    "gallery-masonry-01",
-    "gallery-portfolio-strip-01",
-    "layout-zigzag-alternating-split-01"
-  ],
+  "pairsPoorly": ["gallery-masonry-01"],
   "description": "Magazine-style alternating image-and-caption spread. Each entry zig-zags the image side and applies a small vertical offset so the column drifts like an editorial layout. Serif headlines pair with sans-serif body.",
   "descriptions": {
     "descriptive": "A 12-column grid where the image takes 7 columns and the copy takes 5, alternating sides per entry. The image column carries a small translate-y offset (positive on reversed rows, negative on default rows) so the page drifts vertically and avoids the generic flush-row rhythm. A 1px hairline rule sits above each entry label, evoking magazine separators. Headings use the serif stack; body and labels stay in sans for contrast.",

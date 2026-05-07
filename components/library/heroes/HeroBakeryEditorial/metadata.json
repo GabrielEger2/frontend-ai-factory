@@ -78,7 +78,7 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["stats-count-up-01", "carousel-cards-01"],
+  "pairsWell": ["stats-count-up-01"],
   "pairsPoorly": ["hero-split-image-01"],
   "description": "An editorial hero with a framed card layout, hand-script accent word, circular stamp seal, and a hero product photo that breaks out of the right column. Designed for artisan food, bakery, deli, café, and small-batch consumer brands that want a tactile, story-led first impression.",
   "descriptions": {

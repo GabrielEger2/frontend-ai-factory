@@ -64,7 +64,7 @@
     "stats-count-up-01",
     "testimonial-spotlight-quote-01"
   ],
-  "pairsPoorly": ["carousel-cards-01"],
+  "pairsPoorly": [],
   "description": "Button-navigated carousel of before/after image comparison sliders. One slide is shown at a time; prev/next arrows and pagination dots advance between cases. Each slide is pointer-draggable with keyboard support and labelled before/after pills, useful for restoration, redesign, transformation, and physical-result portfolios.",
   "descriptions": {
     "descriptive": "Single-slide stage on every viewport; the active slide is a 16:10 surface with the after image full-bleed and the before image clipped from the left by a draggable handle. Keyboard arrows (and Home/End) move the handle in 4% increments. Pagination dots and prev/next chevrons advance between cases with a soft slide+fade transition.",

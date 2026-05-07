@@ -1,529 +1,5 @@
 [
   {
-    "id": "carousel-before-after-01",
-    "name": "Before/After Carousel",
-    "category": "content",
-    "purpose": [
-      "portfolio",
-      "showcase",
-      "products"
-    ],
-    "acceptsStyleKit": {
-      "card": false,
-      "background": false,
-      "textDecoration": false,
-      "button": false
-    },
-    "style": [
-      "modern",
-      "editorial",
-      "bold"
-    ],
-    "mood": [
-      "professional",
-      "energetic",
-      "trustworthy"
-    ],
-    "layout": "stacked",
-    "density": "medium",
-    "imageWeight": 0.7,
-    "slots": [
-      {
-        "name": "eyebrow",
-        "type": "text",
-        "maxLength": 40,
-        "optional": true
-      },
-      {
-        "name": "headline",
-        "type": "text",
-        "maxLength": 100,
-        "optional": true
-      },
-      {
-        "name": "subheadline",
-        "type": "text",
-        "maxLength": 200,
-        "optional": true
-      },
-      {
-        "name": "items",
-        "type": "list",
-        "maxItems": 6,
-        "itemSchema": {
-          "type": "object",
-          "fields": [
-            {
-              "name": "title",
-              "type": "text",
-              "maxLength": 80
-            },
-            {
-              "name": "description",
-              "type": "text",
-              "maxLength": 200,
-              "optional": true
-            },
-            {
-              "name": "beforeImage",
-              "type": "image",
-              "aspectRatio": "16:10"
-            },
-            {
-              "name": "beforeAlt",
-              "type": "text",
-              "maxLength": 120
-            },
-            {
-              "name": "afterImage",
-              "type": "image",
-              "aspectRatio": "16:10"
-            },
-            {
-              "name": "afterAlt",
-              "type": "text",
-              "maxLength": 120
-            },
-            {
-              "name": "beforeLabel",
-              "type": "text",
-              "maxLength": 16,
-              "optional": true
-            },
-            {
-              "name": "afterLabel",
-              "type": "text",
-              "maxLength": 16,
-              "optional": true
-            }
-          ]
-        }
-      },
-      {
-        "name": "initialPosition",
-        "type": "number",
-        "optional": true
-      }
-    ],
-    "mobileBehavior": "stack",
-    "pairsWell": [
-      "hero-split-image-01",
-      "stats-count-up-01",
-      "testimonial-spotlight-quote-01"
-    ],
-    "pairsPoorly": [
-      "carousel-cards-01"
-    ],
-    "description": "Button-navigated carousel of before/after image comparison sliders. One slide is shown at a time; prev/next arrows and pagination dots advance between cases. Each slide is pointer-draggable with keyboard support and labelled before/after pills, useful for restoration, redesign, transformation, and physical-result portfolios.",
-    "descriptions": {
-      "descriptive": "Single-slide stage on every viewport; the active slide is a 16:10 surface with the after image full-bleed and the before image clipped from the left by a draggable handle. Keyboard arrows (and Home/End) move the handle in 4% increments. Pagination dots and prev/next chevrons advance between cases with a soft slide+fade transition.",
-      "usage": "Use for any 'we changed this' portfolio — interior renovations, brand refreshes, logo redesigns, before-and-after marketing visuals. Place after a hero or below a stats panel, never alongside another image-heavy carousel on the same page.",
-      "audienceFit": "Architecture and interior design firms, restoration trades, branding agencies, dental and medical aesthetic clinics, photo retouchers, and marketing agencies whose case studies live on transformation imagery."
-    }
-  },
-  {
-    "id": "carousel-cards-01",
-    "name": "Card Carousel",
-    "category": "content",
-    "purpose": [
-      "features",
-      "products",
-      "testimonials"
-    ],
-    "acceptsStyleKit": {
-      "card": false,
-      "background": false,
-      "textDecoration": true,
-      "button": true
-    },
-    "style": [
-      "modern",
-      "corporate",
-      "editorial"
-    ],
-    "mood": [
-      "professional",
-      "trustworthy",
-      "friendly"
-    ],
-    "layout": "stacked",
-    "density": "medium",
-    "imageWeight": 0,
-    "slots": [
-      {
-        "name": "headline",
-        "type": "text",
-        "maxLength": 60
-      },
-      {
-        "name": "highlightWord",
-        "type": "text",
-        "optional": true,
-        "maxLength": 30
-      },
-      {
-        "name": "highlightColorScheme",
-        "type": "text",
-        "optional": true,
-        "enum": [
-          "primary",
-          "secondary",
-          "accent",
-          "neutral"
-        ]
-      },
-      {
-        "name": "revealHeadline",
-        "type": "boolean",
-        "optional": true
-      },
-      {
-        "name": "subheadline",
-        "type": "text",
-        "optional": true,
-        "maxLength": 200
-      },
-      {
-        "name": "ctaText",
-        "type": "text",
-        "optional": true,
-        "maxLength": 30
-      },
-      {
-        "name": "ctaUrl",
-        "type": "url",
-        "optional": true
-      },
-      {
-        "name": "ctaStyle",
-        "type": "text",
-        "optional": true,
-        "enum": [
-          "default",
-          "slide",
-          "dotExpand",
-          "drawOutline",
-          "glow"
-        ]
-      },
-      {
-        "name": "ctaColorScheme",
-        "type": "text",
-        "optional": true,
-        "enum": [
-          "primary",
-          "secondary",
-          "accent",
-          "neutral"
-        ]
-      },
-      {
-        "name": "cards",
-        "type": "list",
-        "maxItems": 12,
-        "itemSchema": {
-          "type": "object",
-          "fields": [
-            {
-              "name": "image",
-              "type": "image",
-              "aspectRatio": "16:9"
-            },
-            {
-              "name": "imageAlt",
-              "type": "text",
-              "maxLength": 120
-            },
-            {
-              "name": "tag",
-              "type": "text",
-              "maxLength": 30
-            },
-            {
-              "name": "title",
-              "type": "text",
-              "maxLength": 80
-            },
-            {
-              "name": "description",
-              "type": "text",
-              "maxLength": 160
-            }
-          ]
-        }
-      }
-    ],
-    "mobileBehavior": "scroll",
-    "pairsWell": [],
-    "pairsPoorly": [],
-    "description": "A sleek rotating card display that showcases multiple content pieces in an organized, professional layout. Perfect for corporate websites displaying product features, client testimonials, or service offerings with a clean, trustworthy aesthetic.",
-    "descriptions": {
-      "descriptive": "Clean card-based carousel with structured layouts featuring generous whitespace and professional typography. Cards display content in organized grids with subtle shadows and rounded corners. Editorial influence shows through balanced text hierarchy and refined spacing that feels polished yet approachable.",
-      "usage": "Showcases multiple features, product offerings, or customer testimonials in an interactive sliding format. Users can browse through different items without overwhelming the page layout. Perfect for highlighting key selling points or social proof while maintaining organized content flow.",
-      "audienceFit": "Established businesses and B2B companies seeking credible, professional presentation. Appeals to corporate clients, consulting firms, and service providers who need to build trust while remaining personable. Ideal for companies with multiple offerings requiring clear, structured communication."
-    }
-  },
-  {
-    "id": "carousel-full-bleed-slider-01",
-    "name": "Full-Bleed Slider Carousel",
-    "category": "hero",
-    "purpose": [
-      "hero",
-      "showcase",
-      "portfolio",
-      "brand-statement",
-      "story"
-    ],
-    "acceptsStyleKit": {
-      "card": false,
-      "background": false,
-      "textDecoration": false,
-      "button": true
-    },
-    "style": [
-      "editorial",
-      "bold",
-      "modern",
-      "luxury"
-    ],
-    "mood": [
-      "energetic",
-      "elegant",
-      "professional",
-      "trustworthy"
-    ],
-    "layout": "stacked",
-    "density": "low",
-    "imageWeight": 0.9,
-    "slots": [
-      {
-        "name": "captionAlignment",
-        "type": "text",
-        "optional": true,
-        "enum": [
-          "bottom-left",
-          "bottom-center",
-          "center-left",
-          "center"
-        ]
-      },
-      {
-        "name": "height",
-        "type": "text",
-        "optional": true,
-        "enum": [
-          "short",
-          "tall",
-          "full"
-        ]
-      },
-      {
-        "name": "autoAdvanceMs",
-        "type": "number",
-        "optional": true
-      },
-      {
-        "name": "showArrows",
-        "type": "boolean",
-        "optional": true
-      },
-      {
-        "name": "showDots",
-        "type": "boolean",
-        "optional": true
-      },
-      {
-        "name": "showPlayPause",
-        "type": "boolean",
-        "optional": true
-      },
-      {
-        "name": "items",
-        "type": "list",
-        "maxItems": 8,
-        "itemSchema": {
-          "type": "object",
-          "fields": [
-            {
-              "name": "image",
-              "type": "image",
-              "aspectRatio": "16:9"
-            },
-            {
-              "name": "imageAlt",
-              "type": "text",
-              "maxLength": 120
-            },
-            {
-              "name": "eyebrow",
-              "type": "text",
-              "optional": true,
-              "maxLength": 40
-            },
-            {
-              "name": "headline",
-              "type": "text",
-              "optional": true,
-              "maxLength": 100
-            },
-            {
-              "name": "description",
-              "type": "text",
-              "optional": true,
-              "maxLength": 240
-            },
-            {
-              "name": "ctaText",
-              "type": "text",
-              "optional": true,
-              "maxLength": 30
-            },
-            {
-              "name": "ctaUrl",
-              "type": "url",
-              "optional": true
-            }
-          ]
-        }
-      }
-    ],
-    "mobileBehavior": "stack",
-    "pairsWell": [
-      "stats-count-up-01",
-      "testimonial-spotlight-quote-01",
-      "footer-mega-01"
-    ],
-    "pairsPoorly": [
-      "carousel-cards-01",
-      "carousel-thumbnail-nav-01",
-      "hero-video-backdrop-01"
-    ],
-    "description": "An edge-to-edge image rotator with overlaid eyebrow, headline, description, and CTA per slide. Auto-advances with a progress-bar dot indicator and pauses on hover or focus. Designed to anchor a page as a hero replacement when the brand story spans multiple imagery beats.",
-    "descriptions": {
-      "descriptive": "Full-bleed background image with a subtle neutral-toned gradient for caption legibility. Each slide carries its own eyebrow / headline / description / CTA; transitions are spring-animated with a soft scale-on-enter. Pagination dots double as a linear progress bar for the active slide; hover, focus, and an explicit pause button all halt the auto-advance.",
-      "usage": "Anchors a page as a hero replacement when there are multiple campaigns, projects, or stories to lead with. Works well for travel, hospitality, editorial, and product launch sites. Avoid stacking with a regular hero or another image-heavy carousel on the same page.",
-      "audienceFit": "Travel and hospitality brands, editorial and journalism sites, premium e-commerce launching seasonal collections, agencies leading with case work, and any brand whose story is carried by full-frame imagery."
-    }
-  },
-  {
-    "id": "carousel-thumbnail-nav-01",
-    "name": "Thumbnail Nav Carousel",
-    "category": "gallery",
-    "purpose": [
-      "products",
-      "showcase",
-      "portfolio",
-      "gallery"
-    ],
-    "acceptsStyleKit": {
-      "card": false,
-      "background": false,
-      "textDecoration": false,
-      "button": false
-    },
-    "style": [
-      "modern",
-      "editorial",
-      "minimal"
-    ],
-    "mood": [
-      "professional",
-      "elegant",
-      "trustworthy"
-    ],
-    "layout": "stacked",
-    "density": "medium",
-    "imageWeight": 0.7,
-    "slots": [
-      {
-        "name": "eyebrow",
-        "type": "text",
-        "optional": true,
-        "maxLength": 40
-      },
-      {
-        "name": "headline",
-        "type": "text",
-        "optional": true,
-        "maxLength": 80
-      },
-      {
-        "name": "description",
-        "type": "text",
-        "optional": true,
-        "maxLength": 200
-      },
-      {
-        "name": "aspectRatio",
-        "type": "text",
-        "optional": true,
-        "enum": [
-          "1:1",
-          "4:3",
-          "3:2",
-          "16:9"
-        ]
-      },
-      {
-        "name": "showArrows",
-        "type": "boolean",
-        "optional": true
-      },
-      {
-        "name": "zoomHint",
-        "type": "boolean",
-        "optional": true
-      },
-      {
-        "name": "items",
-        "type": "list",
-        "maxItems": 10,
-        "itemSchema": {
-          "type": "object",
-          "fields": [
-            {
-              "name": "image",
-              "type": "image",
-              "aspectRatio": "4:3"
-            },
-            {
-              "name": "imageAlt",
-              "type": "text",
-              "maxLength": 120
-            },
-            {
-              "name": "thumbnail",
-              "type": "image",
-              "optional": true,
-              "aspectRatio": "1:1"
-            },
-            {
-              "name": "caption",
-              "type": "text",
-              "optional": true,
-              "maxLength": 120
-            }
-          ]
-        }
-      }
-    ],
-    "mobileBehavior": "stack",
-    "pairsWell": [
-      "hero-split-image-01",
-      "stats-count-up-01"
-    ],
-    "pairsPoorly": [
-      "carousel-cards-01",
-      "carousel-full-bleed-slider-01"
-    ],
-    "description": "An e-commerce style image viewer with a primary stage and a thumbnail strip beneath. Visitors can drag, click thumbnails, or use keyboard arrows to advance — ideal for product detail pages, portfolio cases, and gallery walks where the same item is shown from multiple angles.",
-    "descriptions": {
-      "descriptive": "A primary image stage on top with a horizontally-scrollable thumbnail strip below. Active thumbnails get a primary-colored ring and a shared-layout indicator that animates between selections. The main stage uses a directional spring transition, supports drag-to-advance, and exposes prev/next buttons over the image. A small monospace counter pill in the corner reinforces position.",
-      "usage": "Use to display the same subject from multiple angles, contexts, or stages — product detail pages, real-estate listings, portfolio case studies, before-and-after stages of a transformation. Avoid pairing with another image-heavy carousel on the same page.",
-      "audienceFit": "E-commerce stores, real-estate agencies, photographers, design portfolios, and any service business whose value is communicated through detailed visuals from multiple perspectives."
-    }
-  },
-  {
     "id": "contact-booking-embed-01",
     "name": "Booking Embed",
     "category": "contact",
@@ -1709,6 +1185,126 @@
     }
   },
   {
+    "id": "carousel-before-after-01",
+    "name": "Before/After Carousel",
+    "category": "content",
+    "purpose": [
+      "portfolio",
+      "showcase",
+      "products"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "editorial",
+      "bold"
+    ],
+    "mood": [
+      "professional",
+      "energetic",
+      "trustworthy"
+    ],
+    "layout": "stacked",
+    "density": "medium",
+    "imageWeight": 0.7,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100,
+        "optional": true
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "maxLength": 200,
+        "optional": true
+      },
+      {
+        "name": "items",
+        "type": "list",
+        "maxItems": 6,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 80
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 200,
+              "optional": true
+            },
+            {
+              "name": "beforeImage",
+              "type": "image",
+              "aspectRatio": "16:10"
+            },
+            {
+              "name": "beforeAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "afterImage",
+              "type": "image",
+              "aspectRatio": "16:10"
+            },
+            {
+              "name": "afterAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "beforeLabel",
+              "type": "text",
+              "maxLength": 16,
+              "optional": true
+            },
+            {
+              "name": "afterLabel",
+              "type": "text",
+              "maxLength": 16,
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "initialPosition",
+        "type": "number",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-split-image-01",
+      "stats-count-up-01",
+      "testimonial-spotlight-quote-01"
+    ],
+    "pairsPoorly": [],
+    "description": "Button-navigated carousel of before/after image comparison sliders. One slide is shown at a time; prev/next arrows and pagination dots advance between cases. Each slide is pointer-draggable with keyboard support and labelled before/after pills, useful for restoration, redesign, transformation, and physical-result portfolios.",
+    "descriptions": {
+      "descriptive": "Single-slide stage on every viewport; the active slide is a 16:10 surface with the after image full-bleed and the before image clipped from the left by a draggable handle. Keyboard arrows (and Home/End) move the handle in 4% increments. Pagination dots and prev/next chevrons advance between cases with a soft slide+fade transition.",
+      "usage": "Use for any 'we changed this' portfolio — interior renovations, brand refreshes, logo redesigns, before-and-after marketing visuals. Place after a hero or below a stats panel, never alongside another image-heavy carousel on the same page.",
+      "audienceFit": "Architecture and interior design firms, restoration trades, branding agencies, dental and medical aesthetic clinics, photo retouchers, and marketing agencies whose case studies live on transformation imagery."
+    }
+  },
+  {
     "id": "layout-comparisonsplit-01",
     "name": "Comparison Split",
     "category": "content",
@@ -1819,9 +1415,7 @@
       "pricing-tier-cards-01",
       "stats-kpi-grid-01"
     ],
-    "pairsPoorly": [
-      "layout-zigzag-alternating-split-01"
-    ],
+    "pairsPoorly": [],
     "descriptions": {
       "descriptive": "Clean two-column layout with balanced visual weight and generous whitespace. Features structured comparison elements with modern typography and subtle dividers. Minimal color palette emphasizes content hierarchy while maintaining professional polish through restrained design choices.",
       "usage": "Perfect for side-by-side product comparisons, service tier breakdowns, or before/after scenarios. Helps users evaluate options by presenting structured feature lists, pricing plans, or benefit comparisons in an easy-to-scan format that supports decision-making.",
@@ -1952,30 +1546,15 @@
     }
   },
   {
-    "id": "layout-zigzag-alternating-split-01",
-    "name": "Zigzag Alternating Split",
+    "id": "gallery-case-study-01",
+    "name": "Case Study Gallery",
     "category": "content",
-    "style": [
-      "editorial",
-      "modern",
-      "minimal",
-      "corporate"
-    ],
-    "mood": [
-      "professional",
-      "trustworthy",
-      "calm",
-      "elegant"
-    ],
-    "layout": "split",
-    "density": "medium",
-    "imageWeight": 0.4,
     "purpose": [
-      "features",
-      "services",
-      "process",
+      "gallery",
+      "portfolio",
+      "showcase",
       "story",
-      "benefits"
+      "stats"
     ],
     "acceptsStyleKit": {
       "card": false,
@@ -1983,112 +1562,293 @@
       "textDecoration": false,
       "button": true
     },
+    "style": [
+      "editorial",
+      "modern",
+      "corporate"
+    ],
+    "mood": [
+      "professional",
+      "trustworthy",
+      "elegant"
+    ],
+    "layout": "split",
+    "density": "low",
+    "imageWeight": 0.5,
     "slots": [
       {
         "name": "eyebrow",
         "type": "text",
-        "maxLength": 40,
+        "maxLength": 60,
+        "optional": true
+      },
+      {
+        "name": "title",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "summary",
+        "type": "text",
+        "maxLength": 240
+      },
+      {
+        "name": "heroImage",
+        "type": "image",
+        "aspectRatio": "16:9"
+      },
+      {
+        "name": "heroImageAlt",
+        "type": "text",
+        "maxLength": 120
+      },
+      {
+        "name": "meta",
+        "type": "list",
+        "maxItems": 6,
+        "optional": true,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 20
+            },
+            {
+              "name": "value",
+              "type": "text",
+              "maxLength": 50
+            }
+          ]
+        }
+      },
+      {
+        "name": "chapters",
+        "type": "list",
+        "maxItems": 5,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 24
+            },
+            {
+              "name": "heading",
+              "type": "text",
+              "maxLength": 100
+            },
+            {
+              "name": "body",
+              "type": "text",
+              "maxLength": 600
+            },
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "3:2",
+              "optional": true
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120,
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "metrics",
+        "type": "list",
+        "maxItems": 4,
+        "optional": true,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "value",
+              "type": "text",
+              "maxLength": 20
+            },
+            {
+              "name": "label",
+              "type": "text",
+              "maxLength": 80
+            }
+          ]
+        }
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaVariant",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-asymmetric-stack-01",
+      "testimonial-spotlight-quote-01",
+      "stats-count-up-01"
+    ],
+    "pairsPoorly": [
+      "gallery-masonry-01"
+    ],
+    "description": "Long-form case study with hero image, project meta strip, alternating zig-zag chapters (problem / approach / result), and an organic-numbers metric band. Generous editorial spacing throughout.",
+    "descriptions": {
+      "descriptive": "Hero image at 16:9 anchors a wide centered column. Below, an underlined meta strip lists client / role / year / team in mono caps. Three chapters alternate image-left then image-right at lg breakpoint and stack on mobile. A dark metric band lifts the outcomes in mono numerals — designed for organic numbers (47.2 percent, 3,847) rather than rounded vanity stats. Closing CTA is left-aligned to keep the editorial rhythm.",
+      "usage": "Use as a standalone case study page or as the centerpiece of a portfolio detail route. Place after a hero brand-statement and before related work or a closing CTA. Avoid pairing with a masonry or portfolio-strip gallery on the same page — those serve the index view, not the deep dive.",
+      "audienceFit": "B2B agencies showing client work, design studios with longer narratives, consultancies with quantified outcomes, internal-tool teams documenting transformation projects. Suits readers who want depth, not a gallery wall."
+    }
+  },
+  {
+    "id": "gallery-image-text-editorial-01",
+    "name": "Image-Text Editorial Gallery",
+    "category": "content",
+    "purpose": [
+      "gallery",
+      "story",
+      "showcase",
+      "portfolio"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "editorial",
+      "modern",
+      "luxury"
+    ],
+    "mood": [
+      "elegant",
+      "calm",
+      "trustworthy"
+    ],
+    "layout": "split",
+    "density": "low",
+    "imageWeight": 0.55,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 60,
         "optional": true
       },
       {
         "name": "headline",
         "type": "text",
-        "maxLength": 120,
-        "optional": true
+        "maxLength": 100
       },
       {
-        "name": "intro",
+        "name": "description",
         "type": "text",
-        "maxLength": 280,
+        "maxLength": 240,
         "optional": true
       },
       {
-        "name": "sections",
+        "name": "entries",
         "type": "list",
         "maxItems": 6,
         "itemSchema": {
           "type": "object",
           "fields": [
             {
-              "name": "eyebrow",
-              "type": "text",
-              "maxLength": 40,
-              "optional": true
-            },
-            {
-              "name": "heading",
-              "type": "text",
-              "maxLength": 120
-            },
-            {
-              "name": "description",
-              "type": "text",
-              "maxLength": 320
-            },
-            {
-              "name": "bullets",
-              "type": "list",
-              "maxItems": 5,
-              "optional": true,
-              "itemSchema": {
-                "type": "text",
-                "maxLength": 120
-              }
-            },
-            {
-              "name": "ctaText",
+              "name": "label",
               "type": "text",
               "maxLength": 30,
               "optional": true
             },
             {
-              "name": "ctaUrl",
-              "type": "url",
-              "optional": true
+              "name": "heading",
+              "type": "text",
+              "maxLength": 100
+            },
+            {
+              "name": "body",
+              "type": "text",
+              "maxLength": 600
             },
             {
               "name": "image",
               "type": "image",
-              "aspectRatio": "4:3"
+              "aspectRatio": "4:5"
             },
             {
               "name": "imageAlt",
               "type": "text",
               "maxLength": 120
+            },
+            {
+              "name": "imageCaption",
+              "type": "text",
+              "maxLength": 120,
+              "optional": true
+            },
+            {
+              "name": "imageAspect",
+              "type": "text",
+              "optional": true,
+              "enum": [
+                "4:5",
+                "3:4",
+                "1:1",
+                "3:2",
+                "16:9"
+              ]
             }
           ]
         }
-      },
-      {
-        "name": "firstSide",
-        "type": "text",
-        "enum": [
-          "left",
-          "right"
-        ],
-        "optional": true
-      },
-      {
-        "name": "colorScheme",
-        "type": "text",
-        "enum": [
-          "light",
-          "dark"
-        ],
-        "optional": true
       }
     ],
     "mobileBehavior": "stack",
     "pairsWell": [
-      "hero-split-image-01",
-      "stats-count-up-01"
+      "hero-bakery-editorial-01",
+      "testimonial-spotlight-quote-01",
+      "footer-mega-01"
     ],
-    "pairsPoorly": [],
-    "description": "A multi-row alternating image and text layout where each row swaps the image side, ideal for process steps, feature tours, and brand narratives that benefit from visual rhythm.",
+    "pairsPoorly": [
+      "gallery-masonry-01"
+    ],
+    "description": "Magazine-style alternating image-and-caption spread. Each entry zig-zags the image side and applies a small vertical offset so the column drifts like an editorial layout. Serif headlines pair with sans-serif body.",
     "descriptions": {
-      "descriptive": "Multiple rows of paired image and text where each row alternates the image side, creating a clear left-right reading rhythm. Generous vertical spacing separates rows, and each row supports an optional eyebrow, bullet list, and per-row CTA. Image corners are softly rounded, typography hierarchy is restrained, and the overall composition reads as a narrated sequence rather than a feature dump.",
-      "usage": "Use when you have 2 to 5 related stages, features, or chapters that share a structure but benefit from visual variety. Ideal for process explanations, end-to-end feature tours, founder stories told in beats, or service offerings where each item deserves its own image. Avoid when items have no narrative order or when a denser grid would communicate the same information faster.",
-      "audienceFit": "Fits B2B service firms, agencies, and product teams whose buying audience expects to read carefully before deciding. Resonates with consultancies, design studios, manufacturers explaining their craft, and SaaS companies whose differentiator is process. Less suited to ecommerce or quick-conversion landing pages where dense feature grids outperform sequential reading."
+      "descriptive": "A 12-column grid where the image takes 7 columns and the copy takes 5, alternating sides per entry. The image column carries a small translate-y offset (positive on reversed rows, negative on default rows) so the page drifts vertically and avoids the generic flush-row rhythm. A 1px hairline rule sits above each entry label, evoking magazine separators. Headings use the serif stack; body and labels stay in sans for contrast.",
+      "usage": "Use as the deep-narrative section on portfolio sites, brand storytelling pages, magazine archives, hospitality experience pages, and craft-led commerce. Place after a brand-statement hero. Avoid stacking with another zigzag layout (ZigzagAlternatingSplit) — they read as the same beat repeated.",
+      "audienceFit": "Editorial brands, hotels and restaurants, fashion houses with story-led marketing, longform-friendly portfolios, conferences with documented programming. Suits visitors who came to read, not to scan."
     }
   },
   {
@@ -4221,203 +3981,14 @@
     }
   },
   {
-    "id": "gallery-case-study-01",
-    "name": "Case Study Gallery",
-    "category": "content",
+    "id": "carousel-thumbnail-nav-01",
+    "name": "Thumbnail Nav Carousel",
+    "category": "gallery",
     "purpose": [
-      "gallery",
+      "products",
+      "showcase",
       "portfolio",
-      "showcase",
-      "story",
-      "stats"
-    ],
-    "acceptsStyleKit": {
-      "card": false,
-      "background": false,
-      "textDecoration": false,
-      "button": true
-    },
-    "style": [
-      "editorial",
-      "modern",
-      "corporate"
-    ],
-    "mood": [
-      "professional",
-      "trustworthy",
-      "elegant"
-    ],
-    "layout": "split",
-    "density": "low",
-    "imageWeight": 0.5,
-    "slots": [
-      {
-        "name": "eyebrow",
-        "type": "text",
-        "maxLength": 60,
-        "optional": true
-      },
-      {
-        "name": "title",
-        "type": "text",
-        "maxLength": 100
-      },
-      {
-        "name": "summary",
-        "type": "text",
-        "maxLength": 240
-      },
-      {
-        "name": "heroImage",
-        "type": "image",
-        "aspectRatio": "16:9"
-      },
-      {
-        "name": "heroImageAlt",
-        "type": "text",
-        "maxLength": 120
-      },
-      {
-        "name": "meta",
-        "type": "list",
-        "maxItems": 6,
-        "optional": true,
-        "itemSchema": {
-          "type": "object",
-          "fields": [
-            {
-              "name": "label",
-              "type": "text",
-              "maxLength": 20
-            },
-            {
-              "name": "value",
-              "type": "text",
-              "maxLength": 50
-            }
-          ]
-        }
-      },
-      {
-        "name": "chapters",
-        "type": "list",
-        "maxItems": 5,
-        "itemSchema": {
-          "type": "object",
-          "fields": [
-            {
-              "name": "label",
-              "type": "text",
-              "maxLength": 24
-            },
-            {
-              "name": "heading",
-              "type": "text",
-              "maxLength": 100
-            },
-            {
-              "name": "body",
-              "type": "text",
-              "maxLength": 600
-            },
-            {
-              "name": "image",
-              "type": "image",
-              "aspectRatio": "3:2",
-              "optional": true
-            },
-            {
-              "name": "imageAlt",
-              "type": "text",
-              "maxLength": 120,
-              "optional": true
-            }
-          ]
-        }
-      },
-      {
-        "name": "metrics",
-        "type": "list",
-        "maxItems": 4,
-        "optional": true,
-        "itemSchema": {
-          "type": "object",
-          "fields": [
-            {
-              "name": "value",
-              "type": "text",
-              "maxLength": 20
-            },
-            {
-              "name": "label",
-              "type": "text",
-              "maxLength": 80
-            }
-          ]
-        }
-      },
-      {
-        "name": "ctaText",
-        "type": "text",
-        "maxLength": 30,
-        "optional": true
-      },
-      {
-        "name": "ctaUrl",
-        "type": "url",
-        "optional": true
-      },
-      {
-        "name": "ctaVariant",
-        "type": "text",
-        "optional": true,
-        "enum": [
-          "default",
-          "slide",
-          "dotExpand",
-          "drawOutline",
-          "glow",
-          "arrow"
-        ]
-      },
-      {
-        "name": "ctaColorScheme",
-        "type": "text",
-        "optional": true,
-        "enum": [
-          "primary",
-          "secondary",
-          "accent",
-          "neutral"
-        ]
-      }
-    ],
-    "mobileBehavior": "stack",
-    "pairsWell": [
-      "hero-asymmetric-stack-01",
-      "testimonial-spotlight-quote-01",
-      "stats-count-up-01"
-    ],
-    "pairsPoorly": [
-      "gallery-masonry-01",
-      "gallery-portfolio-strip-01"
-    ],
-    "description": "Long-form case study with hero image, project meta strip, alternating zig-zag chapters (problem / approach / result), and an organic-numbers metric band. Generous editorial spacing throughout.",
-    "descriptions": {
-      "descriptive": "Hero image at 16:9 anchors a wide centered column. Below, an underlined meta strip lists client / role / year / team in mono caps. Three chapters alternate image-left then image-right at lg breakpoint and stack on mobile. A dark metric band lifts the outcomes in mono numerals — designed for organic numbers (47.2 percent, 3,847) rather than rounded vanity stats. Closing CTA is left-aligned to keep the editorial rhythm.",
-      "usage": "Use as a standalone case study page or as the centerpiece of a portfolio detail route. Place after a hero brand-statement and before related work or a closing CTA. Avoid pairing with a masonry or portfolio-strip gallery on the same page — those serve the index view, not the deep dive.",
-      "audienceFit": "B2B agencies showing client work, design studios with longer narratives, consultancies with quantified outcomes, internal-tool teams documenting transformation projects. Suits readers who want depth, not a gallery wall."
-    }
-  },
-  {
-    "id": "gallery-image-text-editorial-01",
-    "name": "Image-Text Editorial Gallery",
-    "category": "content",
-    "purpose": [
-      "gallery",
-      "story",
-      "showcase",
-      "portfolio"
+      "gallery"
     ],
     "acceptsStyleKit": {
       "card": false,
@@ -4426,63 +3997,69 @@
       "button": false
     },
     "style": [
-      "editorial",
       "modern",
-      "luxury"
+      "editorial",
+      "minimal"
     ],
     "mood": [
+      "professional",
       "elegant",
-      "calm",
       "trustworthy"
     ],
-    "layout": "split",
-    "density": "low",
-    "imageWeight": 0.55,
+    "layout": "stacked",
+    "density": "medium",
+    "imageWeight": 0.7,
     "slots": [
       {
         "name": "eyebrow",
         "type": "text",
-        "maxLength": 60,
-        "optional": true
+        "optional": true,
+        "maxLength": 40
       },
       {
         "name": "headline",
         "type": "text",
-        "maxLength": 100
+        "optional": true,
+        "maxLength": 80
       },
       {
         "name": "description",
         "type": "text",
-        "maxLength": 240,
+        "optional": true,
+        "maxLength": 200
+      },
+      {
+        "name": "aspectRatio",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "1:1",
+          "4:3",
+          "3:2",
+          "16:9"
+        ]
+      },
+      {
+        "name": "showArrows",
+        "type": "boolean",
         "optional": true
       },
       {
-        "name": "entries",
+        "name": "zoomHint",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "items",
         "type": "list",
-        "maxItems": 6,
+        "maxItems": 10,
         "itemSchema": {
           "type": "object",
           "fields": [
             {
-              "name": "label",
-              "type": "text",
-              "maxLength": 30,
-              "optional": true
-            },
-            {
-              "name": "heading",
-              "type": "text",
-              "maxLength": 100
-            },
-            {
-              "name": "body",
-              "type": "text",
-              "maxLength": 600
-            },
-            {
               "name": "image",
               "type": "image",
-              "aspectRatio": "4:5"
+              "aspectRatio": "4:3"
             },
             {
               "name": "imageAlt",
@@ -4490,22 +4067,16 @@
               "maxLength": 120
             },
             {
-              "name": "imageCaption",
-              "type": "text",
-              "maxLength": 120,
-              "optional": true
+              "name": "thumbnail",
+              "type": "image",
+              "optional": true,
+              "aspectRatio": "1:1"
             },
             {
-              "name": "imageAspect",
+              "name": "caption",
               "type": "text",
               "optional": true,
-              "enum": [
-                "4:5",
-                "3:4",
-                "1:1",
-                "3:2",
-                "16:9"
-              ]
+              "maxLength": 120
             }
           ]
         }
@@ -4513,20 +4084,17 @@
     ],
     "mobileBehavior": "stack",
     "pairsWell": [
-      "hero-bakery-editorial-01",
-      "testimonial-spotlight-quote-01",
-      "footer-mega-01"
+      "hero-split-image-01",
+      "stats-count-up-01"
     ],
     "pairsPoorly": [
-      "gallery-masonry-01",
-      "gallery-portfolio-strip-01",
-      "layout-zigzag-alternating-split-01"
+      "carousel-full-bleed-slider-01"
     ],
-    "description": "Magazine-style alternating image-and-caption spread. Each entry zig-zags the image side and applies a small vertical offset so the column drifts like an editorial layout. Serif headlines pair with sans-serif body.",
+    "description": "An e-commerce style image viewer with a primary stage and a thumbnail strip beneath. Visitors can drag, click thumbnails, or use keyboard arrows to advance — ideal for product detail pages, portfolio cases, and gallery walks where the same item is shown from multiple angles.",
     "descriptions": {
-      "descriptive": "A 12-column grid where the image takes 7 columns and the copy takes 5, alternating sides per entry. The image column carries a small translate-y offset (positive on reversed rows, negative on default rows) so the page drifts vertically and avoids the generic flush-row rhythm. A 1px hairline rule sits above each entry label, evoking magazine separators. Headings use the serif stack; body and labels stay in sans for contrast.",
-      "usage": "Use as the deep-narrative section on portfolio sites, brand storytelling pages, magazine archives, hospitality experience pages, and craft-led commerce. Place after a brand-statement hero. Avoid stacking with another zigzag layout (ZigzagAlternatingSplit) — they read as the same beat repeated.",
-      "audienceFit": "Editorial brands, hotels and restaurants, fashion houses with story-led marketing, longform-friendly portfolios, conferences with documented programming. Suits visitors who came to read, not to scan."
+      "descriptive": "A primary image stage on top with a horizontally-scrollable thumbnail strip below. Active thumbnails get a primary-colored ring and a shared-layout indicator that animates between selections. The main stage uses a directional spring transition, supports drag-to-advance, and exposes prev/next buttons over the image. A small monospace counter pill in the corner reinforces position.",
+      "usage": "Use to display the same subject from multiple angles, contexts, or stages — product detail pages, real-estate listings, portfolio case studies, before-and-after stages of a transformation. Avoid pairing with another image-heavy carousel on the same page.",
+      "audienceFit": "E-commerce stores, real-estate agencies, photographers, design portfolios, and any service business whose value is communicated through detailed visuals from multiple perspectives."
     }
   },
   {
@@ -4759,62 +4327,90 @@
     }
   },
   {
-    "id": "gallery-portfolio-strip-01",
-    "name": "Portfolio Strip Gallery",
-    "category": "gallery",
+    "id": "carousel-full-bleed-slider-01",
+    "name": "Full-Bleed Slider Carousel",
+    "category": "hero",
     "purpose": [
-      "gallery",
+      "hero",
+      "showcase",
       "portfolio",
-      "showcase"
+      "brand-statement",
+      "story"
     ],
     "acceptsStyleKit": {
       "card": false,
       "background": false,
       "textDecoration": false,
-      "button": false
+      "button": true
     },
     "style": [
-      "modern",
       "editorial",
-      "minimal"
+      "bold",
+      "modern",
+      "luxury"
     ],
     "mood": [
-      "professional",
+      "energetic",
       "elegant",
-      "energetic"
+      "professional",
+      "trustworthy"
     ],
-    "layout": "scroll",
-    "density": "medium",
-    "imageWeight": 0.7,
+    "layout": "stacked",
+    "density": "low",
+    "imageWeight": 0.9,
     "slots": [
       {
-        "name": "eyebrow",
+        "name": "captionAlignment",
         "type": "text",
-        "maxLength": 40,
+        "optional": true,
+        "enum": [
+          "bottom-left",
+          "bottom-center",
+          "center-left",
+          "center"
+        ]
+      },
+      {
+        "name": "height",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "short",
+          "tall",
+          "full"
+        ]
+      },
+      {
+        "name": "autoAdvanceMs",
+        "type": "number",
         "optional": true
       },
       {
-        "name": "headline",
-        "type": "text",
-        "maxLength": 100
+        "name": "showArrows",
+        "type": "boolean",
+        "optional": true
       },
       {
-        "name": "description",
-        "type": "text",
-        "maxLength": 220,
+        "name": "showDots",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "showPlayPause",
+        "type": "boolean",
         "optional": true
       },
       {
         "name": "items",
         "type": "list",
-        "maxItems": 12,
+        "maxItems": 8,
         "itemSchema": {
           "type": "object",
           "fields": [
             {
               "name": "image",
               "type": "image",
-              "aspectRatio": "3:4"
+              "aspectRatio": "16:9"
             },
             {
               "name": "imageAlt",
@@ -4822,24 +4418,31 @@
               "maxLength": 120
             },
             {
-              "name": "title",
+              "name": "eyebrow",
               "type": "text",
-              "maxLength": 60
+              "optional": true,
+              "maxLength": 40
             },
             {
-              "name": "subtitle",
+              "name": "headline",
               "type": "text",
-              "maxLength": 40,
-              "optional": true
+              "optional": true,
+              "maxLength": 100
             },
             {
-              "name": "discipline",
+              "name": "description",
               "type": "text",
-              "maxLength": 24,
-              "optional": true
+              "optional": true,
+              "maxLength": 240
             },
             {
-              "name": "href",
+              "name": "ctaText",
+              "type": "text",
+              "optional": true,
+              "maxLength": 30
+            },
+            {
+              "name": "ctaUrl",
               "type": "url",
               "optional": true
             }
@@ -4847,22 +4450,21 @@
         }
       }
     ],
-    "mobileBehavior": "scroll",
+    "mobileBehavior": "stack",
     "pairsWell": [
-      "hero-asymmetric-stack-01",
-      "hero-bakery-editorial-01",
       "stats-count-up-01",
+      "testimonial-spotlight-quote-01",
       "footer-mega-01"
     ],
     "pairsPoorly": [
-      "carousel-cards-01",
-      "gallery-masonry-01"
+      "carousel-thumbnail-nav-01",
+      "hero-video-backdrop-01"
     ],
-    "description": "Horizontal scroll-snap strip of 3:4 portrait cards. Hover surfaces a meta panel with title and subtitle; static labels stay visible below for clarity. Desktop adds prev/next chevron controls.",
+    "description": "An edge-to-edge image rotator with overlaid eyebrow, headline, description, and CTA per slide. Auto-advances with a progress-bar dot indicator and pauses on hover or focus. Designed to anchor a page as a hero replacement when the brand story spans multiple imagery beats.",
     "descriptions": {
-      "descriptive": "Cards size to roughly one-and-a-quarter visible per breakpoint so the next card always peeks in from the right, signalling the strip continues. Each card is a 3:4 portrait with an optional discipline chip top-left and a hover-revealed meta panel pinned to the bottom inset. Static title and subtitle live below the card so the strip remains scannable without hover (mobile, screen readers). Two circular chevron controls scroll programmatically on desktop; mobile relies on native swipe with snap-mandatory.",
-      "usage": "Use as the work index on portfolio sites, agency case-study lists, photographer client galleries, and product collection roll-ups. Pairs well with a brand-statement hero and a closing CTA. Avoid pairing with another horizontal-scroll component (carousel-cards, carousel-horizontal-scroll) — the duplicate scroll affordance confuses navigation.",
-      "audienceFit": "Design studios, agencies, photographers, illustrators, and creator-led shops where the work itself is the proof of value. Suits visitors who want to skim many projects fast, then click through to a deep dive."
+      "descriptive": "Full-bleed background image with a subtle neutral-toned gradient for caption legibility. Each slide carries its own eyebrow / headline / description / CTA; transitions are spring-animated with a soft scale-on-enter. Pagination dots double as a linear progress bar for the active slide; hover, focus, and an explicit pause button all halt the auto-advance.",
+      "usage": "Anchors a page as a hero replacement when there are multiple campaigns, projects, or stories to lead with. Works well for travel, hospitality, editorial, and product launch sites. Avoid stacking with a regular hero or another image-heavy carousel on the same page.",
+      "audienceFit": "Travel and hospitality brands, editorial and journalism sites, premium e-commerce launching seasonal collections, agencies leading with case work, and any brand whose story is carried by full-frame imagery."
     }
   },
   {
@@ -5140,8 +4742,7 @@
     ],
     "mobileBehavior": "stack",
     "pairsWell": [
-      "stats-count-up-01",
-      "carousel-cards-01"
+      "stats-count-up-01"
     ],
     "pairsPoorly": [
       "hero-split-image-01"

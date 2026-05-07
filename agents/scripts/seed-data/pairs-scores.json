@@ -1,13 +1,8 @@
 {
-  "generatedAt": "2026-05-07T16:57:49.730Z",
-  "componentCount": 61,
-  "pairCount": 1830,
+  "generatedAt": "2026-05-07T17:19:52.054Z",
+  "componentCount": 58,
+  "pairCount": 1653,
   "pairs": [
-    {
-      "a": "carousel-before-after-01",
-      "b": "carousel-cards-01",
-      "score": 0.37
-    },
     {
       "a": "carousel-before-after-01",
       "b": "carousel-full-bleed-slider-01",
@@ -145,11 +140,6 @@
     },
     {
       "a": "carousel-before-after-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.65
-    },
-    {
-      "a": "carousel-before-after-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.46
     },
@@ -201,11 +191,6 @@
     {
       "a": "carousel-before-after-01",
       "b": "layout-editorial-framed-split-01",
-      "score": 0.4
-    },
-    {
-      "a": "carousel-before-after-01",
-      "b": "layout-zigzag-alternating-split-01",
       "score": 0.4
     },
     {
@@ -304,301 +289,6 @@
       "score": 0.75
     },
     {
-      "a": "carousel-cards-01",
-      "b": "carousel-full-bleed-slider-01",
-      "score": 0.33
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "carousel-thumbnail-nav-01",
-      "score": 0.57
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "contact-booking-embed-01",
-      "score": 0.49
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "contact-chat-embed-01",
-      "score": 0.44
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "contact-locations-map-01",
-      "score": 0.54
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "contact-multi-step-01",
-      "score": 0.54
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "contact-shapes-form-01",
-      "score": 0.59
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "contact-split-form-01",
-      "score": 0.49
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "contact-support-tabs-01",
-      "score": 0.54
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "cta-dual-offer-split-01",
-      "score": 0.62
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "cta-hover-reveal-list-01",
-      "score": 0.46
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "cta-image-backdrop-01",
-      "score": 0.5
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "cta-inline-calculator-01",
-      "score": 0.61
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "cta-sticky-image-list-01",
-      "score": 0.52
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "cta-testimonial-paired-01",
-      "score": 0.62
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "cta-video-backdrop-01",
-      "score": 0.5
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "faq-categorized-01",
-      "score": 0.54
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "faq-solutions-01",
-      "score": 0.49
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "faq-tabbed-01",
-      "score": 0.43
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "footer-columns-social-01",
-      "score": 0.49
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "footer-mega-01",
-      "score": 0.52
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "footer-pulse-01",
-      "score": 0.49
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "footer-reveal-01",
-      "score": 0.49
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "gallery-case-study-01",
-      "score": 0.54
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "gallery-image-text-editorial-01",
-      "score": 0.44
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "gallery-lightbox-grid-01",
-      "score": 0.6
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "gallery-masonry-01",
-      "score": 0.58
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.59
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "hero-asymmetric-stack-01",
-      "score": 0.38
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "hero-bakery-editorial-01",
-      "score": 0.34
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "hero-device-chrome-01",
-      "score": 0.39
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "hero-grid-gallery-01",
-      "score": 0.36
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "hero-newsroom-ticker-01",
-      "score": 0.45
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "hero-polaroid-collage-01",
-      "score": 0.31
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "hero-split-form-01",
-      "score": 0.46
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "hero-split-image-01",
-      "score": 0.46
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "hero-video-backdrop-01",
-      "score": 0.32
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "layout-comparisonsplit-01",
-      "score": 0.45
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "layout-editorial-framed-split-01",
-      "score": 0.4
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.44
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "navbar-dock-01",
-      "score": 0.4
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "navbar-mega-panel-01",
-      "score": 0.41
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "navbar-pill-01",
-      "score": 0.45
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "navbar-sticky-01",
-      "score": 0.5
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "pricing-freemium-ladder-01",
-      "score": 0.47
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "pricing-monthly-annual-toggle-01",
-      "score": 0.47
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "pricing-single-price-01",
-      "score": 0.47
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "pricing-tier-cards-01",
-      "score": 0.5
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "stats-chart-01",
-      "score": 0.58
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "stats-count-up-01",
-      "score": 0.53
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "stats-kpi-grid-01",
-      "score": 0.53
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "team-founder-split-01",
-      "score": 0.59
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "team-leadership-grid-01",
-      "score": 0.58
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "team-member-spotlight-01",
-      "score": 0.59
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "testimonial-infinitescroll-01",
-      "score": 0.63
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "testimonial-masonry-quotes-01",
-      "score": 0.65
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "testimonial-metric-card-01",
-      "score": 0.7
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "testimonial-spotlight-quote-01",
-      "score": 0.69
-    },
-    {
-      "a": "carousel-cards-01",
-      "b": "testimonial-video-card-01",
-      "score": 0.65
-    },
-    {
       "a": "carousel-full-bleed-slider-01",
       "b": "carousel-thumbnail-nav-01",
       "score": 0.44
@@ -730,11 +420,6 @@
     },
     {
       "a": "carousel-full-bleed-slider-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.52
-    },
-    {
-      "a": "carousel-full-bleed-slider-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.51
     },
@@ -787,11 +472,6 @@
       "a": "carousel-full-bleed-slider-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.48
-    },
-    {
-      "a": "carousel-full-bleed-slider-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.52
     },
     {
       "a": "carousel-full-bleed-slider-01",
@@ -1015,11 +695,6 @@
     },
     {
       "a": "carousel-thumbnail-nav-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.5
-    },
-    {
-      "a": "carousel-thumbnail-nav-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.43
     },
@@ -1072,11 +747,6 @@
       "a": "carousel-thumbnail-nav-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.7
-    },
-    {
-      "a": "carousel-thumbnail-nav-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.68
     },
     {
       "a": "carousel-thumbnail-nav-01",
@@ -1295,11 +965,6 @@
     },
     {
       "a": "contact-booking-embed-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.36
-    },
-    {
-      "a": "contact-booking-embed-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.29
     },
@@ -1352,11 +1017,6 @@
       "a": "contact-booking-embed-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.25
-    },
-    {
-      "a": "contact-booking-embed-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.34
     },
     {
       "a": "contact-booking-embed-01",
@@ -1570,11 +1230,6 @@
     },
     {
       "a": "contact-chat-embed-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.36
-    },
-    {
-      "a": "contact-chat-embed-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.39
     },
@@ -1627,11 +1282,6 @@
       "a": "contact-chat-embed-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.25
-    },
-    {
-      "a": "contact-chat-embed-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.26
     },
     {
       "a": "contact-chat-embed-01",
@@ -1840,11 +1490,6 @@
     },
     {
       "a": "contact-locations-map-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.41
-    },
-    {
-      "a": "contact-locations-map-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.43
     },
@@ -1897,11 +1542,6 @@
       "a": "contact-locations-map-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.41
-    },
-    {
-      "a": "contact-locations-map-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.44
     },
     {
       "a": "contact-locations-map-01",
@@ -2105,11 +1745,6 @@
     },
     {
       "a": "contact-multi-step-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.36
-    },
-    {
-      "a": "contact-multi-step-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.34
     },
@@ -2162,11 +1797,6 @@
       "a": "contact-multi-step-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.3
-    },
-    {
-      "a": "contact-multi-step-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.34
     },
     {
       "a": "contact-multi-step-01",
@@ -2365,11 +1995,6 @@
     },
     {
       "a": "contact-shapes-form-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.36
-    },
-    {
-      "a": "contact-shapes-form-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.38
     },
@@ -2422,11 +2047,6 @@
       "a": "contact-shapes-form-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.3
-    },
-    {
-      "a": "contact-shapes-form-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.34
     },
     {
       "a": "contact-shapes-form-01",
@@ -2620,11 +2240,6 @@
     },
     {
       "a": "contact-split-form-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.36
-    },
-    {
-      "a": "contact-split-form-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.34
     },
@@ -2677,11 +2292,6 @@
       "a": "contact-split-form-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.3
-    },
-    {
-      "a": "contact-split-form-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.38
     },
     {
       "a": "contact-split-form-01",
@@ -2870,11 +2480,6 @@
     },
     {
       "a": "contact-support-tabs-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.36
-    },
-    {
-      "a": "contact-support-tabs-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.34
     },
@@ -2927,11 +2532,6 @@
       "a": "contact-support-tabs-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.3
-    },
-    {
-      "a": "contact-support-tabs-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.34
     },
     {
       "a": "contact-support-tabs-01",
@@ -3115,11 +2715,6 @@
     },
     {
       "a": "cta-dual-offer-split-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.44
-    },
-    {
-      "a": "cta-dual-offer-split-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.54
     },
@@ -3172,11 +2767,6 @@
       "a": "cta-dual-offer-split-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.46
-    },
-    {
-      "a": "cta-dual-offer-split-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.53
     },
     {
       "a": "cta-dual-offer-split-01",
@@ -3355,11 +2945,6 @@
     },
     {
       "a": "cta-hover-reveal-list-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.48
-    },
-    {
-      "a": "cta-hover-reveal-list-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.6
     },
@@ -3412,11 +2997,6 @@
       "a": "cta-hover-reveal-list-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.56
-    },
-    {
-      "a": "cta-hover-reveal-list-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.63
     },
     {
       "a": "cta-hover-reveal-list-01",
@@ -3590,11 +3170,6 @@
     },
     {
       "a": "cta-image-backdrop-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.48
-    },
-    {
-      "a": "cta-image-backdrop-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.58
     },
@@ -3647,11 +3222,6 @@
       "a": "cta-image-backdrop-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.56
-    },
-    {
-      "a": "cta-image-backdrop-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.6
     },
     {
       "a": "cta-image-backdrop-01",
@@ -3820,11 +3390,6 @@
     },
     {
       "a": "cta-inline-calculator-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.48
-    },
-    {
-      "a": "cta-inline-calculator-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.5
     },
@@ -3877,11 +3442,6 @@
       "a": "cta-inline-calculator-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.5
-    },
-    {
-      "a": "cta-inline-calculator-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.57
     },
     {
       "a": "cta-inline-calculator-01",
@@ -4045,11 +3605,6 @@
     },
     {
       "a": "cta-sticky-image-list-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.48
-    },
-    {
-      "a": "cta-sticky-image-list-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.6
     },
@@ -4102,11 +3657,6 @@
       "a": "cta-sticky-image-list-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.5
-    },
-    {
-      "a": "cta-sticky-image-list-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.57
     },
     {
       "a": "cta-sticky-image-list-01",
@@ -4265,11 +3815,6 @@
     },
     {
       "a": "cta-testimonial-paired-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.44
-    },
-    {
-      "a": "cta-testimonial-paired-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.54
     },
@@ -4322,11 +3867,6 @@
       "a": "cta-testimonial-paired-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.46
-    },
-    {
-      "a": "cta-testimonial-paired-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.53
     },
     {
       "a": "cta-testimonial-paired-01",
@@ -4480,11 +4020,6 @@
     },
     {
       "a": "cta-video-backdrop-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.53
-    },
-    {
-      "a": "cta-video-backdrop-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.63
     },
@@ -4536,11 +4071,6 @@
     {
       "a": "cta-video-backdrop-01",
       "b": "layout-editorial-framed-split-01",
-      "score": 0.56
-    },
-    {
-      "a": "cta-video-backdrop-01",
-      "b": "layout-zigzag-alternating-split-01",
       "score": 0.56
     },
     {
@@ -4690,11 +4220,6 @@
     },
     {
       "a": "faq-categorized-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.36
-    },
-    {
-      "a": "faq-categorized-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.38
     },
@@ -4747,11 +4272,6 @@
       "a": "faq-categorized-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.3
-    },
-    {
-      "a": "faq-categorized-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.38
     },
     {
       "a": "faq-categorized-01",
@@ -4895,11 +4415,6 @@
     },
     {
       "a": "faq-solutions-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.41
-    },
-    {
-      "a": "faq-solutions-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.46
     },
@@ -4951,11 +4466,6 @@
     {
       "a": "faq-solutions-01",
       "b": "layout-editorial-framed-split-01",
-      "score": 0.3
-    },
-    {
-      "a": "faq-solutions-01",
-      "b": "layout-zigzag-alternating-split-01",
       "score": 0.3
     },
     {
@@ -5095,11 +4605,6 @@
     },
     {
       "a": "faq-tabbed-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.36
-    },
-    {
-      "a": "faq-tabbed-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.34
     },
@@ -5152,11 +4657,6 @@
       "a": "faq-tabbed-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.36
-    },
-    {
-      "a": "faq-tabbed-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.44
     },
     {
       "a": "faq-tabbed-01",
@@ -5290,11 +4790,6 @@
     },
     {
       "a": "footer-columns-social-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.36
-    },
-    {
-      "a": "footer-columns-social-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.34
     },
@@ -5347,11 +4842,6 @@
       "a": "footer-columns-social-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.36
-    },
-    {
-      "a": "footer-columns-social-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.44
     },
     {
       "a": "footer-columns-social-01",
@@ -5480,11 +4970,6 @@
     },
     {
       "a": "footer-mega-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.42
-    },
-    {
-      "a": "footer-mega-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.38
     },
@@ -5537,11 +5022,6 @@
       "a": "footer-mega-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.4
-    },
-    {
-      "a": "footer-mega-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.48
     },
     {
       "a": "footer-mega-01",
@@ -5665,11 +5145,6 @@
     },
     {
       "a": "footer-pulse-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.46
-    },
-    {
-      "a": "footer-pulse-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.43
     },
@@ -5722,11 +5197,6 @@
       "a": "footer-pulse-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.46
-    },
-    {
-      "a": "footer-pulse-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.44
     },
     {
       "a": "footer-pulse-01",
@@ -5845,11 +5315,6 @@
     },
     {
       "a": "footer-reveal-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.46
-    },
-    {
-      "a": "footer-reveal-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.43
     },
@@ -5902,11 +5367,6 @@
       "a": "footer-reveal-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.48
-    },
-    {
-      "a": "footer-reveal-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.44
     },
     {
       "a": "footer-reveal-01",
@@ -6020,11 +5480,6 @@
     },
     {
       "a": "gallery-case-study-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.68
-    },
-    {
-      "a": "gallery-case-study-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.4
     },
@@ -6077,11 +5532,6 @@
       "a": "gallery-case-study-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.43
-    },
-    {
-      "a": "gallery-case-study-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.45
     },
     {
       "a": "gallery-case-study-01",
@@ -6190,11 +5640,6 @@
     },
     {
       "a": "gallery-image-text-editorial-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.63
-    },
-    {
-      "a": "gallery-image-text-editorial-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.42
     },
@@ -6247,11 +5692,6 @@
       "a": "gallery-image-text-editorial-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.38
-    },
-    {
-      "a": "gallery-image-text-editorial-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.4
     },
     {
       "a": "gallery-image-text-editorial-01",
@@ -6355,11 +5795,6 @@
     },
     {
       "a": "gallery-lightbox-grid-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.5
-    },
-    {
-      "a": "gallery-lightbox-grid-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.38
     },
@@ -6412,11 +5847,6 @@
       "a": "gallery-lightbox-grid-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.65
-    },
-    {
-      "a": "gallery-lightbox-grid-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.68
     },
     {
       "a": "gallery-lightbox-grid-01",
@@ -6515,11 +5945,6 @@
     },
     {
       "a": "gallery-masonry-01",
-      "b": "gallery-portfolio-strip-01",
-      "score": 0.41
-    },
-    {
-      "a": "gallery-masonry-01",
       "b": "hero-asymmetric-stack-01",
       "score": 0.4
     },
@@ -6572,11 +5997,6 @@
       "a": "gallery-masonry-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.54
-    },
-    {
-      "a": "gallery-masonry-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.56
     },
     {
       "a": "gallery-masonry-01",
@@ -6674,161 +6094,6 @@
       "score": 0.53
     },
     {
-      "a": "gallery-portfolio-strip-01",
-      "b": "hero-asymmetric-stack-01",
-      "score": 0.44
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "hero-bakery-editorial-01",
-      "score": 0.34
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "hero-device-chrome-01",
-      "score": 0.39
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "hero-grid-gallery-01",
-      "score": 0.46
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "hero-newsroom-ticker-01",
-      "score": 0.4
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "hero-polaroid-collage-01",
-      "score": 0.36
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "hero-split-form-01",
-      "score": 0.36
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "hero-split-image-01",
-      "score": 0.41
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "hero-video-backdrop-01",
-      "score": 0.43
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "layout-comparisonsplit-01",
-      "score": 0.6
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "layout-editorial-framed-split-01",
-      "score": 0.65
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.64
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "navbar-dock-01",
-      "score": 0.45
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "navbar-mega-panel-01",
-      "score": 0.36
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "navbar-pill-01",
-      "score": 0.5
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "navbar-sticky-01",
-      "score": 0.4
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "pricing-freemium-ladder-01",
-      "score": 0.5
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "pricing-monthly-annual-toggle-01",
-      "score": 0.54
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "pricing-single-price-01",
-      "score": 0.58
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "pricing-tier-cards-01",
-      "score": 0.53
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "stats-chart-01",
-      "score": 0.48
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "stats-count-up-01",
-      "score": 0.5
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "stats-kpi-grid-01",
-      "score": 0.48
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "team-founder-split-01",
-      "score": 0.67
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "team-leadership-grid-01",
-      "score": 0.66
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "team-member-spotlight-01",
-      "score": 0.67
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "testimonial-infinitescroll-01",
-      "score": 0.61
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "testimonial-masonry-quotes-01",
-      "score": 0.52
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "testimonial-metric-card-01",
-      "score": 0.52
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "testimonial-spotlight-quote-01",
-      "score": 0.61
-    },
-    {
-      "a": "gallery-portfolio-strip-01",
-      "b": "testimonial-video-card-01",
-      "score": 0.57
-    },
-    {
       "a": "hero-asymmetric-stack-01",
       "b": "hero-bakery-editorial-01",
       "score": 0.46
@@ -6877,11 +6142,6 @@
       "a": "hero-asymmetric-stack-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.47
-    },
-    {
-      "a": "hero-asymmetric-stack-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.48
     },
     {
       "a": "hero-asymmetric-stack-01",
@@ -7022,11 +6282,6 @@
       "a": "hero-bakery-editorial-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.38
-    },
-    {
-      "a": "hero-bakery-editorial-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.34
     },
     {
       "a": "hero-bakery-editorial-01",
@@ -7162,11 +6417,6 @@
       "a": "hero-device-chrome-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.37
-    },
-    {
-      "a": "hero-device-chrome-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.42
     },
     {
       "a": "hero-device-chrome-01",
@@ -7300,11 +6550,6 @@
     },
     {
       "a": "hero-grid-gallery-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.44
-    },
-    {
-      "a": "hero-grid-gallery-01",
       "b": "navbar-dock-01",
       "score": 0.69
     },
@@ -7430,11 +6675,6 @@
     },
     {
       "a": "hero-newsroom-ticker-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.48
-    },
-    {
-      "a": "hero-newsroom-ticker-01",
       "b": "navbar-dock-01",
       "score": 0.59
     },
@@ -7555,11 +6795,6 @@
     },
     {
       "a": "hero-polaroid-collage-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.37
-    },
-    {
-      "a": "hero-polaroid-collage-01",
       "b": "navbar-dock-01",
       "score": 0.74
     },
@@ -7672,11 +6907,6 @@
       "a": "hero-split-form-01",
       "b": "layout-editorial-framed-split-01",
       "score": 0.38
-    },
-    {
-      "a": "hero-split-form-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.42
     },
     {
       "a": "hero-split-form-01",
@@ -7790,11 +7020,6 @@
     },
     {
       "a": "hero-split-image-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.47
-    },
-    {
-      "a": "hero-split-image-01",
       "b": "navbar-dock-01",
       "score": 0.64
     },
@@ -7900,11 +7125,6 @@
     },
     {
       "a": "hero-video-backdrop-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.48
-    },
-    {
-      "a": "hero-video-backdrop-01",
       "b": "navbar-dock-01",
       "score": 0.63
     },
@@ -8005,11 +7225,6 @@
     },
     {
       "a": "layout-comparisonsplit-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.4
-    },
-    {
-      "a": "layout-comparisonsplit-01",
       "b": "navbar-dock-01",
       "score": 0.3
     },
@@ -8105,11 +7320,6 @@
     },
     {
       "a": "layout-editorial-framed-split-01",
-      "b": "layout-zigzag-alternating-split-01",
-      "score": 0.38
-    },
-    {
-      "a": "layout-editorial-framed-split-01",
       "b": "navbar-dock-01",
       "score": 0.35
     },
@@ -8200,101 +7410,6 @@
     },
     {
       "a": "layout-editorial-framed-split-01",
-      "b": "testimonial-video-card-01",
-      "score": 0.6
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "navbar-dock-01",
-      "score": 0.36
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "navbar-mega-panel-01",
-      "score": 0.4
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "navbar-pill-01",
-      "score": 0.48
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "navbar-sticky-01",
-      "score": 0.44
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "pricing-freemium-ladder-01",
-      "score": 0.4
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "pricing-monthly-annual-toggle-01",
-      "score": 0.48
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "pricing-single-price-01",
-      "score": 0.46
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "pricing-tier-cards-01",
-      "score": 0.52
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "stats-chart-01",
-      "score": 0.46
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "stats-count-up-01",
-      "score": 0.53
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "stats-kpi-grid-01",
-      "score": 0.52
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "team-founder-split-01",
-      "score": 0.54
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "team-leadership-grid-01",
-      "score": 0.63
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "team-member-spotlight-01",
-      "score": 0.54
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "testimonial-infinitescroll-01",
-      "score": 0.64
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "testimonial-masonry-quotes-01",
-      "score": 0.56
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "testimonial-metric-card-01",
-      "score": 0.64
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
-      "b": "testimonial-spotlight-quote-01",
-      "score": 0.62
-    },
-    {
-      "a": "layout-zigzag-alternating-split-01",
       "b": "testimonial-video-card-01",
       "score": 0.6
     },
