@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-05-07T18:01:57.829Z",
-  "componentCount": 58,
-  "pairCount": 1653,
+  "generatedAt": "2026-05-07T18:10:38.000Z",
+  "componentCount": 59,
+  "pairCount": 1711,
   "pairs": [
     {
       "a": "carousel-before-after-01",
@@ -232,6 +232,11 @@
       "a": "carousel-before-after-01",
       "b": "pricing-tier-cards-01",
       "score": 0.47
+    },
+    {
+      "a": "carousel-before-after-01",
+      "b": "products-category-grid-01",
+      "score": 0.64
     },
     {
       "a": "carousel-before-after-01",
@@ -515,6 +520,11 @@
     },
     {
       "a": "carousel-full-bleed-slider-01",
+      "b": "products-category-grid-01",
+      "score": 0.56
+    },
+    {
+      "a": "carousel-full-bleed-slider-01",
       "b": "stats-chart-01",
       "score": 0.48
     },
@@ -790,6 +800,11 @@
     },
     {
       "a": "carousel-thumbnail-nav-01",
+      "b": "products-category-grid-01",
+      "score": 0.68
+    },
+    {
+      "a": "carousel-thumbnail-nav-01",
       "b": "stats-chart-01",
       "score": 0.53
     },
@@ -1060,6 +1075,11 @@
     },
     {
       "a": "contact-booking-embed-01",
+      "b": "products-category-grid-01",
+      "score": 0.36
+    },
+    {
+      "a": "contact-booking-embed-01",
       "b": "stats-chart-01",
       "score": 0.58
     },
@@ -1325,6 +1345,11 @@
     },
     {
       "a": "contact-chat-embed-01",
+      "b": "products-category-grid-01",
+      "score": 0.36
+    },
+    {
+      "a": "contact-chat-embed-01",
       "b": "stats-chart-01",
       "score": 0.53
     },
@@ -1585,6 +1610,11 @@
     },
     {
       "a": "contact-locations-map-01",
+      "b": "products-category-grid-01",
+      "score": 0.34
+    },
+    {
+      "a": "contact-locations-map-01",
       "b": "stats-chart-01",
       "score": 0.74
     },
@@ -1840,6 +1870,11 @@
     },
     {
       "a": "contact-multi-step-01",
+      "b": "products-category-grid-01",
+      "score": 0.4
+    },
+    {
+      "a": "contact-multi-step-01",
       "b": "stats-chart-01",
       "score": 0.63
     },
@@ -2090,6 +2125,11 @@
     },
     {
       "a": "contact-shapes-form-01",
+      "b": "products-category-grid-01",
+      "score": 0.4
+    },
+    {
+      "a": "contact-shapes-form-01",
       "b": "stats-chart-01",
       "score": 0.68
     },
@@ -2335,6 +2375,11 @@
     },
     {
       "a": "contact-split-form-01",
+      "b": "products-category-grid-01",
+      "score": 0.36
+    },
+    {
+      "a": "contact-split-form-01",
       "b": "stats-chart-01",
       "score": 0.63
     },
@@ -2575,6 +2620,11 @@
     },
     {
       "a": "contact-support-tabs-01",
+      "b": "products-category-grid-01",
+      "score": 0.4
+    },
+    {
+      "a": "contact-support-tabs-01",
       "b": "stats-chart-01",
       "score": 0.63
     },
@@ -2810,6 +2860,11 @@
     },
     {
       "a": "cta-dual-offer-split-01",
+      "b": "products-category-grid-01",
+      "score": 0.44
+    },
+    {
+      "a": "cta-dual-offer-split-01",
       "b": "stats-chart-01",
       "score": 0.52
     },
@@ -3040,6 +3095,11 @@
     },
     {
       "a": "cta-hover-reveal-list-01",
+      "b": "products-category-grid-01",
+      "score": 0.53
+    },
+    {
+      "a": "cta-hover-reveal-list-01",
       "b": "stats-chart-01",
       "score": 0.48
     },
@@ -3265,6 +3325,11 @@
     },
     {
       "a": "cta-image-backdrop-01",
+      "b": "products-category-grid-01",
+      "score": 0.48
+    },
+    {
+      "a": "cta-image-backdrop-01",
       "b": "stats-chart-01",
       "score": 0.48
     },
@@ -3485,6 +3550,11 @@
     },
     {
       "a": "cta-inline-calculator-01",
+      "b": "products-category-grid-01",
+      "score": 0.48
+    },
+    {
+      "a": "cta-inline-calculator-01",
       "b": "stats-chart-01",
       "score": 0.43
     },
@@ -3700,6 +3770,11 @@
     },
     {
       "a": "cta-sticky-image-list-01",
+      "b": "products-category-grid-01",
+      "score": 0.53
+    },
+    {
+      "a": "cta-sticky-image-list-01",
       "b": "stats-chart-01",
       "score": 0.42
     },
@@ -3910,6 +3985,11 @@
     },
     {
       "a": "cta-testimonial-paired-01",
+      "b": "products-category-grid-01",
+      "score": 0.44
+    },
+    {
+      "a": "cta-testimonial-paired-01",
       "b": "stats-chart-01",
       "score": 0.52
     },
@@ -4115,6 +4195,11 @@
     },
     {
       "a": "cta-video-backdrop-01",
+      "b": "products-category-grid-01",
+      "score": 0.52
+    },
+    {
+      "a": "cta-video-backdrop-01",
       "b": "stats-chart-01",
       "score": 0.48
     },
@@ -4315,6 +4400,11 @@
     },
     {
       "a": "faq-categorized-01",
+      "b": "products-category-grid-01",
+      "score": 0.36
+    },
+    {
+      "a": "faq-categorized-01",
       "b": "stats-chart-01",
       "score": 0.68
     },
@@ -4510,6 +4600,11 @@
     },
     {
       "a": "faq-solutions-01",
+      "b": "products-category-grid-01",
+      "score": 0.4
+    },
+    {
+      "a": "faq-solutions-01",
       "b": "stats-chart-01",
       "score": 0.63
     },
@@ -4700,6 +4795,11 @@
     },
     {
       "a": "faq-tabbed-01",
+      "b": "products-category-grid-01",
+      "score": 0.36
+    },
+    {
+      "a": "faq-tabbed-01",
       "b": "stats-chart-01",
       "score": 0.69
     },
@@ -4885,6 +4985,11 @@
     },
     {
       "a": "footer-columns-social-01",
+      "b": "products-category-grid-01",
+      "score": 0.38
+    },
+    {
+      "a": "footer-columns-social-01",
       "b": "stats-chart-01",
       "score": 0.61
     },
@@ -5065,6 +5170,11 @@
     },
     {
       "a": "footer-mega-01",
+      "b": "products-category-grid-01",
+      "score": 0.42
+    },
+    {
+      "a": "footer-mega-01",
       "b": "stats-chart-01",
       "score": 0.62
     },
@@ -5240,6 +5350,11 @@
     },
     {
       "a": "footer-pulse-01",
+      "b": "products-category-grid-01",
+      "score": 0.44
+    },
+    {
+      "a": "footer-pulse-01",
       "b": "stats-chart-01",
       "score": 0.61
     },
@@ -5410,6 +5525,11 @@
     },
     {
       "a": "footer-reveal-01",
+      "b": "products-category-grid-01",
+      "score": 0.44
+    },
+    {
+      "a": "footer-reveal-01",
       "b": "stats-chart-01",
       "score": 0.61
     },
@@ -5575,6 +5695,11 @@
     },
     {
       "a": "gallery-case-study-01",
+      "b": "products-category-grid-01",
+      "score": 0.68
+    },
+    {
+      "a": "gallery-case-study-01",
       "b": "stats-chart-01",
       "score": 0.52
     },
@@ -5735,6 +5860,11 @@
     },
     {
       "a": "gallery-image-text-editorial-01",
+      "b": "products-category-grid-01",
+      "score": 0.64
+    },
+    {
+      "a": "gallery-image-text-editorial-01",
       "b": "stats-chart-01",
       "score": 0.42
     },
@@ -5890,6 +6020,11 @@
     },
     {
       "a": "gallery-lightbox-grid-01",
+      "b": "products-category-grid-01",
+      "score": 0.56
+    },
+    {
+      "a": "gallery-lightbox-grid-01",
       "b": "stats-chart-01",
       "score": 0.48
     },
@@ -6040,6 +6175,11 @@
     },
     {
       "a": "gallery-masonry-01",
+      "b": "products-category-grid-01",
+      "score": 0.62
+    },
+    {
+      "a": "gallery-masonry-01",
       "b": "stats-chart-01",
       "score": 0.41
     },
@@ -6185,6 +6325,11 @@
     },
     {
       "a": "hero-asymmetric-stack-01",
+      "b": "products-category-grid-01",
+      "score": 0.52
+    },
+    {
+      "a": "hero-asymmetric-stack-01",
       "b": "stats-chart-01",
       "score": 0.46
     },
@@ -6325,6 +6470,11 @@
     },
     {
       "a": "hero-bakery-editorial-01",
+      "b": "products-category-grid-01",
+      "score": 0.49
+    },
+    {
+      "a": "hero-bakery-editorial-01",
       "b": "stats-chart-01",
       "score": 0.35
     },
@@ -6460,6 +6610,11 @@
     },
     {
       "a": "hero-device-chrome-01",
+      "b": "products-category-grid-01",
+      "score": 0.48
+    },
+    {
+      "a": "hero-device-chrome-01",
       "b": "stats-chart-01",
       "score": 0.44
     },
@@ -6590,6 +6745,11 @@
     },
     {
       "a": "hero-grid-gallery-01",
+      "b": "products-category-grid-01",
+      "score": 0.49
+    },
+    {
+      "a": "hero-grid-gallery-01",
       "b": "stats-chart-01",
       "score": 0.48
     },
@@ -6715,6 +6875,11 @@
     },
     {
       "a": "hero-newsroom-ticker-01",
+      "b": "products-category-grid-01",
+      "score": 0.48
+    },
+    {
+      "a": "hero-newsroom-ticker-01",
       "b": "stats-chart-01",
       "score": 0.54
     },
@@ -6835,6 +7000,11 @@
     },
     {
       "a": "hero-polaroid-collage-01",
+      "b": "products-category-grid-01",
+      "score": 0.4
+    },
+    {
+      "a": "hero-polaroid-collage-01",
       "b": "stats-chart-01",
       "score": 0.38
     },
@@ -6950,6 +7120,11 @@
     },
     {
       "a": "hero-split-form-01",
+      "b": "products-category-grid-01",
+      "score": 0.48
+    },
+    {
+      "a": "hero-split-form-01",
       "b": "stats-chart-01",
       "score": 0.47
     },
@@ -7060,6 +7235,11 @@
     },
     {
       "a": "hero-split-image-01",
+      "b": "products-category-grid-01",
+      "score": 0.49
+    },
+    {
+      "a": "hero-split-image-01",
       "b": "stats-chart-01",
       "score": 0.54
     },
@@ -7165,6 +7345,11 @@
     },
     {
       "a": "hero-video-backdrop-01",
+      "b": "products-category-grid-01",
+      "score": 0.52
+    },
+    {
+      "a": "hero-video-backdrop-01",
       "b": "stats-chart-01",
       "score": 0.46
     },
@@ -7265,6 +7450,11 @@
     },
     {
       "a": "layout-comparisonsplit-01",
+      "b": "products-category-grid-01",
+      "score": 0.6
+    },
+    {
+      "a": "layout-comparisonsplit-01",
       "b": "stats-chart-01",
       "score": 0.47
     },
@@ -7360,6 +7550,11 @@
     },
     {
       "a": "layout-editorial-framed-split-01",
+      "b": "products-category-grid-01",
+      "score": 0.64
+    },
+    {
+      "a": "layout-editorial-framed-split-01",
       "b": "stats-chart-01",
       "score": 0.42
     },
@@ -7450,6 +7645,11 @@
     },
     {
       "a": "navbar-dock-01",
+      "b": "products-category-grid-01",
+      "score": 0.48
+    },
+    {
+      "a": "navbar-dock-01",
       "b": "stats-chart-01",
       "score": 0.43
     },
@@ -7535,6 +7735,11 @@
     },
     {
       "a": "navbar-mega-panel-01",
+      "b": "products-category-grid-01",
+      "score": 0.44
+    },
+    {
+      "a": "navbar-mega-panel-01",
       "b": "stats-chart-01",
       "score": 0.58
     },
@@ -7615,6 +7820,11 @@
     },
     {
       "a": "navbar-pill-01",
+      "b": "products-category-grid-01",
+      "score": 0.56
+    },
+    {
+      "a": "navbar-pill-01",
       "b": "stats-chart-01",
       "score": 0.53
     },
@@ -7690,6 +7900,11 @@
     },
     {
       "a": "navbar-sticky-01",
+      "b": "products-category-grid-01",
+      "score": 0.52
+    },
+    {
+      "a": "navbar-sticky-01",
       "b": "stats-chart-01",
       "score": 0.53
     },
@@ -7760,6 +7975,11 @@
     },
     {
       "a": "pricing-freemium-ladder-01",
+      "b": "products-category-grid-01",
+      "score": 0.4
+    },
+    {
+      "a": "pricing-freemium-ladder-01",
       "b": "stats-chart-01",
       "score": 0.54
     },
@@ -7825,6 +8045,11 @@
     },
     {
       "a": "pricing-monthly-annual-toggle-01",
+      "b": "products-category-grid-01",
+      "score": 0.28
+    },
+    {
+      "a": "pricing-monthly-annual-toggle-01",
       "b": "stats-chart-01",
       "score": 0.59
     },
@@ -7885,6 +8110,11 @@
     },
     {
       "a": "pricing-single-price-01",
+      "b": "products-category-grid-01",
+      "score": 0.44
+    },
+    {
+      "a": "pricing-single-price-01",
       "b": "stats-chart-01",
       "score": 0.52
     },
@@ -7940,6 +8170,11 @@
     },
     {
       "a": "pricing-tier-cards-01",
+      "b": "products-category-grid-01",
+      "score": 0.32
+    },
+    {
+      "a": "pricing-tier-cards-01",
       "b": "stats-chart-01",
       "score": 0.67
     },
@@ -7992,6 +8227,61 @@
       "a": "pricing-tier-cards-01",
       "b": "testimonial-video-card-01",
       "score": 0.33
+    },
+    {
+      "a": "products-category-grid-01",
+      "b": "stats-chart-01",
+      "score": 0.48
+    },
+    {
+      "a": "products-category-grid-01",
+      "b": "stats-count-up-01",
+      "score": 0.48
+    },
+    {
+      "a": "products-category-grid-01",
+      "b": "stats-kpi-grid-01",
+      "score": 0.42
+    },
+    {
+      "a": "products-category-grid-01",
+      "b": "team-founder-split-01",
+      "score": 0.6
+    },
+    {
+      "a": "products-category-grid-01",
+      "b": "team-leadership-grid-01",
+      "score": 0.53
+    },
+    {
+      "a": "products-category-grid-01",
+      "b": "team-member-spotlight-01",
+      "score": 0.64
+    },
+    {
+      "a": "products-category-grid-01",
+      "b": "testimonial-infinitescroll-01",
+      "score": 0.6
+    },
+    {
+      "a": "products-category-grid-01",
+      "b": "testimonial-masonry-quotes-01",
+      "score": 0.56
+    },
+    {
+      "a": "products-category-grid-01",
+      "b": "testimonial-metric-card-01",
+      "score": 0.46
+    },
+    {
+      "a": "products-category-grid-01",
+      "b": "testimonial-spotlight-quote-01",
+      "score": 0.6
+    },
+    {
+      "a": "products-category-grid-01",
+      "b": "testimonial-video-card-01",
+      "score": 0.5
     },
     {
       "a": "stats-chart-01",
