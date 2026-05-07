@@ -1,7 +1,7 @@
 {
   "id": "gallery-case-study-01",
   "name": "Case Study Gallery",
-  "category": "gallery",
+  "category": "content",
   "purpose": ["gallery", "portfolio", "showcase", "story", "stats"],
   "acceptsStyleKit": {
     "card": false,

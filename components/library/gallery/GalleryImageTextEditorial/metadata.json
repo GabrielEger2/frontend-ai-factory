@@ -1,7 +1,7 @@
 {
   "id": "gallery-image-text-editorial-01",
   "name": "Image-Text Editorial Gallery",
-  "category": "gallery",
+  "category": "content",
   "purpose": ["gallery", "story", "showcase", "portfolio"],
   "acceptsStyleKit": {
     "card": false,
