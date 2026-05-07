@@ -518,6 +518,14 @@ async function main(): Promise<void> {
 
   const moodTags = (STYLE_OUTPUT.mood ?? []).join(", ");
 
+  const skeleton: Skeleton =
+    captureMode && captureSlug
+      ? await resolveSkeletonForCapture(captureSlug, queryText, STYLE_OUTPUT, {
+          offline: offlineMode,
+          replan: replanMode,
+        })
+      : DEFAULT_SKELETON;
+
   const newFixtureLines: object[] = [];
 
   const axes = ["descriptive", "usage", "audienceFit"] as const;
@@ -527,12 +535,8 @@ async function main(): Promise<void> {
   // see real prior picks (mirrors the handler's greedy loop).
   const pickedCandidates: CandidateComponent[] = [];
 
-  for (
-    let skeletonIdx = 0;
-    skeletonIdx < DEFAULT_SKELETON.length;
-    skeletonIdx++
-  ) {
-    const slot = DEFAULT_SKELETON[skeletonIdx];
+  for (let skeletonIdx = 0; skeletonIdx < skeleton.length; skeletonIdx++) {
+    const slot = skeleton[skeletonIdx];
     if (captureMode && slot.category === "navigation") continue;
     // Mirrors agents/composer/handler.ts:564 phrasing exactly so debug runs
     // produce the same embeddings the production composer would.
@@ -740,10 +744,14 @@ async function main(): Promise<void> {
   }
 
   if (captureMode && fixturePath) {
+    const transplanted = transplantLabels(fixturePath, newFixtureLines);
     fs.writeFileSync(
       fixturePath,
-      newFixtureLines.map((l) => JSON.stringify(l)).join("\n") + "\n",
+      transplanted.map((l) => JSON.stringify(l)).join("\n") + "\n",
       "utf-8",
+    );
+    console.log(
+      `[capture] wrote ${transplanted.length} fixture lines → ${fixturePath}`,
     );
   }
 }
