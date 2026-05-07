@@ -1,0 +1,35 @@
+[
+  {
+    "category": "navigation",
+    "purpose": "showcase brand name and collection navigation"
+  },
+  {
+    "category": "hero",
+    "purpose": "introduce artisanal fashion atelier with exclusive pieces",
+    "notes": "elegant editorial imagery showcasing unique designs"
+  },
+  {
+    "category": "content",
+    "purpose": "tell the story of handcrafted fashion and artistic vision",
+    "notes": "emphasize creative process and exclusivity"
+  },
+  {
+    "category": "gallery",
+    "purpose": "showcase signature pieces and design collections",
+    "notes": "high-fashion editorial style photography"
+  },
+  {
+    "category": "testimonial",
+    "purpose": "social proof from fashion-conscious clients",
+    "notes": "elegant presentation of customer experiences"
+  },
+  {
+    "category": "contact",
+    "purpose": "connect with clients for custom pieces and atelier visits",
+    "notes": "boutique appointment booking and consultation"
+  },
+  {
+    "category": "footer",
+    "purpose": "atelier information and social media links"
+  }
+]
