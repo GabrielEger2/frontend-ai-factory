@@ -15,7 +15,12 @@ import {
 } from "lucide-react";
 import { createProject } from "@/lib/actions/create-project";
 import { SUPPORTED_SEGMENTS, SEGMENT_LABELS } from "@/types/project";
-import { TONE_KEYWORDS, OBJECTIVES } from "@/lib/constants";
+import {
+  TONE_KEYWORDS,
+  OBJECTIVES,
+  COMPANY_SIZES,
+  type CompanySize,
+} from "@/lib/constants";
 import { selectableCategories } from "@/lib/manifest-utils";
 import { FormProgressSidebar } from "./_components/FormProgressSidebar";
 
@@ -282,6 +287,9 @@ export default function NewProjectPage() {
   // Company basics
   const [companyName, setCompanyName] = useState("");
   const [segment, setSegment] = useState("");
+  const [niche, setNiche] = useState("");
+  const [region, setRegion] = useState("");
+  const [companySize, setCompanySize] = useState<CompanySize | "">("");
   const [pageType, setPageType] = useState<
     "landing" | "store" | "portfolio" | "services" | "about" | ""
   >("");
@@ -505,6 +513,9 @@ export default function NewProjectPage() {
       const result = await createProject({
         companyName,
         segment,
+        niche: niche.trim() || undefined,
+        region: region.trim() || undefined,
+        companySize: companySize || undefined,
         pageType: pageType || undefined,
         description,
         brandColor: hasBrandColor ? brandColor : undefined,
@@ -598,6 +609,58 @@ export default function NewProjectPage() {
                   {SUPPORTED_SEGMENTS.map((seg) => (
                     <option key={seg} value={seg}>
                       {SEGMENT_LABELS[seg] ?? seg}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="niche" className={labelClasses}>
+                  Niche
+                </label>
+                <input
+                  id="niche"
+                  type="text"
+                  value={niche}
+                  onChange={(e) => setNiche(e.target.value)}
+                  placeholder="e.g. artisan bakery, enterprise SaaS"
+                  className={inputClasses}
+                />
+                <p className="text-xs text-slate-500 mt-1">
+                  More specific than segment. Optional.
+                </p>
+              </div>
+
+              <div>
+                <label htmlFor="region" className={labelClasses}>
+                  Region
+                </label>
+                <input
+                  id="region"
+                  type="text"
+                  value={region}
+                  onChange={(e) => setRegion(e.target.value)}
+                  placeholder="e.g. São Paulo, SP"
+                  className={inputClasses}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="companySize" className={labelClasses}>
+                  Company size
+                </label>
+                <select
+                  id="companySize"
+                  value={companySize}
+                  onChange={(e) =>
+                    setCompanySize(e.target.value as CompanySize | "")
+                  }
+                  className={inputClasses}
+                >
+                  <option value="">Select a company size...</option>
+                  {COMPANY_SIZES.map((size) => (
+                    <option key={size} value={size}>
+                      {size}
                     </option>
                   ))}
                 </select>
