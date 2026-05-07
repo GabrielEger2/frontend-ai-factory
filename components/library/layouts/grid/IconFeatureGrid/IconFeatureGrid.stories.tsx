@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import IconFeatureGrid from "./index";
 
 const meta: Meta<typeof IconFeatureGrid> = {
-  title: "Layouts/Grid/IconFeatureGrid",
+  title: "Layout/Grid/IconFeatureGrid",
   component: IconFeatureGrid,
   parameters: { layout: "fullscreen" },
   argTypes: {

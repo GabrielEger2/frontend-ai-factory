@@ -79,6 +79,7 @@ export { default as SimpleGrid } from "./layouts/grid/SimpleGrid";
 
 // Layouts — split
 export { default as AuthorSplit } from "./layouts/split/AuthorSplit";
+export { default as ComparisonSplit } from "./layouts/split/ComparisonSplit";
 export { default as EditorialFramedSplit } from "./layouts/split/EditorialFramedSplit";
 export { default as IconListSplit } from "./layouts/split/IconListSplit";
 export { default as ImageText } from "./layouts/split/ImageText";
@@ -184,6 +185,7 @@ import PricingTiers from "./layouts/grid/PricingTiers";
 import ProcessTimeline from "./layouts/grid/ProcessTimeline";
 import SimpleGrid from "./layouts/grid/SimpleGrid";
 import AuthorSplit from "./layouts/split/AuthorSplit";
+import ComparisonSplit from "./layouts/split/ComparisonSplit";
 import EditorialFramedSplit from "./layouts/split/EditorialFramedSplit";
 import IconListSplit from "./layouts/split/IconListSplit";
 import ImageText from "./layouts/split/ImageText";
@@ -236,14 +238,14 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "carousel-thumbnail-nav-01": CarouselThumbnailNav,
   "contact-booking-embed-01": ContactBookingEmbed,
   "contact-chat-embed-01": ContactChatEmbed,
-  "contact-contact-locations-map-01": ContactLocationsMap,
-  "contact-contact-shapes-form-01": ContactShapesForm,
+  "contact-locations-map-01": ContactLocationsMap,
+  "contact-shapes-form-01": ContactShapesForm,
   "contact-multi-step-01": ContactMultiStep,
   "contact-split-form-01": ContactSplitForm,
   "contact-support-tabs-01": ContactSupportTabs,
   "cta-countdown-01": CtaCountdown,
-  "cta-cta-collage-duo-01": CtaCollageDuo,
-  "cta-cta-editorial-split-01": CtaEditorialSplit,
+  "cta-collage-duo-01": CtaCollageDuo,
+  "cta-editorial-split-01": CtaEditorialSplit,
   "cta-dual-offer-split-01": CtaDualOfferSplit,
   "cta-image-backdrop-01": CtaImageBackdrop,
   "cta-minimal-strip-01": CtaMinimalStrip,
@@ -280,13 +282,14 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "layout-pricing-tiers-01": PricingTiers,
   "layout-process-timeline-01": ProcessTimeline,
   "layout-simplegrid-01": SimpleGrid,
-  "layout-staggerfan-01": StaggerFan,
-  "layout-infinitescroll-01": InfiniteScroll,
+  "testimonial-staggerfan-01": StaggerFan,
+  "testimonial-infinitescroll-01": InfiniteScroll,
   "layout-authorsplit-01": AuthorSplit,
+  "layout-comparisonsplit-01": ComparisonSplit,
   "layout-editorial-framed-split-01": EditorialFramedSplit,
   "layout-iconlistsplit-01": IconListSplit,
   "layout-imagetext-01": ImageText,
-  "layout-stackedsplit-01": StackedSplit,
+  "testimonial-stackedsplit-01": StackedSplit,
   "layout-statementsplit-01": StatementSplit,
   "motion-marquee-01": MotionMarquee,
   "pricing-comparison-table-01": PricingComparisonTable,

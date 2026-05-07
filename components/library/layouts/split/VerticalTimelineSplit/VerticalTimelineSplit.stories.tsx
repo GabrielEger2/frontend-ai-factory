@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import VerticalTimelineSplit from "./index";
 
 const meta: Meta<typeof VerticalTimelineSplit> = {
-  title: "Layouts/Split/VerticalTimelineSplit",
+  title: "Layout/Split/VerticalTimelineSplit",
   component: VerticalTimelineSplit,
   parameters: {
     layout: "fullscreen",

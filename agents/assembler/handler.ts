@@ -86,7 +86,7 @@ const BUYER_FIELD_TO_SLOT: Record<string, Record<string, SlotMapping>> = {
     hoursText: { field: "businessHours", transform: "verbatim" },
     socialLinks: { field: "socialLinks", transform: "social" },
   },
-  "contact-contact-locations-map-01": {
+  "contact-locations-map-01": {
     address: { field: "address", transform: "verbatim" },
     phone: { field: "phone", transform: "verbatim" },
     email: { field: "email", transform: "verbatim" },

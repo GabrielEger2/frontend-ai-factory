@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import HeroNewsroomTicker from "./index";
 
 const meta: Meta<typeof HeroNewsroomTicker> = {
-  title: "Heroes/HeroNewsroomTicker",
+  title: "Hero/HeroNewsroomTicker",
   component: HeroNewsroomTicker,
   parameters: { layout: "fullscreen" },
   argTypes: {

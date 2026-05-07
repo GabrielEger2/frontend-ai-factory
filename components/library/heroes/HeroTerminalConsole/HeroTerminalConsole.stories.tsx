@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import HeroTerminalConsole from "./index";
 
 const meta: Meta<typeof HeroTerminalConsole> = {
-  title: "Heroes/HeroTerminalConsole",
+  title: "Hero/HeroTerminalConsole",
   component: HeroTerminalConsole,
   parameters: { layout: "fullscreen" },
   argTypes: {

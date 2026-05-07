@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import HeroSplitImage from "./index";
 
 const meta: Meta<typeof HeroSplitImage> = {
-  title: "Heroes/HeroSplitImage",
+  title: "Hero/HeroSplitImage",
   component: HeroSplitImage,
   parameters: {
     layout: "fullscreen",

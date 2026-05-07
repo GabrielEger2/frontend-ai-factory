@@ -18,7 +18,7 @@ const HaloLogo = () => (
 );
 
 const meta: Meta<typeof FooterPulse> = {
-  title: "Footers/FooterPulse",
+  title: "Footer/FooterPulse",
   component: FooterPulse,
   parameters: { layout: "fullscreen" },
   argTypes: {

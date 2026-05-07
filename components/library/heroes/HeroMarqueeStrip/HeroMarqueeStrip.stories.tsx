@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import HeroMarqueeStrip from "./index";
 
 const meta: Meta<typeof HeroMarqueeStrip> = {
-  title: "Heroes/HeroMarqueeStrip",
+  title: "Hero/HeroMarqueeStrip",
   component: HeroMarqueeStrip,
   parameters: { layout: "fullscreen" },
   argTypes: {

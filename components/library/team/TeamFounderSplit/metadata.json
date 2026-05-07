@@ -74,7 +74,7 @@
     "hero-spotlight-center-01",
     "team-leadership-grid-01",
     "testimonial-spotlight-quote-01",
-    "cta-cta-editorial-split-01"
+    "cta-editorial-split-01"
   ],
   "pairsPoorly": ["layout-authorsplit-01", "layout-statementsplit-01"],
   "description": "Editorial single-founder split. Tall 4:5 portrait beside an extended multi-paragraph bio, optional signature image, credential chips, primary and secondary CTAs. Portrait can swap sides via portraitSide.",

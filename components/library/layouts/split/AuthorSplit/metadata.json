@@ -2,23 +2,12 @@
   "id": "layout-authorsplit-01",
   "name": "Author Split",
   "category": "layout/split",
-  "style": [
-    "editorial",
-    "modern",
-    "minimal"
-  ],
-  "mood": [
-    "professional",
-    "friendly",
-    "elegant"
-  ],
+  "style": ["editorial", "modern", "minimal"],
+  "mood": ["professional", "friendly", "elegant"],
   "layout": "split",
   "density": "low",
   "imageWeight": 0.2,
-  "purpose": [
-    "about",
-    "team"
-  ],
+  "purpose": ["about", "team"],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
@@ -78,13 +67,11 @@
   "mobileBehavior": "stack",
   "pairsWell": [
     "hero-geometric-01",
-    "layout-infinitescroll-01",
+    "testimonial-infinitescroll-01",
     "layout-simplegrid-01",
     "stats-count-up-01"
   ],
-  "pairsPoorly": [
-    "layout-statementsplit-01"
-  ],
+  "pairsPoorly": ["layout-statementsplit-01"],
   "description": "A clean split-layout component that pairs professional headshots with biographical content, perfect for editorial sites, consulting firms, and creative agencies showcasing their team or founder stories.",
   "descriptions": {
     "descriptive": "Clean two-column layout with generous white space and editorial typography. Features author headshot alongside biographical content in a balanced, asymmetrical composition. Minimal styling with sophisticated font hierarchy creates an elegant, magazine-like aesthetic that feels both modern and timeless.",

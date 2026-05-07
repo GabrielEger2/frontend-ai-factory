@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import HeroSpotlightCenter from "./index";
 
 const meta: Meta<typeof HeroSpotlightCenter> = {
-  title: "Heroes/HeroSpotlightCenter",
+  title: "Hero/HeroSpotlightCenter",
   component: HeroSpotlightCenter,
   parameters: { layout: "fullscreen" },
   argTypes: {

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import IconListSplit from "./index";
 
 const meta: Meta<typeof IconListSplit> = {
-  title: "Layouts/Split/IconListSplit",
+  title: "Layout/Split/IconListSplit",
   component: IconListSplit,
   parameters: {
     layout: "fullscreen",

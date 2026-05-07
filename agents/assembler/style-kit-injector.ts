@@ -48,13 +48,13 @@ export const SLOT_PATTERN_MAP: Record<string, SlotPatternConfig> = {
     backgroundSlot: "backgroundVariant",
     textDecorationHandled: true,
   },
-  "cta-cta-collage-duo-01": {
+  "cta-collage-duo-01": {
     ctaVariantSlot: "ctaStyle",
     ctaColorSchemeSlot: "ctaColorScheme",
     backgroundSlot: "backgroundVariant",
     textDecorationHandled: true,
   },
-  "cta-cta-editorial-split-01": {
+  "cta-editorial-split-01": {
     ctaVariantSlot: "ctaStyle",
     ctaColorSchemeSlot: "ctaColorScheme",
     backgroundSlot: "backgroundVariant",
@@ -70,11 +70,11 @@ export const SLOT_PATTERN_MAP: Record<string, SlotPatternConfig> = {
   "carousel-cards-01": {
     textDecorationHandled: true,
   },
-  "contact-contact-locations-map-01": {
+  "contact-locations-map-01": {
     backgroundSlot: "backgroundVariant",
     textDecorationHandled: true,
   },
-  "contact-contact-shapes-form-01": {
+  "contact-shapes-form-01": {
     ctaVariantSlot: "ctaStyle",
     ctaColorSchemeSlot: "ctaColorScheme",
     backgroundSlot: "backgroundVariant",

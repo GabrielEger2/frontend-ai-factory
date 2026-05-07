@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import HeroAsymmetricStack from "./index";
 
 const meta: Meta<typeof HeroAsymmetricStack> = {
-  title: "Heroes/HeroAsymmetricStack",
+  title: "Hero/HeroAsymmetricStack",
   component: HeroAsymmetricStack,
   parameters: { layout: "fullscreen" },
   argTypes: {

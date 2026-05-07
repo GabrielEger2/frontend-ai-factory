@@ -55,8 +55,8 @@
   ],
   "pairsPoorly": [
     "cta-image-backdrop-01",
-    "cta-cta-collage-duo-01",
-    "cta-cta-editorial-split-01",
+    "cta-collage-duo-01",
+    "cta-editorial-split-01",
     "hero-video-backdrop-01"
   ],
   "description": "A high-impact CTA section with a looping muted background video, layered overlay, and a calm copy column with primary and secondary actions. Pauses on prefers-reduced-motion and surfaces play/mute controls so visitors can opt into or out of the motion.",

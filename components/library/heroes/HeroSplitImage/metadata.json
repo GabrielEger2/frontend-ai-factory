@@ -199,7 +199,7 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["layout-cardgrid-01", "layout-infinitescroll-01"],
+  "pairsWell": ["layout-cardgrid-01", "testimonial-infinitescroll-01"],
   "pairsPoorly": [
     "hero-shuffle-cards-01",
     "hero-geometric-01",

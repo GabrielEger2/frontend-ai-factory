@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import HeroShuffleCards from "./index";
 
 const meta: Meta<typeof HeroShuffleCards> = {
-  title: "Heroes/HeroShuffleCards",
+  title: "Hero/HeroShuffleCards",
   component: HeroShuffleCards,
   parameters: {
     layout: "fullscreen",

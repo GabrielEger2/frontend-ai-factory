@@ -2,27 +2,15 @@
   "id": "cta-image-backdrop-01",
   "name": "CTA Image Backdrop",
   "category": "cta",
-  "purpose": [
-    "cta",
-    "brand-statement",
-    "story"
-  ],
+  "purpose": ["cta", "brand-statement", "story"],
   "acceptsStyleKit": {
     "card": false,
     "background": true,
     "textDecoration": true,
     "button": true
   },
-  "style": [
-    "editorial",
-    "luxury",
-    "modern"
-  ],
-  "mood": [
-    "elegant",
-    "calm",
-    "trustworthy"
-  ],
+  "style": ["editorial", "luxury", "modern"],
+  "mood": ["elegant", "calm", "trustworthy"],
   "layout": "stacked",
   "density": "low",
   "imageWeight": 0.1,
@@ -67,24 +55,13 @@
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "default",
-        "slide",
-        "dotExpand",
-        "drawOutline",
-        "glow"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
     },
     {
       "name": "ctaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "accent",
-        "neutral"
-      ]
+      "enum": ["primary", "secondary", "accent", "neutral"]
     },
     {
       "name": "overlayOpacity",
@@ -100,10 +77,7 @@
       "name": "align",
       "type": "text",
       "optional": true,
-      "enum": [
-        "left",
-        "center"
-      ]
+      "enum": ["left", "center"]
     },
     {
       "name": "minHeight",
@@ -123,13 +97,8 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "faq-accordion-01"
-  ],
-  "pairsPoorly": [
-    "cta-cta-editorial-split-01",
-    "cta-cta-collage-duo-01"
-  ],
+  "pairsWell": ["faq-accordion-01"],
+  "pairsPoorly": ["cta-editorial-split-01", "cta-collage-duo-01"],
   "description": "A sophisticated call-to-action that overlays text on a full-width background image, creating an editorial magazine-like aesthetic perfect for luxury brands and premium service providers wanting to combine compelling visuals with clear action prompts.",
   "descriptions": {
     "descriptive": "A sophisticated call-to-action featuring a large, high-quality background image with refined typography overlays. Clean lines and generous whitespace create breathing room, while the editorial styling emphasizes visual storytelling through carefully curated photography and minimal design elements that exude calm luxury.",

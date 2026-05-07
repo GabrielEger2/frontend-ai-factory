@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import CardGrid from "./index";
 
 const meta: Meta<typeof CardGrid> = {
-  title: "Layouts/Grid/CardGrid",
+  title: "Layout/Grid/CardGrid",
   component: CardGrid,
   parameters: {
     layout: "fullscreen",

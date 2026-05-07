@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import HeroDeviceChrome from "./index";
 
 const meta: Meta<typeof HeroDeviceChrome> = {
-  title: "Heroes/HeroDeviceChrome",
+  title: "Hero/HeroDeviceChrome",
   component: HeroDeviceChrome,
   parameters: { layout: "fullscreen" },
   argTypes: {

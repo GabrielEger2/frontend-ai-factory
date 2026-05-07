@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import HeroPolaroidCollage from "./index";
 
 const meta: Meta<typeof HeroPolaroidCollage> = {
-  title: "Heroes/HeroPolaroidCollage",
+  title: "Hero/HeroPolaroidCollage",
   component: HeroPolaroidCollage,
   parameters: { layout: "fullscreen" },
   argTypes: {

@@ -60,9 +60,9 @@
     "carousel-horizontal-scroll-01",
     "carousel-swipe-01",
     "carousel-before-after-01",
-    "layout-stackedsplit-01",
-    "layout-staggerfan-01",
-    "layout-infinitescroll-01",
+    "testimonial-stackedsplit-01",
+    "testimonial-staggerfan-01",
+    "testimonial-infinitescroll-01",
     "testimonial-spotlight-quote-01"
   ],
   "description": "Editorial testimonial carousel: one hero pull-quote at a time, with an avatar strip below that 'peeks' all participants. The active avatar is larger and primary-ringed; clicking any avatar cross-fades the matching quote.",
