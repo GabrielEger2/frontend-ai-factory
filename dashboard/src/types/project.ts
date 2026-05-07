@@ -271,6 +271,25 @@ export interface ProjectDetail {
   phone?: string;
   email?: string;
   socialLinks?: { platform: string; url: string }[];
+  // Richer intake fields. Nullable to match PipelineStateSchema's
+  // `.nullable().default(null)` shape after parsing.
+  niche?: string | null;
+  region?: string | null;
+  companySize?: "solo" | "2-10" | "11-50" | "51-200" | "200+" | null;
+  primaryCta?: "book" | "buy" | "contact" | "subscribe" | "learn-more" | null;
+  mainService?: string | null;
+  whatMakesSpecial?: string[] | null;
+  keyResults?: string | null;
+  idealPublic?: string | null;
+  moodTags?: string[] | null;
+  styleTags?: string[] | null;
+  voiceTone?: string[] | null;
+  slogan?: string | null;
+  brandColors?: string[] | null;
+  colorsToAvoid?: string[] | null;
+  inspirationSites?: string[] | null;
+  doNots?: string | null;
+  rankedObjectives?: string[] | Array<{ id: string; rank: number }> | null;
   vercelDeploymentId?: string;
   vercelPreviewUrl?: string;
   deployError?: string;
@@ -290,4 +309,23 @@ export interface CreateProjectInput {
   email?: string;
   socialLinks?: { platform: string; url: string }[];
   pageType?: "landing" | "store" | "portfolio" | "services" | "about";
+  // Richer intake fields. No nulls — outbound form payload only sends keys
+  // the seller actually filled in.
+  niche?: string;
+  region?: string;
+  companySize?: "solo" | "2-10" | "11-50" | "51-200" | "200+";
+  primaryCta?: "book" | "buy" | "contact" | "subscribe" | "learn-more";
+  mainService?: string;
+  whatMakesSpecial?: string[];
+  keyResults?: string;
+  idealPublic?: string;
+  moodTags?: string[];
+  styleTags?: string[];
+  voiceTone?: string[];
+  slogan?: string;
+  brandColors?: string[];
+  colorsToAvoid?: string[];
+  inspirationSites?: string[];
+  doNots?: string;
+  rankedObjectives?: Array<{ id: string; rank: number }>;
 }
