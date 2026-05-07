@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import ProcessTimeline from "./index";
 
 const meta: Meta<typeof ProcessTimeline> = {
-  title: "Layouts/Grid/ProcessTimeline",
+  title: "Layout/Grid/ProcessTimeline",
   component: ProcessTimeline,
   parameters: { layout: "fullscreen" },
   argTypes: {

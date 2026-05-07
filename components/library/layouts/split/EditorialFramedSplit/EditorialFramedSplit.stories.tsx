@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import EditorialFramedSplit from "./index";
 
 const meta: Meta<typeof EditorialFramedSplit> = {
-  title: "Layouts/Split/EditorialFramedSplit",
+  title: "Layout/Split/EditorialFramedSplit",
   component: EditorialFramedSplit,
   parameters: { layout: "fullscreen" },
   argTypes: {
@@ -29,7 +29,8 @@ export const ArchitectureStudio: Story = {
     leadImage: "https://placehold.co/720x900",
     leadImageAlt: "Architect sketching plans at a sunlit drafting desk",
     secondaryImage: "https://placehold.co/720x540",
-    secondaryImageAlt: "Two designers reviewing a notebook of hand-drawn floor plans",
+    secondaryImageAlt:
+      "Two designers reviewing a notebook of hand-drawn floor plans",
     supportingHeadline: "Customized Functionality",
     supportingBody:
       "Our depth in residential trends, two decades of joinery experience, and quiet obsession with how a home actually lives day to day are what turn a brief into a place that fits its owners.",
@@ -48,7 +49,8 @@ export const HeritageWinery: Story = {
     leadImage: "https://placehold.co/720x900",
     leadImageAlt: "Vineyard rows climbing a sunlit hillside at golden hour",
     secondaryImage: "https://placehold.co/720x540",
-    secondaryImageAlt: "Cellar master pouring a barrel sample into a tasting glass",
+    secondaryImageAlt:
+      "Cellar master pouring a barrel sample into a tasting glass",
     supportingHeadline: "Single-Vineyard Expression",
     supportingBody:
       "Every cuvee carries the soil it grew in. We bottle each block separately so you taste a specific year, a specific slope, and the patience of a family that has not been in a hurry since 1962.",
@@ -84,9 +86,11 @@ export const PrivateMedicalClinic: Story = {
     ctaText: "Book a Consultation",
     ctaUrl: "/book",
     leadImage: "https://placehold.co/720x900",
-    leadImageAlt: "Physician taking notes during an unhurried consultation with a patient",
+    leadImageAlt:
+      "Physician taking notes during an unhurried consultation with a patient",
     secondaryImage: "https://placehold.co/720x540",
-    secondaryImageAlt: "Calm waiting lounge with linen seating and warm wood detailing",
+    secondaryImageAlt:
+      "Calm waiting lounge with linen seating and warm wood detailing",
     supportingHeadline: "Forty-Five Minute Appointments",
     supportingBody:
       "Our consultations run nearly four times the national average because the questions that matter rarely surface in the first ten minutes. We design every part of the visit around having time to actually think.",
@@ -103,9 +107,11 @@ export const CoastalRealEstate: Story = {
     ctaText: "View Listings",
     ctaUrl: "/listings",
     leadImage: "https://placehold.co/720x900",
-    leadImageAlt: "Modern coastal home glowing under early morning sun, water in the distance",
+    leadImageAlt:
+      "Modern coastal home glowing under early morning sun, water in the distance",
     secondaryImage: "https://placehold.co/720x540",
-    secondaryImageAlt: "Open-plan kitchen and living room facing floor-to-ceiling windows",
+    secondaryImageAlt:
+      "Open-plan kitchen and living room facing floor-to-ceiling windows",
     supportingHeadline: "Local Knowledge, Quiet Process",
     supportingBody:
       "We list fewer properties on purpose. Each one gets a tailored campaign, professional staging, and an agent who has actually walked the neighborhood at sunrise. No mass mailers, no pressure tours.",

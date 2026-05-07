@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import StaggerFan from "./index";
 
 const meta: Meta<typeof StaggerFan> = {
-  title: "Layouts/Grid/StaggerFan",
+  title: "Testimonial/StaggerFan",
   component: StaggerFan,
   parameters: {
     layout: "fullscreen",

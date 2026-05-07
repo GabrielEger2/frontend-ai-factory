@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import LogoCloud from "./index";
 
 const meta: Meta<typeof LogoCloud> = {
-  title: "Layouts/Grid/LogoCloud",
+  title: "Layout/Grid/LogoCloud",
   component: LogoCloud,
   parameters: { layout: "fullscreen" },
   argTypes: {

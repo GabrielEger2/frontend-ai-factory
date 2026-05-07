@@ -26,7 +26,7 @@ const SampleLogo = () => (
 );
 
 const meta: Meta<typeof FooterReveal> = {
-  title: "Footers/FooterReveal",
+  title: "Footer/FooterReveal",
   component: FooterReveal,
   parameters: {
     layout: "fullscreen",

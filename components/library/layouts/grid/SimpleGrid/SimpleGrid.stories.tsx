@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import SimpleGrid from "./index";
 
 const meta: Meta<typeof SimpleGrid> = {
-  title: "Layouts/Grid/SimpleGrid",
+  title: "Layout/Grid/SimpleGrid",
   component: SimpleGrid,
   parameters: {
     layout: "fullscreen",

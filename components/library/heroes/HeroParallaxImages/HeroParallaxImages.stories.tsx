@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import HeroParallaxImages from "./index";
 
 const meta: Meta<typeof HeroParallaxImages> = {
-  title: "Heroes/HeroParallaxImages",
+  title: "Hero/HeroParallaxImages",
   component: HeroParallaxImages,
   parameters: {
     layout: "fullscreen",

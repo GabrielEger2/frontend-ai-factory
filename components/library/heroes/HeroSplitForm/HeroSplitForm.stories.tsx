@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import HeroSplitForm from "./index";
 
 const meta: Meta<typeof HeroSplitForm> = {
-  title: "Heroes/HeroSplitForm",
+  title: "Hero/HeroSplitForm",
   component: HeroSplitForm,
   parameters: { layout: "fullscreen" },
   argTypes: {

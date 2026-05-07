@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import AuthorSplit from "./index";
 
 const meta: Meta<typeof AuthorSplit> = {
-  title: "Layouts/Split/AuthorSplit",
+  title: "Layout/Split/AuthorSplit",
   component: AuthorSplit,
   parameters: {
     layout: "fullscreen",

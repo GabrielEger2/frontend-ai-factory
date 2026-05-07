@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import PricingTiers from "./index";
 
 const meta: Meta<typeof PricingTiers> = {
-  title: "Layouts/Grid/PricingTiers",
+  title: "Layout/Grid/PricingTiers",
   component: PricingTiers,
   parameters: { layout: "fullscreen" },
   argTypes: {

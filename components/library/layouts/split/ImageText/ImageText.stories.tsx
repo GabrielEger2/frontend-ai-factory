@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import ImageText from "./index";
 
 const meta: Meta<typeof ImageText> = {
-  title: "Layouts/Split/ImageText",
+  title: "Layout/Split/ImageText",
   component: ImageText,
   parameters: {
     layout: "fullscreen",

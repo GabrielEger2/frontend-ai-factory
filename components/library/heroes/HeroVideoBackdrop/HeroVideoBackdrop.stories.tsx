@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import HeroVideoBackdrop from "./index";
 
 const meta: Meta<typeof HeroVideoBackdrop> = {
-  title: "Heroes/HeroVideoBackdrop",
+  title: "Hero/HeroVideoBackdrop",
   component: HeroVideoBackdrop,
   parameters: { layout: "fullscreen" },
   argTypes: {

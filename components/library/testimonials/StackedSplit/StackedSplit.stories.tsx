@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import StackedSplit from "./index";
 
 const meta: Meta<typeof StackedSplit> = {
-  title: "Layouts/Split/StackedSplit",
+  title: "Testimonial/StackedSplit",
   component: StackedSplit,
   parameters: {
     layout: "fullscreen",

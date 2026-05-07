@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import ContactLocationsMap from "./index";
 
 const meta: Meta<typeof ContactLocationsMap> = {
-  title: "contact/ContactLocationsMap",
+  title: "Contact/ContactLocationsMap",
   component: ContactLocationsMap,
   parameters: { layout: "fullscreen" },
 };
@@ -129,7 +129,8 @@ export const RestaurantGroup: Story = {
     subheadline:
       "Reservations open six weeks ahead. Walk-ins welcome at the bar from 5pm.",
     featuredImage: "https://placehold.co/1600x900?text=Restaurant+Interior",
-    featuredImageAlt: "Warm dining room with brass pendants and an open kitchen",
+    featuredImageAlt:
+      "Warm dining room with brass pendants and an open kitchen",
     locations: [
       {
         city: "Charleston",

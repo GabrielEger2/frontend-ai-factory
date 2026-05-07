@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import StatementSplit from "./index";
 
 const meta: Meta<typeof StatementSplit> = {
-  title: "Layouts/Split/StatementSplit",
+  title: "Layout/Split/StatementSplit",
   component: StatementSplit,
   parameters: {
     layout: "fullscreen",

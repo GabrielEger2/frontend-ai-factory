@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import HeroGridGallery from "./index";
 
 const meta: Meta<typeof HeroGridGallery> = {
-  title: "Heroes/HeroGridGallery",
+  title: "Hero/HeroGridGallery",
   component: HeroGridGallery,
   parameters: { layout: "fullscreen" },
   argTypes: {

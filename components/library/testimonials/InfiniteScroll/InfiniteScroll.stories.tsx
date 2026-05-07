@@ -3,7 +3,7 @@ import InfiniteScroll from "./index";
 import type { TestimonialItem } from "@ui/cards/TestimonialCard";
 
 const meta: Meta<typeof InfiniteScroll> = {
-  title: "Layouts/Scroll/InfiniteScroll",
+  title: "Testimonial/InfiniteScroll",
   component: InfiniteScroll,
   parameters: {
     layout: "fullscreen",

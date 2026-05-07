@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import HeroGeometric from "./index";
 
 const meta: Meta<typeof HeroGeometric> = {
-  title: "Heroes/HeroGeometric",
+  title: "Hero/HeroGeometric",
   component: HeroGeometric,
   parameters: {
     layout: "fullscreen",

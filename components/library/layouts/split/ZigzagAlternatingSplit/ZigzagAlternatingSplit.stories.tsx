@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import ZigzagAlternatingSplit from "./index";
 
 const meta: Meta<typeof ZigzagAlternatingSplit> = {
-  title: "Layouts/Split/ZigzagAlternatingSplit",
+  title: "Layout/Split/ZigzagAlternatingSplit",
   component: ZigzagAlternatingSplit,
   parameters: {
     layout: "fullscreen",
