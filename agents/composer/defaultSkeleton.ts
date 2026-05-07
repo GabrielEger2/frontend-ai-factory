@@ -10,7 +10,6 @@ export const SkeletonSlotSchema = z.object({
     "faq",
     "contact",
     "stats",
-    "carousel",
     "content",
     "pricing",
     "team",
