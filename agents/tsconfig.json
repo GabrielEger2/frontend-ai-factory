@@ -24,7 +24,8 @@
     "research/**/*.ts",
     "style/**/*.ts",
     "composer/**/*.ts",
-    "scripts/**/*.ts"
+    "scripts/**/*.ts",
+    "eval/**/*.ts"
   ],
   "exclude": ["node_modules", "dist"]
 }

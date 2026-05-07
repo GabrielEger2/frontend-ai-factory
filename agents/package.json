@@ -12,7 +12,8 @@
     "import:nicepage": "ts-node scripts/nicepage-import.ts",
     "describe:components": "ts-node scripts/describe-components.ts",
     "seed:vectors": "ts-node scripts/seed-vectors.ts",
-    "query:vectors": "ts-node scripts/query-vectors.ts"
+    "query:vectors": "ts-node scripts/query-vectors.ts",
+    "eval:rerank": "ts-node eval/runner.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39",
