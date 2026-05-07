@@ -79,6 +79,7 @@ export { default as SimpleGrid } from "./layouts/grid/SimpleGrid";
 
 // Layouts — split
 export { default as AuthorSplit } from "./layouts/split/AuthorSplit";
+export { default as ComparisonSplit } from "./layouts/split/ComparisonSplit";
 export { default as EditorialFramedSplit } from "./layouts/split/EditorialFramedSplit";
 export { default as IconListSplit } from "./layouts/split/IconListSplit";
 export { default as ImageText } from "./layouts/split/ImageText";
@@ -184,6 +185,7 @@ import PricingTiers from "./layouts/grid/PricingTiers";
 import ProcessTimeline from "./layouts/grid/ProcessTimeline";
 import SimpleGrid from "./layouts/grid/SimpleGrid";
 import AuthorSplit from "./layouts/split/AuthorSplit";
+import ComparisonSplit from "./layouts/split/ComparisonSplit";
 import EditorialFramedSplit from "./layouts/split/EditorialFramedSplit";
 import IconListSplit from "./layouts/split/IconListSplit";
 import ImageText from "./layouts/split/ImageText";
@@ -283,6 +285,7 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "testimonial-staggerfan-01": StaggerFan,
   "testimonial-infinitescroll-01": InfiniteScroll,
   "layout-authorsplit-01": AuthorSplit,
+  "layout-comparisonsplit-01": ComparisonSplit,
   "layout-editorial-framed-split-01": EditorialFramedSplit,
   "layout-iconlistsplit-01": IconListSplit,
   "layout-imagetext-01": ImageText,

@@ -13,7 +13,7 @@ import manifest from "@components/library/manifest.json";
 export function selectableCategories(): string[] {
   const seen = new Set<string>();
   for (const e of manifest as { category?: string }[]) {
-    if (e.category && e.category !== "navigation" && e.category !== "footers") {
+    if (e.category && e.category !== "navigation" && e.category !== "footer") {
       seen.add(e.category);
     }
   }
