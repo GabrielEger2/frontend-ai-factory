@@ -7122,25 +7122,25 @@
     }
   },
   {
-    "id": "products-category-grid-01",
-    "name": "Products Category Grid",
+    "id": "products-bundle-cards-01",
+    "name": "Products Bundle Cards",
     "category": "products",
     "style": [
       "editorial",
       "modern",
-      "bold",
-      "minimal"
+      "minimal",
+      "bold"
     ],
     "mood": [
-      "elegant",
-      "friendly",
       "trustworthy",
-      "professional"
+      "friendly",
+      "professional",
+      "elegant"
     ],
     "purpose": [
       "products",
       "showcase",
-      "gallery"
+      "cta"
     ],
     "acceptsStyleKit": {
       "card": false,
@@ -7150,7 +7150,223 @@
     },
     "layout": "grid",
     "density": "medium",
-    "imageWeight": 0.6,
+    "imageWeight": 0.3,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 200
+      },
+      {
+        "name": "bundles",
+        "type": "list",
+        "minItems": 2,
+        "maxItems": 3,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "name",
+              "type": "text",
+              "maxLength": 40
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "optional": true,
+              "maxLength": 140
+            },
+            {
+              "name": "image",
+              "type": "image",
+              "optional": true,
+              "aspectRatio": "4:3"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "optional": true,
+              "maxLength": 160
+            },
+            {
+              "name": "items",
+              "type": "list",
+              "minItems": 2,
+              "maxItems": 6,
+              "itemSchema": {
+                "type": "text",
+                "maxLength": 60
+              }
+            },
+            {
+              "name": "price",
+              "type": "text",
+              "maxLength": 20
+            },
+            {
+              "name": "priceCompare",
+              "type": "text",
+              "optional": true,
+              "maxLength": 20
+            },
+            {
+              "name": "savingsHint",
+              "type": "text",
+              "optional": true,
+              "maxLength": 30
+            },
+            {
+              "name": "badge",
+              "type": "text",
+              "optional": true,
+              "enum": [
+                "popular",
+                "best-value",
+                "editor-pick"
+              ]
+            },
+            {
+              "name": "ctaText",
+              "type": "text",
+              "maxLength": 30
+            },
+            {
+              "name": "ctaUrl",
+              "type": "url"
+            }
+          ]
+        }
+      },
+      {
+        "name": "footerCtaText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 40
+      },
+      {
+        "name": "footerCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "footerCtaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "footerCtaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "cardCtaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "cardCtaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "light",
+          "dark"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "products-category-grid-01",
+      "products-featured-strip-01",
+      "products-spotlight-01",
+      "cta-dual-offer-split-01",
+      "hero-bakery-editorial-01"
+    ],
+    "pairsPoorly": [
+      "pricing-tier-cards-01",
+      "pricing-freemium-ladder-01"
+    ],
+    "description": "Two- or three-up curated product-bundle picker with checked item lists, total price plus optional struck-through compare price, optional savings hint, and an accent badge (popular / best-value / editor-pick) on the lead card. The badged card lifts a few pixels and gets a primary-tinted border — no glow, no neon ring.",
+    "descriptions": {
+      "descriptive": "A grid of 2 or 3 rounded bundle cards on a light or dark slab. Each card pairs an optional 4:3 photograph with a name, short description, up to 6 checkmark items, a monospaced total price (with optional struck-through compare price and savings pill), and a per-card CTA. The badged card lifts -8px on desktop and switches its border to primary tone to communicate elevation through contrast, not effects.",
+      "usage": "Anchor a product-led home page where the buying decision turns on what's actually inside the bundle, not on plan tiers. Place after a hero or a category grid to translate browsing intent into a purchase, then follow with a dual-offer CTA or a contact section. Avoid pairing with pricing-tier-cards on the same page — the layouts are conceptually adjacent and would feel redundant.",
+      "audienceFit": "Bakeries, butcher shops, skincare boutiques, gift kits, subscription boxes, artisan goods. Suits buyers who scan what's inside before reading copy and need price + included items visible without opening a detail page."
+    }
+  },
+  {
+    "id": "products-featured-strip-01",
+    "name": "Products Featured Strip",
+    "category": "products",
+    "style": [
+      "editorial",
+      "modern",
+      "minimal",
+      "bold"
+    ],
+    "mood": [
+      "elegant",
+      "friendly",
+      "trustworthy",
+      "energetic"
+    ],
+    "purpose": [
+      "products",
+      "showcase",
+      "cta"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": true,
+      "textDecoration": false,
+      "button": true
+    },
+    "layout": "grid",
+    "density": "medium",
+    "imageWeight": 0.55,
     "slots": [
       {
         "name": "eyebrow",
@@ -7170,37 +7386,69 @@
         "maxLength": 160
       },
       {
-        "name": "categories",
+        "name": "products",
         "type": "list",
         "minItems": 4,
         "maxItems": 8,
         "itemSchema": {
           "name": {
             "type": "text",
-            "maxLength": 40
+            "maxLength": 60
           },
           "image": {
             "type": "image",
-            "aspectRatio": "4:5"
+            "aspectRatio": "3:4"
           },
           "imageAlt": {
             "type": "text",
             "maxLength": 160
           },
-          "itemCount": {
+          "price": {
+            "type": "text",
+            "maxLength": 30
+          },
+          "priceCompare": {
             "type": "text",
             "optional": true,
             "maxLength": 30
           },
-          "priceFrom": {
+          "badge": {
             "type": "text",
             "optional": true,
-            "maxLength": 40
+            "enum": [
+              "novo",
+              "mais-vendido",
+              "oferta"
+            ]
+          },
+          "badgeLabel": {
+            "type": "text",
+            "optional": true,
+            "maxLength": 20
+          },
+          "variants": {
+            "type": "list",
+            "optional": true,
+            "minItems": 0,
+            "maxItems": 8,
+            "itemSchema": {
+              "type": "text",
+              "maxLength": 24
+            }
           },
           "ctaUrl": {
             "type": "url"
           }
         }
+      },
+      {
+        "name": "featureFirst",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "true",
+          "false"
+        ]
       },
       {
         "name": "ctaText",
@@ -7247,21 +7495,234 @@
         ]
       }
     ],
-    "mobileBehavior": "stack",
+    "mobileBehavior": "scroll",
     "pairsWell": [
       "hero-bakery-editorial-01",
       "hero-grid-gallery-01",
       "hero-split-image-01",
-      "footer-columns-social-01",
-      "footer-mega-01",
       "cta-hover-reveal-list-01",
-      "cta-sticky-image-list-01"
+      "cta-sticky-image-list-01",
+      "footer-columns-social-01",
+      "footer-mega-01"
     ],
     "pairsPoorly": [
+      "products-category-grid-01",
       "pricing-tier-cards-01",
       "pricing-monthly-annual-toggle-01",
-      "gallery-masonry-01",
-      "gallery-lightbox-grid-01"
+      "gallery-masonry-01"
+    ]
+  },
+  {
+    "id": "products-spotlight-01",
+    "name": "Products Spotlight",
+    "category": "products",
+    "style": [
+      "editorial",
+      "luxury",
+      "minimal",
+      "modern"
+    ],
+    "mood": [
+      "elegant",
+      "trustworthy",
+      "professional",
+      "calm"
+    ],
+    "purpose": [
+      "products",
+      "showcase",
+      "brand-statement",
+      "cta"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": true,
+      "textDecoration": true,
+      "button": true
+    },
+    "layout": "split",
+    "density": "medium",
+    "imageWeight": 0.45,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "productName",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "tagline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 120
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "maxLength": 280
+      },
+      {
+        "name": "price",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "priceCompare",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "priceNote",
+        "type": "text",
+        "optional": true,
+        "maxLength": 40
+      },
+      {
+        "name": "image",
+        "type": "image",
+        "aspectRatio": "4:5"
+      },
+      {
+        "name": "imageAlt",
+        "type": "text",
+        "maxLength": 160
+      },
+      {
+        "name": "thumbnails",
+        "type": "list",
+        "optional": true,
+        "minItems": 0,
+        "maxItems": 3,
+        "itemSchema": {
+          "image": {
+            "type": "image",
+            "aspectRatio": "1:1"
+          },
+          "imageAlt": {
+            "type": "text",
+            "maxLength": 160
+          }
+        }
+      },
+      {
+        "name": "specs",
+        "type": "list",
+        "minItems": 2,
+        "maxItems": 6,
+        "itemSchema": {
+          "label": {
+            "type": "text",
+            "maxLength": 30
+          },
+          "value": {
+            "type": "text",
+            "maxLength": 60
+          }
+        }
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url"
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "secondaryCtaText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "secondaryCtaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "secondaryCtaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "secondaryCtaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "imageLeft",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "true",
+          "false"
+        ]
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "light",
+          "dark"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-bakery-editorial-01",
+      "products-featured-strip-01",
+      "products-category-grid-01",
+      "testimonial-spotlight-quote-01",
+      "cta-testimonial-paired-01"
+    ],
+    "pairsPoorly": [
+      "hero-split-image-01"
     ]
   },
   {

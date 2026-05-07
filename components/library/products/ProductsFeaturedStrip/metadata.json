@@ -1,10 +1,10 @@
 {
-  "id": "products-category-grid-01",
-  "name": "Products Category Grid",
+  "id": "products-featured-strip-01",
+  "name": "Products Featured Strip",
   "category": "products",
-  "style": ["editorial", "modern", "bold", "minimal"],
-  "mood": ["elegant", "friendly", "trustworthy", "professional"],
-  "purpose": ["products", "showcase", "gallery"],
+  "style": ["editorial", "modern", "minimal", "bold"],
+  "mood": ["elegant", "friendly", "trustworthy", "energetic"],
+  "purpose": ["products", "showcase", "cta"],
   "acceptsStyleKit": {
     "card": false,
     "background": true,
@@ -13,7 +13,7 @@
   },
   "layout": "grid",
   "density": "medium",
-  "imageWeight": 0.6,
+  "imageWeight": 0.55,
   "slots": [
     {
       "name": "eyebrow",
@@ -33,18 +33,37 @@
       "maxLength": 160
     },
     {
-      "name": "categories",
+      "name": "products",
       "type": "list",
       "minItems": 4,
       "maxItems": 8,
       "itemSchema": {
-        "name": { "type": "text", "maxLength": 40 },
-        "image": { "type": "image", "aspectRatio": "4:5" },
+        "name": { "type": "text", "maxLength": 60 },
+        "image": { "type": "image", "aspectRatio": "3:4" },
         "imageAlt": { "type": "text", "maxLength": 160 },
-        "itemCount": { "type": "text", "optional": true, "maxLength": 30 },
-        "priceFrom": { "type": "text", "optional": true, "maxLength": 40 },
+        "price": { "type": "text", "maxLength": 30 },
+        "priceCompare": { "type": "text", "optional": true, "maxLength": 30 },
+        "badge": {
+          "type": "text",
+          "optional": true,
+          "enum": ["novo", "mais-vendido", "oferta"]
+        },
+        "badgeLabel": { "type": "text", "optional": true, "maxLength": 20 },
+        "variants": {
+          "type": "list",
+          "optional": true,
+          "minItems": 0,
+          "maxItems": 8,
+          "itemSchema": { "type": "text", "maxLength": 24 }
+        },
         "ctaUrl": { "type": "url" }
       }
+    },
+    {
+      "name": "featureFirst",
+      "type": "text",
+      "optional": true,
+      "enum": ["true", "false"]
     },
     {
       "name": "ctaText",
@@ -76,20 +95,19 @@
       "enum": ["light", "dark"]
     }
   ],
-  "mobileBehavior": "stack",
+  "mobileBehavior": "scroll",
   "pairsWell": [
     "hero-bakery-editorial-01",
     "hero-grid-gallery-01",
     "hero-split-image-01",
-    "footer-columns-social-01",
-    "footer-mega-01",
     "cta-hover-reveal-list-01",
-    "cta-sticky-image-list-01"
+    "cta-sticky-image-list-01",
+    "footer-columns-social-01",
+    "footer-mega-01"
   ],
   "pairsPoorly": [
     "pricing-tier-cards-01",
     "pricing-monthly-annual-toggle-01",
-    "gallery-masonry-01",
-    "gallery-lightbox-grid-01"
+    "gallery-masonry-01"
   ]
 }

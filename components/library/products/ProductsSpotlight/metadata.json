@@ -1,0 +1,154 @@
+{
+  "id": "products-spotlight-01",
+  "name": "Products Spotlight",
+  "category": "products",
+  "style": ["editorial", "luxury", "minimal", "modern"],
+  "mood": ["elegant", "trustworthy", "professional", "calm"],
+  "purpose": ["products", "showcase", "brand-statement", "cta"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": true,
+    "button": true
+  },
+  "layout": "split",
+  "density": "medium",
+  "imageWeight": 0.45,
+  "slots": [
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "productName",
+      "type": "text",
+      "maxLength": 80
+    },
+    {
+      "name": "tagline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 120
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "maxLength": 280
+    },
+    {
+      "name": "price",
+      "type": "text",
+      "maxLength": 30
+    },
+    {
+      "name": "priceCompare",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "priceNote",
+      "type": "text",
+      "optional": true,
+      "maxLength": 40
+    },
+    {
+      "name": "image",
+      "type": "image",
+      "aspectRatio": "4:5"
+    },
+    {
+      "name": "imageAlt",
+      "type": "text",
+      "maxLength": 160
+    },
+    {
+      "name": "thumbnails",
+      "type": "list",
+      "optional": true,
+      "minItems": 0,
+      "maxItems": 3,
+      "itemSchema": {
+        "image": { "type": "image", "aspectRatio": "1:1" },
+        "imageAlt": { "type": "text", "maxLength": 160 }
+      }
+    },
+    {
+      "name": "specs",
+      "type": "list",
+      "minItems": 2,
+      "maxItems": 6,
+      "itemSchema": {
+        "label": { "type": "text", "maxLength": 30 },
+        "value": { "type": "text", "maxLength": 60 }
+      }
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 30
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url"
+    },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "secondaryCtaText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "secondaryCtaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "secondaryCtaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    },
+    {
+      "name": "secondaryCtaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "imageLeft",
+      "type": "text",
+      "optional": true,
+      "enum": ["true", "false"]
+    },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["light", "dark"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-bakery-editorial-01",
+    "products-featured-strip-01",
+    "products-bundle-cards-01",
+    "testimonial-spotlight-quote-01",
+    "cta-testimonial-paired-01"
+  ],
+  "pairsPoorly": ["hero-split-image-01"]
+}

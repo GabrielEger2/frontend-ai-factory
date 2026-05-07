@@ -75,6 +75,11 @@ export { default as PricingMonthlyAnnualToggle } from "./pricing/PricingMonthlyA
 export { default as PricingSinglePrice } from "./pricing/PricingSinglePrice";
 export { default as PricingTierCards } from "./pricing/PricingTierCards";
 
+// Products
+export { default as ProductsBundleCards } from "./products/ProductsBundleCards";
+export { default as ProductsFeaturedStrip } from "./products/ProductsFeaturedStrip";
+export { default as ProductsSpotlight } from "./products/ProductsSpotlight";
+
 // Stats
 export { default as StatsChart } from "./stats/StatsChart";
 export { default as StatsCountUp } from "./stats/StatsCountUp";
@@ -92,9 +97,6 @@ export { default as TestimonialMetricCard } from "./testimonials/TestimonialMetr
 export { default as TestimonialSpotlightQuote } from "./testimonials/TestimonialSpotlightQuote";
 export { default as TestimonialVideoCard } from "./testimonials/TestimonialVideoCard";
 
-// Re-import defaults into a local namespace for the id→component map.
-// (Named exports above are what consumers import; this map is for
-// dynamic lookup by blueprint IDs — used by BlueprintPreview.)
 import ContactBookingEmbed from "./contact/ContactBookingEmbed";
 import ContactChatEmbed from "./contact/ContactChatEmbed";
 import ContactLocationsMap from "./contact/ContactLocationsMap";
@@ -142,6 +144,9 @@ import PricingFreemiumLadder from "./pricing/PricingFreemiumLadder";
 import PricingMonthlyAnnualToggle from "./pricing/PricingMonthlyAnnualToggle";
 import PricingSinglePrice from "./pricing/PricingSinglePrice";
 import PricingTierCards from "./pricing/PricingTierCards";
+import ProductsBundleCards from "./products/ProductsBundleCards";
+import ProductsFeaturedStrip from "./products/ProductsFeaturedStrip";
+import ProductsSpotlight from "./products/ProductsSpotlight";
 import StatsChart from "./stats/StatsChart";
 import StatsCountUp from "./stats/StatsCountUp";
 import StatsKpiGrid from "./stats/StatsKpiGrid";
@@ -210,6 +215,9 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "pricing-monthly-annual-toggle-01": PricingMonthlyAnnualToggle,
   "pricing-single-price-01": PricingSinglePrice,
   "pricing-tier-cards-01": PricingTierCards,
+  "products-bundle-cards-01": ProductsBundleCards,
+  "products-featured-strip-01": ProductsFeaturedStrip,
+  "products-spotlight-01": ProductsSpotlight,
   "stats-chart-01": StatsChart,
   "stats-count-up-01": StatsCountUp,
   "stats-kpi-grid-01": StatsKpiGrid,
