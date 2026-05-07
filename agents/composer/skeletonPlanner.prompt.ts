@@ -13,12 +13,12 @@ Produce an ordered list of page sections (a "skeleton") that another agent will 
 
 ## Rules
 
-1. **Categories are CLOSED.** Each slot's \`category\` MUST be exactly one of these 13 canonical values — no synonyms, no plural forms, no novel categories:
+1. **Categories are CLOSED.** Each slot's \`category\` MUST be exactly one of these 12 canonical values — no synonyms, no plural forms, no novel categories:
 
-   \`hero | testimonial | footer | cta | faq | contact | navigation | stats | carousel | content | pricing | team | gallery\`
+   \`hero | testimonial | footer | cta | faq | contact | navigation | stats | content | pricing | team | gallery\`
 
 2. **Page reads top-to-bottom.** Order the slots in the order they will appear on the rendered page. A typical order is:
-   \`navigation\` → \`hero\` → body sections (\`stats\`, \`content\`, \`gallery\`, \`team\`, \`pricing\`, \`testimonial\`, \`carousel\`, \`faq\`) → \`cta\` → \`footer\`.
+   \`navigation\` → \`hero\` → body sections (\`stats\`, \`content\`, \`gallery\`, \`team\`, \`pricing\`, \`testimonial\`, \`faq\`) → \`cta\` → \`footer\`.
 
 3. **Slot count: 5 to 9.** Fewer than 5 produces a thin page; more than 9 makes the page noisy. Pick a count that fits the brief.
 
@@ -29,7 +29,7 @@ Produce an ordered list of page sections (a "skeleton") that another agent will 
 
 5. **No duplicate \`navigation\` or \`footer\`.** Use each at most once.
 
-6. **Adapt the count and mix to the brief.** Service businesses lean toward FAQ + CTA; portfolios lean toward carousel + gallery; stores lean toward pricing + stats; about/institutional pages lean toward content + testimonial + team.
+6. **Adapt the count and mix to the brief.** Service businesses lean toward FAQ + CTA; portfolios lean toward gallery + content; stores lean toward pricing + stats; about/institutional pages lean toward content + testimonial + team.
 
 ## Output Schema
 
@@ -37,7 +37,7 @@ Return a RAW JSON ARRAY (no markdown fences, no surrounding prose, no \`\`\`json
 
 [
   {
-    "category": "<one of: hero | testimonial | footer | cta | faq | contact | navigation | stats | carousel | content | pricing | team | gallery>",
+    "category": "<one of: hero | testimonial | footer | cta | faq | contact | navigation | stats | content | pricing | team | gallery>",
     "purpose": "<short phrase describing what this section accomplishes for this brand>",
     "notes": "<optional short hint>"
   }
@@ -88,7 +88,7 @@ export function buildSkeletonUserPrompt(
     ? [
         "## Page Type Hint",
         "",
-        `The seller has indicated this should be a **${sellerHint}** page. Adapt the skeleton mix accordingly (e.g. \`store\` favors pricing + stats; \`portfolio\` favors carousel + gallery; \`services\` favors content + faq + cta; \`about\` favors content + testimonial + team; \`landing\` favors hero + cta-driven flow).`,
+        `The seller has indicated this should be a **${sellerHint}** page. Adapt the skeleton mix accordingly (e.g. \`store\` favors pricing + stats; \`portfolio\` favors gallery + content; \`services\` favors content + faq + cta; \`about\` favors content + testimonial + team; \`landing\` favors hero + cta-driven flow).`,
       ].join("\n")
     : "";
 
