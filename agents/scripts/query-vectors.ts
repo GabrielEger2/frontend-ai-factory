@@ -33,6 +33,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
+import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import { getEmbedding } from "../shared/embeddings";
 import { getQdrantClient } from "../shared/qdrant-client";
 import { DEFAULT_SKELETON, type Skeleton } from "../composer/defaultSkeleton";
@@ -293,6 +294,32 @@ if (llmMode && !process.env.CLAUDE_API_KEY_SSM_PATH) {
     "Error: CLAUDE_API_KEY_SSM_PATH is required for LLM skeleton planning. Pass --offline to use fallback archetypes.",
   );
   process.exit(1);
+}
+
+/* ------------------------------------------------------------------ */
+/*  SSM-cached Claude API key                                          */
+/*  Mirrors agents/scripts/describe-components.ts                       */
+/* ------------------------------------------------------------------ */
+
+const ssmClient = new SSMClient({});
+
+let cachedClaudeApiKey: string | undefined;
+
+async function getClaudeApiKey(): Promise<string> {
+  if (cachedClaudeApiKey) return cachedClaudeApiKey;
+  const ssmPath = process.env.CLAUDE_API_KEY_SSM_PATH;
+  if (!ssmPath) {
+    throw new Error("CLAUDE_API_KEY_SSM_PATH is not set");
+  }
+  const result = await ssmClient.send(
+    new GetParameterCommand({ Name: ssmPath, WithDecryption: true }),
+  );
+  const value = result.Parameter?.Value;
+  if (!value) {
+    throw new Error(`SSM parameter ${ssmPath} returned no value`);
+  }
+  cachedClaudeApiKey = value;
+  return value;
 }
 
 /* ------------------------------------------------------------------ */
