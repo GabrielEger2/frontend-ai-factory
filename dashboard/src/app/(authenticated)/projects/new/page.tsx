@@ -17,9 +17,13 @@ import { createProject } from "@/lib/actions/create-project";
 import { SUPPORTED_SEGMENTS, SEGMENT_LABELS } from "@/types/project";
 import {
   TONE_KEYWORDS,
-  OBJECTIVES,
   COMPANY_SIZES,
+  RANKED_OBJECTIVE_IDS,
+  RANKED_OBJECTIVE_LABELS,
+  PRIMARY_CTA_OPTIONS,
+  PRIMARY_CTA_LABELS,
   type CompanySize,
+  type PrimaryCta,
 } from "@/lib/constants";
 import { selectableCategories } from "@/lib/manifest-utils";
 import { FormProgressSidebar } from "./_components/FormProgressSidebar";
@@ -191,17 +195,6 @@ interface SocialLinkRow {
   url: string;
 }
 
-/* ─── Objectives label map ──────────────────────────────────────── */
-const OBJECTIVE_LABELS: Record<string, string> = {
-  more_leads: "More leads",
-  drive_whatsapp: "Drive WhatsApp",
-  showcase_portfolio: "Showcase portfolio",
-  increase_signups: "Increase signups",
-  brand_awareness: "Brand awareness",
-  drive_purchases: "Drive purchases",
-  support_inquiries: "Support inquiries",
-};
-
 function formatCategoryLabel(category: string): string {
   return category
     .split("/")
@@ -302,7 +295,10 @@ export default function NewProjectPage() {
 
   // Brand & tone
   const [brandToneKeywords, setBrandToneKeywords] = useState<string[]>([]);
-  const [objectives, setObjectives] = useState<string[]>([]);
+  const [rankedObjectives, setRankedObjectives] = useState<
+    Array<{ id: string; rank: number }>
+  >([]);
+  const [primaryCta, setPrimaryCta] = useState<PrimaryCta | "">("");
 
   // Site sections
   const [desiredSections, setDesiredSections] = useState<string[]>([]);
@@ -334,7 +330,7 @@ export default function NewProjectPage() {
       {
         id: "brand",
         label: "Brand & tone",
-        isDone: brandToneKeywords.length > 0 || objectives.length > 0,
+        isDone: brandToneKeywords.length > 0 || rankedObjectives.length > 0,
       },
       {
         id: "sections",
@@ -367,7 +363,7 @@ export default function NewProjectPage() {
     segment,
     description,
     brandToneKeywords,
-    objectives,
+    rankedObjectives,
     desiredSections,
     phone,
     emailValue,
@@ -393,10 +389,33 @@ export default function NewProjectPage() {
     );
   }
 
-  function toggleObjective(tag: string) {
-    setObjectives((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
-    );
+  function toggleRankedObjective(id: string) {
+    setRankedObjectives((prev) => {
+      const existing = prev.find((o) => o.id === id);
+      if (existing) {
+        return prev
+          .filter((o) => o.id !== id)
+          .sort((a, b) => a.rank - b.rank)
+          .map((o, i) => ({ id: o.id, rank: i + 1 }));
+      }
+      return [...prev, { id, rank: prev.length + 1 }];
+    });
+  }
+
+  function moveRankedObjective(id: string, direction: "up" | "down") {
+    setRankedObjectives((prev) => {
+      const sorted = [...prev].sort((a, b) => a.rank - b.rank);
+      const idx = sorted.findIndex((o) => o.id === id);
+      if (idx === -1) return prev;
+      const swapWith = direction === "up" ? idx - 1 : idx + 1;
+      if (swapWith < 0 || swapWith >= sorted.length) return prev;
+      const reordered = [...sorted];
+      [reordered[idx], reordered[swapWith]] = [
+        reordered[swapWith],
+        reordered[idx],
+      ];
+      return reordered.map((o, i) => ({ id: o.id, rank: i + 1 }));
+    });
   }
 
   function toggleDesired(category: string) {
@@ -521,7 +540,15 @@ export default function NewProjectPage() {
         brandColor: hasBrandColor ? brandColor : undefined,
         brandToneKeywords:
           brandToneKeywords.length > 0 ? brandToneKeywords : undefined,
-        objectives: objectives.length > 0 ? objectives : undefined,
+        objectives:
+          rankedObjectives.length > 0
+            ? [...rankedObjectives]
+                .sort((a, b) => a.rank - b.rank)
+                .map((o) => o.id)
+            : undefined,
+        rankedObjectives:
+          rankedObjectives.length > 0 ? rankedObjectives : undefined,
+        primaryCta: primaryCta || undefined,
         desiredSections:
           desiredSections.length > 0 ? desiredSections : undefined,
         businessHours: hoursString,
@@ -815,27 +842,96 @@ export default function NewProjectPage() {
 
               <div>
                 <p className="block text-sm font-medium text-slate-700 mb-2">
-                  Objectives
+                  Objectives (ranked)
                 </p>
                 <p className="text-xs text-slate-500 mb-2">
-                  What should the website achieve for the business?
+                  Pick what the website should achieve, then order by priority.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {OBJECTIVES.map((tag) => {
-                    const selected = objectives.includes(tag);
+                  {RANKED_OBJECTIVE_IDS.map((id) => {
+                    const selected = rankedObjectives.some((o) => o.id === id);
                     return (
                       <button
-                        key={tag}
+                        key={id}
                         type="button"
                         aria-pressed={selected}
-                        onClick={() => toggleObjective(tag)}
+                        onClick={() => toggleRankedObjective(id)}
                         className={pillClasses(selected)}
                       >
-                        {OBJECTIVE_LABELS[tag] ?? tag}
+                        {RANKED_OBJECTIVE_LABELS[id]}
                       </button>
                     );
                   })}
                 </div>
+
+                {rankedObjectives.length > 0 && (
+                  <ol className="mt-3 flex flex-col gap-1.5">
+                    {[...rankedObjectives]
+                      .sort((a, b) => a.rank - b.rank)
+                      .map((obj, idx, arr) => (
+                        <li
+                          key={obj.id}
+                          className="flex items-center gap-2 rounded-md border border-slate-200 bg-slate-50 px-3 py-1.5"
+                        >
+                          <span className="text-xs font-semibold text-slate-500 w-6">
+                            #{obj.rank}
+                          </span>
+                          <span className="text-sm text-slate-800 flex-1">
+                            {RANKED_OBJECTIVE_LABELS[
+                              obj.id as keyof typeof RANKED_OBJECTIVE_LABELS
+                            ] ?? obj.id}
+                          </span>
+                          <button
+                            type="button"
+                            aria-label={`Move ${obj.id} up`}
+                            onClick={() => moveRankedObjective(obj.id, "up")}
+                            disabled={idx === 0}
+                            className="rounded border border-slate-300 px-1.5 py-0.5 text-xs text-slate-600 hover:bg-slate-50 disabled:opacity-30"
+                          >
+                            ↑
+                          </button>
+                          <button
+                            type="button"
+                            aria-label={`Move ${obj.id} down`}
+                            onClick={() => moveRankedObjective(obj.id, "down")}
+                            disabled={idx === arr.length - 1}
+                            className="rounded border border-slate-300 px-1.5 py-0.5 text-xs text-slate-600 hover:bg-slate-50 disabled:opacity-30"
+                          >
+                            ↓
+                          </button>
+                        </li>
+                      ))}
+                  </ol>
+                )}
+              </div>
+
+              <div>
+                <fieldset className="flex flex-col gap-2">
+                  <legend className="block text-sm font-medium text-slate-700 mb-1">
+                    Primary call-to-action
+                  </legend>
+                  <p className="text-xs text-slate-500 mb-2">
+                    What is the single most important action for visitors?
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    {PRIMARY_CTA_OPTIONS.map((cta) => (
+                      <label
+                        key={cta}
+                        className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer"
+                      >
+                        <input
+                          type="radio"
+                          name="primaryCta"
+                          value={cta}
+                          checked={primaryCta === cta}
+                          onChange={() => setPrimaryCta(cta)}
+                          className="accent-slate-900"
+                        />
+                        {PRIMARY_CTA_LABELS[cta]}
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
               </div>
             </div>
           </section>
