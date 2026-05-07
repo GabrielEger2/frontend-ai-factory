@@ -86,7 +86,7 @@
     "stats-count-up-01",
     "stats-milestone-bar-01",
     "layout-authorsplit-01",
-    "cta-cta-editorial-split-01"
+    "cta-editorial-split-01"
   ],
   "pairsPoorly": ["layout-process-timeline-01", "carousel-cards-01"],
   "description": "A two-column section with a sticky narrative on the left and a vertical timeline of dated events on the right, designed for company histories, roadmap reveals, and milestone retrospectives.",

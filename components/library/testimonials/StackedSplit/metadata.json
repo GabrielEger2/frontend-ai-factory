@@ -1,5 +1,5 @@
 {
-  "id": "layout-stackedsplit-01",
+  "id": "testimonial-stackedsplit-01",
   "name": "Stacked Split",
   "category": "testimonial",
   "style": ["modern", "editorial", "corporate"],
@@ -69,7 +69,7 @@
   ],
   "mobileBehavior": "stack",
   "pairsWell": ["hero-split-image-01", "footer-reveal-01"],
-  "pairsPoorly": ["layout-infinitescroll-01", "layout-staggerfan-01"],
+  "pairsPoorly": ["testimonial-infinitescroll-01", "testimonial-staggerfan-01"],
   "description": "A vertically stacked testimonial layout that presents customer quotes with elegant typography and structured spacing, ideal for professional services and B2B companies showcasing client credibility.",
   "descriptions": {
     "descriptive": "Clean two-column layout with testimonial content stacked vertically in one column and complementary visual elements in the other. Features generous white space, refined typography hierarchy, and structured geometric arrangement that conveys editorial sophistication and corporate polish.",

@@ -25,7 +25,7 @@ const DASHBOARD_BUYER_FIELD_TO_SLOT: Record<
     hoursText: "businessHours",
     socialLinks: "socialLinks",
   },
-  "contact-map-info-01": {
+  "contact-locations-map-01": {
     address: "address",
     phone: "phone",
     email: "email",

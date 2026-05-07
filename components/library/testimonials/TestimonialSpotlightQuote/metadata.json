@@ -59,9 +59,9 @@
     "cta-minimal-strip-01"
   ],
   "pairsPoorly": [
-    "layout-stackedsplit-01",
-    "layout-staggerfan-01",
-    "layout-infinitescroll-01",
+    "testimonial-stackedsplit-01",
+    "testimonial-staggerfan-01",
+    "testimonial-infinitescroll-01",
     "testimonial-logo-quote-ribbon-01"
   ],
   "description": "Hero-sized single testimonial — one customer's voice carries the section. Generous whitespace, large pull-quote typography, calm portrait, and a decorative serif open-quote glyph.",

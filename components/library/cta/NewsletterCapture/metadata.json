@@ -66,8 +66,8 @@
   "mobileBehavior": "stack",
   "pairsWell": ["footer-pulse-01", "footer-reveal-01", "faq-accordion-01"],
   "pairsPoorly": [
-    "cta-cta-collage-duo-01",
-    "cta-cta-editorial-split-01",
+    "cta-collage-duo-01",
+    "cta-editorial-split-01",
     "cta-image-backdrop-01"
   ],
   "description": "A focused pre-footer email-capture section with a single inline form, perk bullets, and an inline success state — designed to slot above the footer for newsletters, product waitlists, and community signups.",

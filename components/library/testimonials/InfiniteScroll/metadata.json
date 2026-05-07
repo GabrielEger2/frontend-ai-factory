@@ -1,23 +1,13 @@
 {
-  "id": "layout-infinitescroll-01",
+  "id": "testimonial-infinitescroll-01",
   "name": "Infinite Scroll",
   "category": "testimonial",
-  "style": [
-    "modern",
-    "bold",
-    "editorial"
-  ],
-  "mood": [
-    "energetic",
-    "trustworthy",
-    "professional"
-  ],
+  "style": ["modern", "bold", "editorial"],
+  "mood": ["energetic", "trustworthy", "professional"],
   "layout": "stacked",
   "density": "high",
   "imageWeight": 0,
-  "purpose": [
-    "testimonials"
-  ],
+  "purpose": ["testimonials"],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
@@ -82,10 +72,7 @@
     "hero-split-image-01",
     "layout-cardgrid-01"
   ],
-  "pairsPoorly": [
-    "layout-stackedsplit-01",
-    "layout-staggerfan-01"
-  ],
+  "pairsPoorly": ["testimonial-stackedsplit-01", "testimonial-staggerfan-01"],
   "description": "A continuously scrolling testimonial component with bold typography and editorial spacing that creates dynamic social proof. Perfect for tech companies and agencies wanting to showcase extensive client feedback without pagination interruptions.",
   "descriptions": {
     "descriptive": "A continuous, vertically scrolling testimonial feed with bold typography and editorial-style card layouts. Features high contrast text blocks, generous whitespace, and dynamic motion that creates an energetic browsing experience while maintaining clean, professional aesthetics.",

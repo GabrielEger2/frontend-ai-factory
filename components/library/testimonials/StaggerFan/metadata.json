@@ -1,23 +1,13 @@
 {
-  "id": "layout-staggerfan-01",
+  "id": "testimonial-staggerfan-01",
   "name": "Stagger Fan",
   "category": "testimonial",
-  "style": [
-    "bold",
-    "playful",
-    "modern"
-  ],
-  "mood": [
-    "energetic",
-    "fun",
-    "friendly"
-  ],
+  "style": ["bold", "playful", "modern"],
+  "mood": ["energetic", "fun", "friendly"],
   "layout": "centered",
   "density": "medium",
   "imageWeight": 0.08,
-  "purpose": [
-    "testimonials"
-  ],
+  "purpose": ["testimonials"],
   "acceptsStyleKit": {
     "card": false,
     "background": false,
@@ -73,8 +63,8 @@
     "layout-cardgrid-01"
   ],
   "pairsPoorly": [
-    "layout-infinitescroll-01",
-    "layout-stackedsplit-01"
+    "testimonial-infinitescroll-01",
+    "testimonial-stackedsplit-01"
   ],
   "description": "A dynamic testimonial layout with staggered cards arranged in a fan pattern, perfect for creative agencies and lifestyle brands wanting to showcase customer feedback with visual energy and personality.",
   "descriptions": {

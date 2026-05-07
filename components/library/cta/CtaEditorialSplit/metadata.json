@@ -1,27 +1,16 @@
 {
-  "id": "cta-cta-editorial-split-01",
+  "id": "cta-editorial-split-01",
   "name": "Editorial Split CTA",
   "category": "cta",
-  "purpose": [
-    "cta",
-    "brand-statement"
-  ],
+  "purpose": ["cta", "brand-statement"],
   "acceptsStyleKit": {
     "card": false,
     "background": true,
     "textDecoration": true,
     "button": true
   },
-  "style": [
-    "editorial",
-    "bold",
-    "modern"
-  ],
-  "mood": [
-    "serious",
-    "trustworthy",
-    "energetic"
-  ],
+  "style": ["editorial", "bold", "modern"],
+  "mood": ["serious", "trustworthy", "energetic"],
   "layout": "asymmetric",
   "density": "medium",
   "imageWeight": 0.15,
@@ -55,24 +44,13 @@
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "default",
-        "slide",
-        "dotExpand",
-        "drawOutline",
-        "glow"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
     },
     {
       "name": "ctaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "accent",
-        "neutral"
-      ]
+      "enum": ["primary", "secondary", "accent", "neutral"]
     },
     {
       "name": "secondaryCtaText",
@@ -118,11 +96,7 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "footer-reveal-01",
-    "faq-accordion-01",
-    "carousel-cards-01"
-  ],
+  "pairsWell": ["footer-reveal-01", "faq-accordion-01", "carousel-cards-01"],
   "pairsPoorly": [],
   "description": "A bold split-layout call-to-action that combines editorial-style content with a prominent action button, designed for professional services and B2B companies that need to build trust while driving conversions. The asymmetrical design balances detailed messaging with clear next steps.",
   "descriptions": {

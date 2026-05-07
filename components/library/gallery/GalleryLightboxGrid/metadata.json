@@ -64,7 +64,7 @@
   "pairsWell": [
     "hero-spotlight-center-01",
     "hero-grid-gallery-01",
-    "cta-cta-editorial-split-01",
+    "cta-editorial-split-01",
     "footer-pulse-01"
   ],
   "pairsPoorly": ["gallery-masonry-01", "carousel-horizontal-scroll-01"],

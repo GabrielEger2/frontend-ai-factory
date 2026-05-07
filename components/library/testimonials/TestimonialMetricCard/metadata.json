@@ -90,9 +90,9 @@
     "cta-minimal-strip-01"
   ],
   "pairsPoorly": [
-    "layout-stackedsplit-01",
-    "layout-staggerfan-01",
-    "layout-infinitescroll-01",
+    "testimonial-stackedsplit-01",
+    "testimonial-staggerfan-01",
+    "testimonial-infinitescroll-01",
     "testimonial-spotlight-quote-01",
     "stats-milestone-bar-01"
   ],
