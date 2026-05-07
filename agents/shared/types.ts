@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { MOOD_TAGS, STYLE_TAGS } from "./constants";
 
 /* ------------------------------------------------------------------ */
 /*  Project Status                                                     */
@@ -324,6 +325,51 @@ export const PipelineStateSchema = z.object({
     .nullable()
     .default(null),
   pageType: z.string().nullable().default(null),
+  // Richer intake fields (mirror ProjectBriefSchema). All `.nullable().default(null)`
+  // so SFN JsonPath blocks can reference them without runtime errors when unset.
+  niche: z.string().nullable().default(null),
+  region: z.string().nullable().default(null),
+  companySize: z
+    .enum(["solo", "2-10", "11-50", "51-200", "200+"])
+    .nullable()
+    .default(null),
+  primaryCta: z
+    .enum(["book", "buy", "contact", "subscribe", "learn-more"])
+    .nullable()
+    .default(null),
+  mainService: z.string().nullable().default(null),
+  whatMakesSpecial: z
+    .array(z.string().max(120))
+    .max(5)
+    .nullable()
+    .default(null),
+  keyResults: z.string().nullable().default(null),
+  idealPublic: z.string().nullable().default(null),
+  moodTags: z
+    .array(z.enum(MOOD_TAGS as unknown as [string, ...string[]]))
+    .nullable()
+    .default(null),
+  styleTags: z
+    .array(z.enum(STYLE_TAGS as unknown as [string, ...string[]]))
+    .nullable()
+    .default(null),
+  voiceTone: z.array(z.string()).nullable().default(null),
+  slogan: z.string().nullable().default(null),
+  brandColors: z
+    .array(z.string().regex(/^#[0-9a-fA-F]{6}$/))
+    .max(3)
+    .nullable()
+    .default(null),
+  colorsToAvoid: z.array(z.string()).nullable().default(null),
+  inspirationSites: z.array(z.string().url()).max(3).nullable().default(null),
+  doNots: z.string().nullable().default(null),
+  rankedObjectives: z
+    .union([
+      z.array(z.string()),
+      z.array(z.object({ id: z.string(), rank: z.number().int().positive() })),
+    ])
+    .nullable()
+    .default(null),
   composerOutput: ComposerOutputSchema.optional(),
   contentOutput: ContentOutputSchema.optional(),
   humanizerOutput: HumanizerOutputSchema.optional(),
