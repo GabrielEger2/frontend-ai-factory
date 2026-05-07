@@ -35,11 +35,127 @@ import * as fs from "fs";
 import * as path from "path";
 import { getEmbedding } from "../shared/embeddings";
 import { getQdrantClient } from "../shared/qdrant-client";
-import { DEFAULT_SKELETON } from "../composer/defaultSkeleton";
+import { DEFAULT_SKELETON, type Skeleton } from "../composer/defaultSkeleton";
 import { rerankCandidates, DEFAULT_RERANK_WEIGHTS } from "../composer/rerank";
 import { COMPONENT_METADATA } from "../assembler/component-sources.generated";
 import type { CandidateComponent } from "../composer/prompt";
 import type { StyleOutput } from "../shared/types";
+
+/**
+ * Hardcoded per-brief skeletons used when --offline is passed or when the
+ * LLM planner falls back. All entries exclude `navigation` (the capture
+ * loop skips it). Categories must come from SkeletonSlotSchema.
+ *
+ * Note: agencia-marketing-b2b intentionally has two `content` slots
+ * (services + case studies). Both produce fixtureId
+ * `agencia-marketing-b2b__content` — the second silently overrides the
+ * first in the transplant map. Acceptable per locked decision User-Q3.
+ */
+const FALLBACK_SKELETONS: Record<string, Skeleton> = {
+  "padaria-luxo-sp": [
+    { category: "hero", purpose: "brand visual hook, artisan breads" },
+    { category: "products", purpose: "signature breads and pastries showcase" },
+    { category: "gallery", purpose: "craftsmanship and shop imagery" },
+    { category: "content", purpose: "heritage and artisan philosophy" },
+    { category: "testimonial", purpose: "loyal customer love" },
+    { category: "cta", purpose: "order or visit" },
+    { category: "contact", purpose: "store location, hours, map" },
+    { category: "footer", purpose: "navigation and social" },
+  ],
+  "advocacia-tributaria-bh": [
+    {
+      category: "hero",
+      purpose: "authority brand statement, tax law expertise",
+    },
+    { category: "content", purpose: "practice areas overview" },
+    { category: "stats", purpose: "results: cases won, clients served, years" },
+    { category: "team", purpose: "lead attorneys and specializations" },
+    { category: "faq", purpose: "common tax questions answered" },
+    { category: "testimonial", purpose: "client outcomes" },
+    { category: "cta", purpose: "schedule a consultation" },
+    { category: "contact", purpose: "office address, phone, intake" },
+    { category: "footer", purpose: "navigation and legal links" },
+  ],
+  "crossfit-rj": [
+    {
+      category: "hero",
+      purpose: "high-energy brand hook, community in action",
+    },
+    { category: "content", purpose: "programs and class schedule" },
+    { category: "gallery", purpose: "community photos and WOD action shots" },
+    { category: "stats", purpose: "members, classes per week, coaches" },
+    { category: "testimonial", purpose: "transformation stories" },
+    { category: "cta", purpose: "book a free trial class" },
+    { category: "contact", purpose: "location, hours, arrival" },
+    { category: "footer", purpose: "navigation and social" },
+  ],
+  "agencia-marketing-b2b": [
+    { category: "hero", purpose: "positioning, B2B growth results" },
+    {
+      category: "content",
+      purpose: "services overview: SEO, paid media, content",
+    },
+    { category: "stats", purpose: "client results, ROI, campaigns" },
+    { category: "content", purpose: "case studies, specific transformations" },
+    { category: "team", purpose: "strategists and specialists" },
+    { category: "testimonial", purpose: "client praise and outcomes" },
+    { category: "cta", purpose: "request a free audit or strategy call" },
+    { category: "contact", purpose: "intake form, email, LinkedIn" },
+    { category: "footer", purpose: "navigation and social" },
+  ],
+  "restaurante-japones": [
+    { category: "hero", purpose: "editorial atmosphere hook, omakase" },
+    { category: "content", purpose: "menu story and chef philosophy" },
+    { category: "gallery", purpose: "dishes, plating, ambiance" },
+    { category: "testimonial", purpose: "guest experiences and critic praise" },
+    { category: "cta", purpose: "reserve a table" },
+    { category: "contact", purpose: "address, hours, reservation policy" },
+    { category: "footer", purpose: "navigation and social" },
+  ],
+  "clinica-odontologica": [
+    { category: "hero", purpose: "welcoming family-care statement" },
+    {
+      category: "content",
+      purpose: "services: cleanings, ortho, cosmetic, pediatric",
+    },
+    { category: "team", purpose: "dentists and specialists with credentials" },
+    { category: "faq", purpose: "procedures, insurance, payment, anxiety" },
+    { category: "stats", purpose: "patients served, success rate, years" },
+    { category: "testimonial", purpose: "happy patients and outcomes" },
+    { category: "cta", purpose: "book an appointment" },
+    { category: "contact", purpose: "clinic address, phone, booking" },
+    { category: "footer", purpose: "navigation" },
+  ],
+  "atelie-moda": [
+    {
+      category: "hero",
+      purpose: "editorial brand identity, handcrafted fashion",
+    },
+    { category: "gallery", purpose: "latest collection and lookbook" },
+    { category: "products", purpose: "collection pieces available for order" },
+    { category: "content", purpose: "brand story and atelier philosophy" },
+    { category: "testimonial", purpose: "client feedback" },
+    { category: "cta", purpose: "schedule a fitting or commission" },
+    { category: "contact", purpose: "atelier location and booking" },
+    { category: "footer", purpose: "navigation and Instagram" },
+  ],
+  "consultoria-financeira": [
+    { category: "hero", purpose: "financial-clarity statement" },
+    {
+      category: "content",
+      purpose: "services: budgeting, investing, debt, retirement",
+    },
+    {
+      category: "stats",
+      purpose: "clients helped, savings improvement, years",
+    },
+    { category: "testimonial", purpose: "transformation stories" },
+    { category: "faq", purpose: "methodology, process, fees" },
+    { category: "cta", purpose: "book a free financial diagnosis" },
+    { category: "contact", purpose: "form, email, WhatsApp" },
+    { category: "footer", purpose: "navigation and regulatory disclaimer" },
+  ],
+};
 
 /* ------------------------------------------------------------------ */
 /*  Resolve query brief + style overrides                              */
