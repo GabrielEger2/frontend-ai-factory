@@ -1,0 +1,100 @@
+{
+  "id": "cta-sticky-image-list-01",
+  "name": "Sticky Image List CTA",
+  "category": "cta",
+  "purpose": ["cta", "showcase", "products"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["editorial", "modern", "minimal", "luxury"],
+  "mood": ["elegant", "trustworthy", "calm", "professional"],
+  "layout": "split",
+  "density": "medium",
+  "imageWeight": 0.45,
+  "slots": [
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "optional": true,
+      "maxLength": 40
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 200
+    },
+    {
+      "name": "items",
+      "type": "list",
+      "minItems": 3,
+      "maxItems": 6,
+      "itemSchema": {
+        "index": { "type": "text", "optional": true, "maxLength": 4 },
+        "eyebrow": { "type": "text", "optional": true, "maxLength": 30 },
+        "title": { "type": "text", "maxLength": 60 },
+        "description": { "type": "text", "maxLength": 240 },
+        "ctaText": { "type": "text", "optional": true, "maxLength": 30 },
+        "ctaUrl": { "type": "url", "optional": true },
+        "image": { "type": "image", "aspectRatio": "4:5" },
+        "imageAlt": { "type": "text", "maxLength": 160 }
+      }
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "imageSide",
+      "type": "text",
+      "optional": true,
+      "enum": ["left", "right"]
+    },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["light", "dark"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "cta-hover-reveal-list-01",
+    "footer-reveal-01",
+    "faq-tabbed-01"
+  ],
+  "pairsPoorly": [],
+  "description": "An asymmetric split CTA where a single image stays sticky on one side of the viewport while the visitor scrolls through a stack of CTA items on the other. Each item carries its own image, and the sticky photograph cross-fades to match whichever item is currently being read — so the visual stays anchored even as the page reaches the bottom CTAs.",
+  "descriptions": {
+    "descriptive": "A two-column editorial split with the image column pinned via position:sticky. As the reader scrolls past each CTA item on the right, an IntersectionObserver tracks which item sits closest to the viewport center, and the sticky image cross-fades to that item's photograph with a soft scale-out exit. A small numeric pill on the image (01 / 06) ties the picture to its row, and per-item inline arrows let each row act as its own click target before the section's footer CTA closes the block.",
+    "usage": "Deploy when you have three to six related CTAs that share a common visual frame — service tiers, portfolio chapters, restaurant menu sections, atelier collections — and you want the image presence to carry through the entire scroll instead of disappearing as the visitor reads down. The sticky image keeps the brand's photographic mood in view all the way to the conversion CTA at the bottom, which makes it especially strong as a closing section before the footer.",
+    "audienceFit": "Premium and editorial brands that lead with imagery — hospitality, fashion, food, design studios, real-estate developers. The pacing reads as confident and considered: the image holds, the copy moves, the visitor never loses the picture they liked."
+  }
+}

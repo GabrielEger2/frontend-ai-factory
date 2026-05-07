@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useCallback, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { cn } from "@lib/utils";
 import { useSafeImageSrc } from "@ui/useSafeImageSrc";
@@ -236,12 +236,11 @@ function BeforeAfterSlide({
 /* ------------------------------------------------------------------ */
 
 /**
- * CarouselBeforeAfter -- a horizontally-scrolling carousel of
- * before/after image comparison sliders. Each card is a
- * pointer-draggable reveal slider with keyboard support; the row
- * scrolls horizontally on mobile and behaves as a snap track on
- * desktop. Useful for restoration, redesign, and physical-result
- * portfolios.
+ * CarouselBeforeAfter -- a button-navigated carousel of before/after
+ * image comparison sliders. One slide is shown at a time; prev/next
+ * arrows and pagination dots advance between cases. Each slide is a
+ * pointer-draggable reveal slider with keyboard support. Useful for
+ * restoration, redesign, and physical-result portfolios.
  */
 export default function CarouselBeforeAfter({
   eyebrow,
@@ -254,47 +253,42 @@ export default function CarouselBeforeAfter({
   const shouldReduceMotion = useReducedMotion();
   const safeItems = items.length > 0 ? items.slice(0, 6) : DEFAULT_ITEMS;
   const [activeIndex, setActiveIndex] = useState(0);
-  const trackRef = useRef<HTMLDivElement | null>(null);
+  const [direction, setDirection] = useState<1 | -1>(1);
 
-  const scrollToIndex = useCallback((idx: number) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const child = track.children[idx] as HTMLElement | undefined;
-    if (!child) return;
-    track.scrollTo({
-      left: child.offsetLeft - track.offsetLeft,
-      behavior: "smooth",
-    });
-  }, []);
+  const goTo = useCallback(
+    (next: number) => {
+      const clamped = Math.max(0, Math.min(safeItems.length - 1, next));
+      if (clamped === activeIndex) return;
+      setDirection(clamped > activeIndex ? 1 : -1);
+      setActiveIndex(clamped);
+    },
+    [activeIndex, safeItems.length],
+  );
 
-  /* Update active index based on which slide is centered */
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    const onScroll = () => {
-      const center = track.scrollLeft + track.clientWidth / 2;
-      let nearest = 0;
-      let nearestDist = Infinity;
-      Array.from(track.children).forEach((child, idx) => {
-        const el = child as HTMLElement;
-        const childCenter = el.offsetLeft + el.clientWidth / 2;
-        const dist = Math.abs(center - childCenter);
-        if (dist < nearestDist) {
-          nearestDist = dist;
-          nearest = idx;
-        }
-      });
-      setActiveIndex(nearest);
-    };
-    track.addEventListener("scroll", onScroll, { passive: true });
-    return () => track.removeEventListener("scroll", onScroll);
-  }, []);
+  const goPrev = useCallback(() => goTo(activeIndex - 1), [goTo, activeIndex]);
+  const goNext = useCallback(() => goTo(activeIndex + 1), [goTo, activeIndex]);
+
+  const activeItem = safeItems[activeIndex];
+
+  const variants = {
+    enter: (dir: 1 | -1) => ({
+      opacity: 0,
+      x: shouldReduceMotion ? 0 : dir * 24,
+    }),
+    center: { opacity: 1, x: 0 },
+    exit: (dir: 1 | -1) => ({
+      opacity: 0,
+      x: shouldReduceMotion ? 0 : dir * -24,
+    }),
+  };
 
   return (
     <section
       className={cn("w-full bg-base-100 py-12 md:py-16 lg:py-24", className)}
+      aria-roledescription="carousel"
+      aria-label={headline ?? "Before and after gallery"}
     >
-      <div className="mx-auto max-w-7xl px-4 md:px-8">
+      <div className="mx-auto max-w-5xl px-4 md:px-8">
         {(eyebrow || headline || subheadline) && (
           <motion.div
             className="mb-8 max-w-2xl md:mb-12"
@@ -321,26 +315,33 @@ export default function CarouselBeforeAfter({
           </motion.div>
         )}
 
-        {/* Snap track */}
-        <div className="-mx-4 px-4 md:-mx-8 md:px-8">
-          <div
-            ref={trackRef}
-            className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 scrollbar-hide"
-            style={{ scrollPaddingLeft: "1rem", scrollPaddingRight: "1rem" }}
-          >
-            {safeItems.map((item, idx) => (
-              <div
-                key={idx}
-                className="w-[88%] shrink-0 snap-start sm:w-[75%] lg:w-[68%]"
-              >
-                <BeforeAfterSlide
-                  item={item}
-                  initialPosition={initialPosition}
-                  index={idx}
-                />
-              </div>
-            ))}
-          </div>
+        {/* Single-slide stage */}
+        <div
+          role="group"
+          aria-roledescription="slide"
+          aria-label={`${activeIndex + 1} of ${safeItems.length}: ${activeItem.title}`}
+          className="relative"
+        >
+          <AnimatePresence custom={direction} initial={false} mode="wait">
+            <motion.div
+              key={activeIndex}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                duration: shouldReduceMotion ? 0 : 0.3,
+                ease: "easeOut",
+              }}
+            >
+              <BeforeAfterSlide
+                item={activeItem}
+                initialPosition={initialPosition}
+                index={activeIndex}
+              />
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         {/* Pagination + nav */}
@@ -354,7 +355,7 @@ export default function CarouselBeforeAfter({
                   role="tab"
                   aria-selected={idx === activeIndex}
                   aria-label={`Go to slide ${idx + 1}`}
-                  onClick={() => scrollToIndex(idx)}
+                  onClick={() => goTo(idx)}
                   className={cn(
                     "h-2 rounded-full transition-all duration-200",
                     idx === activeIndex
@@ -369,7 +370,7 @@ export default function CarouselBeforeAfter({
               <button
                 type="button"
                 aria-label="Previous slide"
-                onClick={() => scrollToIndex(Math.max(0, activeIndex - 1))}
+                onClick={goPrev}
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-base-200 text-base-content transition-colors hover:bg-base-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ring-offset-base-100 disabled:opacity-40"
                 disabled={activeIndex === 0}
               >
@@ -378,9 +379,7 @@ export default function CarouselBeforeAfter({
               <button
                 type="button"
                 aria-label="Next slide"
-                onClick={() =>
-                  scrollToIndex(Math.min(safeItems.length - 1, activeIndex + 1))
-                }
+                onClick={goNext}
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-base-200 text-base-content transition-colors hover:bg-base-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ring-offset-base-100 disabled:opacity-40"
                 disabled={activeIndex === safeItems.length - 1}
               >

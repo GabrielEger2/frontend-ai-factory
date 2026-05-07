@@ -11,7 +11,7 @@
   },
   "style": ["modern", "editorial", "bold"],
   "mood": ["professional", "energetic", "trustworthy"],
-  "layout": "scroll",
+  "layout": "single",
   "density": "medium",
   "imageWeight": 0.7,
   "slots": [
@@ -58,7 +58,7 @@
     },
     { "name": "initialPosition", "type": "number", "optional": true }
   ],
-  "mobileBehavior": "scroll",
+  "mobileBehavior": "stack",
   "pairsWell": [
     "hero-hero-bold-editorial-01",
     "hero-split-image-01",
@@ -72,9 +72,9 @@
     "carousel-swipe-01",
     "carousel-testimonial-avatar-peek-01"
   ],
-  "description": "Horizontally-scrolling carousel of before/after image comparison sliders. Each card is pointer-draggable with keyboard support and labelled before/after pills, useful for restoration, redesign, transformation, and physical-result portfolios.",
+  "description": "Button-navigated carousel of before/after image comparison sliders. One slide is shown at a time; prev/next arrows and pagination dots advance between cases. Each slide is pointer-draggable with keyboard support and labelled before/after pills, useful for restoration, redesign, transformation, and physical-result portfolios.",
   "descriptions": {
-    "descriptive": "Snap-x horizontal track on every viewport; each slide is a 16:10 surface with the after image full-bleed and the before image clipped from the left by a draggable handle. Keyboard arrows (and Home/End) move the handle in 4% increments. Pagination dots and prev/next chevrons sit under the track.",
+    "descriptive": "Single-slide stage on every viewport; the active slide is a 16:10 surface with the after image full-bleed and the before image clipped from the left by a draggable handle. Keyboard arrows (and Home/End) move the handle in 4% increments. Pagination dots and prev/next chevrons advance between cases with a soft slide+fade transition.",
     "usage": "Use for any 'we changed this' portfolio — interior renovations, brand refreshes, logo redesigns, before-and-after marketing visuals. Place after a hero or below a stats panel, never alongside another image-heavy carousel on the same page.",
     "audienceFit": "Architecture and interior design firms, restoration trades, branding agencies, dental and medical aesthetic clinics, photo retouchers, and marketing agencies whose case studies live on transformation imagery."
   }

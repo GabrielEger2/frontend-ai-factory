@@ -36,6 +36,7 @@ export { default as CtaEditorialSplit } from "./cta/CtaEditorialSplit";
 export { default as CtaImageBackdrop } from "./cta/CtaImageBackdrop";
 export { default as CtaMinimalStrip } from "./cta/CtaMinimalStrip";
 export { default as CtaStickyBanner } from "./cta/CtaStickyBanner";
+export { default as CtaStickyImageList } from "./cta/CtaStickyImageList";
 export { default as NewsletterCapture } from "./cta/NewsletterCapture";
 
 // FAQ
@@ -152,6 +153,7 @@ import CtaEditorialSplit from "./cta/CtaEditorialSplit";
 import CtaImageBackdrop from "./cta/CtaImageBackdrop";
 import CtaMinimalStrip from "./cta/CtaMinimalStrip";
 import CtaStickyBanner from "./cta/CtaStickyBanner";
+import CtaStickyImageList from "./cta/CtaStickyImageList";
 import NewsletterCapture from "./cta/NewsletterCapture";
 import FaqAccordion from "./faq/FaqAccordion";
 import FaqCategorized from "./faq/FaqCategorized";
@@ -251,6 +253,7 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "cta-minimal-strip-01": CtaMinimalStrip,
   "cta-newsletter-capture-01": NewsletterCapture,
   "cta-sticky-banner-01": CtaStickyBanner,
+  "cta-sticky-image-list-01": CtaStickyImageList,
   "faq-accordion-01": FaqAccordion,
   "faq-categorized-01": FaqCategorized,
   "faq-minimal-01": FaqMinimal,

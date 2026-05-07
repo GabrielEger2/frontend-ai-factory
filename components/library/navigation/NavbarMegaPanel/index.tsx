@@ -533,22 +533,33 @@ export default function NavbarMegaPanel({
         </button>
       </div>
 
-      {/* Mega panel — desktop only */}
-      <AnimatePresence>
+      {/* Mega panel — desktop only. Outer container stays mounted while any
+          panel is active; inner content crossfades between links so we never
+          render two panels stacked vertically during the swap. */}
+      <AnimatePresence initial={false}>
         {showPanel && activeLink?.panel && (
           <motion.div
-            key={activeLink.text}
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
             className="hidden border-t border-base-300/60 bg-base-100/95 backdrop-blur-md lg:block"
           >
-            <div className="mx-auto max-w-7xl px-8 py-10">
-              <MegaPanelContent
-                groups={activeLink.panel.groups}
-                feature={activeLink.panel.feature}
-              />
+            <div className="relative mx-auto max-w-7xl px-8 py-10">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={activeLink.text}
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.12, ease: "easeOut" }}
+                >
+                  <MegaPanelContent
+                    groups={activeLink.panel.groups}
+                    feature={activeLink.panel.feature}
+                  />
+                </motion.div>
+              </AnimatePresence>
             </div>
           </motion.div>
         )}

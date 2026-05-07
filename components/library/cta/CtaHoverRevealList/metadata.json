@@ -1,0 +1,76 @@
+{
+  "id": "cta-hover-reveal-list-01",
+  "name": "Hover Reveal List CTA",
+  "category": "cta",
+  "purpose": ["cta", "products", "showcase"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["editorial", "modern", "minimal", "luxury"],
+  "mood": ["elegant", "trustworthy", "calm", "professional"],
+  "layout": "stacked",
+  "density": "medium",
+  "imageWeight": 0.35,
+  "slots": [
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "optional": true,
+      "maxLength": 40
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 200
+    },
+    {
+      "name": "items",
+      "type": "list",
+      "minItems": 3,
+      "maxItems": 8,
+      "itemSchema": {
+        "label": { "type": "text", "maxLength": 40 },
+        "caption": { "type": "text", "optional": true, "maxLength": 80 },
+        "image": { "type": "image", "aspectRatio": "3:4" },
+        "imageAlt": { "type": "text", "maxLength": 160 },
+        "url": { "type": "url", "optional": true },
+        "index": { "type": "text", "optional": true, "maxLength": 4 }
+      }
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["light", "dark"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": ["footer-reveal-01", "faq-accordion-01"],
+  "pairsPoorly": [],
+  "description": "An editorial stacked-list CTA where each row is a category or product line whose image becomes the row's background on hover. Designed for businesses with multiple product divisions (bakeries, ateliers, studios, restaurants with menu sections) where each row is itself a click target into a sub-page.",
+  "descriptions": {
+    "descriptive": "A magazine-style index laid out as full-width hoverable rows. Each row pairs a counter, a large display label, and a subtle arrow; on hover the row's image fades in as the row's own background — a slow zoom plus a left-weighted scrim — and surrounding rows dim to put the focal row forward. Spring physics give the label a tactile slide and the arrow a quick rotate-into-place.",
+    "usage": "Deploy when you need to present multiple product lines, service categories, or portfolio sections without committing to a feature grid. Especially strong for bakeries (breads, cakes, pies, savory), ateliers (collections), restaurants (menu sections), and studios (disciplines). The list-as-CTA pattern keeps the page calm while making every row a discoverable doorway, with the row-fill image reveal carrying the visual interest.",
+    "audienceFit": "Works for premium and editorial brands — artisan food, fashion, hospitality, design studios — where the catalog is part of the brand voice. The interaction reads as confident and considered rather than salesy."
+  }
+}

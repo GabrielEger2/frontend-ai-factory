@@ -128,10 +128,10 @@ function FlyoutLink({
     <div
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
-      className="group relative h-fit w-fit"
+      className="group relative inline-flex"
     >
       <ClientSideLink href={finalHref}>
-        <span className="relative flex cursor-pointer items-center gap-1 rounded-full px-3.5 py-2 text-sm font-medium text-base-content/70 transition-colors duration-200 hover:text-base-content">
+        <span className="relative inline-flex cursor-pointer items-center gap-1 rounded-full px-3.5 py-2 text-sm font-medium text-base-content/70 transition-colors duration-200 hover:text-base-content">
           {children}
           {FlyoutContent && (
             <FiChevronDown
