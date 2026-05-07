@@ -9,11 +9,11 @@ Each component lives in `components/library/<category>/<ComponentName>/`:
 
 ## Categories
 
-The library spans 13 active categories. Counts below reflect what is on disk in `components/library/` today.
+The library spans 12 active categories. Counts below reflect what is on disk in `components/library/` today.
 
 | Category | Count | Components |
 |---|---|---|
-| hero | 10 | Asymmetric stack, bakery editorial, bold editorial, device chrome, grid gallery, newsroom ticker, polaroid collage, split form, split image, video backdrop |
+| hero | 11 | Asymmetric stack, bakery editorial, bold editorial, carousel full-bleed slider, device chrome, grid gallery, newsroom ticker, polaroid collage, split form, split image, video backdrop |
 | testimonial | 5 | Infinite scroll, masonry quotes, metric card, spotlight quote, video card |
 | footer | 4 | Columns social, mega, pulse, reveal |
 | cta | 7 | Dual offer split, hover reveal list, image backdrop, inline calculator, sticky image list, testimonial paired, video backdrop |
@@ -21,15 +21,14 @@ The library spans 13 active categories. Counts below reflect what is on disk in 
 | contact | 7 | Booking embed, chat embed, locations map, multi-step, shapes form, split form, support tabs |
 | navigation | 4 | Dock, mega-panel, pill, sticky |
 | stats | 3 | Chart, count-up, KPI grid |
-| carousel | 4 | Before/after, cards, full-bleed slider, thumbnail nav |
-| content | 3 | Comparison split, editorial framed split, zigzag alternating split |
+| content | 7 | Carousel before/after, carousel cards, comparison split, editorial framed split, gallery case study, gallery image-text editorial, zigzag alternating split |
 | pricing | 4 | Freemium ladder, monthly/annual toggle, single price, tier cards |
 | team | 3 | Founder split, leadership grid, member spotlight |
-| gallery | 5 | Case study, image-text editorial, lightbox grid, masonry, portfolio strip |
+| gallery | 4 | Carousel thumbnail nav, lightbox grid, masonry, portfolio strip |
 
-Total on disk: 62 components across 13 active categories.
+Total on disk: 62 components across 12 active categories.
 
-The previous `motion`, `layout/grid`, and `layout/split` categories have been retired. `layout/split`'s surviving components were migrated to `content`; `motion` and `layout/grid` had all their components removed.
+The previous `motion`, `layout/grid`, `layout/split`, and `carousel` categories have been retired. `layout/split`'s surviving components were migrated to `content`; `motion` and `layout/grid` had all their components removed; `carousel`'s 4 components were redistributed to `content` (CarouselBeforeAfter, CarouselCards), `hero` (CarouselFullBleedSlider), and `gallery` (CarouselThumbnailNav).
 
 `components/wrappers/` (separate from `components/library/`) holds hand-authored page-template wrappers that accept `React.ReactNode` for nested content slots — currently `ParallaxContent` and `StickyCards`. These are NOT Composer-pickable and have no `metadata.json`. Use them only when hand-composing a Next.js page.
 
@@ -39,7 +38,7 @@ The `"category"` field in `metadata.json` MUST be one of these singular values (
 
 ```
 hero | testimonial | footer | cta | faq | contact |
-navigation | stats | carousel | content |
+navigation | stats | content |
 pricing | team | gallery
 ```
 
