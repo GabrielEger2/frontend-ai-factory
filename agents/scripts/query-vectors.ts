@@ -52,6 +52,8 @@ let moodOverride: string[] | undefined;
 let styleOverride: string[] | undefined;
 let densityOverride: string | undefined;
 let captureSlug: string | undefined;
+let offlineMode = false;
+let replanMode = false;
 
 const splitCsv = (raw: string): string[] =>
   raw
@@ -69,6 +71,10 @@ for (let i = 0; i < argv.length; i++) {
     densityOverride = argv[++i].trim();
   } else if (arg === "--capture" && i + 1 < argv.length) {
     captureSlug = argv[++i];
+  } else if (arg === "--offline" || arg === "--no-llm") {
+    offlineMode = true;
+  } else if (arg === "--replan") {
+    replanMode = true;
   } else if (!arg.startsWith("--") && brief === undefined) {
     brief = arg;
   }
@@ -76,7 +82,7 @@ for (let i = 0; i < argv.length; i++) {
 
 if (!brief) {
   console.error(
-    'Usage: ts-node scripts/query-vectors.ts "<brief>" [--mood a,b,c] [--style a,b,c] [--density low|medium|high] [--capture <slug>]',
+    'Usage: ts-node scripts/query-vectors.ts "<brief>" [--mood a,b,c] [--style a,b,c] [--density low|medium|high] [--capture <slug>] [--offline|--no-llm] [--replan]',
   );
   process.exit(1);
 }
@@ -104,6 +110,14 @@ for (const name of REQUIRED_ENV_VARS) {
     console.error(`Error: ${name} environment variable is not set`);
     process.exit(1);
   }
+}
+
+const llmMode = captureMode && !offlineMode;
+if (llmMode && !process.env.CLAUDE_API_KEY_SSM_PATH) {
+  console.error(
+    "Error: CLAUDE_API_KEY_SSM_PATH is required for LLM skeleton planning. Pass --offline to use fallback archetypes.",
+  );
+  process.exit(1);
 }
 
 /* ------------------------------------------------------------------ */
