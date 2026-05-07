@@ -25,8 +25,9 @@ The library spans 12 active categories. Counts below reflect what is on disk in 
 | pricing | 4 | Freemium ladder, monthly/annual toggle, single price, tier cards |
 | team | 3 | Founder split, leadership grid, member spotlight |
 | gallery | 4 | Carousel thumbnail nav, lightbox grid, masonry, portfolio strip |
+| products | 1 | Category grid |
 
-Total on disk: 61 components across 12 active categories.
+Total on disk: 59 components across 13 active categories.
 
 The previous `motion`, `layout/grid`, `layout/split`, and `carousel` categories have been retired. `layout/split`'s surviving components were migrated to `content`; `motion` and `layout/grid` had all their components removed; `carousel`'s 4 components were redistributed to `content` (CarouselBeforeAfter, CarouselCards), `hero` (CarouselFullBleedSlider), and `gallery` (CarouselThumbnailNav).
 
@@ -39,7 +40,7 @@ The `"category"` field in `metadata.json` MUST be one of these singular values (
 ```
 hero | testimonial | footer | cta | faq | contact |
 navigation | stats | content |
-pricing | team | gallery
+pricing | team | gallery | products
 ```
 
 Plural variants like `"footers"`, `"testimonials"`, `"heroes"` are NOT permitted in the `category` field. The category field is what drives downstream consumers (FLOW_ORDER in `agents/scripts/generate-pair-scores.ts`, composer agent's flow ordering, dashboard category facets), so a mismatch silently breaks pair scoring.
