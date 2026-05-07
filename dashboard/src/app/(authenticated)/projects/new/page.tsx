@@ -198,6 +198,12 @@ interface SocialLinkRow {
   url: string;
 }
 
+interface BrandColorEntry {
+  hex: string;
+  hexInput: string;
+  error: string | null;
+}
+
 function formatCategoryLabel(category: string): string {
   return category
     .split("/")
@@ -291,10 +297,15 @@ export default function NewProjectPage() {
   >("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [hasBrandColor, setHasBrandColor] = useState(false);
-  const [brandColor, setBrandColor] = useState("#000000");
-  const [brandColorHexInput, setBrandColorHexInput] = useState("#000000");
-  const [brandColorError, setBrandColorError] = useState<string | null>(null);
+  const [brandColorsEnabled, setBrandColorsEnabled] = useState(false);
+  const [brandColors, setBrandColors] = useState<BrandColorEntry[]>([]);
+
+  // Visual
+  const [colorsToAvoid, setColorsToAvoid] = useState("");
+  const [inspirationSites, setInspirationSites] = useState<string[]>(["", ""]);
+  const [inspirationSiteErrors, setInspirationSiteErrors] = useState<
+    Record<number, string>
+  >({});
 
   // Brand & tone
   const [brandToneKeywords, setBrandToneKeywords] = useState<string[]>([]);
@@ -369,6 +380,12 @@ export default function NewProjectPage() {
         isDone: Boolean(idealPublic.trim()),
       },
       {
+        id: "visual",
+        label: "Visual",
+        isDone:
+          brandColorsEnabled || inspirationSites.some((s) => s.trim() !== ""),
+      },
+      {
         id: "sections",
         label: "Site sections",
         isDone: desiredSections.length > 0,
@@ -404,6 +421,8 @@ export default function NewProjectPage() {
     styleTags,
     mainService,
     idealPublic,
+    brandColorsEnabled,
+    inspirationSites,
     desiredSections,
     phone,
     emailValue,
@@ -412,15 +431,68 @@ export default function NewProjectPage() {
     address.city,
   ]);
 
-  function handleHexInput(raw: string) {
-    setBrandColorHexInput(raw);
-    if (HEX_RE.test(raw)) {
-      const normalized = (raw.startsWith("#") ? raw : `#${raw}`).toUpperCase();
-      setBrandColor(normalized);
-      setBrandColorError(null);
-    } else {
-      setBrandColorError("Enter a 6-digit hex color (e.g. #1A2B3C).");
-    }
+  function updateBrandColor(index: number, raw: string) {
+    setBrandColors((prev) =>
+      prev.map((entry, i) => {
+        if (i !== index) return entry;
+        if (HEX_RE.test(raw)) {
+          const normalized = (
+            raw.startsWith("#") ? raw : `#${raw}`
+          ).toUpperCase();
+          return { hex: normalized, hexInput: raw, error: null };
+        }
+        return {
+          ...entry,
+          hexInput: raw,
+          error: "Enter a 6-digit hex color (e.g. #1A2B3C).",
+        };
+      }),
+    );
+  }
+
+  function updateBrandColorPicker(index: number, value: string) {
+    const upper = value.toUpperCase();
+    setBrandColors((prev) =>
+      prev.map((entry, i) =>
+        i === index ? { hex: upper, hexInput: upper, error: null } : entry,
+      ),
+    );
+  }
+
+  function addBrandColor() {
+    setBrandColors((prev) =>
+      prev.length < 3
+        ? [...prev, { hex: "#000000", hexInput: "#000000", error: null }]
+        : prev,
+    );
+  }
+
+  function removeBrandColor(index: number) {
+    setBrandColors((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function updateInspirationSite(index: number, value: string) {
+    setInspirationSites((prev) =>
+      prev.map((s, i) => (i === index ? value : s)),
+    );
+    setInspirationSiteErrors((prev) => {
+      const { [index]: _omit, ...rest } = prev;
+      return rest;
+    });
+  }
+
+  function addInspirationSite() {
+    setInspirationSites((prev) => (prev.length < 3 ? [...prev, ""] : prev));
+  }
+
+  function removeInspirationSite(index: number) {
+    setInspirationSites((prev) =>
+      prev.length > 2 ? prev.filter((_, i) => i !== index) : prev,
+    );
+    setInspirationSiteErrors((prev) => {
+      const { [index]: _omit, ...rest } = prev;
+      return rest;
+    });
   }
 
   function toggleToneKeyword(tag: string) {
@@ -558,7 +630,27 @@ export default function NewProjectPage() {
     setError(null);
     setSectionsError(null);
 
-    if (hasBrandColor && brandColorError) return;
+    // Brand color validation — every entry's hex must match HEX_RE
+    let brandColorsValid = true;
+    if (brandColorsEnabled && brandColors.length > 0) {
+      const validatedColors = brandColors.map((entry) => {
+        if (!HEX_RE.test(entry.hex)) {
+          brandColorsValid = false;
+          return {
+            ...entry,
+            error: "Enter a 6-digit hex color (e.g. #1A2B3C).",
+          };
+        }
+        if (entry.error) {
+          brandColorsValid = false;
+        }
+        return entry;
+      });
+      if (!brandColorsValid) {
+        setBrandColors(validatedColors);
+        return;
+      }
+    }
 
     // Phone validation
     let phoneErr: string | null = null;
@@ -605,12 +697,23 @@ export default function NewProjectPage() {
     });
     setWhatMakesSpecialErrors(newBulletErrors);
 
+    // Inspiration sites — URL validation for non-empty entries
+    const newInspirationErrors: Record<number, string> = {};
+    inspirationSites.forEach((site, i) => {
+      const trimmed = site.trim();
+      if (trimmed && !URL_RE.test(trimmed)) {
+        newInspirationErrors[i] = "URL must start with http:// or https://.";
+      }
+    });
+    setInspirationSiteErrors(newInspirationErrors);
+
     if (
       phoneErr ||
       emailErr ||
       zipErr ||
       Object.keys(newSocialErrors).length > 0 ||
-      Object.keys(newBulletErrors).length > 0
+      Object.keys(newBulletErrors).length > 0 ||
+      Object.keys(newInspirationErrors).length > 0
     ) {
       return;
     }
@@ -635,7 +738,25 @@ export default function NewProjectPage() {
         companySize: companySize || undefined,
         pageType: pageType || undefined,
         description,
-        brandColor: hasBrandColor ? brandColor : undefined,
+        brandColor:
+          brandColorsEnabled && brandColors.length > 0
+            ? brandColors[0].hex
+            : undefined,
+        brandColors:
+          brandColorsEnabled && brandColors.length > 0
+            ? brandColors.map((e) => e.hex)
+            : undefined,
+        colorsToAvoid: colorsToAvoid.trim()
+          ? colorsToAvoid
+              .trim()
+              .split(",")
+              .map((s) => s.trim())
+              .filter(Boolean)
+          : undefined,
+        inspirationSites:
+          inspirationSites.map((s) => s.trim()).filter(Boolean).length > 0
+            ? inspirationSites.map((s) => s.trim()).filter(Boolean)
+            : undefined,
         brandToneKeywords:
           brandToneKeywords.length > 0 ? brandToneKeywords : undefined,
         objectives:
@@ -844,73 +965,6 @@ export default function NewProjectPage() {
                   placeholder="What the company does, who it serves, what makes it different. The more specific, the better the AI output."
                   className={inputClasses}
                 />
-              </div>
-
-              <div>
-                <fieldset className="flex flex-col gap-2">
-                  <legend className={labelClasses}>
-                    Does the company have a brand color?
-                  </legend>
-                  <div className="flex gap-4">
-                    <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="hasBrandColor"
-                        value="no"
-                        checked={!hasBrandColor}
-                        onChange={() => {
-                          setHasBrandColor(false);
-                          setBrandColorError(null);
-                        }}
-                        className="accent-slate-900"
-                      />
-                      No
-                    </label>
-                    <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="hasBrandColor"
-                        value="yes"
-                        checked={hasBrandColor}
-                        onChange={() => setHasBrandColor(true)}
-                        className="accent-slate-900"
-                      />
-                      Yes
-                    </label>
-                  </div>
-                </fieldset>
-
-                {hasBrandColor && (
-                  <div className="mt-3 flex flex-col gap-2">
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="color"
-                        aria-label="Brand color picker"
-                        value={brandColor}
-                        onChange={(e) => {
-                          const value = e.target.value.toUpperCase();
-                          setBrandColor(value);
-                          setBrandColorHexInput(value);
-                          setBrandColorError(null);
-                        }}
-                        className="h-9 w-12 cursor-pointer rounded border border-slate-300"
-                      />
-                      <input
-                        type="text"
-                        aria-label="Brand color hex value"
-                        value={brandColorHexInput}
-                        onChange={(e) => handleHexInput(e.target.value)}
-                        placeholder="#000000"
-                        className={inputClasses}
-                      />
-                    </div>
-                    {brandColorError && (
-                      <p className={errorTextClasses} role="alert">
-                        {brandColorError}
-                      </p>
-                    )}
-                  </div>
-                )}
               </div>
             </div>
           </section>
@@ -1130,6 +1184,186 @@ export default function NewProjectPage() {
                   placeholder="Optional. Used as hero subheadline seed."
                   className={inputClasses}
                 />
+              </div>
+            </div>
+          </section>
+
+          {/* ── Visual ─────────────────────────────────────────────── */}
+          <section className={sectionClasses}>
+            <header className={sectionHeaderClasses}>
+              <h2 className={sectionTitleClasses}>Visual</h2>
+              <p className={sectionSubtitleClasses}>
+                Brand colors, palette constraints, and inspiration references.
+              </p>
+            </header>
+            <div className="flex flex-col gap-6">
+              <div>
+                <fieldset className="flex flex-col gap-2">
+                  <legend className={labelClasses}>
+                    Does the company have brand colors?
+                  </legend>
+                  <div className="flex gap-4">
+                    <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="brandColorsEnabled"
+                        value="no"
+                        checked={!brandColorsEnabled}
+                        onChange={() => {
+                          setBrandColorsEnabled(false);
+                          setBrandColors([]);
+                        }}
+                        className="accent-slate-900"
+                      />
+                      No
+                    </label>
+                    <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="brandColorsEnabled"
+                        value="yes"
+                        checked={brandColorsEnabled}
+                        onChange={() => {
+                          setBrandColorsEnabled(true);
+                          if (brandColors.length === 0) {
+                            setBrandColors([
+                              {
+                                hex: "#000000",
+                                hexInput: "#000000",
+                                error: null,
+                              },
+                            ]);
+                          }
+                        }}
+                        className="accent-slate-900"
+                      />
+                      Yes
+                    </label>
+                  </div>
+                </fieldset>
+
+                {brandColorsEnabled && (
+                  <div className="mt-3 flex flex-col gap-3">
+                    {brandColors.map((entry, index) => (
+                      <div key={index} className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="color"
+                            aria-label={`Brand color picker ${index + 1}`}
+                            value={
+                              HEX_RE.test(entry.hex) ? entry.hex : "#000000"
+                            }
+                            onChange={(e) =>
+                              updateBrandColorPicker(index, e.target.value)
+                            }
+                            className="h-9 w-12 cursor-pointer rounded border border-slate-300"
+                          />
+                          <input
+                            type="text"
+                            aria-label={`Brand color hex value ${index + 1}`}
+                            value={entry.hexInput}
+                            onChange={(e) =>
+                              updateBrandColor(index, e.target.value)
+                            }
+                            placeholder="#000000"
+                            className={inputClasses}
+                          />
+                          {brandColors.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => removeBrandColor(index)}
+                              className="rounded-md border border-slate-300 px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors shrink-0"
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                        {entry.error && (
+                          <p className={errorTextClasses} role="alert">
+                            {entry.error}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                    {brandColors.length < 3 && (
+                      <button
+                        type="button"
+                        onClick={addBrandColor}
+                        className="self-start rounded-md border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                      >
+                        + Add color
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="colorsToAvoid" className={labelClasses}>
+                  Colors to avoid
+                </label>
+                <input
+                  id="colorsToAvoid"
+                  type="text"
+                  value={colorsToAvoid}
+                  onChange={(e) => setColorsToAvoid(e.target.value)}
+                  placeholder="e.g. bright red, neon green"
+                  className={inputClasses}
+                />
+                <p className="text-xs text-slate-500 mt-1">
+                  Comma-separated. Optional.
+                </p>
+              </div>
+
+              <div>
+                <p className="block text-sm font-medium text-slate-700 mb-1">
+                  Inspiration sites
+                </p>
+                <p className="text-xs text-slate-500 mb-2">
+                  URLs the AI should look at for visual reference. Up to 3.
+                </p>
+                <div className="flex flex-col gap-2">
+                  {inspirationSites.map((site, i) => (
+                    <div key={i} className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="url"
+                          aria-label={`Inspiration site ${i + 1}`}
+                          value={site}
+                          onChange={(e) =>
+                            updateInspirationSite(i, e.target.value)
+                          }
+                          placeholder="https://example.com"
+                          className={inputClasses}
+                        />
+                        {inspirationSites.length > 2 && (
+                          <button
+                            type="button"
+                            onClick={() => removeInspirationSite(i)}
+                            aria-label={`Remove inspiration site ${i + 1}`}
+                            className="rounded-md border border-slate-300 px-2 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors shrink-0"
+                          >
+                            ×
+                          </button>
+                        )}
+                      </div>
+                      {inspirationSiteErrors[i] && (
+                        <p className={errorTextClasses} role="alert">
+                          {inspirationSiteErrors[i]}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                {inspirationSites.length < 3 && (
+                  <button
+                    type="button"
+                    onClick={addInspirationSite}
+                    className="mt-2 rounded-md border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                  >
+                    + Add site
+                  </button>
+                )}
               </div>
             </div>
           </section>
