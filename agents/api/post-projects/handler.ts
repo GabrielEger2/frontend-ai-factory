@@ -5,37 +5,22 @@ import {
 } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
-import { z, ZodError } from "zod";
-import { SUPPORTED_SEGMENTS } from "../../shared/constants";
+import { ZodError } from "zod";
+import { ProjectBriefSchema } from "../../pipeline-starter/types";
 import { requireSellerId } from "../shared/seller-guard";
 import crypto from "crypto";
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 const sqs = new SQSClient({});
 
-const CreateProjectSchema = z.object({
-  companyName: z.string().min(1),
-  segment: z.enum(SUPPORTED_SEGMENTS as [string, ...string[]]),
-  description: z.string().min(1),
-  brandColor: z
-    .string()
-    .regex(/^#[0-9a-fA-F]{6}$/)
-    .optional(),
-  // Expanded intake fields (all optional). brandToneKeywords (NOT toneKeywords)
-  // — avoids collision with ResearchOutputSchema.toneKeywords.
-  desiredSections: z.array(z.string()).optional(),
-  brandToneKeywords: z.array(z.string()).optional(),
-  objectives: z.array(z.string()).optional(),
-  businessHours: z.string().optional(),
-  address: z.string().optional(),
-  phone: z.string().optional(),
-  email: z.string().optional(),
-  socialLinks: z
-    .array(z.object({ platform: z.string(), url: z.string() }))
-    .optional(),
-  pageType: z
-    .enum(["landing", "store", "portfolio", "services", "about"])
-    .optional(),
+// Derive the create-project request schema from the canonical ProjectBriefSchema
+// to eliminate drift. Strip pipeline-internal fields the API caller does not
+// supply (projectId, sellerId, executionName) — these are filled in by the
+// handler / pipeline-starter respectively.
+const CreateProjectSchema = ProjectBriefSchema.omit({
+  projectId: true,
+  sellerId: true,
+  executionName: true,
 });
 
 /**
@@ -76,22 +61,13 @@ export const handler: APIGatewayProxyHandler = async (event) => {
           sk: `PROJECT#${projectId}`,
           projectId,
           sellerId,
-          companyName: input.companyName,
-          segment: input.segment,
-          description: input.description,
-          brandColor: input.brandColor,
-          desiredSections: input.desiredSections,
-          brandToneKeywords: input.brandToneKeywords,
-          objectives: input.objectives,
-          businessHours: input.businessHours,
-          address: input.address,
-          phone: input.phone,
-          email: input.email,
-          socialLinks: input.socialLinks,
-          pageType: input.pageType,
           status: "queued",
           createdAt: now,
           updatedAt: now,
+          // Spread all validated brief fields. DDB silently drops `undefined`
+          // values, so optional Zod fields that are absent simply won't be
+          // written. attribute_not_exists(pk) still guards against duplicates.
+          ...input,
         },
         ConditionExpression: "attribute_not_exists(pk)",
       }),
@@ -103,19 +79,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         MessageBody: JSON.stringify({
           projectId,
           sellerId,
-          companyName: input.companyName,
-          segment: input.segment,
-          description: input.description,
-          brandColor: input.brandColor,
-          desiredSections: input.desiredSections,
-          brandToneKeywords: input.brandToneKeywords,
-          objectives: input.objectives,
-          businessHours: input.businessHours,
-          address: input.address,
-          phone: input.phone,
-          email: input.email,
-          socialLinks: input.socialLinks,
-          pageType: input.pageType,
+          ...input,
         }),
       }),
     );

@@ -15,9 +15,21 @@ import {
 } from "lucide-react";
 import { createProject } from "@/lib/actions/create-project";
 import { SUPPORTED_SEGMENTS, SEGMENT_LABELS } from "@/types/project";
-import { TONE_KEYWORDS, OBJECTIVES } from "@/lib/constants";
-import { selectableCategories } from "@/lib/manifest-utils";
+import {
+  COMPANY_SIZES,
+  RANKED_OBJECTIVE_IDS,
+  RANKED_OBJECTIVE_LABELS,
+  PRIMARY_CTA_OPTIONS,
+  PRIMARY_CTA_LABELS,
+  MOOD_TAGS,
+  STYLE_TAGS,
+  VOICE_TONE_OPTIONS,
+  type CompanySize,
+  type PrimaryCta,
+} from "@/lib/constants";
 import { FormProgressSidebar } from "./_components/FormProgressSidebar";
+import { QuickFillButton } from "./_components/QuickFillButton";
+import type { PresetValues } from "./_presets";
 
 /* ─── Validators ─────────────────────────────────────────────────── */
 const HEX_RE = /^#?[0-9a-fA-F]{6}$/;
@@ -186,22 +198,10 @@ interface SocialLinkRow {
   url: string;
 }
 
-/* ─── Objectives label map ──────────────────────────────────────── */
-const OBJECTIVE_LABELS: Record<string, string> = {
-  more_leads: "More leads",
-  drive_whatsapp: "Drive WhatsApp",
-  showcase_portfolio: "Showcase portfolio",
-  increase_signups: "Increase signups",
-  brand_awareness: "Brand awareness",
-  drive_purchases: "Drive purchases",
-  support_inquiries: "Support inquiries",
-};
-
-function formatCategoryLabel(category: string): string {
-  return category
-    .split("/")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" / ");
+interface BrandColorEntry {
+  hex: string;
+  hexInput: string;
+  error: string | null;
 }
 
 /* ─── Address → single-line string ───────────────────────────────── */
@@ -282,23 +282,51 @@ export default function NewProjectPage() {
   // Company basics
   const [companyName, setCompanyName] = useState("");
   const [segment, setSegment] = useState("");
+  const [niche, setNiche] = useState("");
+  const [region, setRegion] = useState("");
+  const [companySize, setCompanySize] = useState<CompanySize | "">("");
   const [pageType, setPageType] = useState<
     "landing" | "store" | "portfolio" | "services" | "about" | ""
   >("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [hasBrandColor, setHasBrandColor] = useState(false);
-  const [brandColor, setBrandColor] = useState("#000000");
-  const [brandColorHexInput, setBrandColorHexInput] = useState("#000000");
-  const [brandColorError, setBrandColorError] = useState<string | null>(null);
+  const [brandColorsEnabled, setBrandColorsEnabled] = useState(false);
+  const [brandColors, setBrandColors] = useState<BrandColorEntry[]>([]);
+
+  // Visual
+  const [colorsToAvoid, setColorsToAvoid] = useState("");
+  const [inspirationSites, setInspirationSites] = useState<string[]>(["", ""]);
+  const [inspirationSiteErrors, setInspirationSiteErrors] = useState<
+    Record<number, string>
+  >({});
+
+  // Constraints
+  const [doNots, setDoNots] = useState("");
 
   // Brand & tone
-  const [brandToneKeywords, setBrandToneKeywords] = useState<string[]>([]);
-  const [objectives, setObjectives] = useState<string[]>([]);
+  const [rankedObjectives, setRankedObjectives] = useState<
+    Array<{ id: string; rank: number }>
+  >([]);
+  const [primaryCta, setPrimaryCta] = useState<PrimaryCta | "">("");
+  const [moodTags, setMoodTags] = useState<string[]>([]);
+  const [styleTags, setStyleTags] = useState<string[]>([]);
+  const [voiceTone, setVoiceTone] = useState<string[]>([]);
+  const [slogan, setSlogan] = useState("");
 
-  // Site sections
-  const [desiredSections, setDesiredSections] = useState<string[]>([]);
-  const [sectionsError, setSectionsError] = useState<string | null>(null);
+  // Offer
+  const [mainService, setMainService] = useState("");
+  const [whatMakesSpecial, setWhatMakesSpecial] = useState<string[]>([
+    "",
+    "",
+    "",
+  ]);
+  const [whatMakesSpecialErrors, setWhatMakesSpecialErrors] = useState<
+    Record<number, string>
+  >({});
+  const [keyResults, setKeyResults] = useState("");
+
+  // Audience
+  const [idealPublic, setIdealPublic] = useState("");
 
   // Contact info — structured
   const [businessHours, setBusinessHours] =
@@ -314,35 +342,46 @@ export default function NewProjectPage() {
   const [socialLinks, setSocialLinks] = useState<SocialLinkRow[]>([]);
   const [socialErrors, setSocialErrors] = useState<Record<number, string>>({});
 
-  const categories = useMemo(() => selectableCategories(), []);
-
   const sections = useMemo(() => {
     const defs = [
       {
         id: "company",
         label: "Company basics",
-        isDone: Boolean(companyName.trim() && segment && description.trim()),
+        isDone: Boolean(companyName.trim() && segment.trim()),
+      },
+      {
+        id: "offer",
+        label: "Offer",
+        isDone: Boolean(mainService.trim()),
+      },
+      {
+        id: "audience",
+        label: "Audience",
+        isDone: Boolean(idealPublic.trim()),
       },
       {
         id: "brand",
-        label: "Brand & tone",
-        isDone: brandToneKeywords.length > 0 || objectives.length > 0,
+        label: "Brand voice",
+        isDone:
+          rankedObjectives.length > 0 ||
+          moodTags.length > 0 ||
+          styleTags.length > 0,
       },
       {
-        id: "sections",
-        label: "Site sections",
-        isDone: desiredSections.length > 0,
+        id: "visual",
+        label: "Visual",
+        isDone:
+          brandColorsEnabled || inspirationSites.some((s) => s.trim() !== ""),
+      },
+      {
+        id: "constraints",
+        label: "Constraints",
+        isDone: Boolean(doNots.trim()),
       },
       {
         id: "contact",
-        label: "Contact info",
-        isDone: Boolean(
-          phone.trim() ||
-          emailValue.trim() ||
-          address.street.trim() ||
-          address.zip.trim() ||
-          address.city.trim(),
-        ),
+        label: "Contact",
+        isDone: Boolean(emailValue.trim() || phone.trim()),
       },
     ];
     let foundActive = false;
@@ -357,47 +396,157 @@ export default function NewProjectPage() {
   }, [
     companyName,
     segment,
-    description,
-    brandToneKeywords,
-    objectives,
-    desiredSections,
-    phone,
+    mainService,
+    idealPublic,
+    rankedObjectives,
+    moodTags,
+    styleTags,
+    brandColorsEnabled,
+    inspirationSites,
+    doNots,
     emailValue,
-    address.street,
-    address.zip,
-    address.city,
+    phone,
   ]);
 
-  function handleHexInput(raw: string) {
-    setBrandColorHexInput(raw);
-    if (HEX_RE.test(raw)) {
-      const normalized = (raw.startsWith("#") ? raw : `#${raw}`).toUpperCase();
-      setBrandColor(normalized);
-      setBrandColorError(null);
-    } else {
-      setBrandColorError("Enter a 6-digit hex color (e.g. #1A2B3C).");
-    }
-  }
-
-  function toggleToneKeyword(tag: string) {
-    setBrandToneKeywords((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
+  function updateBrandColor(index: number, raw: string) {
+    setBrandColors((prev) =>
+      prev.map((entry, i) => {
+        if (i !== index) return entry;
+        if (HEX_RE.test(raw)) {
+          const normalized = (
+            raw.startsWith("#") ? raw : `#${raw}`
+          ).toUpperCase();
+          return { hex: normalized, hexInput: raw, error: null };
+        }
+        return {
+          ...entry,
+          hexInput: raw,
+          error: "Enter a 6-digit hex color (e.g. #1A2B3C).",
+        };
+      }),
     );
   }
 
-  function toggleObjective(tag: string) {
-    setObjectives((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
+  function updateBrandColorPicker(index: number, value: string) {
+    const upper = value.toUpperCase();
+    setBrandColors((prev) =>
+      prev.map((entry, i) =>
+        i === index ? { hex: upper, hexInput: upper, error: null } : entry,
+      ),
     );
   }
 
-  function toggleDesired(category: string) {
-    setSectionsError(null);
-    setDesiredSections((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category],
+  function addBrandColor() {
+    setBrandColors((prev) =>
+      prev.length < 3
+        ? [...prev, { hex: "#000000", hexInput: "#000000", error: null }]
+        : prev,
     );
+  }
+
+  function removeBrandColor(index: number) {
+    setBrandColors((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function updateInspirationSite(index: number, value: string) {
+    setInspirationSites((prev) =>
+      prev.map((s, i) => (i === index ? value : s)),
+    );
+    setInspirationSiteErrors((prev) => {
+      const { [index]: _omit, ...rest } = prev;
+      return rest;
+    });
+  }
+
+  function addInspirationSite() {
+    setInspirationSites((prev) => (prev.length < 3 ? [...prev, ""] : prev));
+  }
+
+  function removeInspirationSite(index: number) {
+    setInspirationSites((prev) =>
+      prev.length > 2 ? prev.filter((_, i) => i !== index) : prev,
+    );
+    setInspirationSiteErrors((prev) => {
+      const { [index]: _omit, ...rest } = prev;
+      return rest;
+    });
+  }
+
+  function toggleMoodTag(tag: string) {
+    setMoodTags((prev) => {
+      if (prev.includes(tag)) return prev.filter((t) => t !== tag);
+      if (prev.length >= 5) return prev;
+      return [...prev, tag];
+    });
+  }
+
+  function toggleStyleTag(tag: string) {
+    setStyleTags((prev) => {
+      if (prev.includes(tag)) return prev.filter((t) => t !== tag);
+      if (prev.length >= 5) return prev;
+      return [...prev, tag];
+    });
+  }
+
+  function toggleVoiceTone(tag: string) {
+    setVoiceTone((prev) => {
+      if (prev.includes(tag)) return prev.filter((t) => t !== tag);
+      if (prev.length >= 3) return prev;
+      return [...prev, tag];
+    });
+  }
+
+  function updateBullet(index: number, value: string) {
+    setWhatMakesSpecial((prev) =>
+      prev.map((b, i) => (i === index ? value : b)),
+    );
+    setWhatMakesSpecialErrors((prev) => {
+      const { [index]: _omit, ...rest } = prev;
+      return rest;
+    });
+  }
+
+  function addBullet() {
+    setWhatMakesSpecial((prev) => (prev.length < 5 ? [...prev, ""] : prev));
+  }
+
+  function removeBullet(index: number) {
+    setWhatMakesSpecial((prev) =>
+      prev.length > 3 ? prev.filter((_, i) => i !== index) : prev,
+    );
+    setWhatMakesSpecialErrors((prev) => {
+      const { [index]: _omit, ...rest } = prev;
+      return rest;
+    });
+  }
+
+  function toggleRankedObjective(id: string) {
+    setRankedObjectives((prev) => {
+      const existing = prev.find((o) => o.id === id);
+      if (existing) {
+        return prev
+          .filter((o) => o.id !== id)
+          .sort((a, b) => a.rank - b.rank)
+          .map((o, i) => ({ id: o.id, rank: i + 1 }));
+      }
+      return [...prev, { id, rank: prev.length + 1 }];
+    });
+  }
+
+  function moveRankedObjective(id: string, direction: "up" | "down") {
+    setRankedObjectives((prev) => {
+      const sorted = [...prev].sort((a, b) => a.rank - b.rank);
+      const idx = sorted.findIndex((o) => o.id === id);
+      if (idx === -1) return prev;
+      const swapWith = direction === "up" ? idx - 1 : idx + 1;
+      if (swapWith < 0 || swapWith >= sorted.length) return prev;
+      const reordered = [...sorted];
+      [reordered[idx], reordered[swapWith]] = [
+        reordered[swapWith],
+        reordered[idx],
+      ];
+      return reordered.map((o, i) => ({ id: o.id, rank: i + 1 }));
+    });
   }
 
   function updateAddress<K extends keyof AddressInput>(key: K, value: string) {
@@ -441,9 +590,28 @@ export default function NewProjectPage() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    setSectionsError(null);
 
-    if (hasBrandColor && brandColorError) return;
+    // Brand color validation — every entry's hex must match HEX_RE
+    let brandColorsValid = true;
+    if (brandColorsEnabled && brandColors.length > 0) {
+      const validatedColors = brandColors.map((entry) => {
+        if (!HEX_RE.test(entry.hex)) {
+          brandColorsValid = false;
+          return {
+            ...entry,
+            error: "Enter a 6-digit hex color (e.g. #1A2B3C).",
+          };
+        }
+        if (entry.error) {
+          brandColorsValid = false;
+        }
+        return entry;
+      });
+      if (!brandColorsValid) {
+        setBrandColors(validatedColors);
+        return;
+      }
+    }
 
     // Phone validation
     let phoneErr: string | null = null;
@@ -481,11 +649,32 @@ export default function NewProjectPage() {
     });
     setSocialErrors(newSocialErrors);
 
+    // What makes special — bullet length validation
+    const newBulletErrors: Record<number, string> = {};
+    whatMakesSpecial.forEach((bullet, i) => {
+      if (bullet.trim().length > 120) {
+        newBulletErrors[i] = "Keep each bullet under 120 characters.";
+      }
+    });
+    setWhatMakesSpecialErrors(newBulletErrors);
+
+    // Inspiration sites — URL validation for non-empty entries
+    const newInspirationErrors: Record<number, string> = {};
+    inspirationSites.forEach((site, i) => {
+      const trimmed = site.trim();
+      if (trimmed && !URL_RE.test(trimmed)) {
+        newInspirationErrors[i] = "URL must start with http:// or https://.";
+      }
+    });
+    setInspirationSiteErrors(newInspirationErrors);
+
     if (
       phoneErr ||
       emailErr ||
       zipErr ||
-      Object.keys(newSocialErrors).length > 0
+      Object.keys(newSocialErrors).length > 0 ||
+      Object.keys(newBulletErrors).length > 0 ||
+      Object.keys(newInspirationErrors).length > 0
     ) {
       return;
     }
@@ -505,14 +694,51 @@ export default function NewProjectPage() {
       const result = await createProject({
         companyName,
         segment,
+        niche: niche.trim() || undefined,
+        region: region.trim() || undefined,
+        companySize: companySize || undefined,
         pageType: pageType || undefined,
         description,
-        brandColor: hasBrandColor ? brandColor : undefined,
-        brandToneKeywords:
-          brandToneKeywords.length > 0 ? brandToneKeywords : undefined,
-        objectives: objectives.length > 0 ? objectives : undefined,
-        desiredSections:
-          desiredSections.length > 0 ? desiredSections : undefined,
+        brandColor:
+          brandColorsEnabled && brandColors.length > 0
+            ? brandColors[0].hex
+            : undefined,
+        brandColors:
+          brandColorsEnabled && brandColors.length > 0
+            ? brandColors.map((e) => e.hex)
+            : undefined,
+        colorsToAvoid: colorsToAvoid.trim()
+          ? colorsToAvoid
+              .trim()
+              .split(",")
+              .map((s) => s.trim())
+              .filter(Boolean)
+          : undefined,
+        inspirationSites:
+          inspirationSites.map((s) => s.trim()).filter(Boolean).length > 0
+            ? inspirationSites.map((s) => s.trim()).filter(Boolean)
+            : undefined,
+        objectives:
+          rankedObjectives.length > 0
+            ? [...rankedObjectives]
+                .sort((a, b) => a.rank - b.rank)
+                .map((o) => o.id)
+            : undefined,
+        rankedObjectives:
+          rankedObjectives.length > 0 ? rankedObjectives : undefined,
+        primaryCta: primaryCta || undefined,
+        moodTags: moodTags.length > 0 ? moodTags : undefined,
+        styleTags: styleTags.length > 0 ? styleTags : undefined,
+        voiceTone: voiceTone.length > 0 ? voiceTone : undefined,
+        slogan: slogan.trim() || undefined,
+        mainService: mainService.trim() || undefined,
+        whatMakesSpecial:
+          whatMakesSpecial.map((s) => s.trim()).filter(Boolean).length > 0
+            ? whatMakesSpecial.map((s) => s.trim()).filter(Boolean)
+            : undefined,
+        keyResults: keyResults.trim() || undefined,
+        idealPublic: idealPublic.trim() || undefined,
+        doNots: doNots.trim() || undefined,
         businessHours: hoursString,
         address: addressString,
         phone: phoneTrim || undefined,
@@ -527,6 +753,53 @@ export default function NewProjectPage() {
         setError(result.error);
       }
     });
+  }
+
+  function handlePresetSelect(preset: PresetValues) {
+    setCompanyName(preset.companyName);
+    setSegment(preset.segment);
+    setNiche(preset.niche ?? "");
+    setRegion(preset.region);
+    setCompanySize(preset.companySize);
+    setDescription(preset.description);
+    setPrimaryCta(preset.primaryCta);
+    setMainService(preset.mainService);
+    setWhatMakesSpecial(
+      preset.whatMakesSpecial.length >= 3
+        ? preset.whatMakesSpecial
+        : [
+            ...preset.whatMakesSpecial,
+            ...Array(3 - preset.whatMakesSpecial.length).fill(""),
+          ],
+    );
+    setKeyResults(preset.keyResults ?? "");
+    setIdealPublic(preset.idealPublic);
+    setMoodTags(preset.moodTags);
+    setStyleTags(preset.styleTags);
+    setVoiceTone(preset.voiceTone);
+    setSlogan(preset.slogan ?? "");
+    if (preset.hasBrandColor && preset.brandColors.length > 0) {
+      setBrandColorsEnabled(true);
+      setBrandColors(
+        preset.brandColors.map((hex) => ({ hex, hexInput: hex, error: null })),
+      );
+    } else {
+      setBrandColorsEnabled(false);
+      setBrandColors([]);
+    }
+    setColorsToAvoid(preset.colorsToAvoid?.join(", ") ?? "");
+    setInspirationSites(
+      preset.inspirationSites && preset.inspirationSites.length >= 2
+        ? preset.inspirationSites
+        : [
+            ...(preset.inspirationSites ?? []),
+            ...Array(2 - (preset.inspirationSites?.length ?? 0)).fill(""),
+          ],
+    );
+    setDoNots(preset.doNots ?? "");
+    setRankedObjectives(preset.rankedObjectives);
+    if (preset.phone) setPhone(preset.phone);
+    if (preset.emailValue) setEmailValue(preset.emailValue);
   }
 
   /* ─── Shared classes ─────────────────────────────────────────── */
@@ -604,6 +877,58 @@ export default function NewProjectPage() {
               </div>
 
               <div>
+                <label htmlFor="niche" className={labelClasses}>
+                  Niche
+                </label>
+                <input
+                  id="niche"
+                  type="text"
+                  value={niche}
+                  onChange={(e) => setNiche(e.target.value)}
+                  placeholder="e.g. artisan bakery, enterprise SaaS"
+                  className={inputClasses}
+                />
+                <p className="text-xs text-slate-500 mt-1">
+                  More specific than segment. Optional.
+                </p>
+              </div>
+
+              <div>
+                <label htmlFor="region" className={labelClasses}>
+                  Region
+                </label>
+                <input
+                  id="region"
+                  type="text"
+                  value={region}
+                  onChange={(e) => setRegion(e.target.value)}
+                  placeholder="e.g. São Paulo, SP"
+                  className={inputClasses}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="companySize" className={labelClasses}>
+                  Company size
+                </label>
+                <select
+                  id="companySize"
+                  value={companySize}
+                  onChange={(e) =>
+                    setCompanySize(e.target.value as CompanySize | "")
+                  }
+                  className={inputClasses}
+                >
+                  <option value="">Select a company size...</option>
+                  {COMPANY_SIZES.map((size) => (
+                    <option key={size} value={size}>
+                      {size}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
                 <label htmlFor="pageType" className={labelClasses}>
                   Page type
                 </label>
@@ -646,73 +971,6 @@ export default function NewProjectPage() {
                   className={inputClasses}
                 />
               </div>
-
-              <div>
-                <fieldset className="flex flex-col gap-2">
-                  <legend className={labelClasses}>
-                    Does the company have a brand color?
-                  </legend>
-                  <div className="flex gap-4">
-                    <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="hasBrandColor"
-                        value="no"
-                        checked={!hasBrandColor}
-                        onChange={() => {
-                          setHasBrandColor(false);
-                          setBrandColorError(null);
-                        }}
-                        className="accent-slate-900"
-                      />
-                      No
-                    </label>
-                    <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="hasBrandColor"
-                        value="yes"
-                        checked={hasBrandColor}
-                        onChange={() => setHasBrandColor(true)}
-                        className="accent-slate-900"
-                      />
-                      Yes
-                    </label>
-                  </div>
-                </fieldset>
-
-                {hasBrandColor && (
-                  <div className="mt-3 flex flex-col gap-2">
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="color"
-                        aria-label="Brand color picker"
-                        value={brandColor}
-                        onChange={(e) => {
-                          const value = e.target.value.toUpperCase();
-                          setBrandColor(value);
-                          setBrandColorHexInput(value);
-                          setBrandColorError(null);
-                        }}
-                        className="h-9 w-12 cursor-pointer rounded border border-slate-300"
-                      />
-                      <input
-                        type="text"
-                        aria-label="Brand color hex value"
-                        value={brandColorHexInput}
-                        onChange={(e) => handleHexInput(e.target.value)}
-                        placeholder="#000000"
-                        className={inputClasses}
-                      />
-                    </div>
-                    {brandColorError && (
-                      <p className={errorTextClasses} role="alert">
-                        {brandColorError}
-                      </p>
-                    )}
-                  </div>
-                )}
-              </div>
             </div>
           </section>
 
@@ -727,20 +985,114 @@ export default function NewProjectPage() {
             <div className="flex flex-col gap-6">
               <div>
                 <p className="block text-sm font-medium text-slate-700 mb-2">
-                  Brand tone keywords
+                  Objectives (ranked)
                 </p>
                 <p className="text-xs text-slate-500 mb-2">
-                  Choose words that describe the brand&apos;s personality.
+                  Pick what the website should achieve, then order by priority.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {TONE_KEYWORDS.map((tag) => {
-                    const selected = brandToneKeywords.includes(tag);
+                  {RANKED_OBJECTIVE_IDS.map((id) => {
+                    const selected = rankedObjectives.some((o) => o.id === id);
+                    return (
+                      <button
+                        key={id}
+                        type="button"
+                        aria-pressed={selected}
+                        onClick={() => toggleRankedObjective(id)}
+                        className={pillClasses(selected)}
+                      >
+                        {RANKED_OBJECTIVE_LABELS[id]}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {rankedObjectives.length > 0 && (
+                  <ol className="mt-3 flex flex-col gap-1.5">
+                    {[...rankedObjectives]
+                      .sort((a, b) => a.rank - b.rank)
+                      .map((obj, idx, arr) => (
+                        <li
+                          key={obj.id}
+                          className="flex items-center gap-2 rounded-md border border-slate-200 bg-slate-50 px-3 py-1.5"
+                        >
+                          <span className="text-xs font-semibold text-slate-500 w-6">
+                            #{obj.rank}
+                          </span>
+                          <span className="text-sm text-slate-800 flex-1">
+                            {RANKED_OBJECTIVE_LABELS[
+                              obj.id as keyof typeof RANKED_OBJECTIVE_LABELS
+                            ] ?? obj.id}
+                          </span>
+                          <button
+                            type="button"
+                            aria-label={`Move ${obj.id} up`}
+                            onClick={() => moveRankedObjective(obj.id, "up")}
+                            disabled={idx === 0}
+                            className="rounded border border-slate-300 px-1.5 py-0.5 text-xs text-slate-600 hover:bg-slate-50 disabled:opacity-30"
+                          >
+                            ↑
+                          </button>
+                          <button
+                            type="button"
+                            aria-label={`Move ${obj.id} down`}
+                            onClick={() => moveRankedObjective(obj.id, "down")}
+                            disabled={idx === arr.length - 1}
+                            className="rounded border border-slate-300 px-1.5 py-0.5 text-xs text-slate-600 hover:bg-slate-50 disabled:opacity-30"
+                          >
+                            ↓
+                          </button>
+                        </li>
+                      ))}
+                  </ol>
+                )}
+              </div>
+
+              <div>
+                <fieldset className="flex flex-col gap-2">
+                  <legend className="block text-sm font-medium text-slate-700 mb-1">
+                    Primary call-to-action
+                  </legend>
+                  <p className="text-xs text-slate-500 mb-2">
+                    What is the single most important action for visitors?
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    {PRIMARY_CTA_OPTIONS.map((cta) => (
+                      <label
+                        key={cta}
+                        className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer"
+                      >
+                        <input
+                          type="radio"
+                          name="primaryCta"
+                          value={cta}
+                          checked={primaryCta === cta}
+                          onChange={() => setPrimaryCta(cta)}
+                          className="accent-slate-900"
+                        />
+                        {PRIMARY_CTA_LABELS[cta]}
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+              </div>
+
+              <div>
+                <p className="block text-sm font-medium text-slate-700 mb-2">
+                  Mood
+                </p>
+                <p className="text-xs text-slate-500 mb-2">
+                  How should the brand feel? Pick 1-5.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {MOOD_TAGS.map((tag) => {
+                    const selected = moodTags.includes(tag);
                     return (
                       <button
                         key={tag}
                         type="button"
                         aria-pressed={selected}
-                        onClick={() => toggleToneKeyword(tag)}
+                        onClick={() => toggleMoodTag(tag)}
                         className={pillClasses(selected)}
                       >
                         {tag}
@@ -752,68 +1104,384 @@ export default function NewProjectPage() {
 
               <div>
                 <p className="block text-sm font-medium text-slate-700 mb-2">
-                  Objectives
+                  Visual style
                 </p>
                 <p className="text-xs text-slate-500 mb-2">
-                  What should the website achieve for the business?
+                  Design aesthetic. Pick 1-5.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {OBJECTIVES.map((tag) => {
-                    const selected = objectives.includes(tag);
+                  {STYLE_TAGS.map((tag) => {
+                    const selected = styleTags.includes(tag);
                     return (
                       <button
                         key={tag}
                         type="button"
                         aria-pressed={selected}
-                        onClick={() => toggleObjective(tag)}
+                        onClick={() => toggleStyleTag(tag)}
                         className={pillClasses(selected)}
                       >
-                        {OBJECTIVE_LABELS[tag] ?? tag}
+                        {tag}
                       </button>
                     );
                   })}
                 </div>
+              </div>
+
+              <div>
+                <p className="block text-sm font-medium text-slate-700 mb-2">
+                  Voice tone
+                </p>
+                <p className="text-xs text-slate-500 mb-2">
+                  Writing style. Pick 1-3.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {VOICE_TONE_OPTIONS.map((tag) => {
+                    const selected = voiceTone.includes(tag);
+                    return (
+                      <button
+                        key={tag}
+                        type="button"
+                        aria-pressed={selected}
+                        onClick={() => toggleVoiceTone(tag)}
+                        className={pillClasses(selected)}
+                      >
+                        {tag}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="slogan" className={labelClasses}>
+                  Slogan
+                </label>
+                <input
+                  id="slogan"
+                  type="text"
+                  value={slogan}
+                  onChange={(e) => setSlogan(e.target.value)}
+                  placeholder="Optional. Used as hero subheadline seed."
+                  className={inputClasses}
+                />
               </div>
             </div>
           </section>
 
-          {/* ── Site sections ──────────────────────────────────────── */}
+          {/* ── Visual ─────────────────────────────────────────────── */}
           <section className={sectionClasses}>
             <header className={sectionHeaderClasses}>
-              <h2 className={sectionTitleClasses}>Site sections</h2>
+              <h2 className={sectionTitleClasses}>Visual</h2>
               <p className={sectionSubtitleClasses}>
-                Pick which kinds of sections must appear in the generated site.
-                Navigation and footer are always included.
+                Brand colors, palette constraints, and inspiration references.
               </p>
             </header>
             <div className="flex flex-col gap-6">
               <div>
-                <p className="block text-sm font-medium text-slate-700 mb-2">
-                  Sections to include
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {categories.map((category) => {
-                    const selected = desiredSections.includes(category);
-                    return (
+                <fieldset className="flex flex-col gap-2">
+                  <legend className={labelClasses}>
+                    Does the company have brand colors?
+                  </legend>
+                  <div className="flex gap-4">
+                    <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="brandColorsEnabled"
+                        value="no"
+                        checked={!brandColorsEnabled}
+                        onChange={() => {
+                          setBrandColorsEnabled(false);
+                          setBrandColors([]);
+                        }}
+                        className="accent-slate-900"
+                      />
+                      No
+                    </label>
+                    <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="brandColorsEnabled"
+                        value="yes"
+                        checked={brandColorsEnabled}
+                        onChange={() => {
+                          setBrandColorsEnabled(true);
+                          if (brandColors.length === 0) {
+                            setBrandColors([
+                              {
+                                hex: "#000000",
+                                hexInput: "#000000",
+                                error: null,
+                              },
+                            ]);
+                          }
+                        }}
+                        className="accent-slate-900"
+                      />
+                      Yes
+                    </label>
+                  </div>
+                </fieldset>
+
+                {brandColorsEnabled && (
+                  <div className="mt-3 flex flex-col gap-3">
+                    {brandColors.map((entry, index) => (
+                      <div key={index} className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="color"
+                            aria-label={`Brand color picker ${index + 1}`}
+                            value={
+                              HEX_RE.test(entry.hex) ? entry.hex : "#000000"
+                            }
+                            onChange={(e) =>
+                              updateBrandColorPicker(index, e.target.value)
+                            }
+                            className="h-9 w-12 cursor-pointer rounded border border-slate-300"
+                          />
+                          <input
+                            type="text"
+                            aria-label={`Brand color hex value ${index + 1}`}
+                            value={entry.hexInput}
+                            onChange={(e) =>
+                              updateBrandColor(index, e.target.value)
+                            }
+                            placeholder="#000000"
+                            className={inputClasses}
+                          />
+                          {brandColors.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => removeBrandColor(index)}
+                              className="rounded-md border border-slate-300 px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors shrink-0"
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                        {entry.error && (
+                          <p className={errorTextClasses} role="alert">
+                            {entry.error}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                    {brandColors.length < 3 && (
                       <button
-                        key={`incl-${category}`}
                         type="button"
-                        aria-pressed={selected}
-                        onClick={() => toggleDesired(category)}
-                        className={pillClasses(selected)}
+                        onClick={addBrandColor}
+                        className="self-start rounded-md border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors"
                       >
-                        {formatCategoryLabel(category)}
+                        + Add color
                       </button>
-                    );
-                  })}
-                </div>
+                    )}
+                  </div>
+                )}
               </div>
 
-              {sectionsError && (
-                <p className={errorTextClasses} role="alert">
-                  {sectionsError}
+              <div>
+                <label htmlFor="colorsToAvoid" className={labelClasses}>
+                  Colors to avoid
+                </label>
+                <input
+                  id="colorsToAvoid"
+                  type="text"
+                  value={colorsToAvoid}
+                  onChange={(e) => setColorsToAvoid(e.target.value)}
+                  placeholder="e.g. bright red, neon green"
+                  className={inputClasses}
+                />
+                <p className="text-xs text-slate-500 mt-1">
+                  Comma-separated. Optional.
                 </p>
-              )}
+              </div>
+
+              <div>
+                <p className="block text-sm font-medium text-slate-700 mb-1">
+                  Inspiration sites
+                </p>
+                <p className="text-xs text-slate-500 mb-2">
+                  URLs the AI should look at for visual reference. Up to 3.
+                </p>
+                <div className="flex flex-col gap-2">
+                  {inspirationSites.map((site, i) => (
+                    <div key={i} className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="url"
+                          aria-label={`Inspiration site ${i + 1}`}
+                          value={site}
+                          onChange={(e) =>
+                            updateInspirationSite(i, e.target.value)
+                          }
+                          placeholder="https://example.com"
+                          className={inputClasses}
+                        />
+                        {inspirationSites.length > 2 && (
+                          <button
+                            type="button"
+                            onClick={() => removeInspirationSite(i)}
+                            aria-label={`Remove inspiration site ${i + 1}`}
+                            className="rounded-md border border-slate-300 px-2 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors shrink-0"
+                          >
+                            ×
+                          </button>
+                        )}
+                      </div>
+                      {inspirationSiteErrors[i] && (
+                        <p className={errorTextClasses} role="alert">
+                          {inspirationSiteErrors[i]}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                {inspirationSites.length < 3 && (
+                  <button
+                    type="button"
+                    onClick={addInspirationSite}
+                    className="mt-2 rounded-md border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                  >
+                    + Add site
+                  </button>
+                )}
+              </div>
+            </div>
+          </section>
+
+          {/* ── Offer ──────────────────────────────────────────────── */}
+          <section className={sectionClasses}>
+            <header className={sectionHeaderClasses}>
+              <h2 className={sectionTitleClasses}>Offer</h2>
+              <p className={sectionSubtitleClasses}>
+                Describe what you sell and what makes it worth choosing.
+              </p>
+            </header>
+            <div className="flex flex-col gap-6">
+              <div>
+                <label htmlFor="mainService" className={labelClasses}>
+                  Main service
+                </label>
+                <input
+                  id="mainService"
+                  type="text"
+                  value={mainService}
+                  onChange={(e) => setMainService(e.target.value)}
+                  placeholder="The headline thing you sell or do"
+                  className={inputClasses}
+                />
+              </div>
+
+              <div>
+                <p className="block text-sm font-medium text-slate-700 mb-1">
+                  What makes you special
+                </p>
+                <p className="text-xs text-slate-500 mb-2">
+                  3 to 5 short bullets. Max 120 characters each.
+                </p>
+                <div className="flex flex-col gap-2">
+                  {whatMakesSpecial.map((bullet, i) => (
+                    <div key={i} className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          aria-label={`Bullet ${i + 1}`}
+                          value={bullet}
+                          onChange={(e) => updateBullet(i, e.target.value)}
+                          maxLength={120}
+                          placeholder={`Bullet ${i + 1}`}
+                          className={inputClasses}
+                        />
+                        {whatMakesSpecial.length > 3 && (
+                          <button
+                            type="button"
+                            onClick={() => removeBullet(i)}
+                            aria-label={`Remove bullet ${i + 1}`}
+                            className="rounded-md border border-slate-300 px-2 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors shrink-0"
+                          >
+                            ×
+                          </button>
+                        )}
+                      </div>
+                      {whatMakesSpecialErrors[i] && (
+                        <p className={errorTextClasses} role="alert">
+                          {whatMakesSpecialErrors[i]}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                {whatMakesSpecial.length < 5 && (
+                  <button
+                    type="button"
+                    onClick={addBullet}
+                    className="mt-2 rounded-md border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                  >
+                    + Add bullet
+                  </button>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="keyResults" className={labelClasses}>
+                  Key results <span className="text-slate-400">(optional)</span>
+                </label>
+                <textarea
+                  id="keyResults"
+                  rows={3}
+                  value={keyResults}
+                  onChange={(e) => setKeyResults(e.target.value)}
+                  placeholder="Stats, proof-points or outcomes (used for stats sections)"
+                  className={inputClasses}
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* ── Audience ───────────────────────────────────────────── */}
+          <section className={sectionClasses}>
+            <header className={sectionHeaderClasses}>
+              <h2 className={sectionTitleClasses}>Audience</h2>
+              <p className={sectionSubtitleClasses}>Who is this website for?</p>
+            </header>
+            <div className="flex flex-col gap-6">
+              <div>
+                <label htmlFor="idealPublic" className={labelClasses}>
+                  Ideal public
+                </label>
+                <textarea
+                  id="idealPublic"
+                  rows={2}
+                  value={idealPublic}
+                  onChange={(e) => setIdealPublic(e.target.value)}
+                  placeholder="e.g. Small business owners in Brazil who need an online presence fast"
+                  className={inputClasses}
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* ── Constraints ────────────────────────────────────────── */}
+          <section className={sectionClasses}>
+            <header className={sectionHeaderClasses}>
+              <h2 className={sectionTitleClasses}>Constraints</h2>
+              <p className={sectionSubtitleClasses}>
+                Anything the AI must not do or include.
+              </p>
+            </header>
+            <div className="flex flex-col gap-6">
+              <div>
+                <label htmlFor="doNots" className={labelClasses}>
+                  Do-nots
+                </label>
+                <textarea
+                  id="doNots"
+                  rows={3}
+                  value={doNots}
+                  onChange={(e) => setDoNots(e.target.value)}
+                  placeholder="e.g. No stock photos of handshakes. Don't mention pricing. Avoid religious imagery."
+                  className={inputClasses}
+                />
+              </div>
             </div>
           </section>
 
@@ -1184,6 +1852,7 @@ export default function NewProjectPage() {
         </form>
         <FormProgressSidebar sections={sections} />
       </div>
+      <QuickFillButton onSelect={handlePresetSelect} />
     </div>
   );
 }

@@ -48,7 +48,12 @@ export const handler: SQSHandler = async (event) => {
           // blocks (e.g. styleStep, composerStep) MUST exist in this input
           // object — `?? null` defaults guarantee no JsonPath runtime error
           // when an optional intake field is unset. If you add a new optional
-          // field downstream, extend this defaults block too.
+          // field downstream, extend this defaults block too. Keep this block
+          // in sync with the richer-intake fields in ProjectBriefSchema and
+          // PipelineStateSchema (niche, region, companySize, primaryCta,
+          // mainService, whatMakesSpecial, keyResults, idealPublic, moodTags,
+          // styleTags, voiceTone, slogan, brandColors, colorsToAvoid,
+          // inspirationSites, doNots, rankedObjectives).
           input: JSON.stringify({
             projectId: brief.projectId,
             sellerId: brief.sellerId,
@@ -65,6 +70,23 @@ export const handler: SQSHandler = async (event) => {
             email: brief.email ?? null,
             socialLinks: brief.socialLinks ?? null,
             pageType: brief.pageType ?? null,
+            niche: brief.niche ?? null,
+            region: brief.region ?? null,
+            companySize: brief.companySize ?? null,
+            primaryCta: brief.primaryCta ?? null,
+            mainService: brief.mainService ?? null,
+            whatMakesSpecial: brief.whatMakesSpecial ?? null,
+            keyResults: brief.keyResults ?? null,
+            idealPublic: brief.idealPublic ?? null,
+            moodTags: brief.moodTags ?? null,
+            styleTags: brief.styleTags ?? null,
+            voiceTone: brief.voiceTone ?? null,
+            slogan: brief.slogan ?? null,
+            brandColors: brief.brandColors ?? null,
+            colorsToAvoid: brief.colorsToAvoid ?? null,
+            inspirationSites: brief.inspirationSites ?? null,
+            doNots: brief.doNots ?? null,
+            rankedObjectives: brief.rankedObjectives ?? null,
             status: "queued",
           }),
         }),

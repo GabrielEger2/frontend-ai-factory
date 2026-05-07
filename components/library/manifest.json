@@ -9856,7 +9856,12 @@
     "pairsPoorly": [
       "layout-iconlistsplit-01",
       "layout-zigzag-alternating-split-01"
-    ]
+    ],
+    "descriptions": {
+      "descriptive": "Clean two-column layout with balanced visual weight and generous whitespace. Features structured comparison elements with modern typography and subtle dividers. Minimal color palette emphasizes content hierarchy while maintaining professional polish through restrained design choices.",
+      "usage": "Perfect for side-by-side product comparisons, service tier breakdowns, or before/after scenarios. Helps users evaluate options by presenting structured feature lists, pricing plans, or benefit comparisons in an easy-to-scan format that supports decision-making.",
+      "audienceFit": "Appeals to established B2B companies, SaaS platforms, and professional services firms targeting corporate buyers. Resonates with audiences who value transparency and detailed evaluation processes, particularly in finance, technology, and consulting sectors."
+    }
   },
   {
     "id": "layout-editorial-framed-split-01",
