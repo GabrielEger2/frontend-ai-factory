@@ -312,6 +312,9 @@ export default function NewProjectPage() {
   >({});
   const [keyResults, setKeyResults] = useState("");
 
+  // Audience
+  const [idealPublic, setIdealPublic] = useState("");
+
   // Site sections
   const [desiredSections, setDesiredSections] = useState<string[]>([]);
   const [sectionsError, setSectionsError] = useState<string | null>(null);
@@ -350,6 +353,11 @@ export default function NewProjectPage() {
         isDone: Boolean(mainService.trim()),
       },
       {
+        id: "audience",
+        label: "Audience",
+        isDone: Boolean(idealPublic.trim()),
+      },
+      {
         id: "sections",
         label: "Site sections",
         isDone: desiredSections.length > 0,
@@ -382,6 +390,7 @@ export default function NewProjectPage() {
     brandToneKeywords,
     rankedObjectives,
     mainService,
+    idealPublic,
     desiredSections,
     phone,
     emailValue,
@@ -607,6 +616,7 @@ export default function NewProjectPage() {
             ? whatMakesSpecial.map((s) => s.trim()).filter(Boolean)
             : undefined,
         keyResults: keyResults.trim() || undefined,
+        idealPublic: idealPublic.trim() || undefined,
         desiredSections:
           desiredSections.length > 0 ? desiredSections : undefined,
         businessHours: hoursString,
@@ -1077,6 +1087,29 @@ export default function NewProjectPage() {
                   value={keyResults}
                   onChange={(e) => setKeyResults(e.target.value)}
                   placeholder="Stats, proof-points or outcomes (used for stats sections)"
+                  className={inputClasses}
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* ── Audience ───────────────────────────────────────────── */}
+          <section className={sectionClasses}>
+            <header className={sectionHeaderClasses}>
+              <h2 className={sectionTitleClasses}>Audience</h2>
+              <p className={sectionSubtitleClasses}>Who is this website for?</p>
+            </header>
+            <div className="flex flex-col gap-6">
+              <div>
+                <label htmlFor="idealPublic" className={labelClasses}>
+                  Ideal public
+                </label>
+                <textarea
+                  id="idealPublic"
+                  rows={2}
+                  value={idealPublic}
+                  onChange={(e) => setIdealPublic(e.target.value)}
+                  placeholder="e.g. Small business owners in Brazil who need an online presence fast"
                   className={inputClasses}
                 />
               </div>
