@@ -99,6 +99,7 @@ export const CANONICAL_CATEGORY: readonly string[] = [
   "pricing",
   "team",
   "gallery",
+  "products",
 ];
 
 export const MIN_TAG_FLOOR = 3;
