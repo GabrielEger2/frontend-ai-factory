@@ -3,7 +3,7 @@ import ParallaxContent from "./index";
 import { CtaButton } from "@ui/button";
 
 const meta: Meta<typeof ParallaxContent> = {
-  title: "Layouts/Scroll/ParallaxContent",
+  title: "Wrappers/ParallaxContent",
   component: ParallaxContent,
   parameters: {
     layout: "fullscreen",

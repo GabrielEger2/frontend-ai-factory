@@ -271,6 +271,152 @@
     }
   },
   {
+    "id": "carousel-full-bleed-slider-01",
+    "name": "Full-Bleed Slider Carousel",
+    "category": "carousel",
+    "purpose": [
+      "hero",
+      "showcase",
+      "portfolio",
+      "brand-statement",
+      "story"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "editorial",
+      "bold",
+      "modern",
+      "luxury"
+    ],
+    "mood": [
+      "energetic",
+      "elegant",
+      "professional",
+      "trustworthy"
+    ],
+    "layout": "stacked",
+    "density": "low",
+    "imageWeight": 0.9,
+    "slots": [
+      {
+        "name": "captionAlignment",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "bottom-left",
+          "bottom-center",
+          "center-left",
+          "center"
+        ]
+      },
+      {
+        "name": "height",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "short",
+          "tall",
+          "full"
+        ]
+      },
+      {
+        "name": "autoAdvanceMs",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "showArrows",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "showDots",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "showPlayPause",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "items",
+        "type": "list",
+        "maxItems": 8,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "16:9"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "eyebrow",
+              "type": "text",
+              "optional": true,
+              "maxLength": 40
+            },
+            {
+              "name": "headline",
+              "type": "text",
+              "optional": true,
+              "maxLength": 100
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "optional": true,
+              "maxLength": 240
+            },
+            {
+              "name": "ctaText",
+              "type": "text",
+              "optional": true,
+              "maxLength": 30
+            },
+            {
+              "name": "ctaUrl",
+              "type": "url",
+              "optional": true
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "stats-count-up-01",
+      "testimonial-spotlight-quote-01",
+      "cta-minimal-strip-01",
+      "footer-mega-01"
+    ],
+    "pairsPoorly": [
+      "carousel-cards-01",
+      "carousel-swipe-01",
+      "carousel-horizontal-scroll-01",
+      "carousel-thumbnail-nav-01",
+      "hero-hero-bold-editorial-01",
+      "hero-video-backdrop-01"
+    ],
+    "description": "An edge-to-edge image rotator with overlaid eyebrow, headline, description, and CTA per slide. Auto-advances with a progress-bar dot indicator and pauses on hover or focus. Designed to anchor a page as a hero replacement when the brand story spans multiple imagery beats.",
+    "descriptions": {
+      "descriptive": "Full-bleed background image with a subtle neutral-toned gradient for caption legibility. Each slide carries its own eyebrow / headline / description / CTA; transitions are spring-animated with a soft scale-on-enter. Pagination dots double as a linear progress bar for the active slide; hover, focus, and an explicit pause button all halt the auto-advance.",
+      "usage": "Anchors a page as a hero replacement when there are multiple campaigns, projects, or stories to lead with. Works well for travel, hospitality, editorial, and product launch sites. Avoid stacking with a regular hero or another image-heavy carousel on the same page.",
+      "audienceFit": "Travel and hospitality brands, editorial and journalism sites, premium e-commerce launching seasonal collections, agencies leading with case work, and any brand whose story is carried by full-frame imagery."
+    }
+  },
+  {
     "id": "carousel-horizontal-scroll-01",
     "name": "Horizontal Scroll Carousel",
     "category": "carousel",
@@ -549,6 +695,128 @@
       "descriptive": "Center-stage blockquote with a serif open-quote glyph cross-fades on author change. Below a hairline rule, an avatar strip of 3-7 round portraits shows the cast — active avatar is 80px and primary-ringed, the rest sit at 56-64px and 65% opacity. Auto-advances every 7s by default, pauses on hover, and supports left/right keyboard navigation.",
       "usage": "Use when you have 3-7 high-quality testimonials and want a premium-feeling rotation rather than a wall of cards or a generic dot-paginated carousel. Sits well after a hero or before a closing FAQ; do not stack with other testimonial sections on the same page.",
       "audienceFit": "Premium B2B SaaS, agencies, professional services, and editorial-leaning brand pages whose social proof reads better as a curated rotation than as a wall of cards."
+    }
+  },
+  {
+    "id": "carousel-thumbnail-nav-01",
+    "name": "Thumbnail Nav Carousel",
+    "category": "carousel",
+    "purpose": [
+      "products",
+      "showcase",
+      "portfolio",
+      "gallery"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": false,
+      "textDecoration": false,
+      "button": false
+    },
+    "style": [
+      "modern",
+      "editorial",
+      "minimal"
+    ],
+    "mood": [
+      "professional",
+      "elegant",
+      "trustworthy"
+    ],
+    "layout": "stacked",
+    "density": "medium",
+    "imageWeight": 0.7,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "optional": true,
+        "maxLength": 40
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 80
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "optional": true,
+        "maxLength": 200
+      },
+      {
+        "name": "aspectRatio",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "1:1",
+          "4:3",
+          "3:2",
+          "16:9"
+        ]
+      },
+      {
+        "name": "showArrows",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "zoomHint",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "items",
+        "type": "list",
+        "maxItems": 10,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "4:3"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 120
+            },
+            {
+              "name": "thumbnail",
+              "type": "image",
+              "optional": true,
+              "aspectRatio": "1:1"
+            },
+            {
+              "name": "caption",
+              "type": "text",
+              "optional": true,
+              "maxLength": 120
+            }
+          ]
+        }
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-split-image-01",
+      "stats-count-up-01",
+      "cta-minimal-strip-01",
+      "footer-minimal-strip-01"
+    ],
+    "pairsPoorly": [
+      "carousel-cards-01",
+      "carousel-swipe-01",
+      "carousel-horizontal-scroll-01",
+      "carousel-full-bleed-slider-01"
+    ],
+    "description": "An e-commerce style image viewer with a primary stage and a thumbnail strip beneath. Visitors can drag, click thumbnails, or use keyboard arrows to advance — ideal for product detail pages, portfolio cases, and gallery walks where the same item is shown from multiple angles.",
+    "descriptions": {
+      "descriptive": "A primary image stage on top with a horizontally-scrollable thumbnail strip below. Active thumbnails get a primary-colored ring and a shared-layout indicator that animates between selections. The main stage uses a directional spring transition, supports drag-to-advance, and exposes prev/next buttons over the image. A small monospace counter pill in the corner reinforces position.",
+      "usage": "Use to display the same subject from multiple angles, contexts, or stages — product detail pages, real-estate listings, portfolio case studies, before-and-after stages of a transformation. Avoid pairing with another image-heavy carousel on the same page.",
+      "audienceFit": "E-commerce stores, real-estate agencies, photographers, design portfolios, and any service business whose value is communicated through detailed visuals from multiple perspectives."
     }
   },
   {
@@ -8756,7 +9024,6 @@
     "mobileBehavior": "stack",
     "pairsWell": [
       "layout-simplegrid-01",
-      "layout-stickycards-01",
       "hero-geometric-01"
     ],
     "pairsPoorly": [
@@ -9901,7 +10168,6 @@
     ],
     "mobileBehavior": "stack",
     "pairsWell": [
-      "layout-stickycards-01",
       "layout-imagetext-01",
       "stats-count-up-01",
       "layout-infinitescroll-01"
@@ -10429,8 +10695,6 @@
       "cta-minimal-strip-01"
     ],
     "pairsPoorly": [
-      "layout-stickycards-01",
-      "layout-parallaxcontent-01",
       "layout-process-timeline-01",
       "motion-marquee-01"
     ],
@@ -10439,170 +10703,6 @@
       "descriptive": "Two-column layout on desktop: the left column scrolls a vertical sequence of numbered steps (label, title, description), while the right column pins via sticky positioning and renders one image at a time. Each step image is mounted into the pinned slot with opacity and a subtle 1.04 -> 1 scale transform driven by useScroll progress. Below the lg breakpoint the section becomes a clean stacked story — each step renders inline with its own image, no pinning, no cross-fade.",
       "usage": "Use to walk a visitor through a process, methodology, or product story that benefits from staying anchored — agency processes, onboarding flows, brand narratives, scientific protocols. Place mid-page after a calm hero; do not stack against StickyCards or ParallaxContent.",
       "audienceFit": "Editorial and luxury brands, agency methodology pages, premium B2B SaaS storytelling, and any page where the narrative gain from pinning outweighs the cost of giving up vertical real estate."
-    }
-  },
-  {
-    "id": "layout-parallaxcontent-01",
-    "name": "Parallax Content",
-    "category": "motion",
-    "style": [
-      "modern",
-      "editorial",
-      "bold"
-    ],
-    "mood": [
-      "professional",
-      "elegant",
-      "energetic"
-    ],
-    "layout": "stacked",
-    "density": "low",
-    "imageWeight": 0,
-    "purpose": [
-      "features",
-      "about",
-      "services"
-    ],
-    "acceptsStyleKit": {
-      "card": false,
-      "background": false,
-      "textDecoration": false,
-      "button": false
-    },
-    "slots": [
-      {
-        "name": "sections",
-        "type": "list",
-        "maxItems": 5,
-        "itemSchema": {
-          "type": "object",
-          "fields": [
-            {
-              "name": "image",
-              "type": "image",
-              "aspectRatio": "16:9"
-            },
-            {
-              "name": "imageAlt",
-              "type": "text",
-              "maxLength": 120
-            },
-            {
-              "name": "label",
-              "type": "text",
-              "maxLength": 40
-            },
-            {
-              "name": "heading",
-              "type": "text",
-              "maxLength": 60
-            },
-            {
-              "name": "content",
-              "type": "component",
-              "description": "Below-fold content for this section. Composer nests another component here (e.g. ImageText, CardGrid, IconListSplit) — content is not a text/image slot."
-            }
-          ]
-        }
-      },
-      {
-        "name": "imagePadding",
-        "type": "number",
-        "optional": true
-      }
-    ],
-    "mobileBehavior": "scroll",
-    "pairsWell": [
-      "hero-geometric-01",
-      "hero-split-image-01",
-      "footer-reveal-01"
-    ],
-    "pairsPoorly": [
-      "layout-stickycards-01",
-      "hero-parallax-images-01"
-    ],
-    "description": "A sophisticated parallax scrolling component that creates depth and visual interest while showcasing key content sections. Perfect for creative agencies, design studios, and modern businesses wanting to highlight their services or company story with dynamic, engaging motion effects.",
-    "descriptions": {
-      "descriptive": "Layered scrolling animation creates depth through staggered movement speeds between foreground content and background elements. Bold typography and editorial-style imagery move at different rates, producing a sophisticated kinetic experience with clean, modern spacing and energetic visual flow.",
-      "usage": "Enhances feature presentations, about sections, or service showcases where storytelling benefits from dynamic visual engagement. Ideal for guiding users through detailed content while maintaining attention through subtle motion that reveals information progressively.",
-      "audienceFit": "Appeals to creative agencies, tech companies, and premium service providers seeking to demonstrate innovation and attention to detail. Resonates with audiences who value cutting-edge digital experiences and expect polished, interactive brand touchpoints."
-    }
-  },
-  {
-    "id": "layout-stickycards-01",
-    "name": "Sticky Cards",
-    "category": "motion",
-    "style": [
-      "modern",
-      "bold",
-      "editorial"
-    ],
-    "mood": [
-      "professional",
-      "energetic",
-      "trustworthy"
-    ],
-    "layout": "stacked",
-    "density": "low",
-    "imageWeight": 0.08,
-    "purpose": [
-      "features",
-      "services",
-      "process"
-    ],
-    "acceptsStyleKit": {
-      "card": false,
-      "background": false,
-      "textDecoration": false,
-      "button": false
-    },
-    "slots": [
-      {
-        "name": "headline",
-        "type": "text",
-        "maxLength": 80,
-        "optional": true
-      },
-      {
-        "name": "subheadline",
-        "type": "text",
-        "maxLength": 200,
-        "optional": true
-      },
-      {
-        "name": "cards",
-        "type": "list",
-        "maxItems": 6,
-        "itemSchema": {
-          "type": "object",
-          "fields": [
-            {
-              "name": "content",
-              "type": "component",
-              "description": "Card body. Composer nests another component here (e.g. ImageText, CardGrid, IconListSplit) — content is not a text/image slot."
-            }
-          ]
-        }
-      },
-      {
-        "name": "cardHeight",
-        "type": "number",
-        "optional": true
-      }
-    ],
-    "mobileBehavior": "scroll",
-    "pairsWell": [
-      "hero-geometric-01",
-      "hero-split-image-01"
-    ],
-    "pairsPoorly": [
-      "layout-cardgrid-01"
-    ],
-    "description": "A dynamic card layout that remains fixed during scroll to showcase key features or services with bold typography and editorial-style presentation. Perfect for professional service firms and agencies that need to communicate their process or capabilities with energy and authority.",
-    "descriptions": {
-      "descriptive": "Cards that dynamically stick and unstick during scroll, creating layered visual depth with bold typography and clean editorial spacing. Modern geometric layouts with high contrast elements that animate smoothly, maintaining professional polish while delivering energetic visual transitions.",
-      "usage": "Perfect for showcasing multi-step processes, service tiers, or feature comparisons where sequential revelation builds understanding. Creates engaging storytelling flow as users scroll through complex information that benefits from staged presentation.",
-      "audienceFit": "Appeals to tech companies, consulting firms, and B2B services that need to communicate sophisticated offerings with authority. Resonates with audiences expecting premium digital experiences and process-driven solutions from established, innovation-focused brands."
     }
   },
   {
@@ -12039,8 +12139,7 @@
     "mobileBehavior": "stack",
     "pairsWell": [
       "hero-geometric-01",
-      "hero-split-image-01",
-      "layout-stickycards-01"
+      "hero-split-image-01"
     ],
     "pairsPoorly": [],
     "description": "A clean, animated statistics display that reveals key numbers through count-up animations, perfect for corporate websites and professional service firms showcasing achievements, metrics, or company milestones.",
@@ -13019,7 +13118,6 @@
     "mobileBehavior": "stack",
     "pairsWell": [
       "hero-split-image-01",
-      "layout-stickycards-01",
       "footer-reveal-01"
     ],
     "pairsPoorly": [

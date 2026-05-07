@@ -5,7 +5,7 @@ import { CtaButton } from "@ui/button";
 import { cn } from "@lib/utils";
 
 const meta: Meta<typeof StickyCards> = {
-  title: "Layouts/Scroll/StickyCards",
+  title: "Wrappers/StickyCards",
   component: StickyCards,
   parameters: {
     layout: "fullscreen",

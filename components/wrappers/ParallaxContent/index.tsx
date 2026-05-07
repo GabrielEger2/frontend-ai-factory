@@ -14,14 +14,21 @@ import type { StyleKit } from "@lib/style-kit";
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
+/**
+ * ParallaxContent is a hand-authored page-template wrapper, NOT a
+ * Composer-pickable library component. Its `heading` and `content` slots
+ * accept React.ReactNode so authors can nest other components (e.g.
+ * ImageText, IconListSplit) directly inside. This violates the Composer
+ * primitive-receiving contract by design — the AI pipeline never sees it.
+ */
 export interface ParallaxSection {
   /** Background image URL for the sticky parallax panel */
   image: string;
   imageAlt: string;
   /** Small label displayed above the heading on the overlay */
   label: string;
-  /** Large heading displayed on the parallax overlay */
-  heading: string;
+  /** Large heading displayed on the parallax overlay — accepts inline JSX (e.g. <Highlighter>) */
+  heading: React.ReactNode;
   /** Below-fold content rendered after the parallax panel — any React node */
   content: React.ReactNode;
 }
@@ -29,7 +36,7 @@ export interface ParallaxSection {
 export interface ParallaxContentProps {
   /** Array of parallax sections — each renders a sticky image, overlay text, and content node */
   sections?: ParallaxSection[];
-  /** Site-wide style kit threaded by the Assembler */
+  /** Site-wide style kit threaded by the host page */
   styleKit?: StyleKit;
   /** Horizontal padding around the image in pixels. Defaults to 12 */
   imagePadding?: number;
@@ -159,7 +166,7 @@ function StickyImage({
 
 interface OverlayCopyProps {
   label: string;
-  heading: string;
+  heading: React.ReactNode;
   shouldReduceMotion: boolean | null;
 }
 

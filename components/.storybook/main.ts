@@ -5,6 +5,7 @@ const config: StorybookConfig = {
   stories: [
     "../library/**/*.stories.@(ts|tsx)",
     "../ui/**/*.stories.@(ts|tsx)",
+    "../wrappers/**/*.stories.@(ts|tsx)",
   ],
   addons: [
     "@storybook/addon-essentials",

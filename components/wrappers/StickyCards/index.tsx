@@ -15,6 +15,14 @@ import type { StyleKit } from "@lib/style-kit";
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
+/**
+ * StickyCards is a hand-authored page-template wrapper, NOT a
+ * Composer-pickable library component. Its `content` slot accepts
+ * React.ReactNode so authors can nest other components (e.g. ImageText,
+ * CardGrid, IconListSplit) directly inside each card. This violates the
+ * Composer primitive-receiving contract by design — the AI pipeline
+ * never sees it.
+ */
 export interface StickyCard {
   /** Card content — any React node (e.g. ImageText, CardGrid, IconListSplit) */
   content: React.ReactNode;
@@ -27,7 +35,7 @@ export interface StickyCardsProps {
   subheadline?: string;
   /** Cards — each becomes a full-viewport sticky panel */
   cards?: StickyCard[];
-  /** Site-wide style kit threaded by the Assembler */
+  /** Site-wide style kit threaded by the host page */
   styleKit?: StyleKit;
   /** Height of each card section in px — controls scroll pacing. Defaults to 600 */
   cardHeight?: number;

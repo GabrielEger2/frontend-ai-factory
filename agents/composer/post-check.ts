@@ -36,18 +36,14 @@ export type PostCheckResult = {
 };
 
 /**
- * Components whose runtime cost (parallax, scroll-driven, sticky cards) is
- * high enough that placing more than one in a page makes the result feel
- * heavy and erodes the storytelling rhythm. Composer is allowed to keep ONE
- * heavy component per page; the post-check trims any extras.
+ * Components whose runtime cost (parallax, scroll-driven) is high enough
+ * that placing more than one in a page makes the result feel heavy and
+ * erodes the storytelling rhythm. Composer is allowed to keep ONE heavy
+ * component per page; the post-check trims any extras.
  *
  * IDs match metaLookup keys (component metadata `id`), not PascalCase names.
  */
-const HEAVY_COMPONENTS = [
-  "hero-parallax-images-01",
-  "layout-parallaxcontent-01",
-  "layout-stickycards-01",
-];
+const HEAVY_COMPONENTS = ["hero-parallax-images-01"];
 
 export function runPairPostCheck(
   output: ComposerOutput,
