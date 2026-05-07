@@ -2,7 +2,12 @@
  * Demo: query the Qdrant `components` collection per skeleton slot.
  *
  * Usage:
- *   ts-node scripts/query-vectors.ts "<brief>"
+ *   ts-node scripts/query-vectors.ts "<brief>" [flags]
+ *
+ * Flags (all optional — defaults preserve original SaaS-shaped mock):
+ *   --mood    <comma-list>   e.g. "elegant,warm,friendly"  (default: professional)
+ *   --style   <comma-list>   e.g. "editorial,luxury"       (default: modern)
+ *   --density <low|medium|high>                            (default: medium)
  *
  * Required env vars (point to SSM parameter names, not raw secrets):
  *   QDRANT_ENDPOINT_SSM_PATH   — e.g. /sitegen/dev/qdrant-endpoint
@@ -14,8 +19,10 @@
  * cosine similarity searches against the `components` collection — one per
  * named-vector axis (`descriptive`, `usage`, `audienceFit`) — merges results
  * by componentId taking the max axis score, and prints the top-3 hits per
- * slot as a markdown table. Mirrors the per-slot loop the Composer handler
- * runs in production.
+ * slot as a markdown table. The slotQuery phrasing mirrors the Composer
+ * handler exactly: `${category} for ${brief}; mood: ${mood}; needs:
+ * ${purpose}`, so the mood override flows into the embedding too — not just
+ * rerank.
  *
  * After printing the top-3 table, the script also runs the deterministic
  * Phase D `rerankCandidates` four-signal combiner (PAIRS_WITH + style
@@ -33,13 +40,39 @@ import type { CandidateComponent } from "../composer/prompt";
 import type { StyleOutput } from "../shared/types";
 
 /* ------------------------------------------------------------------ */
-/*  Resolve query brief                                                */
+/*  Resolve query brief + style overrides                              */
 /* ------------------------------------------------------------------ */
 
-const brief = process.argv[2];
+const argv = process.argv.slice(2);
+
+let brief: string | undefined;
+let moodOverride: string[] | undefined;
+let styleOverride: string[] | undefined;
+let densityOverride: string | undefined;
+
+const splitCsv = (raw: string): string[] =>
+  raw
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+for (let i = 0; i < argv.length; i++) {
+  const arg = argv[i];
+  if (arg === "--mood" && i + 1 < argv.length) {
+    moodOverride = splitCsv(argv[++i]);
+  } else if (arg === "--style" && i + 1 < argv.length) {
+    styleOverride = splitCsv(argv[++i]);
+  } else if (arg === "--density" && i + 1 < argv.length) {
+    densityOverride = argv[++i].trim();
+  } else if (!arg.startsWith("--") && brief === undefined) {
+    brief = arg;
+  }
+}
 
 if (!brief) {
-  console.error('Usage: ts-node scripts/query-vectors.ts "<brief>"');
+  console.error(
+    'Usage: ts-node scripts/query-vectors.ts "<brief>" [--mood a,b,c] [--style a,b,c] [--density low|medium|high]',
+  );
   process.exit(1);
 }
 
@@ -74,22 +107,26 @@ interface ComponentPayload {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Mock StyleOutput for the re-ranker                                 */
+/*  StyleOutput for the re-ranker (CLI-overridable)                    */
 /* ------------------------------------------------------------------ */
 
 /**
  * Debug approximation only. The real composer pipeline feeds the Style
  * Agent's StyleOutput into rerankCandidates; this script lacks an upstream
  * style run, so we hand-roll a minimal object with just the fields the
- * style-overlap scorer actually reads (`style`, `mood`). Other StyleOutput
- * fields (palette, typography, etc.) are unused by rerank.ts, so we cast
- * through `unknown` rather than fabricate plausible values. Stage 4 will
- * thread real StyleOutput from a captured pipeline run.
+ * style-overlap scorer actually reads (`style`, `mood`) plus `density` for
+ * the density penalty. Other StyleOutput fields (palette, typography, etc.)
+ * are unused by rerank.ts, so we cast through `unknown` rather than
+ * fabricate plausible values. Stage 4 will thread real StyleOutput from a
+ * captured pipeline run.
+ *
+ * The defaults below preserve the original SaaS-shaped mock so existing
+ * runs reproduce; the CLI flags let callers override per brief.
  */
-const MOCK_STYLE_OUTPUT = {
-  mood: ["professional"],
-  style: ["modern"],
-  density: "medium",
+const STYLE_OUTPUT = {
+  mood: moodOverride ?? ["professional"],
+  style: styleOverride ?? ["modern"],
+  density: densityOverride ?? "medium",
 } as unknown as StyleOutput;
 
 /* ------------------------------------------------------------------ */
@@ -106,6 +143,11 @@ async function main(): Promise<void> {
   const escapedBrief = queryText.replace(/"/g, '\\"');
   console.log();
   console.log(`> Query: "${escapedBrief}"`);
+  console.log(
+    `> Style: mood=[${(STYLE_OUTPUT.mood ?? []).join(", ")}] style=[${(STYLE_OUTPUT.style ?? []).join(", ")}] density=${STYLE_OUTPUT.density}`,
+  );
+
+  const moodTags = (STYLE_OUTPUT.mood ?? []).join(", ");
 
   const axes = ["descriptive", "usage", "audienceFit"] as const;
   type Axis = (typeof axes)[number];
@@ -115,7 +157,9 @@ async function main(): Promise<void> {
   const pickedCandidates: CandidateComponent[] = [];
 
   for (const slot of DEFAULT_SKELETON) {
-    const slotQuery = `${slot.category} for ${queryText}; needs: ${slot.purpose}`;
+    // Mirrors agents/composer/handler.ts:564 phrasing exactly so debug runs
+    // produce the same embeddings the production composer would.
+    const slotQuery = `${slot.category} for ${queryText}; mood: ${moodTags}; needs: ${slot.purpose}`;
     const slotVector = await getEmbedding(slotQuery);
 
     const filter = {
@@ -251,7 +295,7 @@ async function main(): Promise<void> {
     const reranked = rerankCandidates(
       slotCandidates,
       pickedCandidates,
-      MOCK_STYLE_OUTPUT,
+      STYLE_OUTPUT,
       DEFAULT_RERANK_WEIGHTS,
     );
     const top = reranked[0];
