@@ -157,6 +157,65 @@ const FALLBACK_SKELETONS: Record<string, Skeleton> = {
   ],
 };
 
+interface BriefData {
+  companyName: string;
+  segment: string;
+  toneKeywords: string[];
+  targetAudience: string;
+}
+
+const CAPTURE_BRIEFS: Record<string, BriefData> = {
+  "padaria-luxo-sp": {
+    companyName: "Padaria de Luxo SP",
+    segment: "padaria artesanal de luxo",
+    toneKeywords: ["artisanal", "premium", "warm"],
+    targetAudience: "food lovers and premium consumers in São Paulo",
+  },
+  "advocacia-tributaria-bh": {
+    companyName: "Advocacia Tributária BH",
+    segment: "advocacia tributária",
+    toneKeywords: ["authoritative", "professional", "reliable"],
+    targetAudience:
+      "businesses and entrepreneurs in Belo Horizonte facing tax issues",
+  },
+  "crossfit-rj": {
+    companyName: "CrossFit RJ",
+    segment: "academia de crossfit",
+    toneKeywords: ["energetic", "motivating", "community"],
+    targetAudience: "fitness enthusiasts in Rio de Janeiro",
+  },
+  "agencia-marketing-b2b": {
+    companyName: "Agência Marketing B2B",
+    segment: "agência de marketing digital B2B",
+    toneKeywords: ["strategic", "results-driven", "innovative"],
+    targetAudience: "B2B companies seeking digital growth",
+  },
+  "restaurante-japones": {
+    companyName: "Restaurante Japonês",
+    segment: "restaurante japonês alta gastronomia",
+    toneKeywords: ["elegant", "refined", "immersive"],
+    targetAudience: "food enthusiasts seeking fine Japanese dining",
+  },
+  "clinica-odontologica": {
+    companyName: "Clínica Odontológica",
+    segment: "clínica odontológica família",
+    toneKeywords: ["caring", "trustworthy", "professional"],
+    targetAudience: "families and individuals seeking dental care",
+  },
+  "atelie-moda": {
+    companyName: "Ateliê de Moda Autoral",
+    segment: "ateliê de moda autoral",
+    toneKeywords: ["creative", "exclusive", "artistic"],
+    targetAudience: "fashion-conscious buyers seeking unique pieces",
+  },
+  "consultoria-financeira": {
+    companyName: "Consultoria Financeira",
+    segment: "consultoria financeira pessoal",
+    toneKeywords: ["clear", "trustworthy", "empowering"],
+    targetAudience: "individuals seeking financial clarity and planning",
+  },
+};
+
 /* ------------------------------------------------------------------ */
 /*  Resolve query brief + style overrides                              */
 /* ------------------------------------------------------------------ */
