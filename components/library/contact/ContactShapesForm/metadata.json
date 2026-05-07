@@ -101,7 +101,7 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["faq-accordion-01", "footer-reveal-01", "stats-count-up-01"],
+  "pairsWell": ["footer-reveal-01", "stats-count-up-01"],
   "pairsPoorly": [],
   "description": "A modern contact form enhanced with geometric shapes and editorial styling, designed for corporate businesses seeking to capture leads while maintaining a professional yet approachable brand presence.",
   "descriptions": {

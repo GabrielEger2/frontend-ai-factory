@@ -86,19 +86,8 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "faq-accordion-01",
-    "footer-mega-01",
-    "footer-pulse-01",
-    "stats-kpi-grid-01"
-  ],
-  "pairsPoorly": [
-    "cta-collage-duo-01",
-    "cta-editorial-split-01",
-    "cta-image-backdrop-01",
-    "cta-newsletter-capture-01",
-    "testimonial-spotlight-quote-01"
-  ],
+  "pairsWell": ["footer-mega-01", "footer-pulse-01", "stats-kpi-grid-01"],
+  "pairsPoorly": ["cta-image-backdrop-01", "testimonial-spotlight-quote-01"],
   "description": "A primary call-to-action paired with an embedded customer quote and optional KPI, so the conversion ask sits next to a fragment of social proof that answers 'why should I trust this' in the same eye-fixation.",
   "descriptions": {
     "descriptive": "Asymmetric two-column layout: a calm copy column on the left with eyebrow, headline, supporting paragraph, primary CTA, optional secondary link, and check-bullet perks; a quote card on the right with an oversized open-quote glyph, optional KPI numeral in font-mono, the testimonial body, and a portrait + attribution footer. Three tones (neutral, muted, inverse) and a stacked layout for narrower contexts.",

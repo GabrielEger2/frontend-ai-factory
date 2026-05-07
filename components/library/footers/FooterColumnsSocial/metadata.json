@@ -103,19 +103,8 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "cta-editorial-split-01",
-    "cta-minimal-strip-01",
-    "faq-accordion-01",
-    "stats-count-up-01",
-    "testimonial-spotlight-quote-01"
-  ],
-  "pairsPoorly": [
-    "footer-mega-01",
-    "footer-pulse-01",
-    "footer-reveal-01",
-    "footer-minimal-strip-01"
-  ],
+  "pairsWell": ["stats-count-up-01", "testimonial-spotlight-quote-01"],
+  "pairsPoorly": ["footer-mega-01", "footer-pulse-01", "footer-reveal-01"],
   "description": "A medium-density utility footer with a brand block, up to four sitemap columns, and a dedicated social column rendering each network as a handle-style card. No newsletter form — pair above with a closing CTA section. Sits on bg-base-200 for quieter visual weight than FooterMega.",
   "descriptions": {
     "descriptive": "Top section is a five-column grid: a brand block (logo, tagline, optional region pill), three sitemap columns, and a social column where each network renders as a small handle card (icon + display handle + arrow chevron). Bottom row carries copyright and optional inline legal links. Renders on bg-base-200 with bg-base-100 surfaces for the social handle cards — noticeably quieter than FooterMega's bg-neutral treatment.",

@@ -76,20 +76,10 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "hero-hero-bold-editorial-01",
-    "hero-spotlight-center-01",
-    "hero-split-image-01",
-    "stats-count-up-01",
-    "cta-minimal-strip-01",
-    "layout-pricing-tiers-01"
-  ],
+  "pairsWell": ["hero-split-image-01", "stats-count-up-01"],
   "pairsPoorly": [
-    "testimonial-stackedsplit-01",
-    "testimonial-staggerfan-01",
     "testimonial-infinitescroll-01",
-    "testimonial-spotlight-quote-01",
-    "testimonial-logo-quote-ribbon-01"
+    "testimonial-spotlight-quote-01"
   ],
   "description": "Pinterest-style social-proof wall. 6-12 quote tiles laid out as a CSS-columns masonry; quote length drives vertical rhythm and every fifth tile gets an accent tone to break the column. Use when sheer volume of social proof is the message.",
   "descriptions": {

@@ -67,12 +67,8 @@
     }
   ],
   "mobileBehavior": "scroll",
-  "pairsWell": [
-    "hero-geometric-01",
-    "hero-split-image-01",
-    "layout-cardgrid-01"
-  ],
-  "pairsPoorly": ["testimonial-stackedsplit-01", "testimonial-staggerfan-01"],
+  "pairsWell": ["hero-split-image-01"],
+  "pairsPoorly": [],
   "description": "A continuously scrolling testimonial component with bold typography and editorial spacing that creates dynamic social proof. Perfect for tech companies and agencies wanting to showcase extensive client feedback without pagination interruptions.",
   "descriptions": {
     "descriptive": "A continuous, vertically scrolling testimonial feed with bold typography and editorial-style card layouts. Features high contrast text blocks, generous whitespace, and dynamic motion that creates an energetic browsing experience while maintaining clean, professional aesthetics.",

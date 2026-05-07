@@ -104,14 +104,8 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "hero-split-image-01",
-    "hero-hero-bold-editorial-01",
-    "stats-count-up-01",
-    "cta-editorial-split-01",
-    "layout-iconlistsplit-01"
-  ],
-  "pairsPoorly": ["layout-cardgrid-01", "layout-imagetext-01"],
+  "pairsWell": ["hero-split-image-01", "stats-count-up-01"],
+  "pairsPoorly": [],
   "description": "A multi-row alternating image and text layout where each row swaps the image side, ideal for process steps, feature tours, and brand narratives that benefit from visual rhythm.",
   "descriptions": {
     "descriptive": "Multiple rows of paired image and text where each row alternates the image side, creating a clear left-right reading rhythm. Generous vertical spacing separates rows, and each row supports an optional eyebrow, bullet list, and per-row CTA. Image corners are softly rounded, typography hierarchy is restrained, and the overall composition reads as a narrated sequence rather than a feature dump.",

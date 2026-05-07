@@ -60,11 +60,9 @@
   ],
   "mobileBehavior": "stack",
   "pairsWell": [
-    "hero-hero-bold-editorial-01",
     "hero-split-image-01",
     "stats-count-up-01",
-    "testimonial-spotlight-quote-01",
-    "cta-minimal-strip-01"
+    "testimonial-spotlight-quote-01"
   ],
   "pairsPoorly": ["carousel-cards-01"],
   "description": "Button-navigated carousel of before/after image comparison sliders. One slide is shown at a time; prev/next arrows and pagination dots advance between cases. Each slide is pointer-draggable with keyboard support and labelled before/after pills, useful for restoration, redesign, transformation, and physical-result portfolios.",

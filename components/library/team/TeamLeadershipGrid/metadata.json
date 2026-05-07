@@ -67,13 +67,11 @@
   ],
   "mobileBehavior": "stack",
   "pairsWell": [
-    "hero-hero-bold-editorial-01",
     "hero-asymmetric-stack-01",
     "stats-kpi-grid-01",
-    "cta-editorial-split-01",
     "footer-mega-01"
   ],
-  "pairsPoorly": ["layout-cardgrid-01", "layout-simplegrid-01"],
+  "pairsPoorly": [],
   "description": "Portrait grid for leadership pages. 4:5 portraits, name, role, optional tagline and location chip; 3- or 4-column desktop, single column on mobile, calm or framed card mood.",
   "descriptions": {
     "descriptive": "A portrait grid that prioritises faces over chrome. Each member card is a 4:5 portrait with a soft scale on hover, a small location chip in the upper-left, and a clean text block underneath: name in semibold, role in primary tint, optional one-line tagline in muted body. The grid runs 4-up on xl, 3-up on lg, 2-up on sm, and stacks below md. A `cardMood` prop swaps between borderless calm cards and framed cards on bg-base-100 for sites that want explicit grouping.",

@@ -101,13 +101,11 @@
   "pairsWell": [
     "stats-count-up-01",
     "testimonial-spotlight-quote-01",
-    "cta-minimal-strip-01",
     "footer-mega-01"
   ],
   "pairsPoorly": [
     "carousel-cards-01",
     "carousel-thumbnail-nav-01",
-    "hero-hero-bold-editorial-01",
     "hero-video-backdrop-01"
   ],
   "description": "An edge-to-edge image rotator with overlaid eyebrow, headline, description, and CTA per slide. Auto-advances with a progress-bar dot indicator and pauses on hover or focus. Designed to anchor a page as a hero replacement when the brand story spans multiple imagery beats.",

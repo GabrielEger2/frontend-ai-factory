@@ -83,12 +83,7 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "hero-split-image-01",
-    "stats-count-up-01",
-    "cta-minimal-strip-01",
-    "footer-minimal-strip-01"
-  ],
+  "pairsWell": ["hero-split-image-01", "stats-count-up-01"],
   "pairsPoorly": ["carousel-cards-01", "carousel-full-bleed-slider-01"],
   "description": "An e-commerce style image viewer with a primary stage and a thumbnail strip beneath. Visitors can drag, click thumbnails, or use keyboard arrows to advance — ideal for product detail pages, portfolio cases, and gallery walks where the same item is shown from multiple angles.",
   "descriptions": {

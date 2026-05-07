@@ -53,16 +53,8 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "hero-hero-bold-editorial-01",
-    "hero-split-image-01",
-    "stats-count-up-01",
-    "cta-minimal-strip-01",
-    "faq-tabbed-01"
-  ],
+  "pairsWell": ["hero-split-image-01", "stats-count-up-01", "faq-tabbed-01"],
   "pairsPoorly": [
-    "testimonial-stackedsplit-01",
-    "testimonial-staggerfan-01",
     "testimonial-infinitescroll-01",
     "testimonial-spotlight-quote-01"
   ],

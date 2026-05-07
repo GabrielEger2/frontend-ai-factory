@@ -113,18 +113,8 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "faq-accordion-01",
-    "footer-mega-01",
-    "footer-pulse-01",
-    "stats-kpi-grid-01"
-  ],
-  "pairsPoorly": [
-    "cta-collage-duo-01",
-    "cta-image-backdrop-01",
-    "cta-newsletter-capture-01",
-    "cta-countdown-01"
-  ],
+  "pairsWell": ["footer-mega-01", "footer-pulse-01", "stats-kpi-grid-01"],
+  "pairsPoorly": ["cta-image-backdrop-01"],
   "description": "An interactive estimate widget paired with a primary CTA — the visitor adjusts sliders for inputs like loan amount or seat count and sees the computed result in tabular font-mono. Inputs ride along to the destination URL as querystring params for form pre-fill.",
   "descriptions": {
     "descriptive": "Asymmetric two-column layout: a copy column on the left with eyebrow, headline, description, and labelled range sliders that update instantly with min/max ticks rendered as small mono labels; a result panel on the right with a primary numeric output rendered as the hero numeral, optional secondary outputs in a 2-column grid, and a primary CTA whose href carries the slider values as querystring parameters for downstream pre-fill.",

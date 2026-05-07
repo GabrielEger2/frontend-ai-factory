@@ -163,11 +163,10 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["faq-accordion-01", "navbar-pill-01"],
+  "pairsWell": ["navbar-pill-01"],
   "pairsPoorly": [
     "footer-columns-social-01",
     "footer-mega-01",
-    "footer-minimal-strip-01",
     "footer-reveal-01"
   ],
   "description": "A clean, magazine-style footer with refined typography and minimal visual elements that builds credibility for editorial websites, publishing platforms, and content-focused businesses requiring professional authority.",

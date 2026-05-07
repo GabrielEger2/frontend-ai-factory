@@ -59,13 +59,8 @@
     { "name": "footnote", "type": "text", "maxLength": 200, "optional": true }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "faq-accordion-01",
-    "faq-minimal-01",
-    "cta-minimal-strip-01",
-    "stats-kpi-grid-01"
-  ],
-  "pairsPoorly": ["pricing-tier-cards-01", "layout-pricing-tiers-01"],
+  "pairsWell": ["stats-kpi-grid-01"],
+  "pairsPoorly": ["pricing-tier-cards-01"],
   "description": "A staircase visualization where each tier sits one rung higher than the previous, connected by a dashed climb line. Reads as a journey instead of three brochure cards — useful for products with a true freemium funnel where the buyer needs to see the climb.",
   "descriptions": {
     "descriptive": "Cards positioned absolutely on a fixed-height stage so each step rises 80px above the previous one and shifts ~17% to the right. A dashed diagonal SVG line traces the climb. The recommended step inverts to a dark surface and lifts into a higher z-index, with a small primary 'Start here' pill that anchors the eye.",

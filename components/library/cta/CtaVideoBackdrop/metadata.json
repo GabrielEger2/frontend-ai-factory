@@ -47,18 +47,8 @@
     { "name": "showControls", "type": "boolean", "optional": true }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "faq-accordion-01",
-    "footer-mega-01",
-    "footer-pulse-01",
-    "stats-count-up-01"
-  ],
-  "pairsPoorly": [
-    "cta-image-backdrop-01",
-    "cta-collage-duo-01",
-    "cta-editorial-split-01",
-    "hero-video-backdrop-01"
-  ],
+  "pairsWell": ["footer-mega-01", "footer-pulse-01", "stats-count-up-01"],
+  "pairsPoorly": ["cta-image-backdrop-01", "hero-video-backdrop-01"],
   "description": "A high-impact CTA section with a looping muted background video, layered overlay, and a calm copy column with primary and secondary actions. Pauses on prefers-reduced-motion and surfaces play/mute controls so visitors can opt into or out of the motion.",
   "descriptions": {
     "descriptive": "A full-bleed section with a muted, autoplaying background video and a darkening overlay. A left-aligned copy column carries an eyebrow, oversized headline, supporting paragraph, and primary + secondary CTAs. Bottom-right pill houses a play/pause and mute toggle that floats above the video without blocking the headline.",

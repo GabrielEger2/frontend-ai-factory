@@ -89,19 +89,8 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "hero-split-image-01",
-    "hero-hero-bold-editorial-01",
-    "layout-pricing-tiers-01",
-    "faq-tabbed-01",
-    "footer-pulse-01"
-  ],
-  "pairsPoorly": [
-    "cta-collage-duo-01",
-    "cta-editorial-split-01",
-    "cta-image-backdrop-01",
-    "cta-minimal-strip-01"
-  ],
+  "pairsWell": ["hero-split-image-01", "faq-tabbed-01", "footer-pulse-01"],
+  "pairsPoorly": ["cta-image-backdrop-01"],
   "description": "Two side-by-side CTA cards offering the visitor a clear choice — typically self-serve vs. assisted, free vs. enterprise, or audience A vs. audience B. Optional primary-led emphasis tints the first card on bg-primary.",
   "descriptions": {
     "descriptive": "Mirrored card layout with eyebrow, title, description, optional bullet list, CTA, and footnote per side. Two emphasis modes: balanced (both cards on bg-base-100 with a hairline ring) or primary-led (left card on bg-primary, right card neutral). Cards stagger in on view at 80ms intervals.",

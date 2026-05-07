@@ -115,27 +115,15 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "layout-cardgrid-01",
-    "layout-imagetext-01",
-    "stats-count-up-01",
-    "layout-iconlistsplit-01"
-  ],
+  "pairsWell": ["stats-count-up-01"],
   "pairsPoorly": [
     "hero-split-image-01",
-    "hero-geometric-01",
-    "hero-shuffle-cards-01",
-    "hero-parallax-images-01",
-    "hero-hero-bold-editorial-01",
     "hero-bakery-editorial-01",
-    "hero-marquee-strip-01",
     "hero-grid-gallery-01",
     "hero-video-backdrop-01",
-    "hero-spotlight-center-01",
     "hero-newsroom-ticker-01",
     "hero-split-form-01",
-    "hero-asymmetric-stack-01",
-    "hero-terminal-console-01"
+    "hero-asymmetric-stack-01"
   ],
   "description": "A playful, scrapbook-style hero with three to four rotated polaroid cards in an asymmetric collage, paired with an italic script accent in the headline. Built for cafes, weddings, family-run shops, lifestyle blogs, and brands that lead with warmth.",
   "descriptions": {

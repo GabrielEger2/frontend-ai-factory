@@ -65,13 +65,8 @@
     { "name": "footnote", "type": "text", "maxLength": 160, "optional": true }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "faq-accordion-01",
-    "faq-minimal-01",
-    "cta-minimal-strip-01",
-    "testimonial-logo-quote-ribbon-01"
-  ],
-  "pairsPoorly": ["layout-pricing-tiers-01"],
+  "pairsWell": [],
+  "pairsPoorly": [],
   "description": "Three-up pricing tier cards with one inverted 'most popular' tier that lifts a few pixels to break the horizon line. Inclusive features use a tinted check, excluded features render with a strike-through and a minus icon — making scanability the first job.",
   "descriptions": {
     "descriptive": "Three rounded tier cards on a 3-column grid where the featured tier inverts (dark surface, light text) and translates -12px upward to anchor the eye. Prices use monospaced numerals for vertical alignment across tiers; cadence sits as a smaller suffix. Excluded features strike through instead of disappearing, so the buyer can see exactly where the upgrade boundary is.",
