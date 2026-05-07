@@ -61,13 +61,8 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "hero-spotlight-center-01",
-    "hero-grid-gallery-01",
-    "cta-editorial-split-01",
-    "footer-pulse-01"
-  ],
-  "pairsPoorly": ["gallery-masonry-01", "carousel-horizontal-scroll-01"],
+  "pairsWell": ["hero-grid-gallery-01", "footer-pulse-01"],
+  "pairsPoorly": ["gallery-masonry-01"],
   "description": "Uniform aspect-square thumbnail grid with a keyboard-driven lightbox modal. Click opens; Escape closes; Arrow keys navigate. Body scroll locks during overlay.",
   "descriptions": {
     "descriptive": "A clean square-aspect grid (2, 3, or 4 columns) where each tile is a button — no decorative chrome, just a hover scale and a focusable zoom-in glyph. Click opens a 5xl-wide lightbox with backdrop-blur, prev/next chevrons, caption + meta, and a focus-trapped close. Keyboard navigation (Esc, ←, →) is wired into a single window listener that mounts only while the modal is open.",

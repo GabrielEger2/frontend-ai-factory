@@ -84,17 +84,8 @@
     { "name": "footnote", "type": "text", "maxLength": 220, "optional": true }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "faq-minimal-01",
-    "faq-accordion-01",
-    "testimonial-spotlight-quote-01",
-    "stats-kpi-grid-01"
-  ],
-  "pairsPoorly": [
-    "pricing-tier-cards-01",
-    "pricing-comparison-table-01",
-    "layout-pricing-tiers-01"
-  ],
+  "pairsWell": ["testimonial-spotlight-quote-01", "stats-kpi-grid-01"],
+  "pairsPoorly": ["pricing-tier-cards-01"],
   "description": "Editorial split with long-form copy on the left and one anchored price card on the right. Designed for agency packages, single-product apps, or annual flat-rate deals where comparing tiers is theatre. The card sticks while the body scrolls past it.",
   "descriptions": {
     "descriptive": "Asymmetric 3-of-5 / 2-of-5 grid: a left-aligned editorial column with headline, body, two-up highlight bullets, and a quoted proof line; a sticky dark price card on the right with monospaced headline price, optional original-price strike-through, an inclusion checklist, primary CTA, and an optional secondary text link. Soft primary tint glow in the card corner, no neon or rainbow gradients.",

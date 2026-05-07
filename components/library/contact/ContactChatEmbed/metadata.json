@@ -130,9 +130,7 @@
   "mobileBehavior": "stack",
   "pairsWell": [
     "hero-split-image-01",
-    "hero-hero-bold-editorial-01",
     "testimonial-spotlight-quote-01",
-    "faq-accordion-01",
     "footer-pulse-01"
   ],
   "pairsPoorly": [

@@ -89,7 +89,6 @@ const FLOW_ORDER: string[] = [
   "content",
   "gallery",
   "team",
-  "carousel",
   "pricing",
   "faq",
   "stats",

@@ -1,7 +1,7 @@
 {
   "id": "carousel-full-bleed-slider-01",
   "name": "Full-Bleed Slider Carousel",
-  "category": "carousel",
+  "category": "hero",
   "purpose": ["hero", "showcase", "portfolio", "brand-statement", "story"],
   "acceptsStyleKit": {
     "card": false,
@@ -101,17 +101,9 @@
   "pairsWell": [
     "stats-count-up-01",
     "testimonial-spotlight-quote-01",
-    "cta-minimal-strip-01",
     "footer-mega-01"
   ],
-  "pairsPoorly": [
-    "carousel-cards-01",
-    "carousel-swipe-01",
-    "carousel-horizontal-scroll-01",
-    "carousel-thumbnail-nav-01",
-    "hero-hero-bold-editorial-01",
-    "hero-video-backdrop-01"
-  ],
+  "pairsPoorly": ["carousel-thumbnail-nav-01", "hero-video-backdrop-01"],
   "description": "An edge-to-edge image rotator with overlaid eyebrow, headline, description, and CTA per slide. Auto-advances with a progress-bar dot indicator and pauses on hover or focus. Designed to anchor a page as a hero replacement when the brand story spans multiple imagery beats.",
   "descriptions": {
     "descriptive": "Full-bleed background image with a subtle neutral-toned gradient for caption legibility. Each slide carries its own eyebrow / headline / description / CTA; transitions are spring-animated with a soft scale-on-enter. Pagination dots double as a linear progress bar for the active slide; hover, focus, and an explicit pause button all halt the auto-advance.",

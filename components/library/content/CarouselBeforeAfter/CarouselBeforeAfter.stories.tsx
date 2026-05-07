@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import CarouselBeforeAfter from "./index";
 
 const meta: Meta<typeof CarouselBeforeAfter> = {
-  title: "Carousel/CarouselBeforeAfter",
+  title: "Content/CarouselBeforeAfter",
   component: CarouselBeforeAfter,
   parameters: { layout: "fullscreen" },
 };

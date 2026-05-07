@@ -39,7 +39,6 @@ export const MetadataSchema = z.object({
     "faq",
     "footers",
     "navigation",
-    "carousel",
     "stats",
     "testimonial",
     "content",
@@ -152,7 +151,6 @@ export const CATEGORY_TO_DIR: Record<Category, string> = {
   faq: "faq",
   footers: "footers",
   navigation: "navigation",
-  carousel: "carousel",
   stats: "stats",
   testimonial: "testimonials",
   content: "content",
@@ -183,7 +181,6 @@ export const CATEGORY_TO_PREFIX: Record<Category, string> = {
   faq: "faq",
   footers: "footer", // plural-asymmetry: category "footers" → id prefix "footer"
   navigation: "navigation",
-  carousel: "carousel",
   stats: "stats",
   testimonial: "layout", // frozen IDs — prefix mismatch acceptable
   content: "content",

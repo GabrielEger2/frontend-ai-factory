@@ -65,10 +65,9 @@
   "pairsWell": [
     "hero-bakery-editorial-01",
     "hero-grid-gallery-01",
-    "cta-editorial-split-01",
     "footer-mega-01"
   ],
-  "pairsPoorly": ["layout-cardgrid-01", "layout-simplegrid-01"],
+  "pairsPoorly": [],
   "description": "Pinterest-style asymmetric multi-column gallery built on CSS columns. Each tile picks a shape (tall, wide, square) and reveals title plus category on hover or focus.",
   "descriptions": {
     "descriptive": "True masonry via CSS `columns` so tiles flow into the shortest column without layout JavaScript. Each tile carries a shape bias (`tall`, `wide`, default square), giving the wall an organic rhythm. A bottom-anchored gradient surfaces title and category on hover and on keyboard focus, so meta stays discoverable without cluttering the static state.",

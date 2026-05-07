@@ -1,7 +1,7 @@
 {
   "id": "gallery-case-study-01",
   "name": "Case Study Gallery",
-  "category": "gallery",
+  "category": "content",
   "purpose": ["gallery", "portfolio", "showcase", "story", "stats"],
   "acceptsStyleKit": {
     "card": false,
@@ -88,13 +88,11 @@
   ],
   "mobileBehavior": "stack",
   "pairsWell": [
-    "hero-hero-bold-editorial-01",
     "hero-asymmetric-stack-01",
     "testimonial-spotlight-quote-01",
-    "stats-count-up-01",
-    "cta-editorial-split-01"
+    "stats-count-up-01"
   ],
-  "pairsPoorly": ["gallery-masonry-01", "gallery-portfolio-strip-01"],
+  "pairsPoorly": ["gallery-masonry-01"],
   "description": "Long-form case study with hero image, project meta strip, alternating zig-zag chapters (problem / approach / result), and an organic-numbers metric band. Generous editorial spacing throughout.",
   "descriptions": {
     "descriptive": "Hero image at 16:9 anchors a wide centered column. Below, an underlined meta strip lists client / role / year / team in mono caps. Three chapters alternate image-left then image-right at lg breakpoint and stack on mobile. A dark metric band lifts the outcomes in mono numerals — designed for organic numbers (47.2 percent, 3,847) rather than rounded vanity stats. Closing CTA is left-aligned to keep the editorial rhythm.",

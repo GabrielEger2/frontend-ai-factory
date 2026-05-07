@@ -105,13 +105,7 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "hero-split-image-01",
-    "hero-hero-bold-editorial-01",
-    "layout-pricing-tiers-01",
-    "layout-icon-feature-grid-01",
-    "cta-minimal-strip-01"
-  ],
+  "pairsWell": ["hero-split-image-01"],
   "pairsPoorly": ["stats-count-up-01", "stats-kpi-grid-01"],
   "description": "Two chart-style stats variants: an animated horizontal bar chart with count-up labels, or a single-line sparkline with a headline metric and trend pill — for sites that need comparative or longitudinal proof rather than hero numbers.",
   "descriptions": {

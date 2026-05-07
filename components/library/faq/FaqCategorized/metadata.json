@@ -69,12 +69,7 @@
   ],
   "mobileBehavior": "stack",
   "pairsWell": [],
-  "pairsPoorly": [
-    "faq-accordion-01",
-    "faq-minimal-01",
-    "faq-solutions-01",
-    "faq-tabbed-01"
-  ],
+  "pairsPoorly": ["faq-solutions-01", "faq-tabbed-01"],
   "description": "An FAQ section with a vertical category rail and a paired question accordion, ideal for help centers and policy hubs that group naturally into topic buckets. The sidebar collapses to a horizontal scroll strip below md, and category switching cross-fades the question list with a spring-driven active-state marker.",
   "descriptions": {
     "descriptive": "Two-column editorial layout: a slim left rail with category labels and live question counts, paired with a divider-line accordion of the active category's questions. Active-state is communicated by a spring-physics primary marker rail and a tinted question count chip, with a cross-fade transition between categories.",

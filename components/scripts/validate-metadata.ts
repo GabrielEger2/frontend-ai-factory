@@ -95,7 +95,6 @@ export const CANONICAL_CATEGORY: readonly string[] = [
   "contact",
   "navigation",
   "stats",
-  "carousel",
   "content",
   "pricing",
   "team",

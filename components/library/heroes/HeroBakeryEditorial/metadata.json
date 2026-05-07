@@ -78,19 +78,8 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "layout-cardgrid-01",
-    "layout-imagetext-01",
-    "stats-count-up-01",
-    "carousel-cards-01"
-  ],
-  "pairsPoorly": [
-    "hero-hero-bold-editorial-01",
-    "hero-geometric-01",
-    "hero-shuffle-cards-01",
-    "hero-parallax-images-01",
-    "hero-split-image-01"
-  ],
+  "pairsWell": ["stats-count-up-01"],
+  "pairsPoorly": ["hero-split-image-01"],
   "description": "An editorial hero with a framed card layout, hand-script accent word, circular stamp seal, and a hero product photo that breaks out of the right column. Designed for artisan food, bakery, deli, café, and small-batch consumer brands that want a tactile, story-led first impression.",
   "descriptions": {
     "descriptive": "A boxed editorial hero with a soft grid background, italicized hand-script accent inside a serif headline, a circular dashed stamp seal, and floating decorative seed glyphs that gently drift in place. The product image deliberately breaks out of the right column, giving the layout an asymmetric, magazine-style focal weight.",

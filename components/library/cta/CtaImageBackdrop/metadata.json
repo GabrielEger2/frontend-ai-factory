@@ -97,8 +97,8 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["faq-accordion-01"],
-  "pairsPoorly": ["cta-editorial-split-01", "cta-collage-duo-01"],
+  "pairsWell": [],
+  "pairsPoorly": [],
   "description": "A sophisticated call-to-action that overlays text on a full-width background image, creating an editorial magazine-like aesthetic perfect for luxury brands and premium service providers wanting to combine compelling visuals with clear action prompts.",
   "descriptions": {
     "descriptive": "A sophisticated call-to-action featuring a large, high-quality background image with refined typography overlays. Clean lines and generous whitespace create breathing room, while the editorial styling emphasizes visual storytelling through carefully curated photography and minimal design elements that exude calm luxury.",

@@ -63,14 +63,8 @@
     }
   ],
   "mobileBehavior": "scroll",
-  "pairsWell": [
-    "cta-minimal-strip-01",
-    "cta-newsletter-capture-01",
-    "footer-pulse-01",
-    "footer-reveal-01",
-    "layout-pricing-tiers-01"
-  ],
-  "pairsPoorly": ["faq-accordion-01", "faq-minimal-01", "faq-solutions-01"],
+  "pairsWell": ["footer-pulse-01", "footer-reveal-01"],
+  "pairsPoorly": ["faq-solutions-01"],
   "description": "A tabbed FAQ that groups questions into named categories (Billing, Security, Implementation) with an animated underline tab strip and a cross-fading accordion panel per tab.",
   "descriptions": {
     "descriptive": "Horizontal tab strip with an animated underline marks the active category; selecting a tab cross-fades the underlying accordion. Each tab carries an optional one-line description and its own short list of question/answer pairs.",

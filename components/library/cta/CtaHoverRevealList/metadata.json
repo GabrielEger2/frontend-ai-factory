@@ -65,7 +65,7 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["footer-reveal-01", "faq-accordion-01"],
+  "pairsWell": ["footer-reveal-01"],
   "pairsPoorly": [],
   "description": "An editorial stacked-list CTA where each row is a category or product line whose image becomes the row's background on hover. Designed for businesses with multiple product divisions (bakeries, ateliers, studios, restaurants with menu sections) where each row is itself a click target into a sub-page.",
   "descriptions": {

@@ -151,11 +151,10 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["faq-accordion-01"],
+  "pairsWell": [],
   "pairsPoorly": [
     "footer-columns-social-01",
     "footer-mega-01",
-    "footer-minimal-strip-01",
     "footer-pulse-01"
   ],
   "description": "A modern footer that elegantly reveals itself as users scroll, featuring clean typography and minimal design elements. Perfect for editorial sites, professional services, and brands seeking a sophisticated, trustworthy presence.",

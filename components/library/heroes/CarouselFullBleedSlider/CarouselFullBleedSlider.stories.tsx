@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import CarouselFullBleedSlider from "./index";
 
 const meta: Meta<typeof CarouselFullBleedSlider> = {
-  title: "Carousel/CarouselFullBleedSlider",
+  title: "Hero/CarouselFullBleedSlider",
   component: CarouselFullBleedSlider,
   parameters: {
     layout: "fullscreen",

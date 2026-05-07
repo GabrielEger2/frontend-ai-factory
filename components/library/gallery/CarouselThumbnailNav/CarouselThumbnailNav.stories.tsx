@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import CarouselThumbnailNav from "./index";
 
 const meta: Meta<typeof CarouselThumbnailNav> = {
-  title: "Carousel/CarouselThumbnailNav",
+  title: "Gallery/CarouselThumbnailNav",
   component: CarouselThumbnailNav,
   parameters: {
     layout: "fullscreen",

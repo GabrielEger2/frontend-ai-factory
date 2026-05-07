@@ -115,25 +115,14 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "stats-count-up-01",
-    "layout-cardgrid-01",
-    "layout-imagetext-01"
-  ],
+  "pairsWell": ["stats-count-up-01"],
   "pairsPoorly": [
     "hero-split-image-01",
-    "hero-geometric-01",
-    "hero-shuffle-cards-01",
-    "hero-parallax-images-01",
-    "hero-hero-bold-editorial-01",
     "hero-bakery-editorial-01",
-    "hero-marquee-strip-01",
     "hero-grid-gallery-01",
-    "hero-spotlight-center-01",
     "hero-newsroom-ticker-01",
     "hero-split-form-01",
     "hero-asymmetric-stack-01",
-    "hero-terminal-console-01",
     "hero-polaroid-collage-01"
   ],
   "description": "A full-bleed cinematic hero with optional looping video backdrop, tinted overlay, and an asymmetric content block anchored to the bottom edge. Built for hospitality, fashion campaigns, agencies, and any brand whose product is a felt experience.",

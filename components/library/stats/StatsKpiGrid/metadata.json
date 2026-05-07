@@ -76,12 +76,7 @@
     { "name": "duration", "type": "number", "optional": true }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "hero-geometric-01",
-    "hero-split-image-01",
-    "layout-icon-feature-grid-01",
-    "layout-process-timeline-01"
-  ],
+  "pairsWell": ["hero-split-image-01"],
   "pairsPoorly": ["stats-count-up-01"],
   "description": "Dashboard-density KPI grid with monospaced numerals, trend deltas, and divider-line grouping — the comparison-first stats slot that complements the count-up hero metric panel.",
   "descriptions": {

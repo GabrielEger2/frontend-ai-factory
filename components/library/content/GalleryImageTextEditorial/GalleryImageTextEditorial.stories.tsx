@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import GalleryImageTextEditorial from "./index";
 
 const meta: Meta<typeof GalleryImageTextEditorial> = {
-  title: "Gallery/GalleryImageTextEditorial",
+  title: "Content/GalleryImageTextEditorial",
   component: GalleryImageTextEditorial,
   parameters: { layout: "fullscreen" },
 };

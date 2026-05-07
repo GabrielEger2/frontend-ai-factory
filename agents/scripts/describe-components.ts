@@ -147,7 +147,7 @@ const SYSTEM_PROMPT = [
   "",
   "Canonical categories (the value of `category`):",
   "hero | testimonial | footer | cta | faq | contact | navigation | stats |",
-  "carousel | content | pricing | team | gallery",
+  "content | pricing | team | gallery",
   "",
   "Canonical purpose tokens (the values inside `purpose[]`):",
   "hero, navigation, footer, faq, contact, testimonials, stats,",

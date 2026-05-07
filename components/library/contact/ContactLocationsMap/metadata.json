@@ -85,7 +85,7 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": ["faq-minimal-01", "footer-reveal-01", "navbar-sticky-01"],
+  "pairsWell": ["footer-reveal-01", "navbar-sticky-01"],
   "pairsPoorly": [],
   "description": "A sophisticated contact section featuring an integrated map display alongside location details, designed for professional service firms and corporate businesses with multiple office locations that need to convey trustworthiness and accessibility.",
   "descriptions": {

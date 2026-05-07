@@ -139,15 +139,12 @@
   ],
   "mobileBehavior": "stack",
   "pairsWell": [
-    "cta-minimal-strip-01",
-    "cta-newsletter-capture-01",
     "faq-tabbed-01",
     "stats-count-up-01",
     "testimonial-spotlight-quote-01"
   ],
   "pairsPoorly": [
     "footer-columns-social-01",
-    "footer-minimal-strip-01",
     "footer-pulse-01",
     "footer-reveal-01"
   ],

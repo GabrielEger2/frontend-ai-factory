@@ -46,13 +46,7 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "team-leadership-grid-01",
-    "team-carousel-01",
-    "stats-count-up-01",
-    "testimonial-logo-quote-ribbon-01",
-    "cta-editorial-split-01"
-  ],
+  "pairsWell": ["team-leadership-grid-01", "stats-count-up-01"],
   "pairsPoorly": ["testimonial-spotlight-quote-01", "team-founder-split-01"],
   "description": "Featured-member spotlight with hero-sized pull quote, 4:5 portrait, name, role, optional context line, KPI credential row (years, projects, etc.) and optional CTA. Three tones: neutral, muted, inverse.",
   "descriptions": {
