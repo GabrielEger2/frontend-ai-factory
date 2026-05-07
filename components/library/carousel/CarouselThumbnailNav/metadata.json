@@ -1,7 +1,7 @@
 {
   "id": "carousel-thumbnail-nav-01",
   "name": "Thumbnail Nav Carousel",
-  "category": "carousel",
+  "category": "gallery",
   "purpose": ["products", "showcase", "portfolio", "gallery"],
   "acceptsStyleKit": {
     "card": false,
@@ -89,12 +89,7 @@
     "cta-minimal-strip-01",
     "footer-minimal-strip-01"
   ],
-  "pairsPoorly": [
-    "carousel-cards-01",
-    "carousel-swipe-01",
-    "carousel-horizontal-scroll-01",
-    "carousel-full-bleed-slider-01"
-  ],
+  "pairsPoorly": ["carousel-cards-01", "carousel-full-bleed-slider-01"],
   "description": "An e-commerce style image viewer with a primary stage and a thumbnail strip beneath. Visitors can drag, click thumbnails, or use keyboard arrows to advance — ideal for product detail pages, portfolio cases, and gallery walks where the same item is shown from multiple angles.",
   "descriptions": {
     "descriptive": "A primary image stage on top with a horizontally-scrollable thumbnail strip below. Active thumbnails get a primary-colored ring and a shared-layout indicator that animates between selections. The main stage uses a directional spring transition, supports drag-to-advance, and exposes prev/next buttons over the image. A small monospace counter pill in the corner reinforces position.",
