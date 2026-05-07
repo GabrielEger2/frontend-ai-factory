@@ -22,6 +22,9 @@ import {
   RANKED_OBJECTIVE_LABELS,
   PRIMARY_CTA_OPTIONS,
   PRIMARY_CTA_LABELS,
+  MOOD_TAGS,
+  STYLE_TAGS,
+  VOICE_TONE_OPTIONS,
   type CompanySize,
   type PrimaryCta,
 } from "@/lib/constants";
@@ -299,6 +302,10 @@ export default function NewProjectPage() {
     Array<{ id: string; rank: number }>
   >([]);
   const [primaryCta, setPrimaryCta] = useState<PrimaryCta | "">("");
+  const [moodTags, setMoodTags] = useState<string[]>([]);
+  const [styleTags, setStyleTags] = useState<string[]>([]);
+  const [voiceTone, setVoiceTone] = useState<string[]>([]);
+  const [slogan, setSlogan] = useState("");
 
   // Offer
   const [mainService, setMainService] = useState("");
@@ -345,7 +352,11 @@ export default function NewProjectPage() {
       {
         id: "brand",
         label: "Brand & tone",
-        isDone: brandToneKeywords.length > 0 || rankedObjectives.length > 0,
+        isDone:
+          brandToneKeywords.length > 0 ||
+          rankedObjectives.length > 0 ||
+          moodTags.length > 0 ||
+          styleTags.length > 0,
       },
       {
         id: "offer",
@@ -389,6 +400,8 @@ export default function NewProjectPage() {
     description,
     brandToneKeywords,
     rankedObjectives,
+    moodTags,
+    styleTags,
     mainService,
     idealPublic,
     desiredSections,
@@ -414,6 +427,30 @@ export default function NewProjectPage() {
     setBrandToneKeywords((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
+  }
+
+  function toggleMoodTag(tag: string) {
+    setMoodTags((prev) => {
+      if (prev.includes(tag)) return prev.filter((t) => t !== tag);
+      if (prev.length >= 5) return prev;
+      return [...prev, tag];
+    });
+  }
+
+  function toggleStyleTag(tag: string) {
+    setStyleTags((prev) => {
+      if (prev.includes(tag)) return prev.filter((t) => t !== tag);
+      if (prev.length >= 5) return prev;
+      return [...prev, tag];
+    });
+  }
+
+  function toggleVoiceTone(tag: string) {
+    setVoiceTone((prev) => {
+      if (prev.includes(tag)) return prev.filter((t) => t !== tag);
+      if (prev.length >= 3) return prev;
+      return [...prev, tag];
+    });
   }
 
   function updateBullet(index: number, value: string) {
@@ -610,6 +647,10 @@ export default function NewProjectPage() {
         rankedObjectives:
           rankedObjectives.length > 0 ? rankedObjectives : undefined,
         primaryCta: primaryCta || undefined,
+        moodTags: moodTags.length > 0 ? moodTags : undefined,
+        styleTags: styleTags.length > 0 ? styleTags : undefined,
+        voiceTone: voiceTone.length > 0 ? voiceTone : undefined,
+        slogan: slogan.trim() || undefined,
         mainService: mainService.trim() || undefined,
         whatMakesSpecial:
           whatMakesSpecial.map((s) => s.trim()).filter(Boolean).length > 0
@@ -885,7 +926,7 @@ export default function NewProjectPage() {
             <div className="flex flex-col gap-6">
               <div>
                 <p className="block text-sm font-medium text-slate-700 mb-2">
-                  Brand tone keywords
+                  Brand tone (free-form)
                 </p>
                 <p className="text-xs text-slate-500 mb-2">
                   Choose words that describe the brand&apos;s personality.
@@ -1000,6 +1041,95 @@ export default function NewProjectPage() {
                     ))}
                   </div>
                 </fieldset>
+              </div>
+
+              <div>
+                <p className="block text-sm font-medium text-slate-700 mb-2">
+                  Mood
+                </p>
+                <p className="text-xs text-slate-500 mb-2">
+                  How should the brand feel? Pick 1-5.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {MOOD_TAGS.map((tag) => {
+                    const selected = moodTags.includes(tag);
+                    return (
+                      <button
+                        key={tag}
+                        type="button"
+                        aria-pressed={selected}
+                        onClick={() => toggleMoodTag(tag)}
+                        className={pillClasses(selected)}
+                      >
+                        {tag}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <p className="block text-sm font-medium text-slate-700 mb-2">
+                  Visual style
+                </p>
+                <p className="text-xs text-slate-500 mb-2">
+                  Design aesthetic. Pick 1-5.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {STYLE_TAGS.map((tag) => {
+                    const selected = styleTags.includes(tag);
+                    return (
+                      <button
+                        key={tag}
+                        type="button"
+                        aria-pressed={selected}
+                        onClick={() => toggleStyleTag(tag)}
+                        className={pillClasses(selected)}
+                      >
+                        {tag}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <p className="block text-sm font-medium text-slate-700 mb-2">
+                  Voice tone
+                </p>
+                <p className="text-xs text-slate-500 mb-2">
+                  Writing style. Pick 1-3.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {VOICE_TONE_OPTIONS.map((tag) => {
+                    const selected = voiceTone.includes(tag);
+                    return (
+                      <button
+                        key={tag}
+                        type="button"
+                        aria-pressed={selected}
+                        onClick={() => toggleVoiceTone(tag)}
+                        className={pillClasses(selected)}
+                      >
+                        {tag}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="slogan" className={labelClasses}>
+                  Slogan
+                </label>
+                <input
+                  id="slogan"
+                  type="text"
+                  value={slogan}
+                  onChange={(e) => setSlogan(e.target.value)}
+                  placeholder="Optional. Used as hero subheadline seed."
+                  className={inputClasses}
+                />
               </div>
             </div>
           </section>
