@@ -1,8 +1,10 @@
 SiteGen Component Library — Missing Components
 ================================================
 Snapshot date: 2026-05-06
-Current state: 76 / ~112 (target from .claude/rules/domains/components.md)
-Gap: 36 components across 15 categories (3 brand-new categories)
+Current state: 74 / ~112 (target from .claude/rules/domains/components.md)
+Gap: 38 components across 15 categories (3 brand-new categories)
+Note: ParallaxContent and StickyCards were extracted to components/wrappers/
+as hand-authored page-template wrappers (not Composer-pickable).
 
 Coverage vs target
 ------------------
@@ -18,7 +20,7 @@ faq              6       4       -2
 contact          7       5       -2
 navigation       6       4       -2
 carousel         7       5       -2
-motion           6       4       -2
+motion           6       2       -4
 layout/grid      8       6       -2
 layout/split     10      8       -2
 stats            5       4       -1
@@ -82,9 +84,11 @@ Carousel (-2)
   - CarouselThumbnailNav — main image with thumbnail strip (e-com)
   - CarouselFullBleedSlider — edge-to-edge image rotator with caption overlay
 
-Motion (-2)
+Motion (-4)
   - MotionRevealOnScroll — staggered text/element reveal on scroll
   - MotionPinnedSection — pinned canvas with scroll-driven content swap
+  - (replacement for ParallaxContent) — single-section parallax story with data slots
+  - (replacement for StickyCards) — single sticky-card panel with data slots
 
 Layout/grid (-2)
   - GridBentoLayout — bento-box asymmetric feature grid
@@ -122,9 +126,6 @@ Structural follow-ups
    - Wrong prefix on testimonials (using `layout-`):
        layout-infinitescroll-01, layout-stackedsplit-01, layout-staggerfan-01
        → should be `testimonial-...`
-   - Wrong prefix on motion (using `layout-`):
-       layout-parallaxcontent-01, layout-stickycards-01
-       → should be `motion-...`
 
 4. Variants — only 4 heroes currently have `variants/` (geometric,
    parallax-images, shuffle-cards, split-image). Either drop the

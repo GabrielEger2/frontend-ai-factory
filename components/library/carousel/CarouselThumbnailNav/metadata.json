@@ -1,0 +1,104 @@
+{
+  "id": "carousel-thumbnail-nav-01",
+  "name": "Thumbnail Nav Carousel",
+  "category": "carousel",
+  "purpose": ["products", "showcase", "portfolio", "gallery"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": false
+  },
+  "style": ["modern", "editorial", "minimal"],
+  "mood": ["professional", "elegant", "trustworthy"],
+  "layout": "stacked",
+  "density": "medium",
+  "imageWeight": 0.7,
+  "slots": [
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "optional": true,
+      "maxLength": 40
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 80
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "optional": true,
+      "maxLength": 200
+    },
+    {
+      "name": "aspectRatio",
+      "type": "text",
+      "optional": true,
+      "enum": ["1:1", "4:3", "3:2", "16:9"]
+    },
+    {
+      "name": "showArrows",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "zoomHint",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "items",
+      "type": "list",
+      "maxItems": 10,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          {
+            "name": "image",
+            "type": "image",
+            "aspectRatio": "4:3"
+          },
+          {
+            "name": "imageAlt",
+            "type": "text",
+            "maxLength": 120
+          },
+          {
+            "name": "thumbnail",
+            "type": "image",
+            "optional": true,
+            "aspectRatio": "1:1"
+          },
+          {
+            "name": "caption",
+            "type": "text",
+            "optional": true,
+            "maxLength": 120
+          }
+        ]
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-split-image-01",
+    "stats-count-up-01",
+    "cta-minimal-strip-01",
+    "footer-minimal-strip-01"
+  ],
+  "pairsPoorly": [
+    "carousel-cards-01",
+    "carousel-swipe-01",
+    "carousel-horizontal-scroll-01",
+    "carousel-full-bleed-slider-01"
+  ],
+  "description": "An e-commerce style image viewer with a primary stage and a thumbnail strip beneath. Visitors can drag, click thumbnails, or use keyboard arrows to advance — ideal for product detail pages, portfolio cases, and gallery walks where the same item is shown from multiple angles.",
+  "descriptions": {
+    "descriptive": "A primary image stage on top with a horizontally-scrollable thumbnail strip below. Active thumbnails get a primary-colored ring and a shared-layout indicator that animates between selections. The main stage uses a directional spring transition, supports drag-to-advance, and exposes prev/next buttons over the image. A small monospace counter pill in the corner reinforces position.",
+    "usage": "Use to display the same subject from multiple angles, contexts, or stages — product detail pages, real-estate listings, portfolio case studies, before-and-after stages of a transformation. Avoid pairing with another image-heavy carousel on the same page.",
+    "audienceFit": "E-commerce stores, real-estate agencies, photographers, design portfolios, and any service business whose value is communicated through detailed visuals from multiple perspectives."
+  }
+}

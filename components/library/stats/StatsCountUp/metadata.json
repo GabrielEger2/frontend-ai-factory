@@ -65,11 +65,7 @@
     }
   ],
   "mobileBehavior": "stack",
-  "pairsWell": [
-    "hero-geometric-01",
-    "hero-split-image-01",
-    "layout-stickycards-01"
-  ],
+  "pairsWell": ["hero-geometric-01", "hero-split-image-01"],
   "pairsPoorly": [],
   "description": "A clean, animated statistics display that reveals key numbers through count-up animations, perfect for corporate websites and professional service firms showcasing achievements, metrics, or company milestones.",
   "descriptions": {

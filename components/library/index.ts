@@ -13,9 +13,11 @@ import type { ComponentType } from "react";
 // Carousel
 export { default as CarouselBeforeAfter } from "./carousel/CarouselBeforeAfter";
 export { default as CarouselCards } from "./carousel/CarouselCards";
+export { default as CarouselFullBleedSlider } from "./carousel/CarouselFullBleedSlider";
 export { default as CarouselHorizontalScroll } from "./carousel/CarouselHorizontalScroll";
 export { default as CarouselSwipe } from "./carousel/CarouselSwipe";
 export { default as CarouselTestimonialAvatarPeek } from "./carousel/CarouselTestimonialAvatarPeek";
+export { default as CarouselThumbnailNav } from "./carousel/CarouselThumbnailNav";
 
 // Contact
 export { default as ContactBookingEmbed } from "./contact/ContactBookingEmbed";
@@ -105,8 +107,6 @@ export { default as TeamMemberSpotlight } from "./team/TeamMemberSpotlight";
 // Motion
 export { default as MotionMarquee } from "./motion/MotionMarquee";
 export { default as MotionScrollNarrative } from "./motion/MotionScrollNarrative";
-export { default as ParallaxContent } from "./motion/ParallaxContent";
-export { default as StickyCards } from "./motion/StickyCards";
 
 // Testimonials
 export { default as InfiniteScroll } from "./testimonials/InfiniteScroll";
@@ -132,9 +132,11 @@ export { default as StatsMilestoneBar } from "./stats/StatsMilestoneBar";
 // dynamic lookup by blueprint IDs — used by BlueprintPreview.)
 import CarouselBeforeAfter from "./carousel/CarouselBeforeAfter";
 import CarouselCards from "./carousel/CarouselCards";
+import CarouselFullBleedSlider from "./carousel/CarouselFullBleedSlider";
 import CarouselHorizontalScroll from "./carousel/CarouselHorizontalScroll";
 import CarouselSwipe from "./carousel/CarouselSwipe";
 import CarouselTestimonialAvatarPeek from "./carousel/CarouselTestimonialAvatarPeek";
+import CarouselThumbnailNav from "./carousel/CarouselThumbnailNav";
 import ContactBookingEmbed from "./contact/ContactBookingEmbed";
 import ContactChatEmbed from "./contact/ContactChatEmbed";
 import ContactLocationsMap from "./contact/ContactLocationsMap";
@@ -202,8 +204,6 @@ import TeamLeadershipGrid from "./team/TeamLeadershipGrid";
 import TeamMemberSpotlight from "./team/TeamMemberSpotlight";
 import MotionMarquee from "./motion/MotionMarquee";
 import MotionScrollNarrative from "./motion/MotionScrollNarrative";
-import ParallaxContent from "./motion/ParallaxContent";
-import StickyCards from "./motion/StickyCards";
 import InfiniteScroll from "./testimonials/InfiniteScroll";
 import StackedSplit from "./testimonials/StackedSplit";
 import StaggerFan from "./testimonials/StaggerFan";
@@ -229,9 +229,11 @@ import StatsMilestoneBar from "./stats/StatsMilestoneBar";
 export const componentsById: Record<string, ComponentType<any>> = {
   "carousel-before-after-01": CarouselBeforeAfter,
   "carousel-cards-01": CarouselCards,
+  "carousel-full-bleed-slider-01": CarouselFullBleedSlider,
   "carousel-horizontal-scroll-01": CarouselHorizontalScroll,
   "carousel-swipe-01": CarouselSwipe,
   "carousel-testimonial-avatar-peek-01": CarouselTestimonialAvatarPeek,
+  "carousel-thumbnail-nav-01": CarouselThumbnailNav,
   "contact-booking-embed-01": ContactBookingEmbed,
   "contact-chat-embed-01": ContactChatEmbed,
   "contact-contact-locations-map-01": ContactLocationsMap,
@@ -280,8 +282,6 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "layout-simplegrid-01": SimpleGrid,
   "layout-staggerfan-01": StaggerFan,
   "layout-infinitescroll-01": InfiniteScroll,
-  "layout-parallaxcontent-01": ParallaxContent,
-  "layout-stickycards-01": StickyCards,
   "layout-authorsplit-01": AuthorSplit,
   "layout-editorial-framed-split-01": EditorialFramedSplit,
   "layout-iconlistsplit-01": IconListSplit,

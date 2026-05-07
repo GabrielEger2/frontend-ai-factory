@@ -1,0 +1,121 @@
+{
+  "id": "carousel-full-bleed-slider-01",
+  "name": "Full-Bleed Slider Carousel",
+  "category": "carousel",
+  "purpose": ["hero", "showcase", "portfolio", "brand-statement", "story"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["editorial", "bold", "modern", "luxury"],
+  "mood": ["energetic", "elegant", "professional", "trustworthy"],
+  "layout": "stacked",
+  "density": "low",
+  "imageWeight": 0.9,
+  "slots": [
+    {
+      "name": "captionAlignment",
+      "type": "text",
+      "optional": true,
+      "enum": ["bottom-left", "bottom-center", "center-left", "center"]
+    },
+    {
+      "name": "height",
+      "type": "text",
+      "optional": true,
+      "enum": ["short", "tall", "full"]
+    },
+    {
+      "name": "autoAdvanceMs",
+      "type": "number",
+      "optional": true
+    },
+    {
+      "name": "showArrows",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "showDots",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "showPlayPause",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "items",
+      "type": "list",
+      "maxItems": 8,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          {
+            "name": "image",
+            "type": "image",
+            "aspectRatio": "16:9"
+          },
+          {
+            "name": "imageAlt",
+            "type": "text",
+            "maxLength": 120
+          },
+          {
+            "name": "eyebrow",
+            "type": "text",
+            "optional": true,
+            "maxLength": 40
+          },
+          {
+            "name": "headline",
+            "type": "text",
+            "optional": true,
+            "maxLength": 100
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "optional": true,
+            "maxLength": 240
+          },
+          {
+            "name": "ctaText",
+            "type": "text",
+            "optional": true,
+            "maxLength": 30
+          },
+          {
+            "name": "ctaUrl",
+            "type": "url",
+            "optional": true
+          }
+        ]
+      }
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "stats-count-up-01",
+    "testimonial-spotlight-quote-01",
+    "cta-minimal-strip-01",
+    "footer-mega-01"
+  ],
+  "pairsPoorly": [
+    "carousel-cards-01",
+    "carousel-swipe-01",
+    "carousel-horizontal-scroll-01",
+    "carousel-thumbnail-nav-01",
+    "hero-hero-bold-editorial-01",
+    "hero-video-backdrop-01"
+  ],
+  "description": "An edge-to-edge image rotator with overlaid eyebrow, headline, description, and CTA per slide. Auto-advances with a progress-bar dot indicator and pauses on hover or focus. Designed to anchor a page as a hero replacement when the brand story spans multiple imagery beats.",
+  "descriptions": {
+    "descriptive": "Full-bleed background image with a subtle neutral-toned gradient for caption legibility. Each slide carries its own eyebrow / headline / description / CTA; transitions are spring-animated with a soft scale-on-enter. Pagination dots double as a linear progress bar for the active slide; hover, focus, and an explicit pause button all halt the auto-advance.",
+    "usage": "Anchors a page as a hero replacement when there are multiple campaigns, projects, or stories to lead with. Works well for travel, hospitality, editorial, and product launch sites. Avoid stacking with a regular hero or another image-heavy carousel on the same page.",
+    "audienceFit": "Travel and hospitality brands, editorial and journalism sites, premium e-commerce launching seasonal collections, agencies leading with case work, and any brand whose story is carried by full-frame imagery."
+  }
+}

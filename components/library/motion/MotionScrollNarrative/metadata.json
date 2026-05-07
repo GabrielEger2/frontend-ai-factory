@@ -62,12 +62,7 @@
     "testimonial-spotlight-quote-01",
     "cta-minimal-strip-01"
   ],
-  "pairsPoorly": [
-    "layout-stickycards-01",
-    "layout-parallaxcontent-01",
-    "layout-process-timeline-01",
-    "motion-marquee-01"
-  ],
+  "pairsPoorly": ["layout-process-timeline-01", "motion-marquee-01"],
   "description": "Scroll-pinned narrative section: 3-5 numbered steps scroll past on the left while a single 4:5 image panel pins on the right and cross-fades between step images as each block enters the viewport. On mobile the layout collapses to inline stacked steps.",
   "descriptions": {
     "descriptive": "Two-column layout on desktop: the left column scrolls a vertical sequence of numbered steps (label, title, description), while the right column pins via sticky positioning and renders one image at a time. Each step image is mounted into the pinned slot with opacity and a subtle 1.04 -> 1 scale transform driven by useScroll progress. Below the lg breakpoint the section becomes a clean stacked story — each step renders inline with its own image, no pinning, no cross-fade.",

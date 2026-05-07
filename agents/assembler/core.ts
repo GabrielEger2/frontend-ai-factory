@@ -33,7 +33,7 @@ export function toComponentName(componentId: string): string {
  * itemSchema appears in two shapes across the generated registry:
  *   1. Flat record: { fieldName: { type, ... } } (e.g. footer-reveal-01.navColumns)
  *   2. Object schema: { type: "object", fields: [{ name, type, ... }, ...] }
- *      (e.g. layout-parallaxcontent-01.sections)
+ *      (e.g. carousel-before-after-01.items)
  * We accept both — `itemSchema` is typed loosely and resolved by helpers below.
  */
 interface SlotMeta {

@@ -22,7 +22,7 @@ The library now spans 15 canonical categories. `Current` reflects what is on dis
 | navigation | 4 | 6 | Dock, mega-panel, pill, sticky — planned: transparent-overlay, side-rail |
 | stats | 4 | 5 | Chart, count-up, KPI grid, milestone bar |
 | carousel | 5 | 7 | Before/after, cards, horizontal scroll, swipe, testimonial avatar peek |
-| motion | 4 | 6 | Marquee, parallax content, scroll narrative, sticky cards — planned: reveal-on-scroll, pinned-section |
+| motion | 2 | 6 | Marquee, scroll narrative — planned: reveal-on-scroll, pinned-section, parallax-story-section, sticky-card-panel (parallax + sticky-cards multi-section wrappers extracted to `components/wrappers/`) |
 | layout/grid | 6 | 8 | Card grid, icon feature grid, logo cloud, pricing tiers*, process timeline, simple grid |
 | layout/split | 8 | 10 | Author, comparison†, editorial framed, icon list, image text, statement, vertical timeline, zigzag alternating |
 | **pricing** ⭐ new | 0 | 5 | Planned: tier cards, comparison table, freemium ladder, single-price card, monthly/annual toggle |
@@ -33,8 +33,10 @@ The library now spans 15 canonical categories. `Current` reflects what is on dis
 
 † `layouts/split/ComparisonSplit/` exists as an empty folder. It must either be implemented (preferred — feeds the new `comparison` purpose) or removed. The validator should fail on empty component dirs going forward.
 
-Total on disk: ~76 components across 12 active categories.
+Total on disk: ~74 components across 12 active categories.
 Target: ~112 components across 15 active categories.
+
+`components/wrappers/` (separate from `components/library/`) holds hand-authored page-template wrappers that accept `React.ReactNode` for nested content slots — currently `ParallaxContent` and `StickyCards`. These are NOT Composer-pickable and have no `metadata.json`. Use them only when hand-composing a Next.js page.
 
 ## Category Field Convention
 
