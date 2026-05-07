@@ -11,13 +11,12 @@
 import type { ComponentType } from "react";
 
 // Carousel
-export { default as CarouselBeforeAfter } from "./carousel/CarouselBeforeAfter";
-export { default as CarouselCards } from "./carousel/CarouselCards";
-export { default as CarouselFullBleedSlider } from "./carousel/CarouselFullBleedSlider";
-export { default as CarouselHorizontalScroll } from "./carousel/CarouselHorizontalScroll";
-export { default as CarouselSwipe } from "./carousel/CarouselSwipe";
-export { default as CarouselTestimonialAvatarPeek } from "./carousel/CarouselTestimonialAvatarPeek";
-export { default as CarouselThumbnailNav } from "./carousel/CarouselThumbnailNav";
+export { default as CarouselCards } from "./content/CarouselCards";
+export { default as CarouselFullBleedSlider } from "./heroes/CarouselFullBleedSlider";
+export { default as CarouselHorizontalScroll } from "./content/CarouselHorizontalScroll";
+export { default as CarouselSwipe } from "./content/CarouselSwipe";
+export { default as CarouselTestimonialAvatarPeek } from "./content/CarouselTestimonialAvatarPeek";
+export { default as CarouselThumbnailNav } from "./gallery/CarouselThumbnailNav";
 
 // Contact
 export { default as ContactBookingEmbed } from "./contact/ContactBookingEmbed";
@@ -133,12 +132,12 @@ export { default as StatsMilestoneBar } from "./stats/StatsMilestoneBar";
 // (Named exports above are what consumers import; this map is for
 // dynamic lookup by blueprint IDs — used by BlueprintPreview.)
 import CarouselBeforeAfter from "./carousel/CarouselBeforeAfter";
-import CarouselCards from "./carousel/CarouselCards";
-import CarouselFullBleedSlider from "./carousel/CarouselFullBleedSlider";
+import CarouselCards from "./content/CarouselCards";
+import CarouselFullBleedSlider from "./heroes/CarouselFullBleedSlider";
 import CarouselHorizontalScroll from "./carousel/CarouselHorizontalScroll";
 import CarouselSwipe from "./carousel/CarouselSwipe";
 import CarouselTestimonialAvatarPeek from "./carousel/CarouselTestimonialAvatarPeek";
-import CarouselThumbnailNav from "./carousel/CarouselThumbnailNav";
+import CarouselThumbnailNav from "./gallery/CarouselThumbnailNav";
 import ContactBookingEmbed from "./contact/ContactBookingEmbed";
 import ContactChatEmbed from "./contact/ContactChatEmbed";
 import ContactLocationsMap from "./contact/ContactLocationsMap";
