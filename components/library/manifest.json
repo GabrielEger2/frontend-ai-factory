@@ -7320,7 +7320,6 @@
     ],
     "mobileBehavior": "stack",
     "pairsWell": [
-      "products-category-grid-01",
       "products-featured-strip-01",
       "products-spotlight-01",
       "cta-dual-offer-split-01",
@@ -7506,11 +7505,15 @@
       "footer-mega-01"
     ],
     "pairsPoorly": [
-      "products-category-grid-01",
       "pricing-tier-cards-01",
       "pricing-monthly-annual-toggle-01",
       "gallery-masonry-01"
-    ]
+    ],
+    "descriptions": {
+      "descriptive": "A sleek horizontal strip featuring curated product imagery with generous white space and bold typography. Clean lines and minimal styling create an editorial magazine feel, while energetic accent colors and friendly product photography maintain warmth without visual clutter.",
+      "usage": "Highlights selected products or collections on homepage or category pages to drive discovery and sales. Perfect for showcasing bestsellers, new arrivals, or seasonal items with clear call-to-action buttons that guide users toward purchase decisions.",
+      "audienceFit": "Appeals to premium lifestyle brands, boutique retailers, and design-forward companies targeting discerning consumers who value quality and aesthetics. Works well for fashion, home goods, or tech brands serving style-conscious customers who appreciate curated selections."
+    }
   },
   {
     "id": "products-spotlight-01",
@@ -7717,13 +7720,18 @@
     "pairsWell": [
       "hero-bakery-editorial-01",
       "products-featured-strip-01",
-      "products-category-grid-01",
+      "products-bundle-cards-01",
       "testimonial-spotlight-quote-01",
       "cta-testimonial-paired-01"
     ],
     "pairsPoorly": [
       "hero-split-image-01"
-    ]
+    ],
+    "descriptions": {
+      "descriptive": "Clean, magazine-style layout with generous white space and refined typography. Features high-quality product imagery with subtle shadows and minimal text overlays. Uses sophisticated color palette with restrained visual elements that emphasize the products themselves through elegant spacing and professional presentation.",
+      "usage": "Highlights premium product collections on main pages or dedicated showcase sections. Drives conversions by presenting select items with compelling brand messaging and clear call-to-action buttons. Perfect for landing pages that need to establish product credibility while guiding users toward purchase decisions.",
+      "audienceFit": "Appeals to upscale consumers who value craftsmanship and brand prestige. Ideal for luxury goods, high-end fashion, premium electronics, or artisanal products. Resonates with established brands targeting discerning customers who associate clean design with quality and reliability."
+    }
   },
   {
     "id": "stats-chart-01",

@@ -2,9 +2,23 @@
   "id": "products-featured-strip-01",
   "name": "Products Featured Strip",
   "category": "products",
-  "style": ["editorial", "modern", "minimal", "bold"],
-  "mood": ["elegant", "friendly", "trustworthy", "energetic"],
-  "purpose": ["products", "showcase", "cta"],
+  "style": [
+    "editorial",
+    "modern",
+    "minimal",
+    "bold"
+  ],
+  "mood": [
+    "elegant",
+    "friendly",
+    "trustworthy",
+    "energetic"
+  ],
+  "purpose": [
+    "products",
+    "showcase",
+    "cta"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": true,
@@ -38,32 +52,64 @@
       "minItems": 4,
       "maxItems": 8,
       "itemSchema": {
-        "name": { "type": "text", "maxLength": 60 },
-        "image": { "type": "image", "aspectRatio": "3:4" },
-        "imageAlt": { "type": "text", "maxLength": 160 },
-        "price": { "type": "text", "maxLength": 30 },
-        "priceCompare": { "type": "text", "optional": true, "maxLength": 30 },
+        "name": {
+          "type": "text",
+          "maxLength": 60
+        },
+        "image": {
+          "type": "image",
+          "aspectRatio": "3:4"
+        },
+        "imageAlt": {
+          "type": "text",
+          "maxLength": 160
+        },
+        "price": {
+          "type": "text",
+          "maxLength": 30
+        },
+        "priceCompare": {
+          "type": "text",
+          "optional": true,
+          "maxLength": 30
+        },
         "badge": {
           "type": "text",
           "optional": true,
-          "enum": ["novo", "mais-vendido", "oferta"]
+          "enum": [
+            "novo",
+            "mais-vendido",
+            "oferta"
+          ]
         },
-        "badgeLabel": { "type": "text", "optional": true, "maxLength": 20 },
+        "badgeLabel": {
+          "type": "text",
+          "optional": true,
+          "maxLength": 20
+        },
         "variants": {
           "type": "list",
           "optional": true,
           "minItems": 0,
           "maxItems": 8,
-          "itemSchema": { "type": "text", "maxLength": 24 }
+          "itemSchema": {
+            "type": "text",
+            "maxLength": 24
+          }
         },
-        "ctaUrl": { "type": "url" }
+        "ctaUrl": {
+          "type": "url"
+        }
       }
     },
     {
       "name": "featureFirst",
       "type": "text",
       "optional": true,
-      "enum": ["true", "false"]
+      "enum": [
+        "true",
+        "false"
+      ]
     },
     {
       "name": "ctaText",
@@ -80,19 +126,34 @@
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+      "enum": [
+        "default",
+        "slide",
+        "dotExpand",
+        "drawOutline",
+        "glow",
+        "arrow"
+      ]
     },
     {
       "name": "ctaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": ["primary", "secondary", "accent", "neutral"]
+      "enum": [
+        "primary",
+        "secondary",
+        "accent",
+        "neutral"
+      ]
     },
     {
       "name": "tone",
       "type": "text",
       "optional": true,
-      "enum": ["light", "dark"]
+      "enum": [
+        "light",
+        "dark"
+      ]
     }
   ],
   "mobileBehavior": "scroll",
@@ -109,5 +170,10 @@
     "pricing-tier-cards-01",
     "pricing-monthly-annual-toggle-01",
     "gallery-masonry-01"
-  ]
+  ],
+  "descriptions": {
+    "descriptive": "A sleek horizontal strip featuring curated product imagery with generous white space and bold typography. Clean lines and minimal styling create an editorial magazine feel, while energetic accent colors and friendly product photography maintain warmth without visual clutter.",
+    "usage": "Highlights selected products or collections on homepage or category pages to drive discovery and sales. Perfect for showcasing bestsellers, new arrivals, or seasonal items with clear call-to-action buttons that guide users toward purchase decisions.",
+    "audienceFit": "Appeals to premium lifestyle brands, boutique retailers, and design-forward companies targeting discerning consumers who value quality and aesthetics. Works well for fashion, home goods, or tech brands serving style-conscious customers who appreciate curated selections."
+  }
 }
