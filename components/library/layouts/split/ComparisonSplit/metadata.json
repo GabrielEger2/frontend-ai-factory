@@ -2,35 +2,64 @@
   "id": "layout-comparisonsplit-01",
   "name": "Comparison Split",
   "category": "layout/split",
-  "purpose": ["comparison", "features", "benefits"],
+  "purpose": [
+    "comparison",
+    "features",
+    "benefits"
+  ],
   "acceptsStyleKit": {
     "card": false,
     "background": true,
     "textDecoration": false,
     "button": true
   },
-  "style": ["modern", "corporate", "minimal"],
-  "mood": ["professional", "trustworthy", "calm"],
+  "style": [
+    "modern",
+    "corporate",
+    "minimal"
+  ],
+  "mood": [
+    "professional",
+    "trustworthy",
+    "calm"
+  ],
   "layout": "split",
   "density": "medium",
   "imageWeight": 0,
   "slots": [
-    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
-    { "name": "headline", "type": "text", "maxLength": 80 },
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "maxLength": 40,
+      "optional": true
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
     {
       "name": "description",
       "type": "text",
       "maxLength": 300,
       "optional": true
     },
-    { "name": "optionALabel", "type": "text", "maxLength": 40 },
+    {
+      "name": "optionALabel",
+      "type": "text",
+      "maxLength": 40
+    },
     {
       "name": "optionASubtext",
       "type": "text",
       "maxLength": 80,
       "optional": true
     },
-    { "name": "optionBLabel", "type": "text", "maxLength": 40 },
+    {
+      "name": "optionBLabel",
+      "type": "text",
+      "maxLength": 40
+    },
     {
       "name": "optionBSubtext",
       "type": "text",
@@ -44,14 +73,35 @@
       "itemSchema": {
         "type": "object",
         "fields": [
-          { "name": "label", "type": "text", "maxLength": 60 },
-          { "name": "optionA", "type": "text", "maxLength": 40 },
-          { "name": "optionB", "type": "text", "maxLength": 40 }
+          {
+            "name": "label",
+            "type": "text",
+            "maxLength": 60
+          },
+          {
+            "name": "optionA",
+            "type": "text",
+            "maxLength": 40
+          },
+          {
+            "name": "optionB",
+            "type": "text",
+            "maxLength": 40
+          }
         ]
       }
     },
-    { "name": "ctaText", "type": "text", "maxLength": 30, "optional": true },
-    { "name": "ctaUrl", "type": "url", "optional": true }
+    {
+      "name": "ctaText",
+      "type": "text",
+      "maxLength": 30,
+      "optional": true
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    }
   ],
   "mobileBehavior": "stack",
   "pairsWell": [
@@ -63,5 +113,10 @@
   "pairsPoorly": [
     "layout-iconlistsplit-01",
     "layout-zigzag-alternating-split-01"
-  ]
+  ],
+  "descriptions": {
+    "descriptive": "Clean two-column layout with balanced visual weight and generous whitespace. Features structured comparison elements with modern typography and subtle dividers. Minimal color palette emphasizes content hierarchy while maintaining professional polish through restrained design choices.",
+    "usage": "Perfect for side-by-side product comparisons, service tier breakdowns, or before/after scenarios. Helps users evaluate options by presenting structured feature lists, pricing plans, or benefit comparisons in an easy-to-scan format that supports decision-making.",
+    "audienceFit": "Appeals to established B2B companies, SaaS platforms, and professional services firms targeting corporate buyers. Resonates with audiences who value transparency and detailed evaluation processes, particularly in finance, technology, and consulting sectors."
+  }
 }
