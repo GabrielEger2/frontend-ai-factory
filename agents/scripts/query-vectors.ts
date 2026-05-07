@@ -332,6 +332,50 @@ const STYLE_OUTPUT = {
 } as unknown as StyleOutput;
 
 /* ------------------------------------------------------------------ */
+/*  Label transplant helper                                            */
+/* ------------------------------------------------------------------ */
+
+function transplantLabels(oldPath: string, newLines: object[]): object[] {
+  const transplantMap = new Map<string, string>();
+  if (fs.existsSync(oldPath)) {
+    const raw = fs.readFileSync(oldPath, "utf-8").trim();
+    if (raw) {
+      for (const line of raw.split("\n").filter(Boolean)) {
+        try {
+          const obj = JSON.parse(line);
+          if (
+            obj?.fixtureId &&
+            obj.pickId !== null &&
+            obj.pickId !== undefined
+          ) {
+            transplantMap.set(obj.fixtureId, obj.pickId);
+          }
+        } catch {
+          // skip malformed lines
+        }
+      }
+    }
+  }
+  return newLines.map((line) => {
+    const l = line as {
+      fixtureId?: string;
+      candidates?: { id: string }[];
+      pickId: string | null;
+    };
+    const saved = l.fixtureId ? transplantMap.get(l.fixtureId) : undefined;
+    if (!saved) return line;
+    const candidateIds = new Set((l.candidates ?? []).map((c) => c.id));
+    if (!candidateIds.has(saved)) {
+      console.warn(
+        `[transplant] pickId ${saved} not in new candidates for ${l.fixtureId} — dropping label`,
+      );
+      return line;
+    }
+    return { ...line, pickId: saved };
+  });
+}
+
+/* ------------------------------------------------------------------ */
 /*  Main                                                               */
 /* ------------------------------------------------------------------ */
 
