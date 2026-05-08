@@ -6,13 +6,17 @@ import { COMPONENT_METADATA } from "../assembler/component-sources.generated";
 /*  Constants                                                          */
 /* ------------------------------------------------------------------ */
 
-// Tuned 2026-05-08 from grid sweep over 53 labeled fixtures across 8 briefs
-// (agents/eval/reports/2026-05-08T17-28-31-718Z.md). Best global combo lifted
-// agreement from 0.613 to 0.768 vs the previous 0.25/0.25/0.25/0.25 baseline.
-const WEIGHT_PAIRS_WITH = 0.25;
-const WEIGHT_STYLE_OVERLAP = 0.5;
+// Tuned 2026-05-08 from grid sweep over 53 labeled fixtures with the new
+// audienceFit signal added (agents/eval/reports/2026-05-08T19-32-32-183Z.md).
+// Best global combo lifted agreement from 0.768 to 0.800 vs the prior best.
+// audienceFit (Qdrant per-axis cosine) carries the signal; pairsWith and
+// styleOverlap fall to 0/0.25 respectively because audienceFit subsumes
+// most of the segment/vertical-fit work the style filter was doing.
+const WEIGHT_PAIRS_WITH = 0;
+const WEIGHT_STYLE_OVERLAP = 0.25;
 const WEIGHT_DIVERSITY = 0;
 const WEIGHT_DENSITY = 0;
+const WEIGHT_AUDIENCE_FIT = 0.5;
 const PAIRS_WITH_BOOST = 0.3;
 const PAIRS_WITH_DEMOTE = 0.3;
 const IMAGE_WEIGHT_HEAVY_THRESHOLD = 0.3;
@@ -129,6 +133,21 @@ function scoreDensityBalance(
   return Math.max(0, Math.min(1, penalty));
 }
 
+/**
+ * Audience-fit cosine score from Qdrant retrieval. Reads the
+ * `audienceFit` axis off `vectorScoresByAxis`, which is populated upstream
+ * by the composer handler's vector retrieval (and by query-vectors.ts when
+ * exercising the script). Range 0..1 in practice.
+ *
+ * Returns 0 when the field is absent — this happens for fallback
+ * candidates produced by `getDynamoFallbackCandidates`, which never went
+ * through Qdrant. Treating "no signal" as 0 is the correct neutral default
+ * for a positive additive contribution; do not warn or special-case.
+ */
+function scoreAudienceFit(candidate: CandidateComponent): number {
+  return candidate.vectorScoresByAxis?.audienceFit ?? 0;
+}
+
 /* ------------------------------------------------------------------ */
 /*  Public API                                                         */
 /* ------------------------------------------------------------------ */
@@ -138,6 +157,7 @@ export interface RerankWeights {
   styleOverlap: number;
   diversity: number;
   density: number;
+  audienceFit: number;
 }
 
 export const DEFAULT_RERANK_WEIGHTS: RerankWeights = {
@@ -145,21 +165,24 @@ export const DEFAULT_RERANK_WEIGHTS: RerankWeights = {
   styleOverlap: WEIGHT_STYLE_OVERLAP,
   diversity: WEIGHT_DIVERSITY,
   density: WEIGHT_DENSITY,
+  audienceFit: WEIGHT_AUDIENCE_FIT,
 };
 
 /**
- * Four-signal greedy re-ranker. For each candidate in `slotCandidates`,
+ * Five-signal greedy re-ranker. For each candidate in `slotCandidates`,
  * computes:
- *   - pairsWithScore   = clamp(avgPairScore + PAIRS_WITH adjustment, 0, 1)
- *   - styleScore       = scoreStyleOverlap(candidate, styleOutput)        [0..1]
- *   - diversityPenalty = scoreDiversityPenalty(candidate, pickedTagFreq)  [0..1]
- *   - densityPenalty   = scoreDensityBalance(candidate, pickedCandidates) [0..1]
+ *   - pairsWithScore    = clamp(avgPairScore + PAIRS_WITH adjustment, 0, 1)
+ *   - styleScore        = scoreStyleOverlap(candidate, styleOutput)        [0..1]
+ *   - diversityPenalty  = scoreDiversityPenalty(candidate, pickedTagFreq)  [0..1]
+ *   - densityPenalty    = scoreDensityBalance(candidate, pickedCandidates) [0..1]
+ *   - audienceFitScore  = scoreAudienceFit(candidate)                      [0..1]
  *
  * Combined as:
- *   rerankScore = w.pairsWith   * pairsWithScore
+ *   rerankScore = w.pairsWith    * pairsWithScore
  *               + w.styleOverlap * styleScore
- *               - w.diversity   * diversityPenalty
- *               - w.density     * densityPenalty
+ *               - w.diversity    * diversityPenalty
+ *               - w.density      * densityPenalty
+ *               + w.audienceFit  * audienceFitScore
  *
  * Returns a freshly sorted array (descending by rerankScore). Pure
  * function — input arrays are not mutated; operates on shallow copies.
@@ -196,12 +219,14 @@ export function rerankCandidates(
     const styleScore = scoreStyleOverlap(copy, styleOutput);
     const diversityPenalty = scoreDiversityPenalty(copy, pickedTagFrequencies);
     const densityPenalty = scoreDensityBalance(copy, pickedCandidates);
+    const audienceFitScore = scoreAudienceFit(copy);
 
     const rerankScore =
       weights.pairsWith * pairsWithScore +
       weights.styleOverlap * styleScore -
       weights.diversity * diversityPenalty -
-      weights.density * densityPenalty;
+      weights.density * densityPenalty +
+      weights.audienceFit * audienceFitScore;
 
     // Attach debug payload via type cast so CandidateComponent stays clean
     // (no debug fields surface in the LLM prompt candidate table).
@@ -210,6 +235,7 @@ export function rerankCandidates(
       styleScore,
       diversityPenalty,
       densityPenalty,
+      audienceFitScore,
       rerankScore,
     };
 

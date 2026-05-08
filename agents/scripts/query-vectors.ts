@@ -25,10 +25,12 @@
  * rerank.
  *
  * After printing the top-3 table, the script also runs the deterministic
- * Phase D `rerankCandidates` four-signal combiner (PAIRS_WITH + style
- * overlap + diversity + density) and prints a per-signal score breakdown
- * for the winning candidate per slot. This enables empirical weight
- * tuning for Stage 4 of the composer eval loop.
+ * Phase D `rerankCandidates` five-signal combiner (PAIRS_WITH + style
+ * overlap + diversity + density + audienceFit) and prints a per-signal
+ * score breakdown for the winning candidate per slot, followed by a
+ * "Re-rank top 3" table showing rerankScore + audienceFitScore for the
+ * top three reranked candidates (used by the bakery-query gate). This
+ * enables empirical weight tuning for Stage 4 of the composer eval loop.
  */
 
 import * as fs from "fs";
@@ -555,7 +557,7 @@ async function main(): Promise<void> {
       axes.map((axis) =>
         client.search("components", {
           vector: { name: axis, vector: slotVector },
-          limit: captureMode ? 5 : 3,
+          limit: 5,
           with_payload: true,
           filter,
         }),
@@ -718,6 +720,7 @@ async function main(): Promise<void> {
           styleScore: number;
           diversityPenalty: number;
           densityPenalty: number;
+          audienceFitScore: number;
           rerankScore: number;
         };
       }
@@ -738,7 +741,35 @@ async function main(): Promise<void> {
     console.log(`| styleScore       | ${fmt(debug?.styleScore)} |`);
     console.log(`| diversityPenalty | ${fmt(debug?.diversityPenalty)} |`);
     console.log(`| densityPenalty   | ${fmt(debug?.densityPenalty)} |`);
+    console.log(`| audienceFitScore | ${fmt(debug?.audienceFitScore)} |`);
     console.log(`| rerankScore      | ${fmt(debug?.rerankScore)} |`);
+
+    /* -------------------------------------------------------------- */
+    /*  Re-rank top 3 (rerankScore + audienceFitScore breakdown)      */
+    /* -------------------------------------------------------------- */
+
+    console.log();
+    console.log(`### Re-rank top 3`);
+    console.log();
+    console.log("| Rank | ID | rerankScore | audienceFitScore |");
+    console.log("|---|---|---|---|");
+    reranked.slice(0, 3).forEach((cand, idx) => {
+      const candDebug = (
+        cand as unknown as {
+          _rerankDebug?: {
+            pairsWithScore: number;
+            styleScore: number;
+            diversityPenalty: number;
+            densityPenalty: number;
+            audienceFitScore: number;
+            rerankScore: number;
+          };
+        }
+      )._rerankDebug;
+      console.log(
+        `| ${idx + 1} | ${cand.id} | ${fmt(candDebug?.rerankScore)} | ${fmt(candDebug?.audienceFitScore)} |`,
+      );
+    });
 
     pickedCandidates.push(top);
   }

@@ -1,0 +1,101 @@
+## Problem
+
+The Style Agent picks generic-business defaults (`mood=[professional]`, `style=[modern]`, `density=medium`) for vertical briefs like "padaria de luxo em São Paulo". This causes vertical-specific components (e.g. `hero-bakery-editorial-01`, tagged editorial+warm+playful+classic) to lose Composer rerank because styleOverlap with the brief is near-zero. The bakery hero stays buried under generic-modern competitors even with PR #45's `audienceFit=0.5` rerank signal.
+
+## Evidence (gathered 2026-05-08)
+
+Full pipeline run (describe → manifest → seed → query) with no `--mood/--style/--density` flags reproduces the production scenario:
+
+```
+> Query: "padaria de luxo em São Paulo"
+> Style: mood=[professional] style=[modern] density=medium
+
+## Slot: hero
+Re-rank top 3:
+  1. hero-split-image-01      (rerankScore 0.296, audienceFit 0.425)
+  2. hero-grid-gallery-01     (0.284, 0.401)
+  3. carousel-full-bleed-slider-01 (0.262, 0.400)
+```
+
+`hero-bakery-editorial-01` is not in top-3.
+
+Math under PR #45's weights (`pairsWith=0, styleOverlap=0.25, audienceFit=0.5`):
+- bakery hero: `audienceFit 0.45 × 0.5 + styleOverlap ~0 × 0.25 ≈ 0.225`
+- split-image winner: `0.425 × 0.5 + 0.333 × 0.25 = 0.296`
+- Bakery loses by ~0.07. The styleOverlap penalty for being editorial vs the auto-picked professional/modern is just enough to flip the rerank.
+
+When the same query was run with explicit `--mood "elegant,warm,friendly" --style "editorial,luxury,classic"`, bakery hero won at rank-1 (0.310). So the rerank signal works — the upstream style filter is what's broken.
+
+## Root cause
+
+Style Agent prompt (in `agents/style/`) has no logic to detect vertical nouns in the brief and map them to vertical-appropriate style/mood tags. It produces a one-size-fits-all `professional+modern+medium` profile regardless of segment.
+
+## Possible solutions
+
+### A. Vertical-aware Style Agent prompt (recommended)
+- Update the Style Agent system prompt to identify vertical/segment from `companyName`, `description`, `segment`, and pick style/mood/density that match.
+- Add a vertical → tag-cluster mapping section to the prompt (e.g., bakery/cafe/restaurant → `editorial+warm+elegant`; gym/fitness → `bold+energetic+modern`; mechanic/auto → `industrial+trustworthy+modern`; advocacia/consultoria → `professional+classic+trustworthy`; etc.).
+- Output schema unchanged (`StyleOutput.mood/style/density`).
+- Estimated scope: 1 file (`agents/style/prompt.ts` or equivalent), prompt-only change.
+- Risk: drift between prompt vertical examples and actual component tag vocabulary. Verify the chosen tags are real values in `style[]`/`mood[]` enums (`.claude/rules/domains/components.md`: styles are `modern, classic, editorial, luxury, playful, minimal, bold, corporate`; moods are `professional, elegant, fun, serious, friendly, energetic, calm, trustworthy`).
+
+### B. Vertical-detection layer before Style Agent
+- Add a tiny pre-Style step that classifies the brief into a vertical bucket via a small LLM call or keyword heuristics (cheap), then feeds the bucket as additional context to the Style Agent.
+- More flexible than baking verticals into the Style prompt, but adds a pipeline step.
+- Probably overkill — Style Agent already sees the full brief; it can do the classification itself.
+
+### C. Style Agent emits multiple style profiles, Composer picks
+- Style Agent returns 2-3 candidate style profiles ranked by confidence. Composer picks the one whose tag distribution best matches the retrieved candidate pool (or runs retrieval per profile and picks the highest-coherence result).
+- Big surface change — output schema, downstream consumers, eval fixtures all affected.
+- Defer.
+
+### D. Composer Option B (LLM picker with axis columns)
+- Already scoped in `.claude/work/context.md`. The LLM sees `audienceFit` as a column and can override style mismatch via reasoning.
+- Doesn't fix the root cause — Style Agent still picks generic tags — but compensates downstream.
+- Higher cost (~$0.05-0.10/composition, +2-4s latency).
+- Defensible if Style Agent is hard to make reliable.
+
+### E. Crank `audienceFit` weight higher (0.5 → 0.75 or 1.0)
+- Cheap. Likely regresses non-vertical briefs because audienceFit becomes too dominant a signal for briefs without strong vertical specificity.
+- Sweep already chose 0.5 as global optimum; pushing higher trades aggregate quality for one failure mode.
+- Don't do this.
+
+## Recommended path
+
+**Solution A** (vertical-aware Style Agent prompt). Smallest blast radius (one prompt file), highest leverage (fixes the root cause for ALL vertical briefs, not just bakery), cheap to validate (re-run the same describe → seed → query pipeline and check that the auto-picked style tags now match the vertical).
+
+If A doesn't fully solve it (e.g., some verticals are ambiguous, or the Style Agent struggles to detect verticals from short briefs), fall back to **D** (LLM picker) or stack A+D.
+
+## Validation gate for the next /develop session
+
+Re-run the same pipeline that exposed this:
+
+```powershell
+$env:QDRANT_ENDPOINT_SSM_PATH="/sitegen/dev/qdrant-endpoint"
+$env:QDRANT_API_KEY_SSM_PATH="/sitegen/dev/qdrant-api-key"
+$env:OPENAI_API_KEY_SSM_PATH="/sitegen/dev/openai-api-key"
+$env:CLAUDE_API_KEY_SSM_PATH="/sitegen/dev/claude-api-key"
+npm run query:vectors --workspace=agents -- "padaria de luxo em São Paulo"
+```
+
+Pass criteria:
+1. Auto-picked style is bakery-appropriate (e.g. mood includes `elegant` or `friendly`; style includes `editorial` or `classic`; not just `professional+modern`).
+2. `hero-bakery-editorial-01` appears in the hero slot's "Re-rank top 3" output.
+
+Spot-check a non-bakery vertical (e.g. `"academia crossfit no Rio"` should auto-pick something like `bold+energetic+modern`) so the prompt doesn't overfit to bakery.
+
+## Touchpoints (for the next /develop researcher)
+
+- `agents/style/` directory — Style Agent handler + prompt
+- `shared/types.ts:136-170` — `StyleOutput` schema (mood, style, density enums)
+- `.claude/rules/domains/components.md` — canonical style[]/mood[] tag values (Style Agent must pick from these)
+- `agents/eval/fixtures/*.jsonl` — labeled fixtures show what vertical → tag mapping looks like in the data (e.g. padaria fixture was labeled with editorial+luxury+classic + elegant+warm+friendly)
+- `agents/composer/rerank.ts` — current weights, do NOT change as part of Style Agent fix unless eval shows clear need
+- `agents/scripts/query-vectors.ts` — validation harness for the gate above
+
+## What NOT to redo
+
+- Composer rerank tuning — PR #45 is on a branch and merged/mergeable; the rerank signal is correct.
+- Adding more rerank signals — eval already converged at audienceFit=0.5.
+- Re-running the sweep — fixtures don't carry the Style Agent output, so a Style Agent change doesn't invalidate them.
+- Capturing new vertical fixtures — not needed for Style Agent prompt-only changes.
