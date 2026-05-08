@@ -1,101 +1,279 @@
 ## Problem
 
-The Style Agent picks generic-business defaults (`mood=[professional]`, `style=[modern]`, `density=medium`) for vertical briefs like "padaria de luxo em São Paulo". This causes vertical-specific components (e.g. `hero-bakery-editorial-01`, tagged editorial+warm+playful+classic) to lose Composer rerank because styleOverlap with the brief is near-zero. The bakery hero stays buried under generic-modern competitors even with PR #45's `audienceFit=0.5` rerank signal.
+The Composer rerank treats every signal as a continuous score (cosine over tag distributions, axis embeddings, soft style/mood overlap). This collapses **categorical structure** that the system needs to express:
+
+1. **Vertical lock-in** — some components are purpose-built for narrow vertical buckets (HeroBakeryEditorial → bakery/cafe/confeitaria; HeroDeviceChrome → agency/SaaS; HeroVideoBackdrop → crossfit/action verticals). Their fit for a matching brief is categorical, not "this style overlaps somewhat."
+2. **Structural constraints** — density and image weight aren't fuzzy preferences; they're either compatible with the brief's surface area / asset availability or they're not.
+3. **Story coherence across slots** — picking a vertical-locked protagonist for the hero AND maintaining mood/style coherence in the supporting slots is what makes the page feel curated rather than computed.
+
+PR #46 fixed the upstream Style Agent (it now emits vertical-appropriate `mood`/`style`/`density` for "padaria de luxo" instead of generic `professional+modern+medium`). But the rerank still cannot express "HeroBakeryEditorial is *the* protagonist for a luxury bakery brief" because vertical fit is invisible to a weighted-sum-of-cosines.
 
 ## Evidence (gathered 2026-05-08)
 
-Full pipeline run (describe → manifest → seed → query) with no `--mood/--style/--density` flags reproduces the production scenario:
+### Data point 1 — Bakery query post-PR #46, with vertical-appropriate overrides
+
+```powershell
+npm run query:vectors --workspace=agents -- "padaria de luxo em São Paulo" `
+  --mood "elegant,friendly,calm" --style "editorial,luxury,classic"
+```
 
 ```
-> Query: "padaria de luxo em São Paulo"
-> Style: mood=[professional] style=[modern] density=medium
-
-## Slot: hero
+## Slot: hero (needs: brand statement)
 Re-rank top 3:
-  1. hero-split-image-01      (rerankScore 0.296, audienceFit 0.425)
-  2. hero-grid-gallery-01     (0.284, 0.401)
-  3. carousel-full-bleed-slider-01 (0.262, 0.400)
+  1. hero-asymmetric-stack-01    (rerank 0.301, audienceFit 0.395)
+  2. hero-bakery-editorial-01    (rerank 0.297, audienceFit 0.345)
+  3. hero-grid-gallery-01        (rerank 0.278, audienceFit 0.390)
 ```
 
-`hero-bakery-editorial-01` is not in top-3.
+`hero-bakery-editorial-01` is in the rerank top-3 (PR #46's gate criterion #2 passes) but **doesn't win rank 1**. Loses to `hero-asymmetric-stack-01` by 0.004. Bakery isn't even in the top-3 retrieved (initial axis pool); rerank promotes it from rank 4-5 of the SLOT_TOP_K=5 pool. One bad embedding tick and bakery falls out of retrieval entirely.
 
-Math under PR #45's weights (`pairsWith=0, styleOverlap=0.25, audienceFit=0.5`):
-- bakery hero: `audienceFit 0.45 × 0.5 + styleOverlap ~0 × 0.25 ≈ 0.225`
-- split-image winner: `0.425 × 0.5 + 0.333 × 0.25 = 0.296`
-- Bakery loses by ~0.07. The styleOverlap penalty for being editorial vs the auto-picked professional/modern is just enough to flip the rerank.
+This is what tells us the issue is structural: even with the right tags emitted upstream, the rerank can't reliably make a purpose-built vertical-locked hero win.
 
-When the same query was run with explicit `--mood "elegant,warm,friendly" --style "editorial,luxury,classic"`, bakery hero won at rank-1 (0.310). So the rerank signal works — the upstream style filter is what's broken.
+### Data point 2 — AI-picked compositions for 8 fixture briefs
+
+When a human (or the Composer LLM operating with full candidate pool + axis columns + component IDs visible) picks compositions, the picks tell a coherent story per vertical. Captured for reference:
+
+#### 1. padaria-luxo-sp (luxury bakery — elegant/warm/friendly, editorial/luxury/classic)
+
+| Slot | Pick | Why |
+|---|---|---|
+| hero | hero-bakery-editorial-01 | Literally a bakery editorial hero — purpose-built |
+| products | products-spotlight-01 | Signature pastry showcase with story |
+| content | gallery-image-text-editorial-01 | Editorial+luxury, elegant+calm — magazine artisan spread |
+| gallery | gallery-masonry-01 | Editorial+playful, varied pastry collage |
+| testimonial | testimonial-spotlight-quote-01 | Editorial+luxury, elegant+trustworthy |
+| contact | contact-locations-map-01 | Physical bakery needs address+map |
+| footer | footer-reveal-01 | Editorial+elegant+minimal |
+
+#### 2. advocacia-tributaria-bh (tax law BH — professional/serious/trustworthy, corporate/classic/minimal)
+
+| Slot | Pick | Why |
+|---|---|---|
+| hero | hero-newsroom-ticker-01 | Only candidate with serious+trustworthy mood; legal-news gravitas |
+| content | layout-editorial-framed-split-01 | Editorial+classic+minimal, elegant+trustworthy |
+| stats | stats-count-up-01 | Minimal+corporate, low density matches firm gravitas |
+| testimonial | testimonial-metric-card-01 | Corporate+serious — "won R$X in tax cases" |
+| faq | faq-tabbed-01 | Modern+minimal+corporate, calm+trustworthy |
+| cta | cta-testimonial-paired-01 | Corporate+professional, trust-paired works for legal |
+| footer | footer-mega-01 | Dense corporate footer fits regulatory/services links |
+
+#### 3. crossfit-rj (crossfit gym — energetic/friendly/fun, bold/modern/playful)
+
+| Slot | Pick | Why |
+|---|---|---|
+| hero | hero-video-backdrop-01 | Bold+modern, energetic — video for gym action |
+| content | features-bento-grid-01 | Asymmetric tiles for varied class types |
+| gallery | gallery-masonry-01 | Editorial+modern+playful+bold, energetic+friendly — gym action photos |
+| pricing | pricing-monthly-annual-toggle-01 | Modern+playful, monthly/annual is gym-standard |
+| testimonial | testimonial-masonry-quotes-01 | Modern+bold, energetic+friendly — member success collage |
+| cta | cta-video-backdrop-01 | Bold+editorial, energetic — high-energy enrollment CTA |
+| footer | footer-columns-social-01 | Social links matter for gym community |
+
+#### 4. agencia-marketing-b2b (B2B digital agency — professional/energetic/trustworthy, modern/bold/corporate)
+
+| Slot | Pick | Why |
+|---|---|---|
+| hero | hero-device-chrome-01 | Modern+corporate+bold — dashboard mockup is agency-standard |
+| content | gallery-case-study-01 | Editorial+modern+corporate — case studies are agency conversion |
+| stats | stats-kpi-grid-01 | Modern+minimal+corporate, high density matches brief |
+| testimonial | testimonial-metric-card-01 | Corporate+serious — ROI metrics for B2B |
+| cta | cta-testimonial-paired-01 | Modern+editorial+corporate, professional |
+| footer | footer-mega-01 | High density for multi-service B2B agency |
+
+#### 5. restaurante-japones (Japanese fine dining — elegant/calm/serious, minimal/luxury/classic, low density)
+
+| Slot | Pick | Why |
+|---|---|---|
+| hero | hero-asymmetric-stack-01 | Editorial+luxury+modern, elegant — refined low-density omakase aesthetic |
+| content | gallery-image-text-editorial-01 | Editorial+luxury, elegant+calm — chef philosophy spread |
+| products | products-spotlight-01 | Single signature dish feature |
+| testimonial | testimonial-spotlight-quote-01 | Editorial+luxury, elegant+trustworthy — refined critic quote |
+| cta | cta-image-backdrop-01 | Editorial+luxury, elegant+calm+trustworthy |
+| footer | footer-reveal-01 | Editorial+minimal, elegant+trustworthy |
+
+#### 6. clinica-odontologica (family dental — friendly/calm/trustworthy, modern/minimal/playful)
+
+| Slot | Pick | Why |
+|---|---|---|
+| hero | hero-polaroid-collage-01 | Playful+editorial+classic, friendly+energetic+elegant — warm "family" feel |
+| content | features-icon-trio-01 | Clean services overview (cleaning/whitening/ortho) |
+| team | team-leadership-grid-01 | "Meet the dentists" grid — healthcare standard |
+| testimonial | testimonial-masonry-quotes-01 | Energetic+trustworthy+friendly — patient quotes collage |
+| faq | faq-tabbed-01 | Modern+minimal+corporate, calm+trustworthy — insurance/services tabs |
+| cta | cta-testimonial-paired-01 | Trust signal for healthcare booking |
+| footer | footer-reveal-01 | Top vector score, fits brand mood |
+
+#### 7. atelie-moda (authorial fashion atelier — elegant/playful/fun, editorial/luxury/bold)
+
+| Slot | Pick | Why |
+|---|---|---|
+| hero | hero-asymmetric-stack-01 | Editorial+luxury+bold, elegant — fashion editorial vibe |
+| content | gallery-image-text-editorial-01 | Editorial+luxury, elegant — magazine spread for designer narrative |
+| gallery | gallery-masonry-01 | Editorial+playful+bold, energetic+elegant — varied collection |
+| testimonial | testimonial-spotlight-quote-01 | Editorial+luxury, elegant — press/designer quote |
+| contact | contact-booking-embed-01 | Atelier needs private fitting bookings |
+| footer | footer-reveal-01 | Editorial+minimal+elegant |
+
+#### 8. consultoria-financeira (personal financial consulting — professional/calm/trustworthy, corporate/minimal/modern)
+
+| Slot | Pick | Why |
+|---|---|---|
+| hero | hero-split-form-01 | Modern+corporate+minimal — "free consultation" form pairs with hero |
+| content | features-check-list-01 | Clean "what we help with" list, conversion-oriented |
+| stats | stats-count-up-01 | Modern+minimal+corporate, professional+trustworthy |
+| testimonial | testimonial-metric-card-01 | Corporate+serious — "saved client R$X" |
+| faq | faq-tabbed-01 | Tabs for Investments/Tax/Retirement |
+| cta | cta-testimonial-paired-01 | Trust signal for financial decision |
+| footer | footer-reveal-01 | Modern+editorial+minimal |
+
+### Data point 3 — three implicit classes of components surfaced by the picks
+
+| Class | What it is | Examples from the 8 picks above |
+|---|---|---|
+| **Vertical-locked** | Purpose-built for a narrow vertical bucket | HeroBakeryEditorial → bakery; HeroDeviceChrome → agency/SaaS; HeroSplitForm → consulting/lead-gen; HeroVideoBackdrop → crossfit/action; HeroPolaroidCollage → family/healthcare warmth; HeroNewsroomTicker → legal/news gravitas; gallery-case-study-01 → services-business proof |
+| **Style-coherent generalist** | Vertical-agnostic but mood/style-bound | HeroAsymmetricStack works for *both* Japanese fine dining and fashion atelier — same "elegant editorial low-density" feel, different copy. testimonial-spotlight-quote-01 across luxury verticals. gallery-image-text-editorial-01 across editorial briefs. testimonial-metric-card-01 across corporate/B2B. |
+| **Universal scaffolding** | Works in any vertical given the right copy | faq-tabbed-01, footer-reveal-01, contact-locations-map-01, products-spotlight-01, cta-testimonial-paired-01 |
+
+The current rerank can't see this taxonomy. It treats HeroBakeryEditorial and HeroAsymmetricStack as the same kind of object — a tag distribution. That's why bakery loses to asymmetric-stack by 0.004 in data point 1: the rerank has no way to express "asymmetric is a great editorial hero in general; bakery is *this specific company's* hero."
+
+The AI/human gets it right because it reads the component **name** as a categorical label and matches it against the brief's vertical. That categorical reasoning is invisible to a vector rerank.
 
 ## Root cause
 
-Style Agent prompt (in `agents/style/`) has no logic to detect vertical nouns in the brief and map them to vertical-appropriate style/mood tags. It produces a one-size-fits-all `professional+modern+medium` profile regardless of segment.
+The mismatched order of operations. The rerank really wants:
+
+```
+1. Vertical filter / boost     — categorical match (HARD or strong soft)
+2. Structural constraints      — density, image weight (hard ceilings/floors)
+3. Style/mood coherence        — soft tiebreaker among survivors
+4. Buyer-brief affinity        — softer tiebreaker (existing audienceFit signal)
+5. PAIRS_WITH / diversity      — composition-level adjustments
+```
+
+Right now everything from 1-5 is collapsed into a single weighted sum of continuous scores. Some signals are filters (categorical), some are constraints (hard bounds), some are refinements (soft). Treating them all as the same machinery loses the structure.
+
+The user's instinct — "weight moods less than image weight, add a category weight" — is right but the framing is bigger than weight tuning. It's about distinguishing **categorical signals (vertical, density buckets)** from **continuous signals (mood/style overlap, audienceFit cosine)** and routing them through different parts of the pipeline.
 
 ## Possible solutions
 
-### A. Vertical-aware Style Agent prompt (recommended)
-- Update the Style Agent system prompt to identify vertical/segment from `companyName`, `description`, `segment`, and pick style/mood/density that match.
-- Add a vertical → tag-cluster mapping section to the prompt (e.g., bakery/cafe/restaurant → `editorial+warm+elegant`; gym/fitness → `bold+energetic+modern`; mechanic/auto → `industrial+trustworthy+modern`; advocacia/consultoria → `professional+classic+trustworthy`; etc.).
-- Output schema unchanged (`StyleOutput.mood/style/density`).
-- Estimated scope: 1 file (`agents/style/prompt.ts` or equivalent), prompt-only change.
-- Risk: drift between prompt vertical examples and actual component tag vocabulary. Verify the chosen tags are real values in `style[]`/`mood[]` enums (`.claude/rules/domains/components.md`: styles are `modern, classic, editorial, luxury, playful, minimal, bold, corporate`; moods are `professional, elegant, fun, serious, friendly, energetic, calm, trustworthy`).
+### A. Discrete `vertical[]` tag on component metadata (recommended core)
 
-### B. Vertical-detection layer before Style Agent
-- Add a tiny pre-Style step that classifies the brief into a vertical bucket via a small LLM call or keyword heuristics (cheap), then feeds the bucket as additional context to the Style Agent.
-- More flexible than baking verticals into the Style prompt, but adds a pipeline step.
-- Probably overkill — Style Agent already sees the full brief; it can do the classification itself.
+- Add `vertical: ["bakery", "cafe", "confeitaria"]` (etc.) to the ~15-20 vertical-locked components. Most components stay empty (= "generalist", fits anywhere).
+- Style Agent emits `vertical: "bakery"` from the brief (already has segment text — easy classifier; PR #46's prompt already groups verticals).
+- Rerank gets a `verticalAffinityScore`: 1.0 if brief.vertical ∈ component.vertical[]; 0 if component.vertical[] is non-empty AND no overlap (= "wrong-vertical-locked"); 0.0 if component.vertical[] is empty (= "generalist, neutral").
+- New rerank weight `verticalFit`, probably 0.5-1.0 (dominant when present).
+- Mood/style weights drop accordingly — they refine ordering within the vertical-matched + generalist pool.
 
-### C. Style Agent emits multiple style profiles, Composer picks
-- Style Agent returns 2-3 candidate style profiles ranked by confidence. Composer picks the one whose tag distribution best matches the retrieved candidate pool (or runs retrieval per profile and picks the highest-coherence result).
-- Big surface change — output schema, downstream consumers, eval fixtures all affected.
-- Defer.
+**Pros:** deterministic, catches vertical lock-in cleanly, doesn't require new ML. Makes the bakery-hero-wins gate trivially achievable.
+**Cons:** curation cost (decide which components are vertical-locked, build a taxonomy of verticals — maybe 12-20 buckets covering Brazilian SMB landscape). Get it wrong and you create dead components (a bakery hero tagged only `["bakery"]` won't show for confeitaria unless tagged both).
 
-### D. Composer Option B (LLM picker with axis columns)
-- Already scoped in `.claude/work/context.md`. The LLM sees `audienceFit` as a column and can override style mismatch via reasoning.
-- Doesn't fix the root cause — Style Agent still picks generic tags — but compensates downstream.
-- Higher cost (~$0.05-0.10/composition, +2-4s latency).
-- Defensible if Style Agent is hard to make reliable.
+### B. Implicit through better description embeddings (rejected as primary, possible as complement)
 
-### E. Crank `audienceFit` weight higher (0.5 → 0.75 or 1.0)
-- Cheap. Likely regresses non-vertical briefs because audienceFit becomes too dominant a signal for briefs without strong vertical specificity.
-- Sweep already chose 0.5 as global optimum; pushing higher trades aggregate quality for one failure mode.
-- Don't do this.
+Rewrite component descriptions to literally name the verticals they're built for: "purpose-built for artisan bakeries, patisseries, and luxury cafés." Brief embedding already says "padaria de luxo." `descriptive` axis cosine *should* capture this.
 
-## Recommended path
+**Pros:** no new metadata field, no new mechanism.
+**Cons:** the empirical evidence (data point 1: bakery audienceFit 0.345 vs asymmetric-stack 0.395 for a luxury bakery brief) shows cosine is too noisy to express categorical fit reliably. Rewriting 60 component descriptions is also non-trivial. Possibly worth doing as a quality pass alongside A, but not as a substitute for A.
 
-**Solution A** (vertical-aware Style Agent prompt). Smallest blast radius (one prompt file), highest leverage (fixes the root cause for ALL vertical briefs, not just bakery), cheap to validate (re-run the same describe → seed → query pipeline and check that the auto-picked style tags now match the vertical).
+### C. Composer LLM picks from a wider pool (already scoped in `.claude/work/context.md`)
 
-If A doesn't fully solve it (e.g., some verticals are ambiguous, or the Style Agent struggles to detect verticals from short briefs), fall back to **D** (LLM picker) or stack A+D.
+`SLOT_TOP_K = 5 → 15`, top-8 per slot post-rerank, then existing batched `composeLayouts` LLM call picks per-slot winners with axis columns + component IDs visible. The LLM reads `hero-bakery-editorial-01` as a categorical name and picks accordingly.
 
-## Validation gate for the next /develop session
+**Pros:** zero metadata curation, LLM does categorical reasoning naturally, narrative coherence across slots is something only an LLM can really do (see how the AI picks reuse gallery-image-text-editorial-01 across multiple luxury verticals — that's compositional taste, not a rerank score).
+**Cons:** ~$0.05-0.10 per composition, +2-4s latency, fragile if vertical-locked components don't survive retrieval (top-K=5 is exactly where the bakery hero kept failing — the LLM never saw it). Bumping to 15 mitigates but doesn't fully solve.
 
-Re-run the same pipeline that exposed this:
+### D. Crank `audienceFit` weight higher
 
-```powershell
-$env:QDRANT_ENDPOINT_SSM_PATH="/sitegen/dev/qdrant-endpoint"
-$env:QDRANT_API_KEY_SSM_PATH="/sitegen/dev/qdrant-api-key"
-$env:OPENAI_API_KEY_SSM_PATH="/sitegen/dev/openai-api-key"
-$env:CLAUDE_API_KEY_SSM_PATH="/sitegen/dev/claude-api-key"
-npm run query:vectors --workspace=agents -- "padaria de luxo em São Paulo"
-```
+Already explored in PR #45 sweep. Sweep chose 0.5 as global optimum; pushing higher trades aggregate quality for one failure mode. Don't.
 
-Pass criteria:
-1. Auto-picked style is bakery-appropriate (e.g. mood includes `elegant` or `friendly`; style includes `editorial` or `classic`; not just `professional+modern`).
-2. `hero-bakery-editorial-01` appears in the hero slot's "Re-rank top 3" output.
+### E. Per-slot LLM call instead of batched
 
-Spot-check a non-bakery vertical (e.g. `"academia crossfit no Rio"` should auto-pick something like `bold+energetic+modern`) so the prompt doesn't overfit to bakery.
+Bigger surface change, breaks the existing 3-layout output shape. Defer.
+
+## Recommended path: A + C (not either alone)
+
+The intuition behind picking both:
+
+- **A alone** gets deterministic vertical lock-in but won't capture *story coherence across slots* — the thing that makes the AI picks feel curated. Look at the picks: gallery-image-text-editorial-01 reused for content in bakery AND Japanese restaurant AND atelier. Same component, three verticals, different copy, all coherent because the *style* is right and the *slot purpose* is right. That's not vertical lock-in; that's compositional taste. Only an LLM can do that.
+
+- **C alone** is fragile. If a vertical-locked component falls out of retrieval (audienceFit 0.345 < cutoff 0.395), the LLM never sees it and can't pick it. Vertical-affinity boost in retrieval is what guarantees the LLM has the right candidate to choose from.
+
+So A pre-positions the right candidates in the pool and ensures vertical-locked components win retrieval; C does the final composition with story coherence and tiebreaking. Mood/style become decoration, not deciders.
+
+## Concrete next steps for /develop
+
+A reasonable phasing (each is shippable independently):
+
+### Phase 1 — Vertical taxonomy + metadata (foundation for A)
+
+1. Define a vertical taxonomy. ~12-20 buckets covering the Brazilian SMB landscape. Should align with PR #46's prompt mapping (padaria, restaurante, academia, advocacia, mecânica, clínica, salão, escola, imobiliária, pet shop, e-commerce, construtora, SaaS, agência, hospitalidade, joalheria, atelier, consultoria-financeira). Plus luxury-overlay tag where applicable.
+2. Update `components/scripts/validate-metadata.ts` to enforce `vertical: string[]` (optional, default `[]`).
+3. Update `components/tests/metadata-schema.test.ts` accordingly.
+4. Tag the ~15-20 vertical-locked components. Rest stay empty.
+5. Document the taxonomy in `.claude/rules/domains/components.md`.
+
+### Phase 2 — Style Agent emits `vertical`
+
+1. Extend `StyleOutputSchema` (`agents/shared/types.ts`) with `vertical: string[]` (optional). Use the same enum as the component metadata field.
+2. Update `agents/style/prompt.ts` to extract a vertical (or empty array if ambiguous) from the brief, drawing on the existing vertical→cluster mapping from PR #46.
+3. Add prompt-level test asserting vertical extraction for the 8 fixture briefs.
+
+### Phase 3 — Rerank gets a `verticalAffinity` axis
+
+1. Update `agents/composer/rerank.ts` to compute `verticalAffinityScore` per candidate.
+2. Add a new weight to `DEFAULT_RERANK_WEIGHTS` — probably 0.5 initially, sweep later if needed.
+3. Drop mood/style weight accordingly (the categorical signal carries more meaning than tag overlap when present).
+4. Update `agents/scripts/query-vectors.ts` to surface `verticalAffinityScore` as a column.
+
+### Phase 4 — Composer Option B (already scoped in `.claude/work/context.md`)
+
+1. SLOT_TOP_K 5 → 15 in handler + script.
+2. Slice rerank output to top-8 per slot before deduped union.
+3. Enrich `composeLayouts` LLM prompt with `audienceFit` / `descriptive` / `usage` axis columns AND `vertical` flag (whether candidate matches brief vertical).
+4. Update prompt instructions: "pick vertically-appropriate components" not "order pre-ranked winners."
+
+### Phase 5 — Validation
+
+For each of the 8 fixtures:
+1. Auto-pick the AI table's hero at rank 1 in rerank top-3 (current data point 2).
+2. Composer LLM produces a layout whose hero matches (or beats with a defensible alternative).
+3. Per-slot picks roughly match the AI table — exact match isn't required for slots where multiple equally good options exist, but no glaring vertical mismatches.
+
+Optional: invent a 9th vertical (e.g. "barbearia premium em Curitiba") not in any fixture and confirm sensible picks for an unseen vertical.
+
+## What NOT to do
+
+- Don't drop mood/style signals. They're still useful tiebreakers among style-coherent generalists. Just lower their weight.
+- Don't filter generalists out of retrieval. Empty `vertical[]` means "fits anywhere" — they should always be in the pool with neutral verticalAffinityScore.
+- Don't push the Style Agent to emit a vertical for every brief. If the brief is genuinely cross-vertical (a multi-service co-op, a personal brand site), let `vertical: []` propagate. The system should degrade gracefully to mood/style-only ranking.
+- Don't re-run the rerank weight sweep yet. Wait until verticalAffinity is in. The current weights from PR #45 (`pairsWith=0, styleOverlap=0.25, audienceFit=0.5`) are converged for the *current* signal set; adding a new signal invalidates the sweep anyway.
+- Don't touch the `StyleOutputSchema` enum for mood/style. Those are correct (PR #46 confirmed).
+- Don't try to do this all in one PR. Phases 1-2 are one PR. Phase 3 is another. Phase 4 is the existing Option B branch. Phase 5 is validation in each PR.
 
 ## Touchpoints (for the next /develop researcher)
 
-- `agents/style/` directory — Style Agent handler + prompt
-- `shared/types.ts:136-170` — `StyleOutput` schema (mood, style, density enums)
-- `.claude/rules/domains/components.md` — canonical style[]/mood[] tag values (Style Agent must pick from these)
-- `agents/eval/fixtures/*.jsonl` — labeled fixtures show what vertical → tag mapping looks like in the data (e.g. padaria fixture was labeled with editorial+luxury+classic + elegant+warm+friendly)
-- `agents/composer/rerank.ts` — current weights, do NOT change as part of Style Agent fix unless eval shows clear need
-- `agents/scripts/query-vectors.ts` — validation harness for the gate above
+- `components/library/<category>/<name>/metadata.json` — add `vertical[]` to ~15-20 vertical-locked components
+- `components/scripts/validate-metadata.ts` — extend validator with vertical taxonomy
+- `components/tests/metadata-schema.test.ts` — vertical enum coverage
+- `.claude/rules/domains/components.md` — document the taxonomy alongside style/mood/purpose
+- `agents/shared/types.ts` (`StyleOutputSchema`) — add optional `vertical: string[]`
+- `agents/style/prompt.ts` — extract vertical from brief; output schema update
+- `agents/style/__tests__/prompt.test.ts` — add vertical-extraction assertions for each fixture
+- `agents/composer/rerank.ts` — verticalAffinityScore + new weight
+- `agents/composer/handler.ts` — SLOT_TOP_K=15, top-8 narrow, vertical column wiring
+- `agents/composer/prompt.ts` — axis + vertical columns; revised instructions
+- `agents/scripts/query-vectors.ts` — show verticalAffinity in candidate tables; optionally auto-invoke Style Agent so the gate is single-command
+- `agents/eval/fixtures/*.jsonl` — fixtures already exist for 8 verticals; may need to add the AI-picked layout as the gold-standard composition
 
-## What NOT to redo
+## Status of in-flight work
 
-- Composer rerank tuning — PR #45 is on a branch and merged/mergeable; the rerank signal is correct.
-- Adding more rerank signals — eval already converged at audienceFit=0.5.
-- Re-running the sweep — fixtures don't carry the Style Agent output, so a Style Agent change doesn't invalidate them.
-- Capturing new vertical fixtures — not needed for Style Agent prompt-only changes.
+- **PR #46 — Style Agent vertical-aware prompt:** open, awaits review/merge + Lambda redeploy. Load-bearing for both A and C: with the right tags, the rerank has a chance; without them, even a vertical signal can't help because the brief vertical isn't extracted.
+- **Composer Option B (`.claude/work/context.md`):** paused mid-task. Bakery gate failed because retrieval pool was too narrow (SLOT_TOP_K=5). Resuming with Phase 1-3 above (vertical signal in retrieval/rerank) would solve both at once. Recommend folding Option B into Phase 4 above and shipping as one cohesive Composer revamp.
+- **PR #45 — Composer audienceFit signal:** merged. Don't redo. The audienceFit axis stays; verticalAffinity is added alongside, not replacing.
+
+## Open questions for /discuss
+
+1. Should `vertical[]` on components be a flat list or a hierarchy? E.g. is `bakery` a sub-bucket under `food` or its own bucket? Affects how partial matches behave (a "food gourmet" brief vs a `vertical=["bakery"]` component).
+2. Should the Style Agent emit one vertical or a ranked list? A "padaria de luxo café" brief is plausibly both `bakery` AND `cafe` — emitting both lets either-side components match.
+3. Should `verticalAffinityScore` be binary (1.0/0.0) or graded? Graded lets a fashion-atelier component soft-match a luxury-bakery brief at 0.3 instead of 0.0 — reflects that some vertical-locked components have ambient appeal beyond their bucket.
+4. Where does the luxury qualifier from PR #46 fit in the taxonomy? Is `bakery-luxe` a separate vertical bucket from `bakery`, or is luxury a perpendicular dimension that combines with any vertical (e.g. tag-pairs `(bakery, luxe)` or `(advocacia, luxe)`)?
+5. Should universal-scaffolding components (faq-tabbed, footer-reveal) be tagged with `vertical: []` or with a literal `vertical: ["*"]`? Affects validator semantics.
