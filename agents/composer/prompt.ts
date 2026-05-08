@@ -70,6 +70,8 @@ Components should flow naturally from top to bottom. A visitor should understand
 
 ## Segment Appropriateness
 
+When a candidate has a non-empty \`Vertical\` column, it is purpose-built for that business category. Prefer it for the matching slot when the brief's segment aligns with that vertical (e.g., \`hero-bakery-editorial-01\` with \`Vertical=bakery+bakery-luxe\` should be the hero pick for a bakery brief, not a tiebreaker). Treat vertical-locked candidates as stronger than generalist candidates for their target slot, all else being equal.
+
 Conservative segments (law-firm, accounting, dental-clinic, consulting, health-clinic) should:
 - Avoid playful/bold components even if they score well on other metrics.
 - Prefer professional, calm, and trustworthy tones.
@@ -95,12 +97,13 @@ And should AVOID:
 Rate each layout on a 0-1 scale based on:
 - Page flow correctness (40%)
 - Visual variety and rhythm (20%)
-- Segment appropriateness (20%)
+- Vertical + segment appropriateness (20%)
+  - Prefer vertical-locked components (non-empty Vertical column) for their target verticals before considering style/mood overlap.
 - Component compatibility (20%)
 
 ## Retrieval Sources
 
-All candidates are retrieved via vector search filtered by the slot category they are intended for. Higher \`avgPairScore\` indicates stronger cosine similarity to the slot query. Density values in the candidate table reflect real component metadata. Layout remains "full" for vector-sourced candidates. Weight component fit by category, \`avgPairScore\`, and Density when making adjacency decisions.
+All candidates are retrieved via vector search filtered by the slot category they are intended for. Higher \`avgPairScore\` indicates stronger cosine similarity to the slot query. Density values in the candidate table reflect real component metadata. Layout remains "full" for vector-sourced candidates. Weight component fit by category, \`avgPairScore\`, and Density when making adjacency decisions. Also weight \`Vertical\` (categorical match to brief vertical beats a higher \`AudienceFit\` score from a generalist).
 
 ## Output Format
 
@@ -214,15 +217,22 @@ export function buildUserPrompt(
       const vectorScoreCol =
         c.vectorScore !== undefined ? c.vectorScore.toFixed(3) : "\u2014";
       const sourceCol = c.source ?? "vector";
-      return `| ${c.id} | ${c.name} | ${c.category} | ${c.density} | ${c.layout} | ${c.moodHits} | ${c.styleHits} | ${c.avgPairScore.toFixed(2)} | ${vectorScoreCol} | ${sourceCol} | ${variantCol} |`;
+      const verticalCol =
+        c.vertical && c.vertical.length > 0 ? c.vertical.join("+") : "\u2014";
+      const audienceFitCol =
+        c.vectorScoresByAxis?.audienceFit?.toFixed(3) ?? "\u2014";
+      const descriptiveCol =
+        c.vectorScoresByAxis?.descriptive?.toFixed(3) ?? "\u2014";
+      const usageCol = c.vectorScoresByAxis?.usage?.toFixed(3) ?? "\u2014";
+      return `| ${c.id} | ${c.name} | ${c.category} | ${c.density} | ${c.layout} | ${c.moodHits} | ${c.styleHits} | ${c.avgPairScore.toFixed(2)} | ${vectorScoreCol} | ${sourceCol} | ${variantCol} | ${verticalCol} | ${audienceFitCol} | ${descriptiveCol} | ${usageCol} |`;
     })
     .join("\n");
 
   const candidateSection = [
     "## Candidate Components",
     "",
-    "| ID | Name | Category | Density | Layout | MoodHits | StyleHits | AvgPairScore | VectorScore | Source | Variants |",
-    "|---|---|---|---|---|---|---|---|---|---|---|",
+    "| ID | Name | Category | Density | Layout | MoodHits | StyleHits | AvgPairScore | VectorScore | Source | Variants | Vertical | AudienceFit | Descriptive | Usage |",
+    "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     candidateRows,
   ].join("\n");
 
