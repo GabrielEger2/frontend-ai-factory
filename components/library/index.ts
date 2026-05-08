@@ -77,7 +77,10 @@ export { default as PricingTierCards } from "./pricing/PricingTierCards";
 
 // Products
 export { default as ProductsBundleCards } from "./products/ProductsBundleCards";
+export { default as ProductsCategoryHub } from "./products/ProductsCategoryHub";
 export { default as ProductsFeaturedStrip } from "./products/ProductsFeaturedStrip";
+export { default as ProductsHoverMosaic } from "./products/ProductsHoverMosaic";
+export { default as ProductsScrollMarquee } from "./products/ProductsScrollMarquee";
 export { default as ProductsSpotlight } from "./products/ProductsSpotlight";
 
 // Stats
@@ -145,7 +148,10 @@ import PricingMonthlyAnnualToggle from "./pricing/PricingMonthlyAnnualToggle";
 import PricingSinglePrice from "./pricing/PricingSinglePrice";
 import PricingTierCards from "./pricing/PricingTierCards";
 import ProductsBundleCards from "./products/ProductsBundleCards";
+import ProductsCategoryHub from "./products/ProductsCategoryHub";
 import ProductsFeaturedStrip from "./products/ProductsFeaturedStrip";
+import ProductsHoverMosaic from "./products/ProductsHoverMosaic";
+import ProductsScrollMarquee from "./products/ProductsScrollMarquee";
 import ProductsSpotlight from "./products/ProductsSpotlight";
 import StatsChart from "./stats/StatsChart";
 import StatsCountUp from "./stats/StatsCountUp";
@@ -216,7 +222,10 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "pricing-single-price-01": PricingSinglePrice,
   "pricing-tier-cards-01": PricingTierCards,
   "products-bundle-cards-01": ProductsBundleCards,
+  "products-category-hub-01": ProductsCategoryHub,
   "products-featured-strip-01": ProductsFeaturedStrip,
+  "products-hover-mosaic-01": ProductsHoverMosaic,
+  "products-scroll-marquee-01": ProductsScrollMarquee,
   "products-spotlight-01": ProductsSpotlight,
   "stats-chart-01": StatsChart,
   "stats-count-up-01": StatsCountUp,

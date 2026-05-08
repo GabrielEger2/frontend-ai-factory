@@ -1,0 +1,85 @@
+{
+  "id": "products-category-hub-01",
+  "name": "Products Category Hub",
+  "category": "products",
+  "style": ["minimal", "editorial", "corporate", "modern"],
+  "mood": ["trustworthy", "professional", "calm", "elegant"],
+  "purpose": ["products", "showcase", "navigation"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": false,
+    "button": false
+  },
+  "layout": "mosaic",
+  "density": "medium",
+  "imageWeight": 0.7,
+  "slots": [
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 200
+    },
+    {
+      "name": "categories",
+      "type": "list",
+      "minItems": 3,
+      "maxItems": 4,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "name", "type": "text", "maxLength": 40 },
+          { "name": "backgroundImage", "type": "image", "aspectRatio": "4:3" },
+          { "name": "imageAlt", "type": "text", "maxLength": 160 },
+          { "name": "bestsellerThumb", "type": "image", "aspectRatio": "1:1" },
+          { "name": "bestsellerThumbAlt", "type": "text", "maxLength": 160 },
+          { "name": "bestsellerName", "type": "text", "maxLength": 60 },
+          { "name": "productCount", "type": "number" },
+          {
+            "name": "countLabel",
+            "type": "text",
+            "optional": true,
+            "maxLength": 30
+          },
+          { "name": "categoryUrl", "type": "url" }
+        ]
+      }
+    },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["light", "dark"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-asymmetric-stack-01",
+    "hero-bakery-editorial-01",
+    "footer-mega-01",
+    "navbar-mega-panel-01",
+    "cta-image-backdrop-01"
+  ],
+  "pairsPoorly": [
+    "products-featured-strip-01",
+    "products-bundle-cards-01",
+    "gallery-masonry-01"
+  ],
+  "descriptions": {
+    "descriptive": "Three or four large image-led category tiles arranged in a mosaic — one lead tile spans the left column on desktop while the remaining tiles stack on the right. Each tile pairs a lifestyle photograph with a category name, a small framed bestseller thumbnail, the bestseller's name, and a product-count chip in the corner. The whole tile is the click target.",
+    "usage": "Use as the primary discovery block on a homepage when the brand has a multi-category catalog and shoppers usually start by picking a department before drilling in. Reframes /products as a destination with depth rather than a flat grid. Avoid pairing with another product grid (Featured Strip, Bundle Cards) on the same page — the layouts read as redundant catalog views.",
+    "audienceFit": "Multi-category retailers, department stores, lifestyle brands with distinct collections, and marketplaces. Suits buyers who think in departments — fashion vs. home vs. accessories — before they think in individual products."
+  }
+}

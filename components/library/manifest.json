@@ -7337,6 +7337,138 @@
     }
   },
   {
+    "id": "products-category-hub-01",
+    "name": "Products Category Hub",
+    "category": "products",
+    "style": [
+      "minimal",
+      "editorial",
+      "corporate",
+      "modern"
+    ],
+    "mood": [
+      "trustworthy",
+      "professional",
+      "calm",
+      "elegant"
+    ],
+    "purpose": [
+      "products",
+      "showcase",
+      "navigation"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": true,
+      "textDecoration": false,
+      "button": false
+    },
+    "layout": "mosaic",
+    "density": "medium",
+    "imageWeight": 0.7,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 200
+      },
+      {
+        "name": "categories",
+        "type": "list",
+        "minItems": 3,
+        "maxItems": 4,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "name",
+              "type": "text",
+              "maxLength": 40
+            },
+            {
+              "name": "backgroundImage",
+              "type": "image",
+              "aspectRatio": "4:3"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 160
+            },
+            {
+              "name": "bestsellerThumb",
+              "type": "image",
+              "aspectRatio": "1:1"
+            },
+            {
+              "name": "bestsellerThumbAlt",
+              "type": "text",
+              "maxLength": 160
+            },
+            {
+              "name": "bestsellerName",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "productCount",
+              "type": "number"
+            },
+            {
+              "name": "countLabel",
+              "type": "text",
+              "optional": true,
+              "maxLength": 30
+            },
+            {
+              "name": "categoryUrl",
+              "type": "url"
+            }
+          ]
+        }
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "light",
+          "dark"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-asymmetric-stack-01",
+      "hero-bakery-editorial-01",
+      "footer-mega-01",
+      "navbar-mega-panel-01",
+      "cta-image-backdrop-01"
+    ],
+    "pairsPoorly": [
+      "products-featured-strip-01",
+      "products-bundle-cards-01",
+      "gallery-masonry-01"
+    ],
+    "descriptions": {
+      "descriptive": "Three or four large image-led category tiles arranged in a mosaic — one lead tile spans the left column on desktop while the remaining tiles stack on the right. Each tile pairs a lifestyle photograph with a category name, a small framed bestseller thumbnail, the bestseller's name, and a product-count chip in the corner. The whole tile is the click target.",
+      "usage": "Use as the primary discovery block on a homepage when the brand has a multi-category catalog and shoppers usually start by picking a department before drilling in. Reframes /products as a destination with depth rather than a flat grid. Avoid pairing with another product grid (Featured Strip, Bundle Cards) on the same page — the layouts read as redundant catalog views.",
+      "audienceFit": "Multi-category retailers, department stores, lifestyle brands with distinct collections, and marketplaces. Suits buyers who think in departments — fashion vs. home vs. accessories — before they think in individual products."
+    }
+  },
+  {
     "id": "products-featured-strip-01",
     "name": "Products Featured Strip",
     "category": "products",
@@ -7513,6 +7645,347 @@
       "descriptive": "A sleek horizontal strip featuring curated product imagery with generous white space and bold typography. Clean lines and minimal styling create an editorial magazine feel, while energetic accent colors and friendly product photography maintain warmth without visual clutter.",
       "usage": "Highlights selected products or collections on homepage or category pages to drive discovery and sales. Perfect for showcasing bestsellers, new arrivals, or seasonal items with clear call-to-action buttons that guide users toward purchase decisions.",
       "audienceFit": "Appeals to premium lifestyle brands, boutique retailers, and design-forward companies targeting discerning consumers who value quality and aesthetics. Works well for fashion, home goods, or tech brands serving style-conscious customers who appreciate curated selections."
+    }
+  },
+  {
+    "id": "products-hover-mosaic-01",
+    "name": "Products Hover Mosaic",
+    "category": "products",
+    "style": [
+      "editorial",
+      "modern",
+      "luxury",
+      "minimal"
+    ],
+    "mood": [
+      "elegant",
+      "professional",
+      "trustworthy",
+      "calm"
+    ],
+    "purpose": [
+      "products",
+      "showcase",
+      "cta"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": true,
+      "textDecoration": false,
+      "button": true
+    },
+    "layout": "mosaic",
+    "density": "medium",
+    "imageWeight": 0.7,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 200
+      },
+      {
+        "name": "hero",
+        "type": "object",
+        "optional": true,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "productName",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "4:5"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 160
+            },
+            {
+              "name": "price",
+              "type": "text",
+              "optional": true,
+              "maxLength": 30
+            },
+            {
+              "name": "productUrl",
+              "type": "url"
+            }
+          ]
+        }
+      },
+      {
+        "name": "tiles",
+        "type": "list",
+        "minItems": 4,
+        "maxItems": 5,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "productName",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "1:1"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 160
+            },
+            {
+              "name": "price",
+              "type": "text",
+              "optional": true,
+              "maxLength": 30
+            },
+            {
+              "name": "productUrl",
+              "type": "url"
+            }
+          ]
+        }
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "light",
+          "dark"
+        ]
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "hero-split-image-01",
+      "hero-bakery-editorial-01",
+      "gallery-image-text-editorial-01",
+      "testimonial-spotlight-quote-01",
+      "footer-mega-01",
+      "footer-columns-social-01"
+    ],
+    "pairsPoorly": [
+      "gallery-masonry-01",
+      "gallery-lightbox-grid-01",
+      "products-featured-strip-01"
+    ],
+    "descriptions": {
+      "descriptive": "An asymmetric editorial grid where one large hero tile anchors the left while four to five smaller tiles fan out across the right and bottom. Tiles read as clean photography at rest; on hover the image zooms slowly and a dark gradient surfaces the product name and price from the bottom edge. A single anchor CTA, behind a divider line, closes the composition.",
+      "usage": "Use as a homepage or category-page teaser that funnels scrollers toward the full catalog at /products. Best when the brand sells visual goods (fashion, home, lifestyle) and the catalog is small enough that a curated five or six picks can stand for the whole. Skip when the catalog is large or transactional — pair it with a Spotlight or Bundle Cards section that handles the buying decision.",
+      "audienceFit": "Premium retail, lifestyle boutiques, design-led DTC brands, and editorial commerce. Suits buyers who scan with their eyes before reading copy and trust photography to do the selling."
+    }
+  },
+  {
+    "id": "products-scroll-marquee-01",
+    "name": "Products Scroll Marquee",
+    "category": "products",
+    "style": [
+      "modern",
+      "playful",
+      "bold",
+      "editorial"
+    ],
+    "mood": [
+      "energetic",
+      "friendly",
+      "professional",
+      "trustworthy"
+    ],
+    "purpose": [
+      "products",
+      "showcase",
+      "cta"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": true,
+      "textDecoration": false,
+      "button": true
+    },
+    "layout": "full-bleed",
+    "density": "medium",
+    "imageWeight": 0.65,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 80
+      },
+      {
+        "name": "subheadline",
+        "type": "text",
+        "optional": true,
+        "maxLength": 200
+      },
+      {
+        "name": "tiles",
+        "type": "list",
+        "minItems": 8,
+        "maxItems": 24,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "productName",
+              "type": "text",
+              "maxLength": 60
+            },
+            {
+              "name": "image",
+              "type": "image",
+              "aspectRatio": "1:1"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 160
+            },
+            {
+              "name": "productUrl",
+              "type": "url"
+            }
+          ]
+        }
+      },
+      {
+        "name": "productCount",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "topDuration",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "bottomDuration",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "optional": true,
+        "maxLength": 30
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      },
+      {
+        "name": "ctaStyle",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "default",
+          "slide",
+          "dotExpand",
+          "drawOutline",
+          "glow",
+          "arrow"
+        ]
+      },
+      {
+        "name": "ctaColorScheme",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "primary",
+          "secondary",
+          "accent",
+          "neutral"
+        ]
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "light",
+          "dark"
+        ]
+      }
+    ],
+    "mobileBehavior": "scroll",
+    "pairsWell": [
+      "hero-video-backdrop-01",
+      "hero-bakery-editorial-01",
+      "stats-kpi-grid-01",
+      "cta-image-backdrop-01",
+      "footer-mega-01"
+    ],
+    "pairsPoorly": [
+      "carousel-full-bleed-slider-01",
+      "testimonial-infinitescroll-01",
+      "products-featured-strip-01"
+    ],
+    "descriptions": {
+      "descriptive": "Two horizontal product rails stacked vertically and scrolling in opposite directions at slightly different speeds. Tiles read as photographs at rest; on hover the image scales gently and the product name slides up from the bottom. Both rails pause when the pointer enters the strip, giving the visitor a clean moment to scan a tile they spotted. A centered CTA with optional catalog-count framing closes the section.",
+      "usage": "Use as a homepage breadth signal — the constant motion catches peripheral vision and the size of the strip implies catalog depth without forcing a full grid. Best when the catalog has at least 12 visually distinct items and the brand can absorb a playful, energetic mood. Avoid pairing with other motion-heavy components (carousel hero, infinite-scroll testimonials) directly above or below.",
+      "audienceFit": "Lifestyle, fashion, accessories, food and beverage, and DTC brands with a strong visual identity. Suits buyers who scan with peripheral vision and respond to motion as a signal of liveliness rather than a distraction."
     }
   },
   {

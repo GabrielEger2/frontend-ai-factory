@@ -1,0 +1,87 @@
+# Team Component Ideas
+
+Current team category has 3 components, all solving the same problem (show a few faces + bios):
+- TeamFounderSplit — founder photo + story, 50/50 split
+- TeamLeadershipGrid — uniform grid of leadership headshots
+- TeamMemberSpotlight — single featured member with detail card
+
+The gap: nothing for culture, hiring, or journey/storytelling. Three proposals to widen the category.
+
+---
+
+## 1. TeamCultureMosaic
+
+**Purpose:** culture/values showcase — less corporate, more human. For brands selling lifestyle, agencies, restaurants, creative studios, places where "who we are" matters more than "who runs us."
+
+**Layout:** Asymmetric photo mosaic (mix of portrait + landscape + square crops, irregular grid à la Pinterest / editorial mood-board) interleaved with 2-3 short value cards. Photos are lifestyle/candid (people working, laughing, eating together) — NOT polished headshots.
+
+**Slots:**
+- `eyebrow` (text, ≤30) — e.g. "How we work"
+- `headline` (text, ≤80)
+- `intro` (text, ≤200)
+- `images[]` (image, 6-9 entries, mixed aspect ratios)
+- `values[]` (list of {title ≤40, description ≤140}, 2-4 entries) — interleaved into the mosaic
+- `cta_text` (text, ≤30, optional) — "See open roles" / "Meet the team"
+- `cta_url` (url, optional)
+
+**Style/mood:** editorial, playful, modern / friendly, fun, energetic
+**Pairs well with:** hero-bakery-editorial, hero-polaroid-collage, content galleries
+**Pairs poorly with:** corporate hero variants, sticky cta banners
+
+---
+
+## 2. TeamJourneyTimeline
+
+**Purpose:** story-driven team component — founding story + milestones + the people behind each chapter. For founder-led brands, agencies with a strong narrative, family businesses, anything where the story IS the trust signal.
+
+**Layout:** Vertical timeline (alternating left/right or single rail with year markers) where each milestone has: year, headline, short paragraph, and optionally a portrait of the person who joined/led that chapter. Last entry is "Today" with a small group photo or current team grid.
+
+**Slots:**
+- `eyebrow` (text, ≤30) — "Our story" / "Since 2014"
+- `headline` (text, ≤80)
+- `milestones[]` (list, 4-7 entries) of:
+  - `year` (text, ≤10)
+  - `title` (text, ≤60)
+  - `description` (text, ≤220)
+  - `image` (image, optional, portrait 4:5)
+  - `person_name` (text, ≤40, optional)
+  - `person_role` (text, ≤40, optional)
+- `today_image` (image, optional) — current team photo for final node
+
+**Style/mood:** editorial, classic, modern / trustworthy, professional, calm
+**Pairs well with:** hero variants with brand-statement purpose, testimonial-spotlight-quote, stats-count-up
+**Pairs poorly with:** other long-narrative content blocks (avoid stacking two timelines)
+
+---
+
+## 3. TeamHiringCallout
+
+**Purpose:** team page that doubles as a recruiting funnel. For growing startups, agencies, anywhere "we're hiring" is a primary CTA. Shows a few key team members but the focus is the open-roles list and "why work here" pitch.
+
+**Layout:** Split — left side is a compact 2x2 or 3x2 grid of team headshots (smaller than TeamLeadershipGrid, no individual bios — just name + role on hover/tap), right side is a stacked list of open roles with location/department tags + apply CTA per role. Below the split, a single "perks" strip (3-5 icon + label items: remote, equity, health, etc.).
+
+**Slots:**
+- `headline` (text, ≤80) — "Build with us" / "We're hiring"
+- `subheadline` (text, ≤180)
+- `team_members[]` (list, 4-6 entries) of:
+  - `name` (text, ≤40)
+  - `role` (text, ≤40)
+  - `image` (image, square)
+- `roles[]` (list, 3-8 entries) of:
+  - `title` (text, ≤60)
+  - `department` (text, ≤30)
+  - `location` (text, ≤30) — "Remote" / "São Paulo" / "Hybrid"
+  - `apply_url` (url)
+- `perks[]` (list of {icon ≤20, label ≤40}, 3-5 entries)
+- `cta_text` (text, ≤30) — "See all roles"
+- `cta_url` (url)
+
+**Style/mood:** modern, bold, corporate / energetic, friendly, professional
+**Pairs well with:** stats-kpi-grid (company-at-a-glance numbers above), testimonial-video-card (employee testimonials), footer-mega
+**Pairs poorly with:** other CTA-heavy blocks immediately adjacent (compete for the apply click)
+
+---
+
+## Recommendation
+
+Build **TeamCultureMosaic** first — it's the highest leverage. The current three team components all assume a polished B2B SaaS context, and the mosaic unlocks the entire creative/lifestyle/hospitality client base that currently has nothing usable here. Journey + Hiring are valuable but more situational.

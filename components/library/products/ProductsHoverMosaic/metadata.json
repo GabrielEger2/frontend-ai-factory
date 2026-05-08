@@ -1,0 +1,125 @@
+{
+  "id": "products-hover-mosaic-01",
+  "name": "Products Hover Mosaic",
+  "category": "products",
+  "style": ["editorial", "modern", "luxury", "minimal"],
+  "mood": ["elegant", "professional", "trustworthy", "calm"],
+  "purpose": ["products", "showcase", "cta"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": false,
+    "button": true
+  },
+  "layout": "mosaic",
+  "density": "medium",
+  "imageWeight": 0.7,
+  "slots": [
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 200
+    },
+    {
+      "name": "hero",
+      "type": "object",
+      "optional": true,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "productName", "type": "text", "maxLength": 60 },
+          { "name": "image", "type": "image", "aspectRatio": "4:5" },
+          { "name": "imageAlt", "type": "text", "maxLength": 160 },
+          {
+            "name": "price",
+            "type": "text",
+            "optional": true,
+            "maxLength": 30
+          },
+          { "name": "productUrl", "type": "url" }
+        ]
+      }
+    },
+    {
+      "name": "tiles",
+      "type": "list",
+      "minItems": 4,
+      "maxItems": 5,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "productName", "type": "text", "maxLength": 60 },
+          { "name": "image", "type": "image", "aspectRatio": "1:1" },
+          { "name": "imageAlt", "type": "text", "maxLength": 160 },
+          {
+            "name": "price",
+            "type": "text",
+            "optional": true,
+            "maxLength": 30
+          },
+          { "name": "productUrl", "type": "url" }
+        ]
+      }
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["light", "dark"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-split-image-01",
+    "hero-bakery-editorial-01",
+    "gallery-image-text-editorial-01",
+    "testimonial-spotlight-quote-01",
+    "footer-mega-01",
+    "footer-columns-social-01"
+  ],
+  "pairsPoorly": [
+    "gallery-masonry-01",
+    "gallery-lightbox-grid-01",
+    "products-featured-strip-01"
+  ],
+  "descriptions": {
+    "descriptive": "An asymmetric editorial grid where one large hero tile anchors the left while four to five smaller tiles fan out across the right and bottom. Tiles read as clean photography at rest; on hover the image zooms slowly and a dark gradient surfaces the product name and price from the bottom edge. A single anchor CTA, behind a divider line, closes the composition.",
+    "usage": "Use as a homepage or category-page teaser that funnels scrollers toward the full catalog at /products. Best when the brand sells visual goods (fashion, home, lifestyle) and the catalog is small enough that a curated five or six picks can stand for the whole. Skip when the catalog is large or transactional — pair it with a Spotlight or Bundle Cards section that handles the buying decision.",
+    "audienceFit": "Premium retail, lifestyle boutiques, design-led DTC brands, and editorial commerce. Suits buyers who scan with their eyes before reading copy and trust photography to do the selling."
+  }
+}
