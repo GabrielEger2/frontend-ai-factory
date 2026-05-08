@@ -557,7 +557,7 @@ async function main(): Promise<void> {
       axes.map((axis) =>
         client.search("components", {
           vector: { name: axis, vector: slotVector },
-          limit: captureMode ? 5 : 3,
+          limit: 5,
           with_payload: true,
           filter,
         }),
