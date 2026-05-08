@@ -1,0 +1,42 @@
+# Content Component Ideas — Brainstorm
+
+Brainstormed gaps in `components/library/content/` (5 on disk, all split-heavy / professional-elegant mood).
+
+## Process / How-It-Works (highest-impact gap — `process` purpose uncovered)
+
+- ProcessNumberedColumns — 3-4 large numerals in a row, headline + short copy under each. Classic, scannable, any density.
+- ProcessVerticalRail — sticky numbered rail on the left, content scrolls past on the right. Editorial, premium feel; pairs with luxury/classic moods.
+- ProcessHorizontalScroll — horizontal scroll-snap, each step is a full panel with optional image. Bolder, mobile-first, cinematic.
+- ProcessSplitPerStep — each step is its own image/copy split, stacked vertically. High imageWeight, good when each step has visual proof.
+- ProcessConnectedTimeline — steps connected by a drawn line/arrow that animates as you scroll. Most visual; for playful/energetic brands.
+
+## Features / Benefits Grid (only split-layout coverage today)
+
+- FeaturesIconTrio — 3-column icon-headline-paragraph. The workhorse pattern; corporate/minimal mood.
+- FeaturesQuadGrid — 4-up grid, optional dividers/borders. Denser, info-dense brands.
+- FeaturesBentoGrid — asymmetric bento-style mixed-size cards. Modern/playful; visual interest without text-heavy load.
+- FeaturesCheckList — bold checkmark list, often two-column. Conversion-flavored ("everything you get").
+- FeaturesIconRowExpand — single horizontal row, hover/tap to reveal more detail. Compact for landing pages with limited vertical space.
+
+## Timeline / Story Arc (`story` purpose has no chronological layout)
+
+- TimelineVerticalMilestones — classic alternating-side vertical timeline with dates. "Our journey since 2010."
+- TimelineHorizontalScroll — horizontal year-by-year scroll, magazine-y. Bolder, harder to fit on mobile.
+- TimelineYearAnchored — sticky year headings as you scroll, story paragraphs below each. Editorial, narrative-heavy.
+- TimelineFoundersNote — narrative-first (less date-heavy), year markers separate prose. For brands whose story is the product.
+
+## Tonal gap (everything in `content/` reads professional/elegant)
+
+- ContentStickerCollage — handwritten/sticker-style annotated content. Friendly/playful brands.
+- ContentMagazinePullQuote — type-as-art, large editorial pull quote with attribution. Bold/editorial moments where copy is the visual.
+- ContentVideoExplainer — video-first content block (video exists in hero/ and cta/ but not content/).
+
+## Other gaps noticed
+
+- ContentManifestoStatement — single-screen, large-type values statement. Content-side companion to the new TeamValuesManifesto in team/.
+- ContentInteractiveTabbed — tabbed substantive content reveal (different from FaqTabbed because narrative, not Q&A). Useful for "Solutions for X / Y / Z".
+- ContentNumberedAccordion — collapsible numbered sections — between Process and FAQ; long-form content that doesn't all fit at once.
+
+## Doc/disk inconsistency to fix separately
+
+CLAUDE.md and prior components.txt claim CarouselCards and ZigzagAlternatingSplit exist in `content/`. They don't on disk. Either build them or correct the docs.

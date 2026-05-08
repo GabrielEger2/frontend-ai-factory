@@ -27,10 +27,8 @@ export { default as GalleryCaseStudy } from "./content/GalleryCaseStudy";
 export { default as GalleryImageTextEditorial } from "./content/GalleryImageTextEditorial";
 
 // CTA
-export { default as CtaDualOfferSplit } from "./cta/CtaDualOfferSplit";
 export { default as CtaHoverRevealList } from "./cta/CtaHoverRevealList";
 export { default as CtaImageBackdrop } from "./cta/CtaImageBackdrop";
-export { default as CtaInlineCalculator } from "./cta/CtaInlineCalculator";
 export { default as CtaStickyImageList } from "./cta/CtaStickyImageList";
 export { default as CtaTestimonialPaired } from "./cta/CtaTestimonialPaired";
 export { default as CtaVideoBackdrop } from "./cta/CtaVideoBackdrop";
@@ -66,7 +64,6 @@ export { default as HeroVideoBackdrop } from "./heroes/HeroVideoBackdrop";
 // Navigation
 export { default as NavbarDock } from "./navigation/NavbarDock";
 export { default as NavbarMegaPanel } from "./navigation/NavbarMegaPanel";
-export { default as NavbarPill } from "./navigation/NavbarPill";
 export { default as NavbarSticky } from "./navigation/NavbarSticky";
 
 // Pricing
@@ -91,7 +88,6 @@ export { default as StatsKpiGrid } from "./stats/StatsKpiGrid";
 // Team
 export { default as TeamFounderSplit } from "./team/TeamFounderSplit";
 export { default as TeamHiringCallout } from "./team/TeamHiringCallout";
-export { default as TeamJourneyTimeline } from "./team/TeamJourneyTimeline";
 export { default as TeamLeadershipGrid } from "./team/TeamLeadershipGrid";
 export { default as TeamMemberSpotlight } from "./team/TeamMemberSpotlight";
 export { default as TeamValuesManifesto } from "./team/TeamValuesManifesto";
@@ -101,7 +97,6 @@ export { default as InfiniteScroll } from "./testimonials/InfiniteScroll";
 export { default as TestimonialMasonryQuotes } from "./testimonials/TestimonialMasonryQuotes";
 export { default as TestimonialMetricCard } from "./testimonials/TestimonialMetricCard";
 export { default as TestimonialSpotlightQuote } from "./testimonials/TestimonialSpotlightQuote";
-export { default as TestimonialVideoCard } from "./testimonials/TestimonialVideoCard";
 
 import ContactBookingEmbed from "./contact/ContactBookingEmbed";
 import ContactChatEmbed from "./contact/ContactChatEmbed";
@@ -115,10 +110,8 @@ import ComparisonSplit from "./content/ComparisonSplit";
 import EditorialFramedSplit from "./content/EditorialFramedSplit";
 import GalleryCaseStudy from "./content/GalleryCaseStudy";
 import GalleryImageTextEditorial from "./content/GalleryImageTextEditorial";
-import CtaDualOfferSplit from "./cta/CtaDualOfferSplit";
 import CtaHoverRevealList from "./cta/CtaHoverRevealList";
 import CtaImageBackdrop from "./cta/CtaImageBackdrop";
-import CtaInlineCalculator from "./cta/CtaInlineCalculator";
 import CtaStickyImageList from "./cta/CtaStickyImageList";
 import CtaTestimonialPaired from "./cta/CtaTestimonialPaired";
 import CtaVideoBackdrop from "./cta/CtaVideoBackdrop";
@@ -144,7 +137,6 @@ import HeroSplitImage from "./heroes/HeroSplitImage";
 import HeroVideoBackdrop from "./heroes/HeroVideoBackdrop";
 import NavbarDock from "./navigation/NavbarDock";
 import NavbarMegaPanel from "./navigation/NavbarMegaPanel";
-import NavbarPill from "./navigation/NavbarPill";
 import NavbarSticky from "./navigation/NavbarSticky";
 import PricingFreemiumLadder from "./pricing/PricingFreemiumLadder";
 import PricingMonthlyAnnualToggle from "./pricing/PricingMonthlyAnnualToggle";
@@ -161,7 +153,6 @@ import StatsCountUp from "./stats/StatsCountUp";
 import StatsKpiGrid from "./stats/StatsKpiGrid";
 import TeamFounderSplit from "./team/TeamFounderSplit";
 import TeamHiringCallout from "./team/TeamHiringCallout";
-import TeamJourneyTimeline from "./team/TeamJourneyTimeline";
 import TeamLeadershipGrid from "./team/TeamLeadershipGrid";
 import TeamMemberSpotlight from "./team/TeamMemberSpotlight";
 import TeamValuesManifesto from "./team/TeamValuesManifesto";
@@ -169,7 +160,6 @@ import InfiniteScroll from "./testimonials/InfiniteScroll";
 import TestimonialMasonryQuotes from "./testimonials/TestimonialMasonryQuotes";
 import TestimonialMetricCard from "./testimonials/TestimonialMetricCard";
 import TestimonialSpotlightQuote from "./testimonials/TestimonialSpotlightQuote";
-import TestimonialVideoCard from "./testimonials/TestimonialVideoCard";
 
 /**
  * Lookup map: metadata.json `id` → React component.
@@ -192,10 +182,8 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "layout-editorial-framed-split-01": EditorialFramedSplit,
   "gallery-case-study-01": GalleryCaseStudy,
   "gallery-image-text-editorial-01": GalleryImageTextEditorial,
-  "cta-dual-offer-split-01": CtaDualOfferSplit,
   "cta-hover-reveal-list-01": CtaHoverRevealList,
   "cta-image-backdrop-01": CtaImageBackdrop,
-  "cta-inline-calculator-01": CtaInlineCalculator,
   "cta-sticky-image-list-01": CtaStickyImageList,
   "cta-testimonial-paired-01": CtaTestimonialPaired,
   "cta-video-backdrop-01": CtaVideoBackdrop,
@@ -221,7 +209,6 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "hero-video-backdrop-01": HeroVideoBackdrop,
   "navbar-dock-01": NavbarDock,
   "navbar-mega-panel-01": NavbarMegaPanel,
-  "navbar-pill-01": NavbarPill,
   "navbar-sticky-01": NavbarSticky,
   "pricing-freemium-ladder-01": PricingFreemiumLadder,
   "pricing-monthly-annual-toggle-01": PricingMonthlyAnnualToggle,
@@ -238,7 +225,6 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "stats-kpi-grid-01": StatsKpiGrid,
   "team-founder-split-01": TeamFounderSplit,
   "team-hiring-callout-01": TeamHiringCallout,
-  "team-journey-timeline-01": TeamJourneyTimeline,
   "team-leadership-grid-01": TeamLeadershipGrid,
   "team-member-spotlight-01": TeamMemberSpotlight,
   "team-values-manifesto-01": TeamValuesManifesto,
@@ -246,5 +232,4 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "testimonial-masonry-quotes-01": TestimonialMasonryQuotes,
   "testimonial-metric-card-01": TestimonialMetricCard,
   "testimonial-spotlight-quote-01": TestimonialSpotlightQuote,
-  "testimonial-video-card-01": TestimonialVideoCard,
 };
