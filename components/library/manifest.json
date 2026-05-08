@@ -8080,6 +8080,11 @@
         "maxLength": 160
       },
       {
+        "name": "videoSrc",
+        "type": "video",
+        "optional": true
+      },
+      {
         "name": "thumbnails",
         "type": "list",
         "optional": true,
