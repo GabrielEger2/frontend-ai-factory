@@ -137,6 +137,7 @@ interface MetadataJson {
   imageWeight?: number;
   style?: string[];
   mood?: string[];
+  vertical?: string[];
 }
 
 interface MetadataEntry {
@@ -150,6 +151,7 @@ interface MetadataEntry {
   imageWeight: number;
   style: string[];
   mood: string[];
+  vertical: string[];
 }
 
 function main() {
@@ -225,6 +227,7 @@ function main() {
         imageWeight: meta.imageWeight ?? 0,
         style: meta.style ?? [],
         mood: meta.mood ?? [],
+        vertical: meta.vertical ?? [],
       };
     }
   }
@@ -274,7 +277,7 @@ function main() {
   );
   lines.push(" */");
   lines.push(
-    "export const COMPONENT_METADATA: Record<string, { slots: unknown[]; acceptsStyleKit: { card?: boolean; background?: boolean; textDecoration?: boolean; button?: boolean }; pairsWell: string[]; pairsPoorly: string[]; category: string; nativeMotif: string | null; density: string; imageWeight: number; style: string[]; mood: string[] }> = {",
+    "export const COMPONENT_METADATA: Record<string, { slots: unknown[]; acceptsStyleKit: { card?: boolean; background?: boolean; textDecoration?: boolean; button?: boolean }; pairsWell: string[]; pairsPoorly: string[]; vertical: string[]; category: string; nativeMotif: string | null; density: string; imageWeight: number; style: string[]; mood: string[] }> = {",
   );
 
   for (const [id, meta] of Object.entries(metadataMap)) {

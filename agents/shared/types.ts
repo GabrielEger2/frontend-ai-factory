@@ -420,4 +420,5 @@ export interface ComponentItem {
   pairsPoorly: string[];
   acceptsStyleKit: Record<string, boolean>;
   imageWeight?: number;
+  vertical?: string[];
 }
