@@ -2,7 +2,7 @@
  * Rerank weight grid-search evaluator.
  *
  * Loads all `*.jsonl` fixture files from `agents/eval/fixtures/`, replays
- * `rerankCandidates` across a coarse 5^4 = 625 grid of `RerankWeights`
+ * `rerankCandidates` across a coarse 5^5 = 3125 grid of `RerankWeights`
  * combinations, and writes a markdown report + JSON sidecar to
  * `agents/eval/reports/`.
  *
@@ -145,7 +145,7 @@ function loadFixtures(dir: string): FixtureLine[] {
 }
 
 /**
- * Generate the 5^4 = 625 weight combinations.
+ * Generate the 5^5 = 3125 weight combinations.
  */
 function generateGrid(): RerankWeights[] {
   const combos: RerankWeights[] = [];
@@ -153,7 +153,15 @@ function generateGrid(): RerankWeights[] {
     for (const styleOverlap of WEIGHT_VALUES) {
       for (const diversity of WEIGHT_VALUES) {
         for (const density of WEIGHT_VALUES) {
-          combos.push({ pairsWith, styleOverlap, diversity, density });
+          for (const audienceFit of WEIGHT_VALUES) {
+            combos.push({
+              pairsWith,
+              styleOverlap,
+              diversity,
+              density,
+              audienceFit,
+            });
+          }
         }
       }
     }
@@ -273,7 +281,8 @@ function findBaseline(points: GridPoint[]): GridPoint | undefined {
       p.weights.pairsWith === DEFAULT_RERANK_WEIGHTS.pairsWith &&
       p.weights.styleOverlap === DEFAULT_RERANK_WEIGHTS.styleOverlap &&
       p.weights.diversity === DEFAULT_RERANK_WEIGHTS.diversity &&
-      p.weights.density === DEFAULT_RERANK_WEIGHTS.density,
+      p.weights.density === DEFAULT_RERANK_WEIGHTS.density &&
+      p.weights.audienceFit === DEFAULT_RERANK_WEIGHTS.audienceFit,
   );
 }
 
@@ -342,7 +351,8 @@ function buildReport(lines: FixtureLine[], gridPoints: GridPoint[]): string {
       `Weights: pairsWith=${fmtWeight(baseline.weights.pairsWith)}, ` +
         `styleOverlap=${fmtWeight(baseline.weights.styleOverlap)}, ` +
         `diversity=${fmtWeight(baseline.weights.diversity)}, ` +
-        `density=${fmtWeight(baseline.weights.density)}`,
+        `density=${fmtWeight(baseline.weights.density)}, ` +
+        `audienceFit=${fmtWeight(baseline.weights.audienceFit)}`,
     );
     sections.push("");
     sections.push(`**Global score:** ${fmtScore(baseline.globalScore)}`);
@@ -362,11 +372,11 @@ function buildReport(lines: FixtureLine[], gridPoints: GridPoint[]): string {
     ? bestGlobal.globalScore - baseline.globalScore
     : NaN;
   sections.push(
-    "| pairsWith | styleOverlap | diversity | density | Global Score | vs Baseline |",
+    "| pairsWith | styleOverlap | diversity | density | audienceFit | Global Score | vs Baseline |",
   );
-  sections.push("|---|---|---|---|---|---|");
+  sections.push("|---|---|---|---|---|---|---|");
   sections.push(
-    `| ${fmtWeight(bestGlobal.weights.pairsWith)} | ${fmtWeight(bestGlobal.weights.styleOverlap)} | ${fmtWeight(bestGlobal.weights.diversity)} | ${fmtWeight(bestGlobal.weights.density)} | ${fmtScore(bestGlobal.globalScore)} | ${fmtSigned(bestGlobalGain)} |`,
+    `| ${fmtWeight(bestGlobal.weights.pairsWith)} | ${fmtWeight(bestGlobal.weights.styleOverlap)} | ${fmtWeight(bestGlobal.weights.diversity)} | ${fmtWeight(bestGlobal.weights.density)} | ${fmtWeight(bestGlobal.weights.audienceFit)} | ${fmtScore(bestGlobal.globalScore)} | ${fmtSigned(bestGlobalGain)} |`,
   );
   sections.push("");
   sections.push("**Per-slot scores under best-global weights:**");
@@ -382,13 +392,13 @@ function buildReport(lines: FixtureLine[], gridPoints: GridPoint[]): string {
   sections.push(`## Best Per-Slot Weights`);
   sections.push("");
   sections.push(
-    "| Slot | pairsWith | styleOverlap | diversity | density | Score | vs Baseline |",
+    "| Slot | pairsWith | styleOverlap | diversity | density | audienceFit | Score | vs Baseline |",
   );
-  sections.push("|---|---|---|---|---|---|---|");
+  sections.push("|---|---|---|---|---|---|---|---|");
   for (const cat of SLOT_CATEGORIES_REPORT_ORDER) {
     const best = findBestForSlot(gridPoints, cat);
     if (!best) {
-      sections.push(`| ${cat} | — | — | — | — | — | — |`);
+      sections.push(`| ${cat} | — | — | — | — | — | — | — |`);
       continue;
     }
     const baselineSlotScore = baseline?.perSlotScores[cat];
@@ -401,7 +411,7 @@ function buildReport(lines: FixtureLine[], gridPoints: GridPoint[]): string {
         ? bestSlotScore - baselineSlotScore
         : NaN;
     sections.push(
-      `| ${cat} | ${fmtWeight(best.weights.pairsWith)} | ${fmtWeight(best.weights.styleOverlap)} | ${fmtWeight(best.weights.diversity)} | ${fmtWeight(best.weights.density)} | ${fmtSlot(bestSlotScore)} | ${fmtSigned(delta)} |`,
+      `| ${cat} | ${fmtWeight(best.weights.pairsWith)} | ${fmtWeight(best.weights.styleOverlap)} | ${fmtWeight(best.weights.diversity)} | ${fmtWeight(best.weights.density)} | ${fmtWeight(best.weights.audienceFit)} | ${fmtSlot(bestSlotScore)} | ${fmtSigned(delta)} |`,
     );
   }
   sections.push("");
@@ -444,6 +454,7 @@ function buildReport(lines: FixtureLine[], gridPoints: GridPoint[]): string {
       styleScore: number;
       diversityPenalty: number;
       densityPenalty: number;
+      audienceFitScore: number;
       rerankScore: number;
     };
     const readDebug = (c: CandidateComponent): DebugPayload | undefined =>
@@ -465,16 +476,16 @@ function buildReport(lines: FixtureLine[], gridPoints: GridPoint[]): string {
       sections.push(`- Score: ${fmtScore(d.pickScore)}`);
       sections.push("");
       sections.push(
-        "| Candidate | pairsWith | styleOverlap | diversityPenalty | densityPenalty | rerankScore |",
+        "| Candidate | pairsWith | styleOverlap | diversityPenalty | densityPenalty | audienceFitScore | rerankScore |",
       );
-      sections.push("|---|---|---|---|---|---|");
+      sections.push("|---|---|---|---|---|---|---|");
       const yourDebug = yourPick ? readDebug(yourPick) : undefined;
       const algoDebug = algoTop ? readDebug(algoTop) : undefined;
       sections.push(
-        `| your pick (${d.line.pickId}) | ${fmtSlot(yourDebug?.pairsWithScore)} | ${fmtSlot(yourDebug?.styleScore)} | ${fmtSlot(yourDebug?.diversityPenalty)} | ${fmtSlot(yourDebug?.densityPenalty)} | ${fmtSlot(yourDebug?.rerankScore)} |`,
+        `| your pick (${d.line.pickId}) | ${fmtSlot(yourDebug?.pairsWithScore)} | ${fmtSlot(yourDebug?.styleScore)} | ${fmtSlot(yourDebug?.diversityPenalty)} | ${fmtSlot(yourDebug?.densityPenalty)} | ${fmtSlot(yourDebug?.audienceFitScore)} | ${fmtSlot(yourDebug?.rerankScore)} |`,
       );
       sections.push(
-        `| algo rank-1 (${algoTop?.id ?? "—"}) | ${fmtSlot(algoDebug?.pairsWithScore)} | ${fmtSlot(algoDebug?.styleScore)} | ${fmtSlot(algoDebug?.diversityPenalty)} | ${fmtSlot(algoDebug?.densityPenalty)} | ${fmtSlot(algoDebug?.rerankScore)} |`,
+        `| algo rank-1 (${algoTop?.id ?? "—"}) | ${fmtSlot(algoDebug?.pairsWithScore)} | ${fmtSlot(algoDebug?.styleScore)} | ${fmtSlot(algoDebug?.diversityPenalty)} | ${fmtSlot(algoDebug?.densityPenalty)} | ${fmtSlot(algoDebug?.audienceFitScore)} | ${fmtSlot(algoDebug?.rerankScore)} |`,
       );
       sections.push("");
     }
@@ -484,7 +495,7 @@ function buildReport(lines: FixtureLine[], gridPoints: GridPoint[]): string {
   sections.push(`## Applying the Best Combo`);
   sections.push("");
   sections.push(
-    "To apply the best global combo, update `DEFAULT_RERANK_WEIGHTS` in `agents/composer/rerank.ts:140-145`.",
+    "To apply the best global combo, update `DEFAULT_RERANK_WEIGHTS` in `agents/composer/rerank.ts:160-166`.",
   );
   sections.push("");
 
@@ -513,7 +524,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  console.log("[runner] generating grid (5^4 = 625 combos)...");
+  console.log("[runner] generating grid (5^5 = 3125 combos)...");
   const grid = generateGrid();
 
   console.log("[runner] sweeping grid...");
