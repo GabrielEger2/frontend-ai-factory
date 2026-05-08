@@ -43,6 +43,7 @@
           { "name": "name", "type": "text", "maxLength": 40 },
           { "name": "backgroundImage", "type": "image", "aspectRatio": "4:3" },
           { "name": "imageAlt", "type": "text", "maxLength": 160 },
+          { "name": "videoSrc", "type": "video", "optional": true },
           { "name": "bestsellerThumb", "type": "image", "aspectRatio": "1:1" },
           { "name": "bestsellerThumbAlt", "type": "text", "maxLength": 160 },
           { "name": "bestsellerName", "type": "text", "maxLength": 60 },

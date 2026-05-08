@@ -1,6 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import ProductsCategoryHub from "./index";
 
+// Pexels public-domain clip reused from CtaVideoBackdrop.stories.tsx.
+// 16:9 backdrop cropped via object-cover into a 4:3 lead tile.
+const CASA_VIDEO =
+  "https://videos.pexels.com/video-files/2169307/2169307-uhd_2560_1440_30fps.mp4";
+
 const meta: Meta<typeof ProductsCategoryHub> = {
   title: "Products/ProductsCategoryHub",
   component: ProductsCategoryHub,
@@ -32,6 +37,7 @@ export const CasaCarambolaThreeUp: Story = {
           "https://picsum.photos/seed/categoryhub-living-bg/1600/1200",
         imageAlt:
           "Sala de estar com sofá de linho cru, mesa de centro de madeira escura e estante baixa repleta de livros",
+        videoSrc: CASA_VIDEO,
         bestsellerThumb:
           "https://picsum.photos/seed/categoryhub-living-thumb/240/240",
         bestsellerThumbAlt: "Sofá modular de três lugares em linho cru",

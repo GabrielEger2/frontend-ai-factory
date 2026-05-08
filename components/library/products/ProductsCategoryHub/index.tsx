@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { FiArrowUpRight } from "react-icons/fi";
 import { cn } from "@lib/utils";
+import ProductMedia from "@ui/ProductMedia";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -38,6 +39,12 @@ export interface CategoryTile {
   countLabel?: string;
   /** Category landing URL — typically /products?category=<slug>. */
   categoryUrl: string;
+  /**
+   * Optional autoplay-loop video that overlays the background image when
+   * present and prefers-reduced-motion is not set. Falls back to the
+   * background image as a poster.
+   */
+  videoSrc?: string;
 }
 
 export interface ProductsCategoryHubProps {
@@ -124,13 +131,12 @@ function CategoryHubTile({
       )}
     >
       {/* Background photograph — gentle scale on hover. */}
-      <motion.img
-        src={category.backgroundImage}
-        alt={category.imageAlt}
+      <ProductMedia
+        image={category.backgroundImage}
+        imageAlt={category.imageAlt}
+        videoSrc={category.videoSrc}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover"
-        whileHover={prefersReducedMotion ? undefined : { scale: 1.04 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="absolute inset-0 transition-transform duration-[600ms] ease-out group-hover:scale-[1.04]"
       />
 
       {/* Permanent bottom gradient — keeps the category name legible
