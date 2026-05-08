@@ -55,18 +55,51 @@ Given a company brief and research output, you must produce a cohesive style def
 
 ## Segment-Aware Personality Mapping
 
-Adapt your choices to the business segment:
-- Law firms, accounting, consulting → professional, trustworthy, serious | classic or corporate | medium-high density
-- Restaurants, cafes, bakeries → friendly, energetic, fun | modern or playful | medium density
-- SaaS, tech startups → modern, minimal | clean palette, sans-serif fonts | low-medium density
-- Pet shops, veterinary → playful, friendly, trustworthy | warm palette, rounded fonts | medium density
-- Real estate → elegant, professional, trustworthy | luxury or corporate | medium density
-- Health, wellness, beauty → calm, elegant, friendly | soft palette, editorial | low-medium density
-- E-commerce, retail → energetic, fun, modern | bold palette, strong CTAs | high density
-- Education, schools → friendly, trustworthy, professional | warm palette | medium density
-- Construction, industrial → serious, professional, trustworthy | corporate, bold | medium-high density
+Adapt mood, style, and density to the business segment AND to any **sub-vertical qualifier** in the brief (\`de luxo\`, \`artesanal\`, \`premium\`, etc.). Use ONLY the values from the allowed mood and style lists in sections 3 and 4 above — there are no synonyms. "Warm" is a palette temperature, not a mood; if a brief feels warm, encode it as \`friendly\` plus \`elegant\` or \`calm\`.
 
-Use these as guidelines, not rigid rules. The research output (tone keywords, audience, differentiators) should refine your choices.
+### Default vertical → tag clusters
+
+Baseline mappings when the brief has no luxury/premium qualifier. Pick 2-4 mood tags and 2-3 style tags from the cluster — the research output (tone keywords, audience, differentiators) refines which subset to choose. Density is the cluster's typical default; objectives may shift it (see Buyer Objectives section).
+
+| Vertical (PT-BR cues) | mood | style | density |
+|---|---|---|---|
+| Padarias, cafeterias, confeitarias (\`padaria\`, \`café\`, \`confeitaria\`) | friendly, energetic, fun | modern, playful | medium |
+| Restaurantes casuais, lanchonetes, hamburguerias (\`restaurante\`, \`lanchonete\`, \`hambúrguer\`) | friendly, energetic, fun | modern, bold | medium |
+| Academias, crossfit, estúdios fitness (\`academia\`, \`crossfit\`, \`estúdio\`) | energetic, friendly, fun | bold, modern, playful | high |
+| Mecânicas, oficinas, autopeças (\`mecânica\`, \`oficina\`, \`autopeças\`) | trustworthy, serious, professional | bold, corporate | medium |
+| Advocacia, contabilidade, consultoria (\`advocacia\`, \`contabilidade\`, \`consultoria\`) | professional, serious, trustworthy | corporate, classic, minimal | medium |
+| Clínicas, odontologia, fisioterapia (\`clínica\`, \`dentista\`, \`fisio\`) | calm, trustworthy, professional | minimal, classic, modern | medium |
+| Salões, barbearias, estética (\`salão\`, \`barbearia\`, \`estética\`) | friendly, elegant, energetic | modern, playful, classic | medium |
+| Escolas, cursos, educação (\`escola\`, \`curso\`, \`colégio\`) | friendly, trustworthy, professional | modern, classic | medium |
+| Imobiliárias, corretagem (\`imobiliária\`, \`corretor\`) | elegant, professional, trustworthy | corporate, classic, luxury | medium |
+| Pet shops, veterinárias (\`pet shop\`, \`veterinária\`) | playful, friendly, trustworthy | modern, playful | medium |
+| E-commerce, varejo, lojas (\`loja\`, \`shop\`, \`store\`) | energetic, fun, friendly | bold, modern | high |
+| Construtoras, indústria, engenharia (\`construtora\`, \`indústria\`) | serious, professional, trustworthy | corporate, bold, classic | medium |
+| SaaS, tech startups, software (\`software\`, \`app\`, \`plataforma\`) | professional, trustworthy, energetic | modern, minimal | low |
+| Agências, marketing, design (\`agência\`, \`marketing\`, \`branding\`) | energetic, professional, friendly | modern, bold, editorial | medium |
+
+### Luxury / Artisan / Premium qualifier — overrides the default cluster
+
+If the company name, segment, description, research output, or seller-supplied keywords contain qualifiers like **\`de luxo\`, \`luxury\`, \`premium\`, \`gourmet\`, \`artesanal\`, \`autoral\`, \`boutique\`, \`haute\`, \`alta gastronomia\`, \`high-end\`, \`alto padrão\`, \`exclusivo\`, \`fine\`, \`atelier\`** — replace the default cluster with the corresponding luxury cluster below:
+
+| Sub-vertical | mood | style | density |
+|---|---|---|---|
+| Padaria/confeitaria/café — luxo, artesanal, gourmet, autoral | elegant, friendly, calm | editorial, luxury, classic | medium |
+| Restaurante — alta gastronomia, fine dining, autoral | elegant, calm, serious | minimal, luxury, classic | low |
+| Academia/estúdio — premium, boutique fitness | energetic, elegant, professional | bold, luxury, modern | medium |
+| Advocacia/consultoria — boutique, top-tier, escritório premium | professional, elegant, trustworthy | luxury, classic, editorial | medium |
+| Clínica — estética premium, spa, bem-estar de luxo | calm, elegant, trustworthy | luxury, minimal, editorial | low |
+| Salão/barbearia — premium, autoral, atelier | elegant, friendly, calm | editorial, luxury, classic | medium |
+| Imobiliária — high-end, alto padrão, corretagem de luxo | elegant, trustworthy, calm | luxury, editorial, classic | low |
+| Hospitalidade — hotel boutique, resort, pousada premium | elegant, calm, friendly | luxury, editorial, classic | low |
+| Joalheria, atelier de moda, autoral | elegant, calm, serious | luxury, editorial, minimal | low |
+| Gastronomia/produtos premium, importadora gourmet, mercado fino | elegant, calm, friendly | editorial, luxury, classic | medium |
+
+The luxury qualifier always shifts \`style\` toward some combination of \`editorial\` + \`luxury\` + \`classic\` and \`mood\` toward \`elegant\` + \`calm\`/\`friendly\`/\`trustworthy\`. It NEVER picks \`fun\` or \`playful\` (those signal casual/cheerful, not refined). It also avoids \`bold\` for sedate luxury verticals like advocacia or clínica boutique.
+
+### Use these as guidelines
+
+If two verticals overlap (e.g. a bakery that also serves as a restaurant), pick the cluster whose research-derived \`toneKeywords\` and seller-supplied \`brandToneKeywords\` match best. The research output and seller tone keywords always refine the choice within the cluster — never pick a tag the data doesn't support.
 
 Palette rules for food, grocery, distributor, comfort, and hospitality segments:
   - Dominant palette MUST be neutral-warm (cream, off-white, beige, soft brown).
@@ -132,7 +165,7 @@ Mood modifiers refine the same palette family:
 1. Output ONLY valid JSON. No explanations, no markdown, no comments outside the JSON.
 2. All palette values must be valid hex color codes (e.g. "#1A2B3C").
 3. Typography fonts must be available on Google Fonts.
-4. mood and style arrays must use EXACTLY the values from the allowed lists above. No synonyms, no variations.
+4. mood and style arrays must use EXACTLY the values from the allowed lists in sections 3 and 4 above. No synonyms, no variations. Common rejected tokens that fail validation: \`warm\`, \`refined\`, \`sophisticated\`, \`vibrant\`, \`approachable\`, \`industrial\`, \`artisan\` are NOT valid mood or style values. If the research suggests "warmth", emit \`friendly\` plus \`elegant\` or \`calm\`. If it suggests "sophistication" or "refinement", emit \`elegant\` plus \`editorial\` or \`luxury\`. If it suggests "vibrance", emit \`energetic\` plus \`fun\`.
 5. Ensure sufficient color contrast between primary and neutral for accessibility.
 6. The palette should feel cohesive — colors should work harmoniously together.
 7. heading and body fonts should complement each other (avoid pairing two very similar fonts).
