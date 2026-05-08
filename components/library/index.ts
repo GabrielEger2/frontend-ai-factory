@@ -89,7 +89,10 @@ export { default as StatsCountUp } from "./stats/StatsCountUp";
 export { default as StatsKpiGrid } from "./stats/StatsKpiGrid";
 
 // Team
+export { default as TeamCultureMosaic } from "./team/TeamCultureMosaic";
 export { default as TeamFounderSplit } from "./team/TeamFounderSplit";
+export { default as TeamHiringCallout } from "./team/TeamHiringCallout";
+export { default as TeamJourneyTimeline } from "./team/TeamJourneyTimeline";
 export { default as TeamLeadershipGrid } from "./team/TeamLeadershipGrid";
 export { default as TeamMemberSpotlight } from "./team/TeamMemberSpotlight";
 
@@ -156,7 +159,10 @@ import ProductsSpotlight from "./products/ProductsSpotlight";
 import StatsChart from "./stats/StatsChart";
 import StatsCountUp from "./stats/StatsCountUp";
 import StatsKpiGrid from "./stats/StatsKpiGrid";
+import TeamCultureMosaic from "./team/TeamCultureMosaic";
 import TeamFounderSplit from "./team/TeamFounderSplit";
+import TeamHiringCallout from "./team/TeamHiringCallout";
+import TeamJourneyTimeline from "./team/TeamJourneyTimeline";
 import TeamLeadershipGrid from "./team/TeamLeadershipGrid";
 import TeamMemberSpotlight from "./team/TeamMemberSpotlight";
 import InfiniteScroll from "./testimonials/InfiniteScroll";
@@ -230,7 +236,10 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "stats-chart-01": StatsChart,
   "stats-count-up-01": StatsCountUp,
   "stats-kpi-grid-01": StatsKpiGrid,
+  "team-culture-mosaic-01": TeamCultureMosaic,
   "team-founder-split-01": TeamFounderSplit,
+  "team-hiring-callout-01": TeamHiringCallout,
+  "team-journey-timeline-01": TeamJourneyTimeline,
   "team-leadership-grid-01": TeamLeadershipGrid,
   "team-member-spotlight-01": TeamMemberSpotlight,
   "testimonial-infinitescroll-01": InfiniteScroll,

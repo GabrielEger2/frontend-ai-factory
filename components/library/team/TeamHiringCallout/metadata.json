@@ -1,0 +1,117 @@
+{
+  "id": "team-hiring-callout-01",
+  "name": "Team Hiring Callout",
+  "category": "team",
+  "purpose": ["team", "lead-capture", "cta", "about"],
+  "acceptsStyleKit": {
+    "card": true,
+    "background": true,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "bold", "corporate", "editorial"],
+  "mood": ["energetic", "friendly", "professional"],
+  "layout": "split",
+  "density": "high",
+  "imageWeight": 0.35,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100 },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "maxLength": 220,
+      "optional": true
+    },
+    {
+      "name": "teamMembers",
+      "type": "list",
+      "minItems": 4,
+      "maxItems": 6,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "name", "type": "text", "maxLength": 50 },
+          { "name": "role", "type": "text", "maxLength": 50 },
+          {
+            "name": "image",
+            "type": "image",
+            "aspectRatio": "1:1",
+            "optional": true
+          },
+          {
+            "name": "imageAlt",
+            "type": "text",
+            "maxLength": 160,
+            "optional": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "roles",
+      "type": "list",
+      "minItems": 1,
+      "maxItems": 8,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "title", "type": "text", "maxLength": 80 },
+          { "name": "department", "type": "text", "maxLength": 40 },
+          { "name": "location", "type": "text", "maxLength": 40 },
+          { "name": "applyUrl", "type": "url" },
+          {
+            "name": "employmentType",
+            "type": "text",
+            "maxLength": 30,
+            "optional": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "perks",
+      "type": "list",
+      "maxItems": 5,
+      "optional": true,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "icon", "type": "text", "maxLength": 4 },
+          { "name": "label", "type": "text", "maxLength": 50 }
+        ]
+      }
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 30, "optional": true },
+    { "name": "ctaUrl", "type": "url", "optional": true },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["light", "dark"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "stats-kpi-grid-01",
+    "stats-count-up-01",
+    "testimonial-video-card-01",
+    "footer-mega-01",
+    "team-leadership-grid-01"
+  ],
+  "pairsPoorly": [
+    "cta-sticky-image-list-01",
+    "cta-dual-offer-split-01",
+    "cta-image-backdrop-01",
+    "cta-video-backdrop-01",
+    "cta-hover-reveal-list-01",
+    "cta-testimonial-paired-01",
+    "cta-inline-calculator-01"
+  ],
+  "description": "Recruiting-funnel team section. Compact 2x2 / 3x2 portrait grid with hover name/role on the left, open-roles list with department + location + per-row apply on the right, optional perks strip and bottom CTA below.",
+  "descriptions": {
+    "descriptive": "A two-rail recruiting section that borrows the visual language of a team grid but routes the eye toward apply links. The left rail surfaces a compact 2x2 (4 members) or 3x2 (5-6 members) thumbnail grid where name and role surface only on hover or focus — small enough that the right rail dominates the scan. The right rail is a bordered list of open roles, each row showing the title, department + location + employment-type as a monospaced meta strip, and a per-row 'Apply' chip with a corner arrow. Below the split, a bordered base-200 strip carries up to five emoji + label perks and an anchor CTA that links out to a full /careers page. A `tone` prop swaps between light page surface and an inverted dark slab.",
+    "usage": "Use on /careers landing, the lower half of an About page, or as the closing section of a Team page when 'we're hiring' is a primary funnel. Place after a stats or testimonial-video block (numbers + voices set up the apply click) and before the footer. Avoid stacking adjacent to other CTA-heavy sections (sticky CTA, image-backdrop CTA, dual-offer split) — they fight for the same click and dilute both.",
+    "audienceFit": "Growth-stage startups, agencies, professional-services firms expanding regionally, healthcare and education employers, and any company where 'come work here' deserves its own beat instead of a tucked-away link."
+  }
+}
