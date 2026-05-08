@@ -2,24 +2,9 @@
   "id": "products-spotlight-01",
   "name": "Products Spotlight",
   "category": "products",
-  "style": [
-    "editorial",
-    "luxury",
-    "minimal",
-    "modern"
-  ],
-  "mood": [
-    "elegant",
-    "trustworthy",
-    "professional",
-    "calm"
-  ],
-  "purpose": [
-    "products",
-    "showcase",
-    "brand-statement",
-    "cta"
-  ],
+  "style": ["editorial", "luxury", "minimal", "modern"],
+  "mood": ["elegant", "trustworthy", "professional", "calm"],
+  "purpose": ["products", "showcase", "brand-statement", "cta"],
   "acceptsStyleKit": {
     "card": false,
     "background": true,
@@ -80,6 +65,11 @@
       "maxLength": 160
     },
     {
+      "name": "videoSrc",
+      "type": "video",
+      "optional": true
+    },
+    {
       "name": "thumbnails",
       "type": "list",
       "optional": true,
@@ -125,25 +115,13 @@
       "name": "ctaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "default",
-        "slide",
-        "dotExpand",
-        "drawOutline",
-        "glow",
-        "arrow"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
     },
     {
       "name": "ctaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "accent",
-        "neutral"
-      ]
+      "enum": ["primary", "secondary", "accent", "neutral"]
     },
     {
       "name": "secondaryCtaText",
@@ -160,43 +138,25 @@
       "name": "secondaryCtaStyle",
       "type": "text",
       "optional": true,
-      "enum": [
-        "default",
-        "slide",
-        "dotExpand",
-        "drawOutline",
-        "glow",
-        "arrow"
-      ]
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
     },
     {
       "name": "secondaryCtaColorScheme",
       "type": "text",
       "optional": true,
-      "enum": [
-        "primary",
-        "secondary",
-        "accent",
-        "neutral"
-      ]
+      "enum": ["primary", "secondary", "accent", "neutral"]
     },
     {
       "name": "imageLeft",
       "type": "text",
       "optional": true,
-      "enum": [
-        "true",
-        "false"
-      ]
+      "enum": ["true", "false"]
     },
     {
       "name": "tone",
       "type": "text",
       "optional": true,
-      "enum": [
-        "light",
-        "dark"
-      ]
+      "enum": ["light", "dark"]
     }
   ],
   "mobileBehavior": "stack",
@@ -207,9 +167,7 @@
     "testimonial-spotlight-quote-01",
     "cta-testimonial-paired-01"
   ],
-  "pairsPoorly": [
-    "hero-split-image-01"
-  ],
+  "pairsPoorly": ["hero-split-image-01"],
   "descriptions": {
     "descriptive": "Clean, magazine-style layout with generous white space and refined typography. Features high-quality product imagery with subtle shadows and minimal text overlays. Uses sophisticated color palette with restrained visual elements that emphasize the products themselves through elegant spacing and professional presentation.",
     "usage": "Highlights premium product collections on main pages or dedicated showcase sections. Drives conversions by presenting select items with compelling brand messaging and clear call-to-action buttons. Perfect for landing pages that need to establish product credibility while guiding users toward purchase decisions.",

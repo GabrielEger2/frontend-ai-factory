@@ -1,0 +1,113 @@
+{
+  "id": "products-scroll-marquee-01",
+  "name": "Products Scroll Marquee",
+  "category": "products",
+  "style": ["modern", "playful", "bold", "editorial"],
+  "mood": ["energetic", "friendly", "professional", "trustworthy"],
+  "purpose": ["products", "showcase", "cta"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": false,
+    "button": true
+  },
+  "layout": "full-bleed",
+  "density": "medium",
+  "imageWeight": 0.65,
+  "slots": [
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 200
+    },
+    {
+      "name": "tiles",
+      "type": "list",
+      "minItems": 8,
+      "maxItems": 24,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "productName", "type": "text", "maxLength": 60 },
+          { "name": "image", "type": "image", "aspectRatio": "1:1" },
+          { "name": "imageAlt", "type": "text", "maxLength": 160 },
+          { "name": "productUrl", "type": "url" }
+        ]
+      }
+    },
+    {
+      "name": "productCount",
+      "type": "number",
+      "optional": true
+    },
+    {
+      "name": "topDuration",
+      "type": "number",
+      "optional": true
+    },
+    {
+      "name": "bottomDuration",
+      "type": "number",
+      "optional": true
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "ctaStyle",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow", "arrow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    },
+    {
+      "name": "tone",
+      "type": "text",
+      "optional": true,
+      "enum": ["light", "dark"]
+    }
+  ],
+  "mobileBehavior": "scroll",
+  "pairsWell": [
+    "hero-video-backdrop-01",
+    "hero-bakery-editorial-01",
+    "stats-kpi-grid-01",
+    "cta-image-backdrop-01",
+    "footer-mega-01"
+  ],
+  "pairsPoorly": [
+    "carousel-full-bleed-slider-01",
+    "testimonial-infinitescroll-01",
+    "products-featured-strip-01"
+  ],
+  "descriptions": {
+    "descriptive": "Two horizontal product rails stacked vertically and scrolling in opposite directions at slightly different speeds. Tiles read as photographs at rest; on hover the image scales gently and the product name slides up from the bottom. Both rails pause when the pointer enters the strip, giving the visitor a clean moment to scan a tile they spotted. A centered CTA with optional catalog-count framing closes the section.",
+    "usage": "Use as a homepage breadth signal — the constant motion catches peripheral vision and the size of the strip implies catalog depth without forcing a full grid. Best when the catalog has at least 12 visually distinct items and the brand can absorb a playful, energetic mood. Avoid pairing with other motion-heavy components (carousel hero, infinite-scroll testimonials) directly above or below.",
+    "audienceFit": "Lifestyle, fashion, accessories, food and beverage, and DTC brands with a strong visual identity. Suits buyers who scan with peripheral vision and respond to motion as a signal of liveliness rather than a distraction."
+  }
+}

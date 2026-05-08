@@ -1,6 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import ProductsSpotlight from "./index";
 
+// Pexels public-domain clip reused from CtaVideoBackdrop.stories.tsx.
+// 16:9 backdrop cropped via object-cover into a 4:5 product tile.
+const AUDIO_VIDEO =
+  "https://videos.pexels.com/video-files/3015527/3015527-uhd_2560_1440_24fps.mp4";
+
 const meta: Meta<typeof ProductsSpotlight> = {
   title: "Products/ProductsSpotlight",
   component: ProductsSpotlight,
@@ -276,6 +281,7 @@ export const AudioHouseHeadphones: Story = {
     image: "https://picsum.photos/seed/spotlight-headphones-main/960/1200",
     imageAlt:
       "Fone de ouvido over-ear preto com hastes de alumínio escovado fotografado contra fundo grafite com luz cinematográfica",
+    videoSrc: AUDIO_VIDEO,
     thumbnails: [
       {
         image:

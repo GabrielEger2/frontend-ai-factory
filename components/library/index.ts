@@ -77,7 +77,10 @@ export { default as PricingTierCards } from "./pricing/PricingTierCards";
 
 // Products
 export { default as ProductsBundleCards } from "./products/ProductsBundleCards";
+export { default as ProductsCategoryHub } from "./products/ProductsCategoryHub";
 export { default as ProductsFeaturedStrip } from "./products/ProductsFeaturedStrip";
+export { default as ProductsHoverMosaic } from "./products/ProductsHoverMosaic";
+export { default as ProductsScrollMarquee } from "./products/ProductsScrollMarquee";
 export { default as ProductsSpotlight } from "./products/ProductsSpotlight";
 
 // Stats
@@ -86,7 +89,10 @@ export { default as StatsCountUp } from "./stats/StatsCountUp";
 export { default as StatsKpiGrid } from "./stats/StatsKpiGrid";
 
 // Team
+export { default as TeamCultureMosaic } from "./team/TeamCultureMosaic";
 export { default as TeamFounderSplit } from "./team/TeamFounderSplit";
+export { default as TeamHiringCallout } from "./team/TeamHiringCallout";
+export { default as TeamJourneyTimeline } from "./team/TeamJourneyTimeline";
 export { default as TeamLeadershipGrid } from "./team/TeamLeadershipGrid";
 export { default as TeamMemberSpotlight } from "./team/TeamMemberSpotlight";
 
@@ -145,12 +151,18 @@ import PricingMonthlyAnnualToggle from "./pricing/PricingMonthlyAnnualToggle";
 import PricingSinglePrice from "./pricing/PricingSinglePrice";
 import PricingTierCards from "./pricing/PricingTierCards";
 import ProductsBundleCards from "./products/ProductsBundleCards";
+import ProductsCategoryHub from "./products/ProductsCategoryHub";
 import ProductsFeaturedStrip from "./products/ProductsFeaturedStrip";
+import ProductsHoverMosaic from "./products/ProductsHoverMosaic";
+import ProductsScrollMarquee from "./products/ProductsScrollMarquee";
 import ProductsSpotlight from "./products/ProductsSpotlight";
 import StatsChart from "./stats/StatsChart";
 import StatsCountUp from "./stats/StatsCountUp";
 import StatsKpiGrid from "./stats/StatsKpiGrid";
+import TeamCultureMosaic from "./team/TeamCultureMosaic";
 import TeamFounderSplit from "./team/TeamFounderSplit";
+import TeamHiringCallout from "./team/TeamHiringCallout";
+import TeamJourneyTimeline from "./team/TeamJourneyTimeline";
 import TeamLeadershipGrid from "./team/TeamLeadershipGrid";
 import TeamMemberSpotlight from "./team/TeamMemberSpotlight";
 import InfiniteScroll from "./testimonials/InfiniteScroll";
@@ -216,12 +228,18 @@ export const componentsById: Record<string, ComponentType<any>> = {
   "pricing-single-price-01": PricingSinglePrice,
   "pricing-tier-cards-01": PricingTierCards,
   "products-bundle-cards-01": ProductsBundleCards,
+  "products-category-hub-01": ProductsCategoryHub,
   "products-featured-strip-01": ProductsFeaturedStrip,
+  "products-hover-mosaic-01": ProductsHoverMosaic,
+  "products-scroll-marquee-01": ProductsScrollMarquee,
   "products-spotlight-01": ProductsSpotlight,
   "stats-chart-01": StatsChart,
   "stats-count-up-01": StatsCountUp,
   "stats-kpi-grid-01": StatsKpiGrid,
+  "team-culture-mosaic-01": TeamCultureMosaic,
   "team-founder-split-01": TeamFounderSplit,
+  "team-hiring-callout-01": TeamHiringCallout,
+  "team-journey-timeline-01": TeamJourneyTimeline,
   "team-leadership-grid-01": TeamLeadershipGrid,
   "team-member-spotlight-01": TeamMemberSpotlight,
   "testimonial-infinitescroll-01": InfiniteScroll,
