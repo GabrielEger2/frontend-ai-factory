@@ -9,7 +9,7 @@
     "textDecoration": true,
     "button": true
   },
-  "style": ["modern", "minimal", "corporate"],
+  "style": ["modern", "minimal", "corporate", "editorial"],
   "mood": ["professional", "trustworthy", "friendly"],
   "layout": "grid",
   "density": "medium",
@@ -33,6 +33,19 @@
       "maxLength": 200
     },
     {
+      "name": "meta",
+      "type": "list",
+      "optional": true,
+      "maxItems": 4,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "label", "type": "text", "maxLength": 20 },
+          { "name": "value", "type": "text", "maxLength": 50 }
+        ]
+      }
+    },
+    {
       "name": "features",
       "type": "list",
       "minItems": 3,
@@ -50,8 +63,64 @@
         "description": {
           "type": "text",
           "maxLength": 220
+        },
+        "stat": {
+          "type": "text",
+          "maxLength": 12,
+          "optional": true,
+          "description": "Optional numeric punch-line above the title — e.g. '47s', '1.7x', '62%'. Renders mono."
+        },
+        "statLabel": {
+          "type": "text",
+          "maxLength": 30,
+          "optional": true,
+          "description": "Optional one-line caption clarifying the stat."
+        },
+        "bullets": {
+          "type": "list",
+          "optional": true,
+          "maxItems": 4,
+          "itemSchema": {
+            "type": "text",
+            "maxLength": 140
+          },
+          "description": "Optional 2 to 4 supporting bullets rendered as a flat divider list under the description."
         }
       }
+    },
+    {
+      "name": "pullQuote",
+      "type": "object",
+      "optional": true,
+      "fields": [
+        { "name": "quote", "type": "text", "maxLength": 240 },
+        { "name": "attribution", "type": "text", "maxLength": 80 },
+        {
+          "name": "attributionMeta",
+          "type": "text",
+          "maxLength": 80,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "name": "metrics",
+      "type": "list",
+      "optional": true,
+      "maxItems": 4,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "value", "type": "text", "maxLength": 16 },
+          { "name": "label", "type": "text", "maxLength": 80 }
+        ]
+      }
+    },
+    {
+      "name": "footnote",
+      "type": "text",
+      "optional": true,
+      "maxLength": 240
     },
     {
       "name": "ctaText",
@@ -86,10 +155,10 @@
     "cta-hover-reveal-list-01"
   ],
   "pairsPoorly": [],
-  "description": "A flat icon-led features grid with three to six cells, soft hover lift, and hairline dividers between cells. The workhorse features section for SaaS, professional services, and product landing pages where info density matters more than visual flourish.",
+  "description": "A flat icon-led features grid with 3 to 6 cells, soft hover lift, hairline dividers between cells, and optional editorial scaffolding around the grid. Each cell can carry a mono stat punch-line plus a 2-to-4 item bullet list under the description for evidence and sub-claims; around the grid an optional 4-up meta strip, a pull-quote, an outcome metrics band, a methodology footnote and a closing CTA let the section carry the depth of a long-form benefits page rather than a thin three-up row. The workhorse features section for SaaS, professional services, and product landing pages where info density matters more than visual flourish.",
   "descriptions": {
-    "descriptive": "A clean grid of icon-headline-body cells with restrained motion: a 4 to 5 pixel hover lift, a one pixel outline that activates on hover, and a faded vertical hairline between cells. Three items render as a 3-column row; four or more items wrap to a 2-column or 2x3 grid to avoid the recognizable 4-or-6-across pattern.",
-    "usage": "Use as a benefits or capabilities section on SaaS landing pages, professional services sites, and product overview pages. Best when the brand needs a flat, scannable layout rather than the split layouts already in the library. Pairs naturally below a hero and above pricing or testimonials.",
+    "descriptive": "Each cell stacks an icon chip, an optional mono-numeral stat with caption, a title, a description, and an optional flat bullet list using border-t divide-y rhythm — never card-in-card. Three items render as a 3-column row; four or more wrap to a 2-column or 2x3 grid to avoid the recognizable 4-or-6-across pattern. Cells share faded vertical hairline dividers, a 1px outline that activates on hover, and a 4-to-5 pixel hover lift. Above the grid an optional 4-up meta strip (mono-caps labels) frames the section as a single engagement; below it an optional serif pull-quote with primary border-l, a dark rounded outcome-metrics band with mono numerals, a mono methodology footnote and a closing CTA close the case. Every micro-label uses font-mono with 0.20-0.22em tracking. Reduced-motion users get a static fallback; everyone else gets a 0.06s staggered fade-up reveal.",
+    "usage": "Use as a benefits or capabilities section on SaaS landing pages, professional services sites, and product overview pages. Best when the brand needs a flat, scannable layout rather than the split layouts already in the library. Lean on the optional stat / bullets / meta / pullQuote / metrics / footnote slots when each feature needs evidence, not just a tagline — the section can then carry a full benefits page on its own. Pairs naturally below a hero and above pricing or testimonials.",
     "audienceFit": "Suits info-dense brands like B2B SaaS, fintech, legal and consulting practices, and eco or sustainability brands that want a calm, credible features section without bento or asymmetric layouts. Works in both light and dark themes through semantic tokens."
   }
 }

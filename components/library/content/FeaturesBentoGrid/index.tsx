@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion, useReducedMotion } from "motion/react";
 import * as FiIcons from "react-icons/fi";
 import { cn } from "@lib/utils";
+import { containerVariants, fadeUp } from "@lib/motion-variants";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
 
 /* ------------------------------------------------------------------ */
@@ -12,6 +13,13 @@ import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
 
 export type BentoCardSize = "large" | "medium" | "small";
 export type BentoAccentScheme = "primary" | "secondary" | "accent";
+
+export interface BentoFeatureMetric {
+  /** The number itself — keep it organic ("47.2%", "3.4 hrs/wk", "1,247"). */
+  value: string;
+  /** One-line context for the number. */
+  label: string;
+}
 
 export interface BentoFeatureItem {
   /** Visual size class — drives grid span and typography scale */
@@ -22,10 +30,42 @@ export interface BentoFeatureItem {
    * Unknown names render no icon.
    */
   iconName?: string;
+  /** Optional mono-caps eyebrow rendered above the title — e.g. "Module 03" */
+  eyebrow?: string;
   title: string;
   description: string;
+  /** Optional inline metric — surfaces an organic number inside the tile.
+   *  Renders as a mono numeral with a one-line label, anchored to the bottom. */
+  metric?: BentoFeatureMetric;
+  /** Optional bullet list (max 3) — renders below the description.
+   *  Useful on `large` tiles to carry feature sub-points without a sub-grid. */
+  bullets?: string[];
   /** Tints the corner gradient and icon backplate. Defaults to "primary". */
   accentScheme?: BentoAccentScheme;
+}
+
+/** Section-level meta strip — same shape as ComparisonSplit / CarouselBeforeAfter. */
+export interface BentoMeta {
+  /** Mono-caps label — e.g. "Stack", "Window", "Verified by" */
+  label: string;
+  /** Plain-weight value */
+  value: string;
+}
+
+export interface BentoMetric {
+  /** The number itself — keep it organic (e.g. "47.2%", "3,847") */
+  value: string;
+  /** One-line context for the number */
+  label: string;
+}
+
+export interface BentoPullQuote {
+  /** The quote itself, no surrounding punctuation */
+  quote: string;
+  /** Person or organisation it is attributed to */
+  attribution: string;
+  /** Optional secondary attribution line — role, location, etc. */
+  attributionMeta?: string;
 }
 
 export interface FeaturesBentoGridProps {
@@ -35,8 +75,16 @@ export interface FeaturesBentoGridProps {
   headline: string;
   /** Optional supporting paragraph below the headline. */
   subheadline?: string;
+  /** Optional section-level meta strip — renders as a 4-up dl band under the header. */
+  meta?: BentoMeta[];
   /** 5–7 feature tiles. Mix sizes for asymmetric rhythm. */
   features: BentoFeatureItem[];
+  /** Optional methodology / fine-print footnote rendered below the grid. */
+  footnote?: string;
+  /** Optional pull-quote — renders between the grid and the metrics band. */
+  pullQuote?: BentoPullQuote;
+  /** Optional outcome metrics rendered as a dark band below the grid. */
+  metrics?: BentoMetric[];
   /** Optional CTA label rendered below the grid. */
   ctaText?: string;
   /** CTA destination URL. */
@@ -85,12 +133,12 @@ function sizeToSpan(size: BentoCardSize): string {
 function sizeToPadding(size: BentoCardSize): string {
   switch (size) {
     case "large":
-      return "p-6 md:p-8 lg:p-10 lg:min-h-[26rem]";
+      return "p-6 md:p-8 lg:p-10 lg:min-h-[28rem]";
     case "medium":
-      return "p-5 md:p-7 lg:p-8 lg:min-h-[14rem]";
+      return "p-5 md:p-7 lg:p-8 lg:min-h-[15rem]";
     case "small":
     default:
-      return "p-5 md:p-6 lg:min-h-[14rem]";
+      return "p-5 md:p-6 lg:min-h-[15rem]";
   }
 }
 
@@ -136,6 +184,12 @@ const ACCENT_ICON_BG: Record<BentoAccentScheme, string> = {
   accent: "bg-accent/15 text-accent",
 };
 
+const ACCENT_METRIC_TEXT: Record<BentoAccentScheme, string> = {
+  primary: "text-primary",
+  secondary: "text-secondary",
+  accent: "text-accent",
+};
+
 /* ------------------------------------------------------------------ */
 /*  Sub-component — BentoTile                                          */
 /* ------------------------------------------------------------------ */
@@ -150,6 +204,7 @@ function BentoTile({ item, index, prefersReducedMotion }: BentoTileProps) {
   const Icon = resolveIcon(item.iconName);
   const accent = item.accentScheme ?? "primary";
   const tilt = index % 2 === 0 ? 0.5 : -0.5;
+  const isLarge = item.size === "large";
 
   // Reveal animation — staggered via parent variants.
   const reveal = {
@@ -177,7 +232,7 @@ function BentoTile({ item, index, prefersReducedMotion }: BentoTileProps) {
       // because it's a one-shot decorative motion, per animation.md.
       style={{ transformOrigin: "center" }}
       className={cn(
-        "group relative isolate overflow-hidden",
+        "group relative isolate flex flex-col overflow-hidden",
         "bg-base-200 border border-base-300",
         sizeToSpan(item.size),
         sizeToPadding(item.size),
@@ -199,20 +254,29 @@ function BentoTile({ item, index, prefersReducedMotion }: BentoTileProps) {
       />
 
       <div className="relative flex h-full flex-col gap-3">
-        {Icon && (
-          <span
-            className={cn(
-              "inline-flex h-10 w-10 items-center justify-center rounded-xl",
-              ACCENT_ICON_BG[accent],
-            )}
-          >
-            <Icon className="h-5 w-5" />
-          </span>
-        )}
+        <div className="flex items-start justify-between gap-3">
+          {Icon ? (
+            <span
+              className={cn(
+                "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
+                ACCENT_ICON_BG[accent],
+              )}
+            >
+              <Icon className="h-5 w-5" />
+            </span>
+          ) : (
+            <span aria-hidden className="h-10 w-10 shrink-0" />
+          )}
+          {item.eyebrow && (
+            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-base-content/55">
+              {item.eyebrow}
+            </span>
+          )}
+        </div>
 
         <h3
           className={cn(
-            "font-semibold leading-tight tracking-tight text-base-content",
+            "text-balance font-semibold leading-tight tracking-tight text-base-content",
             sizeToTitleClass(item.size),
           )}
         >
@@ -222,13 +286,58 @@ function BentoTile({ item, index, prefersReducedMotion }: BentoTileProps) {
         <p
           className={cn(
             "leading-relaxed text-base-content/70",
-            item.size === "large"
+            isLarge
               ? "text-base md:text-lg max-w-[55ch]"
               : "text-sm md:text-base max-w-[42ch]",
           )}
         >
           {item.description}
         </p>
+
+        {item.bullets && item.bullets.length > 0 && (
+          <ul className="mt-2 flex flex-col divide-y divide-base-300 border-t border-base-300">
+            {item.bullets.slice(0, 3).map((bullet, i) => (
+              <li
+                key={i}
+                className="flex items-baseline gap-3 py-2.5 text-sm leading-relaxed text-base-content/80 md:text-base"
+              >
+                <span
+                  aria-hidden
+                  className={cn(
+                    "mt-2 h-1.5 w-1.5 shrink-0 rounded-full",
+                    ACCENT_METRIC_TEXT[accent],
+                    accent === "primary" && "bg-primary",
+                    accent === "secondary" && "bg-secondary",
+                    accent === "accent" && "bg-accent",
+                  )}
+                />
+                <span>{bullet}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {item.metric && (
+          <div
+            className={cn(
+              "mt-auto flex items-baseline gap-3 border-t border-base-300 pt-4",
+              isLarge ? "" : "pt-3",
+            )}
+          >
+            <span
+              className={cn(
+                "font-mono font-semibold tracking-tight",
+                ACCENT_METRIC_TEXT[accent],
+                isLarge ? "text-3xl md:text-4xl" : "text-2xl md:text-3xl",
+              )}
+            >
+              {item.metric.value}
+            </span>
+            <span className="text-xs leading-snug text-base-content/55 md:text-sm">
+              {item.metric.label}
+            </span>
+          </div>
+        )}
       </div>
     </motion.article>
   );
@@ -239,17 +348,24 @@ function BentoTile({ item, index, prefersReducedMotion }: BentoTileProps) {
 /* ------------------------------------------------------------------ */
 
 /**
- * FeaturesBentoGrid — an asymmetric "bento box" feature grid with mixed
- * tile sizes (one large hero, mediums, smalls), tilt-on-hover spring
- * physics, per-card accent tints, and mixed corner radii. Designed to
- * land the playful/bold/fun mood gap. Stacks to a single column below
- * the `lg:` breakpoint.
+ * FeaturesBentoGrid — an asymmetric "bento box" feature grid framed as a
+ * long-form section. The grid itself uses mixed tile sizes (one large
+ * hero, mediums, smalls), tilt-on-hover spring physics, per-card accent
+ * tints, mixed corner radii, and optional per-tile metrics, eyebrows
+ * and bullet lists. Around the grid, an optional project meta strip,
+ * pull-quote, outcome metrics band, methodology footnote and CTA scaffold
+ * the section to carry an entire feature page on its own. Stacks to a
+ * single column below the `lg:` breakpoint.
  */
 export default function FeaturesBentoGrid({
   eyebrow,
   headline,
   subheadline,
+  meta,
   features,
+  footnote,
+  pullQuote,
+  metrics,
   ctaText,
   ctaUrl,
   ctaVariant = "default",
@@ -276,11 +392,11 @@ export default function FeaturesBentoGrid({
           className="mb-10 max-w-2xl md:mb-14"
         >
           {eyebrow && (
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-primary">
+            <p className="mb-3 font-mono text-xs uppercase tracking-[0.28em] text-primary">
               {eyebrow}
             </p>
           )}
-          <h2 className="text-3xl font-bold leading-tight tracking-tight text-base-content md:text-4xl lg:text-5xl">
+          <h2 className="text-balance text-3xl font-bold leading-tight tracking-tight text-base-content md:text-4xl lg:text-5xl">
             {headline}
           </h2>
           {subheadline && (
@@ -289,6 +405,32 @@ export default function FeaturesBentoGrid({
             </p>
           )}
         </motion.header>
+
+        {/* Section-level meta strip — frames the whole section as one body of work. */}
+        {meta && meta.length > 0 && (
+          <motion.dl
+            className="mb-12 grid grid-cols-2 gap-x-6 gap-y-6 border-y border-base-300 py-6 md:mb-16 md:grid-cols-4"
+            variants={containerVariants}
+            initial={prefersReducedMotion ? false : "hidden"}
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+          >
+            {meta.slice(0, 4).map((m, i) => (
+              <motion.div
+                key={i}
+                variants={fadeUp}
+                className="flex flex-col gap-1"
+              >
+                <dt className="font-mono text-[10px] uppercase tracking-[0.22em] text-base-content/55">
+                  {m.label}
+                </dt>
+                <dd className="text-base font-medium text-base-content">
+                  {m.value}
+                </dd>
+              </motion.div>
+            ))}
+          </motion.dl>
+        )}
 
         {/* Asymmetric grid — single column below lg, 4-col bento on lg+. */}
         <motion.div
@@ -313,6 +455,69 @@ export default function FeaturesBentoGrid({
             />
           ))}
         </motion.div>
+
+        {/* Methodology footnote — fine print under the grid, mono small caps. */}
+        {footnote && (
+          <motion.p
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="mt-6 max-w-[70ch] font-mono text-[11px] leading-relaxed tracking-[0.04em] text-base-content/55"
+          >
+            {footnote}
+          </motion.p>
+        )}
+
+        {/* Pull quote — bridges the grid to the metrics/CTA close. */}
+        {pullQuote && (
+          <motion.figure
+            className="mt-16 max-w-4xl border-l-2 border-primary pl-6 md:mt-24 md:pl-10"
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
+            <blockquote className="text-balance font-serif text-2xl leading-snug text-base-content md:text-3xl lg:text-4xl">
+              &ldquo;{pullQuote.quote}&rdquo;
+            </blockquote>
+            <figcaption className="mt-5 flex flex-col gap-1">
+              <span className="text-sm font-medium text-base-content md:text-base">
+                {pullQuote.attribution}
+              </span>
+              {pullQuote.attributionMeta && (
+                <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-base-content/55">
+                  {pullQuote.attributionMeta}
+                </span>
+              )}
+            </figcaption>
+          </motion.figure>
+        )}
+
+        {/* Outcome metrics band */}
+        {metrics && metrics.length > 0 && (
+          <motion.div
+            className={cn(
+              "grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:grid-cols-4 md:px-12 md:py-14",
+              pullQuote ? "mt-12 md:mt-16" : "mt-16 md:mt-24",
+            )}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
+            {metrics.slice(0, 4).map((m, i) => (
+              <div key={i} className="flex flex-col items-start gap-1">
+                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
+                  {m.value}
+                </span>
+                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
+                  {m.label}
+                </span>
+              </div>
+            ))}
+          </motion.div>
+        )}
 
         {ctaText && ctaUrl && (
           <motion.div

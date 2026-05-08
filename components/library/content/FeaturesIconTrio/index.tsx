@@ -72,6 +72,45 @@ export interface FeaturesIconTrioFeature {
   iconName: string;
   title: string;
   description: string;
+  /**
+   * Optional numeric punch-line above the title — e.g. "47s", "1.7×",
+   * "62%". Renders in mono so it sits as the cell's quantitative anchor.
+   */
+  stat?: string;
+  /**
+   * Optional one-line caption for the stat — clarifies what the number
+   * represents without crowding the title.
+   */
+  statLabel?: string;
+  /**
+   * Optional 2–3 supporting bullets rendered as a `border-t divide-y`
+   * micro-list under the description. Useful for evidence, sub-claims,
+   * or scope detail without resorting to nested cards.
+   */
+  bullets?: string[];
+}
+
+export interface FeaturesIconTrioMeta {
+  /** Mono-caps label — e.g. "Window", "Source", "Verified by" */
+  label: string;
+  /** Plain-weight value */
+  value: string;
+}
+
+export interface FeaturesIconTrioMetric {
+  /** The number itself — keep it organic (e.g. "47.2%", "3,847") */
+  value: string;
+  /** One-line context for the number */
+  label: string;
+}
+
+export interface FeaturesIconTrioPullQuote {
+  /** The quote itself, no surrounding punctuation */
+  quote: string;
+  /** Person or organisation it is attributed to */
+  attribution: string;
+  /** Optional secondary attribution line — role, location, etc. */
+  attributionMeta?: string;
 }
 
 export interface FeaturesIconTrioProps {
@@ -82,12 +121,35 @@ export interface FeaturesIconTrioProps {
   /** Optional supporting paragraph between headline and grid. */
   subheadline?: string;
   /**
+   * Optional section-level meta strip — renders as a 4-up dl band under
+   * the header (mirrors CarouselBeforeAfter / ComparisonSplit). Use it
+   * to frame the section as a single engagement: source, window, verified
+   * by, sample size.
+   */
+  meta?: FeaturesIconTrioMeta[];
+  /**
    * 3 to 6 feature cells. With 3 items the grid renders as a 3-column row
    * on lg+. With 4+ items it deliberately wraps to a 2-column grid (or
    * 2x3 at lg+) rather than using a 4-or-6-across row, which is the most
    * recognizable AI-tell layout.
    */
   features: FeaturesIconTrioFeature[];
+  /**
+   * Optional pull-quote rendered between the grid and the metrics band —
+   * primary border-l, serif, attributable. Bridges the feature grid to a
+   * stronger close.
+   */
+  pullQuote?: FeaturesIconTrioPullQuote;
+  /**
+   * Optional outcome metrics rendered as a dark band below the grid. Use
+   * 2 or 4 metrics — the band is a 2-up on mobile and 4-up on md+.
+   */
+  metrics?: FeaturesIconTrioMetric[];
+  /**
+   * Optional methodology / data-source footnote rendered below the grid
+   * (or below the metrics band when present). Mono, small, muted.
+   */
+  footnote?: string;
   /** Optional CTA below the grid. Both ctaText and ctaUrl required to render. */
   ctaText?: string;
   ctaUrl?: string;
@@ -172,17 +234,25 @@ function resolveIcon(name: string): IconType {
 /* ------------------------------------------------------------------ */
 
 /**
- * FeaturesIconTrio — flat icon-led features grid. Three items render as a
- * 3-column row on lg+. Four or more items deliberately wrap to a 2-column
- * (or 2x3) grid to avoid the 4-or-6-across "AI features row" pattern.
- * Each cell has a soft hover lift, a 1px outline that activates on hover,
- * and shares a fading vertical hairline divider with its neighbor.
+ * FeaturesIconTrio — flat icon-led features grid with optional editorial
+ * scaffolding. The core grid renders 3 items as a 3-column row on lg+;
+ * 4+ items wrap to a 2-column (or 2x3) grid to avoid the 4-or-6-across
+ * "AI features row" pattern. Each cell can carry a mono stat punch-line,
+ * a description, and a 2–3 item bullet list — useful when each feature
+ * needs evidence, not just a tagline. Around the grid, an optional 4-up
+ * meta strip, a pull-quote, an outcome metrics band, a methodology
+ * footnote, and a closing CTA let the section carry the depth of a
+ * long-form benefits page rather than a thin three-up row.
  */
 export default function FeaturesIconTrio({
   eyebrow,
   headline,
   subheadline,
+  meta,
   features,
+  pullQuote,
+  metrics,
+  footnote,
   ctaText,
   ctaUrl,
   ctaVariant = "default",
@@ -250,6 +320,28 @@ export default function FeaturesIconTrio({
           )}
         </motion.header>
 
+        {/* Section-level meta strip — frames the whole section */}
+        {meta && meta.length > 0 && (
+          <motion.dl
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.3, ease: "easeOut", delay: 0.05 }}
+            className="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-x-6 gap-y-6 border-y border-base-300 py-6 md:mt-12 md:grid-cols-4"
+          >
+            {meta.map((m, i) => (
+              <div key={i} className="flex flex-col gap-1">
+                <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-base-content/55">
+                  {m.label}
+                </dt>
+                <dd className="text-sm font-medium text-base-content md:text-base">
+                  {m.value}
+                </dd>
+              </div>
+            ))}
+          </motion.dl>
+        )}
+
         {/* Grid */}
         <motion.ul
           role="list"
@@ -258,7 +350,7 @@ export default function FeaturesIconTrio({
           viewport={{ once: true, margin: "-80px" }}
           variants={containerVariants}
           className={cn(
-            "mt-12 grid grid-cols-1 gap-y-10 md:mt-16 md:gap-y-0",
+            "mt-12 grid grid-cols-1 gap-y-10 md:mt-16 md:gap-y-12",
             gridCols,
           )}
         >
@@ -311,16 +403,113 @@ export default function FeaturesIconTrio({
                 >
                   <Icon className="h-5 w-5" aria-hidden />
                 </span>
+
+                {/* Optional stat punch-line — mono numeral, primary tint */}
+                {feature.stat && (
+                  <div className="mb-2 flex items-baseline gap-2">
+                    <span className="font-mono text-2xl font-semibold leading-none tracking-tight text-primary md:text-3xl">
+                      {feature.stat}
+                    </span>
+                    {feature.statLabel && (
+                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-base-content/55">
+                        {feature.statLabel}
+                      </span>
+                    )}
+                  </div>
+                )}
+
                 <h3 className="text-lg font-semibold leading-snug text-base-content md:text-xl">
                   {feature.title}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-base-content/70 md:text-base">
                   {feature.description}
                 </p>
+
+                {/* Optional supporting bullets — border-t divide-y rhythm
+                    keeps things flat (no card-in-card). */}
+                {feature.bullets && feature.bullets.length > 0 && (
+                  <ul className="mt-5 flex flex-col divide-y divide-base-300 border-t border-base-300">
+                    {feature.bullets.map((bullet, bi) => (
+                      <li
+                        key={bi}
+                        className="flex items-start gap-3 py-2.5 text-sm leading-relaxed text-base-content/75 md:text-[15px]"
+                      >
+                        <span
+                          aria-hidden
+                          className="mt-2 inline-block h-1 w-1 shrink-0 rounded-full bg-primary"
+                        />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </motion.li>
             );
           })}
         </motion.ul>
+
+        {/* Pull quote — bridges the grid to the metrics/CTA close */}
+        {pullQuote && (
+          <motion.figure
+            className="mx-auto mt-16 max-w-4xl border-l-2 border-primary pl-6 md:mt-20 md:pl-10"
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
+            <blockquote className="text-balance font-serif text-2xl leading-snug text-base-content md:text-3xl lg:text-4xl">
+              &ldquo;{pullQuote.quote}&rdquo;
+            </blockquote>
+            <figcaption className="mt-5 flex flex-col gap-1">
+              <span className="text-sm font-medium text-base-content md:text-base">
+                {pullQuote.attribution}
+              </span>
+              {pullQuote.attributionMeta && (
+                <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-base-content/55">
+                  {pullQuote.attributionMeta}
+                </span>
+              )}
+            </figcaption>
+          </motion.figure>
+        )}
+
+        {/* Outcome metrics band */}
+        {metrics && metrics.length > 0 && (
+          <motion.div
+            className={cn(
+              "grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:grid-cols-4 md:px-12 md:py-14",
+              pullQuote ? "mt-12 md:mt-16" : "mt-16 md:mt-20",
+            )}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
+            {metrics.map((m, i) => (
+              <div key={i} className="flex flex-col items-start gap-1">
+                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
+                  {m.value}
+                </span>
+                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
+                  {m.label}
+                </span>
+              </div>
+            ))}
+          </motion.div>
+        )}
+
+        {/* Methodology footnote */}
+        {footnote && (
+          <motion.p
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="mx-auto mt-8 max-w-[70ch] font-mono text-[11px] leading-relaxed tracking-[0.04em] text-base-content/55 md:mt-10"
+          >
+            {footnote}
+          </motion.p>
+        )}
 
         {/* Optional CTA */}
         {showCta && (
