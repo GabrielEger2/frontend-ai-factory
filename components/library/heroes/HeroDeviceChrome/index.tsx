@@ -231,7 +231,7 @@ export default function HeroDeviceChrome({
   return (
     <section
       className={cn(
-        "relative isolate w-full overflow-hidden bg-base-100",
+        "relative isolate flex w-full items-center overflow-hidden bg-base-100 min-h-screen",
         className,
       )}
     >

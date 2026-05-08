@@ -79,7 +79,7 @@ export default function HeroVideoBackdrop({
   return (
     <section
       className={cn(
-        "relative isolate flex w-full overflow-hidden bg-neutral text-neutral-content min-h-[100dvh]",
+        "relative isolate flex w-full overflow-hidden bg-neutral text-neutral-content min-h-screen",
         className,
       )}
     >

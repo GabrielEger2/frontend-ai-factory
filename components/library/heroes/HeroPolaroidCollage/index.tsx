@@ -248,7 +248,7 @@ export default function HeroPolaroidCollage({
   return (
     <section
       className={cn(
-        "relative w-full overflow-hidden bg-base-200/40",
+        "relative flex min-h-screen w-full items-center overflow-hidden bg-base-200/40",
         className,
       )}
     >

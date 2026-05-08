@@ -194,7 +194,7 @@ export default function HeroBakeryEditorial({
   return (
     <section
       className={cn(
-        "relative flex min-h-[100dvh] items-center justify-center bg-base-200/60 px-3 py-3 mt-20 sm:mt-0 sm:px-6 sm:py-6 lg:px-10 lg:py-10",
+        "relative flex min-h-screen items-center justify-center bg-base-200/60 px-3 py-3 mt-20 sm:mt-0 sm:px-6 sm:py-6 lg:px-10 lg:py-10",
         className,
       )}
     >

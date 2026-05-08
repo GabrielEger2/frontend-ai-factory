@@ -98,9 +98,9 @@ const HEIGHT_CLASS: Record<
   NonNullable<CarouselFullBleedSliderProps["height"]>,
   string
 > = {
-  short: "h-[60vh] min-h-[420px]",
-  tall: "h-[80vh] min-h-[520px]",
-  full: "h-[100dvh] min-h-[560px]",
+  short: "h-[60vh]",
+  tall: "h-[80vh]",
+  full: "h-[100dvh]",
 };
 
 const ALIGN_WRAPPER: Record<
@@ -437,7 +437,7 @@ export default function CarouselFullBleedSlider({
       aria-label={activeItem.headline ?? "Featured slider"}
       className={cn(
         "relative w-full overflow-hidden bg-neutral text-neutral-content",
-        "focus-visible:outline-none",
+        "focus-visible:outline-none min-h-screen",
         HEIGHT_CLASS[height],
         className,
       )}

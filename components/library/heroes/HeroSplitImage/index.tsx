@@ -284,7 +284,7 @@ export default function HeroSplitImage({
   return (
     <section
       className={cn(
-        "relative flex w-full items-center overflow-hidden bg-base-100 min-h-[100dvh]",
+        "relative flex w-full items-center overflow-hidden bg-base-100 min-h-screen",
         variant === "hero-split-image-01-compact" && "bg-base-300",
         className,
       )}

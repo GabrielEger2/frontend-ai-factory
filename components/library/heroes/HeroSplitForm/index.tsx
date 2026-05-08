@@ -93,7 +93,11 @@ export default function HeroSplitForm({
 
   return (
     <section
-      className={cn("relative w-full overflow-hidden", sectionTone, className)}
+      className={cn(
+        "relative flex min-h-screen w-full items-center overflow-hidden",
+        sectionTone,
+        className,
+      )}
     >
       <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 md:gap-12 md:px-8 md:py-16 lg:grid-cols-12 lg:gap-16 lg:px-12 lg:py-24">
         {/* -- Headline column -- */}

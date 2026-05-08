@@ -145,7 +145,10 @@ export default function HeroNewsroomTicker({
 
   return (
     <section
-      className={cn("relative w-full overflow-hidden bg-base-100", className)}
+      className={cn(
+        "relative flex min-h-screen w-full flex-col overflow-hidden bg-base-100",
+        className,
+      )}
     >
       {/* Top ticker row */}
       <div className="relative w-full overflow-hidden border-b border-base-300 bg-base-200/40 py-2">
