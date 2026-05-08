@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
+import ProductMedia from "@ui/ProductMedia";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -47,6 +48,12 @@ export interface ProductsSpotlightProps {
   image: string;
   /** Alt text for the primary image. */
   imageAlt: string;
+  /**
+   * Optional autoplay-loop video that upgrades the primary image to a moving
+   * loop when present. Falls back to `image` under prefers-reduced-motion or
+   * when unset. Plays only while the tile is in the viewport.
+   */
+  videoSrc?: string;
   /**
    * Optional 1–3 mini-gallery thumbnails. Rendered as a row beneath the
    * primary image. More than 3 starts looking like a PDP rail — keep tight.
@@ -98,6 +105,7 @@ export default function ProductsSpotlight({
   priceNote,
   image,
   imageAlt,
+  videoSrc,
   thumbnails,
   specs,
   ctaText,
@@ -166,11 +174,12 @@ export default function ProductsSpotlight({
         )}
         style={{ aspectRatio: "4 / 5" }}
       >
-        <img
-          src={image}
-          alt={imageAlt}
-          className="absolute inset-0 h-full w-full object-cover"
+        <ProductMedia
+          image={image}
+          imageAlt={imageAlt}
+          videoSrc={videoSrc}
           loading="lazy"
+          className="absolute inset-0"
         />
       </div>
 
