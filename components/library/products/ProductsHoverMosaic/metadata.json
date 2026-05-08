@@ -42,6 +42,7 @@
           { "name": "productName", "type": "text", "maxLength": 60 },
           { "name": "image", "type": "image", "aspectRatio": "4:5" },
           { "name": "imageAlt", "type": "text", "maxLength": 160 },
+          { "name": "videoSrc", "type": "video", "optional": true },
           {
             "name": "price",
             "type": "text",

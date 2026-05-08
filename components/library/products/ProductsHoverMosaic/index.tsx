@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { FiArrowUpRight } from "react-icons/fi";
 import { cn } from "@lib/utils";
 import { CtaButton, type CtaVariant, type ColorScheme } from "@ui/button";
+import ProductMedia from "@ui/ProductMedia";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -20,6 +21,8 @@ export interface MosaicTile {
   price?: string;
   /** Per-tile destination — typically /products/<slug>. */
   productUrl: string;
+  /** Optional autoplay-loop video that upgrades the still image. */
+  videoSrc?: string;
 }
 
 export interface ProductsHoverMosaicProps {
@@ -90,13 +93,12 @@ function MosaicTileCard({
     >
       {/* Image — soft scale on hover, slow easing so the zoom feels
           editorial rather than mechanical. */}
-      <motion.img
-        src={tile.image}
-        alt={tile.imageAlt}
+      <ProductMedia
+        image={tile.image}
+        imageAlt={tile.imageAlt}
+        videoSrc={tile.videoSrc}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover"
-        whileHover={prefersReducedMotion ? undefined : { scale: 1.06 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="absolute inset-0 transition-transform duration-[600ms] ease-out group-hover:scale-[1.06]"
       />
 
       {/* Bottom-anchored gradient — only renders on hover/focus so the

@@ -1,6 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import ProductsHoverMosaic from "./index";
 
+// Pexels public-domain clip — reused from CtaVideoBackdrop.stories.tsx.
+// 16:9 backdrop letterboxed via object-cover in a 4:5 tile —
+// acceptable for Storybook demo; production should use aspect-appropriate clips.
+const ATELIER_VIDEO =
+  "https://videos.pexels.com/video-files/4488747/4488747-uhd_2732_1440_25fps.mp4";
+
 const meta: Meta<typeof ProductsHoverMosaic> = {
   title: "Products/ProductsHoverMosaic",
   component: ProductsHoverMosaic,
@@ -47,6 +53,7 @@ export const AtelierFashion: Story = {
       imageAlt:
         "Vestido longo de seda em tom marfim drapeado em manequim de costura sob luz lateral suave",
       productUrl: "/products/vestido-tarsila",
+      videoSrc: ATELIER_VIDEO,
     },
     tiles: [
       {
