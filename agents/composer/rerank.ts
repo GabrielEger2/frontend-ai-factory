@@ -6,14 +6,17 @@ import { COMPONENT_METADATA } from "../assembler/component-sources.generated";
 /*  Constants                                                          */
 /* ------------------------------------------------------------------ */
 
-// Tuned 2026-05-08 from grid sweep over 53 labeled fixtures across 8 briefs
-// (agents/eval/reports/2026-05-08T17-28-31-718Z.md). Best global combo lifted
-// agreement from 0.613 to 0.768 vs the previous 0.25/0.25/0.25/0.25 baseline.
-const WEIGHT_PAIRS_WITH = 0.25;
-const WEIGHT_STYLE_OVERLAP = 0.5;
+// Tuned 2026-05-08 from grid sweep over 53 labeled fixtures with the new
+// audienceFit signal added (agents/eval/reports/2026-05-08T19-32-32-183Z.md).
+// Best global combo lifted agreement from 0.768 to 0.800 vs the prior best.
+// audienceFit (Qdrant per-axis cosine) carries the signal; pairsWith and
+// styleOverlap fall to 0/0.25 respectively because audienceFit subsumes
+// most of the segment/vertical-fit work the style filter was doing.
+const WEIGHT_PAIRS_WITH = 0;
+const WEIGHT_STYLE_OVERLAP = 0.25;
 const WEIGHT_DIVERSITY = 0;
 const WEIGHT_DENSITY = 0;
-const WEIGHT_AUDIENCE_FIT = 0.0;
+const WEIGHT_AUDIENCE_FIT = 0.5;
 const PAIRS_WITH_BOOST = 0.3;
 const PAIRS_WITH_DEMOTE = 0.3;
 const IMAGE_WEIGHT_HEAVY_THRESHOLD = 0.3;
