@@ -141,6 +141,7 @@
     "hero-asymmetric-stack-01",
     "hero-polaroid-collage-01"
   ],
+  "vertical": ["saas", "agency"],
   "description": "A SaaS-classic hero pairing a tight content column with a product screenshot mounted in the device frame of your choice — browser window, macbook lid, phone, or tablet. Built for software products whose conversion lever is showing the actual UI.",
   "descriptions": {
     "descriptive": "A 5/7 split with the headline column on the left (eyebrow status pill, optional highlighted word in the headline, subheadline, primary + secondary CTAs, optional trust badges) and the product screenshot on the right wrapped in a chosen device chrome. Browser frame includes a fake address bar; macbook frame mimics a laptop lid; phone and tablet frames render rounded device shells. A soft primary-color glow sits behind the device for depth.",

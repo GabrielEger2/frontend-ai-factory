@@ -92,6 +92,7 @@
   "mobileBehavior": "stack",
   "pairsWell": ["faq-tabbed-01"],
   "pairsPoorly": ["pricing-tier-cards-01", "pricing-freemium-ladder-01"],
+  "vertical": ["saas", "fitness", "ecommerce"],
   "description": "Tier cards with an animated monthly / annual billing-cycle switch. The toggle uses a shared-layoutId sliding pill; per-plan prices cross-fade on cycle change; an annual discount badge inverts when active. Designed to make the savings legible without forcing the buyer to read math.",
   "descriptions": {
     "descriptive": "Three-up plan cards with a centered pill-toggle above the grid. The toggle uses Framer Motion's layoutId so the active selection slides between Monthly and Annual with spring physics. Each plan card cross-fades the price on cycle change; an optional 'billed yearly' total fades in beneath the per-month figure when annual is selected. Featured plan lifts -3 to break the horizon line.",

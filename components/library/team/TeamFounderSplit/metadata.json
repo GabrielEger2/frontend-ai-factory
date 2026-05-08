@@ -71,6 +71,7 @@
   "mobileBehavior": "stack",
   "pairsWell": ["team-leadership-grid-01", "testimonial-spotlight-quote-01"],
   "pairsPoorly": [],
+  "vertical": ["legal-consulting", "atelier-luxe", "healthcare"],
   "description": "Editorial single-founder split. Tall 4:5 portrait beside an extended multi-paragraph bio, optional signature image, credential chips, primary and secondary CTAs. Portrait can swap sides via portraitSide.",
   "descriptions": {
     "descriptive": "A two-column editorial split that frames one person as the page. The copy column carries an eyebrow, balanced headline, an attribution block separated by a primary-tinted vertical rule, one to three bio paragraphs in a 60ch measure, and a signature row that prefers an actual signature image but falls back to a typed serif `— Name`. Optional credential chips render as monospaced uppercase pills. The portrait column is a tall 4:5 rounded image with a soft caption ribbon. Side can be flipped with `portraitSide`.",

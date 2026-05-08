@@ -125,6 +125,7 @@
     "hero-asymmetric-stack-01",
     "hero-polaroid-collage-01"
   ],
+  "vertical": ["hospitality", "hospitality-luxe"],
   "description": "A full-bleed cinematic hero with optional looping video backdrop, tinted overlay, and an asymmetric content block anchored to the bottom edge. Built for hospitality, fashion campaigns, agencies, and any brand whose product is a felt experience.",
   "descriptions": {
     "descriptive": "An ambient video plays muted and looping over a poster fallback, layered with a configurable neutral tint and a soft bottom-up gradient for legibility. Headline, subheadline, and CTAs anchor in a chosen quadrant, with an optional metadata strip along the bottom for credits, locations, or release dates.",

@@ -144,6 +144,7 @@
     "hero-asymmetric-stack-01",
     "hero-polaroid-collage-01"
   ],
+  "vertical": ["legal-consulting", "saas"],
   "description": "An editorial-newsroom hero with a live data ticker, oversized serif headline, lede paragraph, and a side rail of featured stories. Built for publications, financial-data products, research firms, and any brand that wants to read like a front page.",
   "descriptions": {
     "descriptive": "A monospace ticker scrolls along the top edge with up/down sentiment glyphs and trend tints. Below, an issue rule frames a serif display headline and a horizontal divider tucks the lede beneath the title. The right rail stacks featured stories with kickers, optional thumbnails, and meta lines that read like a print contents page.",
