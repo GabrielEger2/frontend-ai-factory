@@ -1,0 +1,20 @@
+{
+  "fixtureId": "atelie-moda",
+  "brief": "ateliê de moda autoral",
+  "goldLayout": {
+    "hero": "hero-asymmetric-stack-01",
+    "content": "gallery-image-text-editorial-01",
+    "gallery": "gallery-masonry-01",
+    "testimonial": "testimonial-spotlight-quote-01",
+    "contact": "contact-booking-embed-01",
+    "footer": "footer-reveal-01"
+  },
+  "rationale": {
+    "hero": "Editorial+luxury+bold, elegant — fashion editorial vibe",
+    "content": "Editorial+luxury, elegant — magazine spread for designer narrative",
+    "gallery": "Editorial+playful+bold, energetic+elegant — varied collection",
+    "testimonial": "Editorial+luxury, elegant — press/designer quote",
+    "contact": "Atelier needs private fitting bookings",
+    "footer": "Editorial+minimal+elegant"
+  }
+}

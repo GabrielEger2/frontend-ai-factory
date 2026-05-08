@@ -1,0 +1,22 @@
+{
+  "fixtureId": "clinica-odontologica",
+  "brief": "clínica odontológica família",
+  "goldLayout": {
+    "hero": "hero-polaroid-collage-01",
+    "content": "features-icon-trio-01",
+    "team": "team-leadership-grid-01",
+    "testimonial": "testimonial-masonry-quotes-01",
+    "faq": "faq-tabbed-01",
+    "cta": "cta-testimonial-paired-01",
+    "footer": "footer-reveal-01"
+  },
+  "rationale": {
+    "hero": "Playful+editorial+classic, friendly+energetic+elegant — warm family feel",
+    "content": "Clean services overview (cleaning/whitening/ortho)",
+    "team": "Meet the dentists grid — healthcare standard",
+    "testimonial": "Energetic+trustworthy+friendly — patient quotes collage",
+    "faq": "Modern+minimal+corporate, calm+trustworthy — insurance/services tabs",
+    "cta": "Trust signal for healthcare booking",
+    "footer": "Top vector score, fits brand mood"
+  }
+}

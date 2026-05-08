@@ -1,0 +1,22 @@
+{
+  "fixtureId": "consultoria-financeira",
+  "brief": "consultoria financeira pessoal",
+  "goldLayout": {
+    "hero": "hero-split-form-01",
+    "content": "features-check-list-01",
+    "stats": "stats-count-up-01",
+    "testimonial": "testimonial-metric-card-01",
+    "faq": "faq-tabbed-01",
+    "cta": "cta-testimonial-paired-01",
+    "footer": "footer-reveal-01"
+  },
+  "rationale": {
+    "hero": "Modern+corporate+minimal — free consultation form pairs with hero",
+    "content": "Clean what we help with list, conversion-oriented",
+    "stats": "Modern+minimal+corporate, professional+trustworthy",
+    "testimonial": "Corporate+serious — saved client R$X",
+    "faq": "Tabs for Investments/Tax/Retirement",
+    "cta": "Trust signal for financial decision",
+    "footer": "Modern+editorial+minimal"
+  }
+}

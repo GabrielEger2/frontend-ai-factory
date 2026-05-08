@@ -1,0 +1,22 @@
+{
+  "fixtureId": "padaria-luxo-sp",
+  "brief": "padaria de luxo em São Paulo",
+  "goldLayout": {
+    "hero": "hero-bakery-editorial-01",
+    "products": "products-spotlight-01",
+    "content": "gallery-image-text-editorial-01",
+    "gallery": "gallery-masonry-01",
+    "testimonial": "testimonial-spotlight-quote-01",
+    "contact": "contact-locations-map-01",
+    "footer": "footer-reveal-01"
+  },
+  "rationale": {
+    "hero": "Literally a bakery editorial hero — purpose-built",
+    "products": "Signature pastry showcase with story",
+    "content": "Editorial+luxury, elegant+calm — magazine artisan spread",
+    "gallery": "Editorial+playful, varied pastry collage",
+    "testimonial": "Editorial+luxury, elegant+trustworthy",
+    "contact": "Physical bakery needs address+map",
+    "footer": "Editorial+elegant+minimal"
+  }
+}

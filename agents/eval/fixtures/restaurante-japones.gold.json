@@ -1,0 +1,20 @@
+{
+  "fixtureId": "restaurante-japones",
+  "brief": "restaurante japonês alta gastronomia",
+  "goldLayout": {
+    "hero": "hero-asymmetric-stack-01",
+    "content": "gallery-image-text-editorial-01",
+    "products": "products-spotlight-01",
+    "testimonial": "testimonial-spotlight-quote-01",
+    "cta": "cta-image-backdrop-01",
+    "footer": "footer-reveal-01"
+  },
+  "rationale": {
+    "hero": "Editorial+luxury+modern, elegant — refined low-density omakase aesthetic",
+    "content": "Editorial+luxury, elegant+calm — chef philosophy spread",
+    "products": "Single signature dish feature",
+    "testimonial": "Editorial+luxury, elegant+trustworthy — refined critic quote",
+    "cta": "Editorial+luxury, elegant+calm+trustworthy",
+    "footer": "Editorial+minimal, elegant+trustworthy"
+  }
+}

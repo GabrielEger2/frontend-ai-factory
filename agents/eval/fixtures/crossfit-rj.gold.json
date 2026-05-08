@@ -1,0 +1,22 @@
+{
+  "fixtureId": "crossfit-rj",
+  "brief": "academia de crossfit no Rio",
+  "goldLayout": {
+    "hero": "hero-video-backdrop-01",
+    "content": "features-bento-grid-01",
+    "gallery": "gallery-masonry-01",
+    "pricing": "pricing-monthly-annual-toggle-01",
+    "testimonial": "testimonial-masonry-quotes-01",
+    "cta": "cta-video-backdrop-01",
+    "footer": "footer-columns-social-01"
+  },
+  "rationale": {
+    "hero": "Bold+modern, energetic — video for gym action",
+    "content": "Asymmetric tiles for varied class types",
+    "gallery": "Editorial+modern+playful+bold, energetic+friendly — gym action photos",
+    "pricing": "Modern+playful, monthly/annual is gym-standard",
+    "testimonial": "Modern+bold, energetic+friendly — member success collage",
+    "cta": "Bold+editorial, energetic — high-energy enrollment CTA",
+    "footer": "Social links matter for gym community"
+  }
+}
