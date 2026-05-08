@@ -9519,6 +9519,133 @@
     }
   },
   {
+    "id": "team-values-manifesto-01",
+    "name": "Team Values Manifesto",
+    "category": "team",
+    "purpose": [
+      "team",
+      "about",
+      "story",
+      "brand-statement"
+    ],
+    "acceptsStyleKit": {
+      "card": false,
+      "background": true,
+      "textDecoration": false,
+      "button": true
+    },
+    "style": [
+      "editorial",
+      "modern",
+      "minimal",
+      "bold"
+    ],
+    "mood": [
+      "trustworthy",
+      "elegant",
+      "professional",
+      "calm"
+    ],
+    "layout": "stacked",
+    "density": "medium",
+    "imageWeight": 0.5,
+    "slots": [
+      {
+        "name": "eyebrow",
+        "type": "text",
+        "maxLength": 40,
+        "optional": true
+      },
+      {
+        "name": "headline",
+        "type": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "manifesto",
+        "type": "text",
+        "maxLength": 280,
+        "optional": true
+      },
+      {
+        "name": "values",
+        "type": "list",
+        "minItems": 3,
+        "maxItems": 5,
+        "itemSchema": {
+          "type": "object",
+          "fields": [
+            {
+              "name": "title",
+              "type": "text",
+              "maxLength": 80
+            },
+            {
+              "name": "description",
+              "type": "text",
+              "maxLength": 320
+            },
+            {
+              "name": "image",
+              "type": "image",
+              "optional": true,
+              "aspectRatio": "4:5"
+            },
+            {
+              "name": "imageAlt",
+              "type": "text",
+              "maxLength": 160
+            },
+            {
+              "name": "caption",
+              "type": "text",
+              "maxLength": 40,
+              "optional": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "tone",
+        "type": "text",
+        "optional": true,
+        "enum": [
+          "neutral",
+          "muted"
+        ]
+      },
+      {
+        "name": "ctaText",
+        "type": "text",
+        "maxLength": 30,
+        "optional": true
+      },
+      {
+        "name": "ctaUrl",
+        "type": "url",
+        "optional": true
+      }
+    ],
+    "mobileBehavior": "stack",
+    "pairsWell": [
+      "team-leadership-grid-01",
+      "team-founder-split-01",
+      "stats-kpi-grid-01",
+      "testimonial-spotlight-quote-01",
+      "footer-columns-social-01"
+    ],
+    "pairsPoorly": [
+      "team-member-spotlight-01",
+      "cta-sticky-image-list-01"
+    ],
+    "description": "Editorial values manifesto with eyebrow, headline + manifesto paragraph, and 3-5 numbered values rendered as alternating image-text rows. Designed for About / Culture / Careers pages where principles lead and people follow.",
+    "descriptions": {
+      "descriptive": "An editorial values list where each principle gets its own zigzag row: image-left/text-right alternating with text-left/image-right. The header opens with a small eyebrow rail (eyebrow + hairline + index count), then an oversized headline aligned with a short manifesto paragraph anchored to the bottom-right. Each value carries a monospaced ordinal numeral, a short hairline divider, a tight title, and a 55ch body paragraph. Photos are 4:5 portraits — people mid-work, not posed — with optional caption chips for context. A `tone` prop swaps between neutral white and a muted base-200 surface for editorial mood.",
+      "usage": "Use on About / Culture / Careers pages when the brand wants principles to lead the section rather than headshots. Place after a brand-statement hero and before a TeamLeadershipGrid, TeamFounderSplit, or stats beat — the pairing reads 'here's what we believe → here's who lives it'. Avoid stacking next to TeamMemberSpotlight; both lean editorial and compete for the same emotional weight.",
+      "audienceFit": "Mission-driven SaaS, design and creative agencies, healthcare practices, mid-market service businesses, and any brand whose principles are part of the product."
+    }
+  },
+  {
     "id": "testimonial-infinitescroll-01",
     "name": "Infinite Scroll",
     "category": "testimonial",
