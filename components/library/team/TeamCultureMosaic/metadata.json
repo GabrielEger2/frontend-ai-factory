@@ -1,0 +1,81 @@
+{
+  "id": "team-culture-mosaic-01",
+  "name": "Team Culture Mosaic",
+  "category": "team",
+  "purpose": ["team", "about", "story", "brand-statement"],
+  "acceptsStyleKit": {
+    "card": true,
+    "background": false,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["editorial", "playful", "modern", "bold"],
+  "mood": ["friendly", "fun", "energetic", "elegant"],
+  "layout": "asymmetric",
+  "density": "medium",
+  "imageWeight": 0.7,
+  "slots": [
+    { "name": "eyebrow", "type": "text", "maxLength": 40, "optional": true },
+    { "name": "headline", "type": "text", "maxLength": 100 },
+    { "name": "intro", "type": "text", "maxLength": 240, "optional": true },
+    {
+      "name": "images",
+      "type": "list",
+      "minItems": 6,
+      "maxItems": 9,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "src", "type": "image", "optional": true },
+          { "name": "alt", "type": "text", "maxLength": 160 },
+          {
+            "name": "aspect",
+            "type": "text",
+            "optional": true,
+            "enum": ["portrait", "landscape", "square", "tall"]
+          },
+          {
+            "name": "caption",
+            "type": "text",
+            "maxLength": 40,
+            "optional": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "values",
+      "type": "list",
+      "maxItems": 4,
+      "optional": true,
+      "itemSchema": {
+        "type": "object",
+        "fields": [
+          { "name": "title", "type": "text", "maxLength": 50 },
+          { "name": "description", "type": "text", "maxLength": 180 }
+        ]
+      }
+    },
+    { "name": "ctaText", "type": "text", "maxLength": 30, "optional": true },
+    { "name": "ctaUrl", "type": "url", "optional": true }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-bakery-editorial-01",
+    "hero-polaroid-collage-01",
+    "gallery-image-text-editorial-01",
+    "gallery-masonry-01",
+    "footer-columns-social-01"
+  ],
+  "pairsPoorly": [
+    "team-leadership-grid-01",
+    "team-founder-split-01",
+    "cta-sticky-image-list-01"
+  ],
+  "description": "Editorial mood-board mosaic of mixed-aspect candid lifestyle photos interleaved with 2-4 short value cards. Designed for culture / values sections — studios, agencies, restaurants, creative brands.",
+  "descriptions": {
+    "descriptive": "An asymmetric photo mosaic where mixed aspect ratios — portrait, square, landscape, tall — fan across a 4-column grid with row spans tuned per crop. Two to four value cards weave into the grid at deterministic positions (after the second image, then every third) so the rhythm reads woven rather than zoned. Tiles surface a small monospaced caption chip in the upper-left and a slow scale-up on hover; value cards sit in bordered surfaces with a primary-tinted ordinal numeral. Imagery should be lifestyle and candid — people working, eating together, mid-laugh — never polished press headshots.",
+    "usage": "Use on About / Culture / Careers pages where 'who we are' matters more than 'who runs us'. Place after a brand-statement hero or editorial image-text section, and pair with a stats or testimonial beat afterwards. Avoid stacking with TeamLeadershipGrid or TeamFounderSplit on the same page — both compete for the same human-ness budget and reduce the mosaic's effect.",
+    "audienceFit": "Creative agencies, design studios, restaurants and hospitality groups, lifestyle DTC brands, hospitality groups, and anywhere the team's energy is the product."
+  }
+}
