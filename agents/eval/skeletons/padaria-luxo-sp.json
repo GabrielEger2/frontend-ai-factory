@@ -1,0 +1,42 @@
+[
+  {
+    "category": "navigation",
+    "purpose": "elegant navigation for luxury bakery sections",
+    "notes": "premium feel with warm touches"
+  },
+  {
+    "category": "hero",
+    "purpose": "showcase artisanal luxury bakery in São Paulo",
+    "notes": "warm elegant imagery of fresh baked goods"
+  },
+  {
+    "category": "products",
+    "purpose": "display premium artisanal breads and pastries",
+    "notes": "editorial-style photography highlighting craftsmanship"
+  },
+  {
+    "category": "content",
+    "purpose": "tell story of artisanal baking tradition and quality",
+    "notes": "warm narrative about premium ingredients and techniques"
+  },
+  {
+    "category": "gallery",
+    "purpose": "visual showcase of bakery atmosphere and products",
+    "notes": "elegant photos of bakery interior and artisan process"
+  },
+  {
+    "category": "testimonial",
+    "purpose": "social proof from satisfied luxury food customers",
+    "notes": "premium customer experiences and quality appreciation"
+  },
+  {
+    "category": "contact",
+    "purpose": "location and hours for São Paulo bakery visits",
+    "notes": "warm invitation to visit the physical location"
+  },
+  {
+    "category": "footer",
+    "purpose": "complete contact information and brand closing",
+    "notes": "elegant finish maintaining luxury feel"
+  }
+]
