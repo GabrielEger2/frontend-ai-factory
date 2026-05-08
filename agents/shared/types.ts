@@ -167,6 +167,7 @@ export const StyleOutputSchema = z.object({
   paletteSuggestions: z.array(PaletteSchema).optional(),
   styleKit: StyleKitSchema.optional(),
   imageryDensity: z.enum(["low", "medium", "high"]).optional(),
+  vertical: z.array(z.string()).optional(),
 });
 
 export type StyleOutput = z.infer<typeof StyleOutputSchema>;

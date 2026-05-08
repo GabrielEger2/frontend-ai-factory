@@ -53,6 +53,17 @@ Given a company brief and research output, you must produce a cohesive style def
 
 9. **imageryDensity** — Infer \`imageryDensity\` (\`"low"\` | \`"medium"\` | \`"high"\`) based on segment + research. High: real-estate, portfolio, restaurant, fashion. Low: accounting, legal, SaaS-tooling. Default: medium.
 
+10. **vertical** — Extract 0–3 canonical vertical tokens from the brief, ordered by confidence.
+    Use the exact tokens from this list: bakery, bakery-luxe, restaurant, restaurant-luxe,
+    fitness, auto-services, legal-consulting, legal-luxe, healthcare, healthcare-luxe,
+    beauty-salon, education, real-estate, real-estate-luxe, hospitality, hospitality-luxe,
+    pet-services, ecommerce, construction, saas, agency, atelier-luxe, gourmet-retail.
+
+    Each row in the "Default vertical → tag clusters" table corresponds to a canonical token.
+    For luxury overrides, emit the -luxe variant first then the base
+    (e.g. ["bakery-luxe", "bakery"]). Always emit the "vertical" key — use [] if the
+    brief is genuinely cross-vertical, multi-segment, or not clearly mapped.
+
 ## Segment-Aware Personality Mapping
 
 Adapt mood, style, and density to the business segment AND to any **sub-vertical qualifier** in the brief (\`de luxo\`, \`artesanal\`, \`premium\`, etc.). Use ONLY the values from the allowed mood and style lists in sections 3 and 4 above — there are no synonyms. "Warm" is a palette temperature, not a mood; if a brief feels warm, encode it as \`friendly\` plus \`elegant\` or \`calm\`.
@@ -96,6 +107,8 @@ If the company name, segment, description, research output, or seller-supplied k
 | Gastronomia/produtos premium, importadora gourmet, mercado fino | elegant, calm, friendly | editorial, luxury, classic | medium |
 
 The luxury qualifier always shifts \`style\` toward some combination of \`editorial\` + \`luxury\` + \`classic\` and \`mood\` toward \`elegant\` + \`calm\`/\`friendly\`/\`trustworthy\`. It NEVER picks \`fun\` or \`playful\` (those signal casual/cheerful, not refined). It also avoids \`bold\` for sedate luxury verticals like advocacia or clínica boutique.
+
+Each row maps to a canonical vertical token: bakery row → "bakery", restaurant row → "restaurant", etc. Luxury override rows map to the -luxe variants (e.g. bakery-luxe row → "bakery-luxe").
 
 ### Use these as guidelines
 
@@ -224,7 +237,8 @@ Mood modifiers refine the same palette family:
     "background": "<animated-svg|dot-pattern|striped|gradient-bars|interactive-grid|none>",
     "textDecoration": "<none|highlighter|reveal>"
   },
-  "imageryDensity": "<low|medium|high>"
+  "imageryDensity": "<low|medium|high>",
+  "vertical": ["<vertical-token>", "..."]
 }`;
 }
 
