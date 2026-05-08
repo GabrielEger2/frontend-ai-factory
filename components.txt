@@ -36,7 +36,3 @@ Brainstormed gaps in `components/library/content/` (5 on disk, all split-heavy /
 - ContentManifestoStatement — single-screen, large-type values statement. Content-side companion to the new TeamValuesManifesto in team/.
 - ContentInteractiveTabbed — tabbed substantive content reveal (different from FaqTabbed because narrative, not Q&A). Useful for "Solutions for X / Y / Z".
 - ContentNumberedAccordion — collapsible numbered sections — between Process and FAQ; long-form content that doesn't all fit at once.
-
-## Doc/disk inconsistency to fix separately
-
-CLAUDE.md and prior components.txt claim CarouselCards and ZigzagAlternatingSplit exist in `content/`. They don't on disk. Either build them or correct the docs.

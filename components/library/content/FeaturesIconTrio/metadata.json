@@ -1,0 +1,95 @@
+{
+  "id": "features-icon-trio-01",
+  "name": "Features Icon Trio",
+  "category": "content",
+  "purpose": ["features", "benefits", "services"],
+  "acceptsStyleKit": {
+    "card": false,
+    "background": true,
+    "textDecoration": true,
+    "button": true
+  },
+  "style": ["modern", "minimal", "corporate"],
+  "mood": ["professional", "trustworthy", "friendly"],
+  "layout": "grid",
+  "density": "medium",
+  "imageWeight": 0.05,
+  "slots": [
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 200
+    },
+    {
+      "name": "features",
+      "type": "list",
+      "minItems": 3,
+      "maxItems": 6,
+      "itemSchema": {
+        "iconName": {
+          "type": "text",
+          "maxLength": 30,
+          "description": "Lucide icon name in lowercase kebab-case (e.g. 'zap', 'shield-check', 'trending-up'). Resolved internally to a react-icons/lu component."
+        },
+        "title": {
+          "type": "text",
+          "maxLength": 60
+        },
+        "description": {
+          "type": "text",
+          "maxLength": 220
+        }
+      }
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "ctaVariant",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-split-image-01",
+    "hero-asymmetric-stack-01",
+    "pricing-tier-cards-01",
+    "testimonial-spotlight-quote-01",
+    "cta-hover-reveal-list-01"
+  ],
+  "pairsPoorly": [],
+  "description": "A flat icon-led features grid with three to six cells, soft hover lift, and hairline dividers between cells. The workhorse features section for SaaS, professional services, and product landing pages where info density matters more than visual flourish.",
+  "descriptions": {
+    "descriptive": "A clean grid of icon-headline-body cells with restrained motion: a 4 to 5 pixel hover lift, a one pixel outline that activates on hover, and a faded vertical hairline between cells. Three items render as a 3-column row; four or more items wrap to a 2-column or 2x3 grid to avoid the recognizable 4-or-6-across pattern.",
+    "usage": "Use as a benefits or capabilities section on SaaS landing pages, professional services sites, and product overview pages. Best when the brand needs a flat, scannable layout rather than the split layouts already in the library. Pairs naturally below a hero and above pricing or testimonials.",
+    "audienceFit": "Suits info-dense brands like B2B SaaS, fintech, legal and consulting practices, and eco or sustainability brands that want a calm, credible features section without bento or asymmetric layouts. Works in both light and dark themes through semantic tokens."
+  }
+}

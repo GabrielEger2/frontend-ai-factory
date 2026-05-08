@@ -1,0 +1,103 @@
+{
+  "id": "features-bento-grid-01",
+  "name": "Features Bento Grid",
+  "category": "content",
+  "purpose": ["features", "benefits", "showcase"],
+  "acceptsStyleKit": {
+    "card": true,
+    "background": true,
+    "textDecoration": false,
+    "button": true
+  },
+  "style": ["modern", "playful", "bold"],
+  "mood": ["energetic", "friendly", "fun"],
+  "layout": "asymmetric",
+  "density": "high",
+  "imageWeight": 0.15,
+  "slots": [
+    {
+      "name": "eyebrow",
+      "type": "text",
+      "optional": true,
+      "maxLength": 60
+    },
+    {
+      "name": "headline",
+      "type": "text",
+      "maxLength": 80
+    },
+    {
+      "name": "subheadline",
+      "type": "text",
+      "optional": true,
+      "maxLength": 200
+    },
+    {
+      "name": "features",
+      "type": "list",
+      "minItems": 5,
+      "maxItems": 7,
+      "itemSchema": {
+        "size": {
+          "type": "text",
+          "enum": ["large", "medium", "small"]
+        },
+        "iconName": {
+          "type": "text",
+          "optional": true,
+          "maxLength": 40
+        },
+        "title": {
+          "type": "text",
+          "maxLength": 60
+        },
+        "description": {
+          "type": "text",
+          "maxLength": 220
+        },
+        "accentScheme": {
+          "type": "text",
+          "optional": true,
+          "enum": ["primary", "secondary", "accent"]
+        }
+      }
+    },
+    {
+      "name": "ctaText",
+      "type": "text",
+      "optional": true,
+      "maxLength": 30
+    },
+    {
+      "name": "ctaUrl",
+      "type": "url",
+      "optional": true
+    },
+    {
+      "name": "ctaVariant",
+      "type": "text",
+      "optional": true,
+      "enum": ["default", "slide", "dotExpand", "drawOutline", "glow"]
+    },
+    {
+      "name": "ctaColorScheme",
+      "type": "text",
+      "optional": true,
+      "enum": ["primary", "secondary", "accent", "neutral"]
+    }
+  ],
+  "mobileBehavior": "stack",
+  "pairsWell": [
+    "hero-asymmetric-stack-01",
+    "hero-grid-gallery-01",
+    "cta-image-backdrop-01",
+    "pricing-monthly-annual-toggle-01"
+  ],
+  "pairsPoorly": ["hero-bakery-editorial-01"],
+  "description": "An asymmetric bento-box feature grid with mixed tile sizes, tilt-on-hover micro-interactions, and per-card accent tints — designed to land the playful, bold, energetic register that a calmer editorial layout can't reach.",
+  "descriptions": {
+    "descriptive": "An asymmetric grid where one large hero tile anchors the composition, surrounded by medium and small tiles in a varied bento arrangement. Mixed corner radii, per-card accent gradients in the corners, and spring-physics tilt on hover give the section a playful, alive quality. Tiles use Feather icons in tinted backplates and stack to a single column below the large breakpoint.",
+    "usage": "Reach for this section when you need to showcase 5–7 features or benefits with visual variety rather than a flat row. The size hierarchy lets you put the most important benefit in the large tile and supporting points around it. Best paired with bold or energetic hero sections; avoid below editorial, calm openers where the playful tilt feels off-tone.",
+    "audienceFit": "Fits creator tools, indie studios, lifestyle DTC, edtech, fintech-for-consumers — anywhere the brand voice leans warm, energetic, and confidently un-corporate. Less suitable for legal, financial advisory, or heritage-luxury brands that need restraint."
+  }
+}
