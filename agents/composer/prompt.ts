@@ -16,6 +16,7 @@ export interface CandidateComponent {
   imageWeight?: number;
   style?: string[];
   mood?: string[];
+  vertical?: string[];
   source?: "vector" | "fallback";
   vectorScore?: number;
   vectorScoresByAxis?: {

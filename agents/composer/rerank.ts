@@ -12,11 +12,13 @@ import { COMPONENT_METADATA } from "../assembler/component-sources.generated";
 // audienceFit (Qdrant per-axis cosine) carries the signal; pairsWith and
 // styleOverlap fall to 0/0.25 respectively because audienceFit subsumes
 // most of the segment/vertical-fit work the style filter was doing.
+// verticalFit added 2026-05-08 (Phase 3, feat/composer-vertical-affinity). Initial weight 0.5 per context.md decision B3.
 const WEIGHT_PAIRS_WITH = 0;
-const WEIGHT_STYLE_OVERLAP = 0.25;
+const WEIGHT_STYLE_OVERLAP = 0.15;
 const WEIGHT_DIVERSITY = 0;
 const WEIGHT_DENSITY = 0;
 const WEIGHT_AUDIENCE_FIT = 0.5;
+const WEIGHT_VERTICAL_FIT = 0.5;
 const PAIRS_WITH_BOOST = 0.3;
 const PAIRS_WITH_DEMOTE = 0.3;
 const IMAGE_WEIGHT_HEAVY_THRESHOLD = 0.3;
@@ -148,6 +150,17 @@ function scoreAudienceFit(candidate: CandidateComponent): number {
   return candidate.vectorScoresByAxis?.audienceFit ?? 0;
 }
 
+function scoreVerticalAffinity(
+  candidate: { vertical?: string[] },
+  briefVerticals: string[],
+): number {
+  const compVertical = candidate.vertical;
+  if (!compVertical || compVertical.length === 0) return 0.0;
+  if (!briefVerticals || briefVerticals.length === 0) return 0.0;
+  if (compVertical.some((v) => briefVerticals.includes(v))) return 1.0;
+  return -1.0;
+}
+
 /* ------------------------------------------------------------------ */
 /*  Public API                                                         */
 /* ------------------------------------------------------------------ */
@@ -158,6 +171,7 @@ export interface RerankWeights {
   diversity: number;
   density: number;
   audienceFit: number;
+  verticalFit: number;
 }
 
 export const DEFAULT_RERANK_WEIGHTS: RerankWeights = {
@@ -166,6 +180,7 @@ export const DEFAULT_RERANK_WEIGHTS: RerankWeights = {
   diversity: WEIGHT_DIVERSITY,
   density: WEIGHT_DENSITY,
   audienceFit: WEIGHT_AUDIENCE_FIT,
+  verticalFit: WEIGHT_VERTICAL_FIT,
 };
 
 /**
@@ -207,6 +222,7 @@ export function rerankCandidates(
   }
 
   const pickedIds = pickedCandidates.map((c) => c.id);
+  const briefVerticals = styleOutput.vertical ?? [];
 
   const scored = slotCandidates.map((candidate) => {
     const copy: CandidateComponent = { ...candidate };
@@ -220,13 +236,15 @@ export function rerankCandidates(
     const diversityPenalty = scoreDiversityPenalty(copy, pickedTagFrequencies);
     const densityPenalty = scoreDensityBalance(copy, pickedCandidates);
     const audienceFitScore = scoreAudienceFit(copy);
+    const verticalAffinityScore = scoreVerticalAffinity(copy, briefVerticals);
 
     const rerankScore =
       weights.pairsWith * pairsWithScore +
       weights.styleOverlap * styleScore -
       weights.diversity * diversityPenalty -
       weights.density * densityPenalty +
-      weights.audienceFit * audienceFitScore;
+      weights.audienceFit * audienceFitScore +
+      weights.verticalFit * verticalAffinityScore;
 
     // Attach debug payload via type cast so CandidateComponent stays clean
     // (no debug fields surface in the LLM prompt candidate table).
@@ -236,6 +254,7 @@ export function rerankCandidates(
       diversityPenalty,
       densityPenalty,
       audienceFitScore,
+      verticalAffinityScore,
       rerankScore,
     };
 

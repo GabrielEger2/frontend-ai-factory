@@ -365,6 +365,7 @@ async function getVectorCandidatesForSlot(
       imageWeight: meta?.imageWeight,
       style: meta?.style,
       mood: meta?.mood,
+      vertical: meta?.vertical ?? [],
       source: "vector" as const,
     });
   }
