@@ -1,0 +1,39 @@
+[
+  {
+    "category": "navigation",
+    "purpose": "easy access to dental services and contact information"
+  },
+  {
+    "category": "hero",
+    "purpose": "welcome families with caring dental care messaging",
+    "notes": "warm family imagery, trust-building headline"
+  },
+  {
+    "category": "content",
+    "purpose": "explain comprehensive family dental services and expertise",
+    "notes": "professional yet approachable tone"
+  },
+  {
+    "category": "team",
+    "purpose": "introduce caring dental professionals to build trust",
+    "notes": "friendly professional photos, credentials"
+  },
+  {
+    "category": "testimonial",
+    "purpose": "social proof from satisfied families and patients",
+    "notes": "focus on family-oriented experiences"
+  },
+  {
+    "category": "faq",
+    "purpose": "address common dental care concerns and appointment questions"
+  },
+  {
+    "category": "cta",
+    "purpose": "encourage appointment booking for family dental care",
+    "notes": "emphasize ease of scheduling"
+  },
+  {
+    "category": "footer",
+    "purpose": "contact details and office hours for dental appointments"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "category": "navigation",
+    "purpose": "main site navigation for CrossFit gym",
+    "notes": "bold, energetic styling to match brand"
+  },
+  {
+    "category": "hero",
+    "purpose": "attract fitness enthusiasts to join CrossFit RJ community",
+    "notes": "high-energy imagery of workouts, Rio location emphasis"
+  },
+  {
+    "category": "content",
+    "purpose": "explain CrossFit methodology and gym benefits",
+    "notes": "motivating tone, community focus"
+  },
+  {
+    "category": "gallery",
+    "purpose": "showcase gym facilities and member workouts",
+    "notes": "dynamic action shots, diverse member representation"
+  },
+  {
+    "category": "pricing",
+    "purpose": "display membership plans and class packages",
+    "notes": "clear pricing tiers for different commitment levels"
+  },
+  {
+    "category": "testimonial",
+    "purpose": "social proof from satisfied CrossFit RJ members",
+    "notes": "authentic member success stories and transformations"
+  },
+  {
+    "category": "cta",
+    "purpose": "encourage trial class booking or membership signup",
+    "notes": "urgent, action-oriented messaging"
+  },
+  {
+    "category": "footer",
+    "purpose": "contact information and Rio location details",
+    "notes": "include address, hours, social media links"
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "category": "navigation",
+    "purpose": "elegant menu navigation for fine dining restaurant",
+    "notes": "minimal design with reservation emphasis"
+  },
+  {
+    "category": "hero",
+    "purpose": "showcase premium Japanese fine dining experience",
+    "notes": "immersive imagery with sophisticated atmosphere"
+  },
+  {
+    "category": "content",
+    "purpose": "tell story of authentic Japanese culinary philosophy",
+    "notes": "refined editorial style with cultural narrative"
+  },
+  {
+    "category": "products",
+    "purpose": "highlight signature dishes and premium ingredients",
+    "notes": "elegant food photography with minimal presentation"
+  },
+  {
+    "category": "testimonial",
+    "purpose": "social proof from discerning food enthusiasts",
+    "notes": "sophisticated reviews emphasizing culinary expertise"
+  },
+  {
+    "category": "cta",
+    "purpose": "reservation booking for exclusive dining experience",
+    "notes": "luxury presentation with availability emphasis"
+  },
+  {
+    "category": "footer",
+    "purpose": "contact details and location for upscale clientele",
+    "notes": "calm minimal design with essential information"
+  }
+]

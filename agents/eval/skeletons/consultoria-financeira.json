@@ -1,0 +1,38 @@
+[
+  {
+    "category": "navigation",
+    "purpose": "primary site navigation for financial consulting services"
+  },
+  {
+    "category": "hero",
+    "purpose": "establish trust and communicate personal financial consulting expertise",
+    "notes": "professional imagery with clear value proposition"
+  },
+  {
+    "category": "content",
+    "purpose": "explain financial consulting services and methodology",
+    "notes": "emphasize personalized approach and financial clarity"
+  },
+  {
+    "category": "stats",
+    "purpose": "build credibility with client success metrics and experience data"
+  },
+  {
+    "category": "testimonial",
+    "purpose": "social proof from satisfied financial consulting clients",
+    "notes": "focus on transformation and peace of mind outcomes"
+  },
+  {
+    "category": "faq",
+    "purpose": "address common questions about personal financial consulting process"
+  },
+  {
+    "category": "cta",
+    "purpose": "lead capture for free financial consultation booking",
+    "notes": "emphasize no-obligation consultation"
+  },
+  {
+    "category": "footer",
+    "purpose": "contact information and professional credentials display"
+  }
+]

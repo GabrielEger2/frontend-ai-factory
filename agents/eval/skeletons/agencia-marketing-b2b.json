@@ -1,0 +1,35 @@
+[
+  {
+    "category": "navigation",
+    "purpose": "professional navigation for B2B marketing agency"
+  },
+  {
+    "category": "hero",
+    "purpose": "showcase B2B digital marketing expertise and results",
+    "notes": "bold corporate design emphasizing strategic growth"
+  },
+  {
+    "category": "content",
+    "purpose": "explain B2B digital marketing services and approach",
+    "notes": "professional tone highlighting strategic methodology"
+  },
+  {
+    "category": "stats",
+    "purpose": "display measurable B2B marketing results and client growth metrics",
+    "notes": "energetic presentation of performance data"
+  },
+  {
+    "category": "testimonial",
+    "purpose": "showcase B2B client success stories and case studies",
+    "notes": "trustworthy social proof from corporate clients"
+  },
+  {
+    "category": "cta",
+    "purpose": "generate B2B marketing consultation leads",
+    "notes": "results-driven call-to-action for business growth"
+  },
+  {
+    "category": "footer",
+    "purpose": "professional contact information and agency credentials"
+  }
+]

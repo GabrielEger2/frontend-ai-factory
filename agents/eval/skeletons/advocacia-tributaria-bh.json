@@ -1,0 +1,39 @@
+[
+  {
+    "category": "navigation",
+    "purpose": "primary site navigation for tax law services"
+  },
+  {
+    "category": "hero",
+    "purpose": "establish credibility as Belo Horizonte tax law specialists",
+    "notes": "professional imagery, authoritative messaging"
+  },
+  {
+    "category": "content",
+    "purpose": "explain tax law expertise and service areas",
+    "notes": "detailed service descriptions, professional tone"
+  },
+  {
+    "category": "stats",
+    "purpose": "showcase success metrics and case results",
+    "notes": "quantify expertise with professional achievements"
+  },
+  {
+    "category": "testimonial",
+    "purpose": "build trust through client success stories",
+    "notes": "business client testimonials, professional context"
+  },
+  {
+    "category": "faq",
+    "purpose": "address common tax law questions and concerns"
+  },
+  {
+    "category": "cta",
+    "purpose": "drive consultation requests for tax legal services",
+    "notes": "professional consultation offer"
+  },
+  {
+    "category": "footer",
+    "purpose": "contact information and legal practice details"
+  }
+]
