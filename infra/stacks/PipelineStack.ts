@@ -183,6 +183,33 @@ export class PipelineStack extends Stack {
     );
 
     /* -------------------------------------------------------------- */
+    /*  Image Resolver Lambda (deterministic — no LLM)                */
+    /* -------------------------------------------------------------- */
+
+    const imageFn = new AgentLambda(this, "ImageAgent", {
+      entry: path.join(__dirname, "../../agents/image/handler.ts"),
+      agentName: "image",
+      timeout: Duration.minutes(5),
+      memorySize: 512,
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        IMAGE_CACHE_TABLE_NAME: props.imageCacheTableName,
+        PEXELS_API_KEY_SSM_PATH: props.pexelsApiKeySsmPath,
+      },
+    });
+
+    projectsTable.grantReadWriteData(imageFn.fn);
+    imageCacheTable.grantReadWriteData(imageFn.fn);
+
+    const pexelsSsmArn = `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.pexelsApiKeySsmPath}`;
+    imageFn.fn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["ssm:GetParameter"],
+        resources: [pexelsSsmArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
     /*  Research Agent Lambda                                         */
     /* -------------------------------------------------------------- */
 
@@ -389,6 +416,13 @@ export class PipelineStack extends Stack {
     humanizerStep.addRetry(retryConfig);
     humanizerStep.addCatch(failHandlerStep, { resultPath: "$.error" });
 
+    const imageStep = new tasks.LambdaInvoke(this, "ImageStep", {
+      lambdaFunction: imageFn.fn,
+      outputPath: "$.Payload",
+    });
+    imageStep.addRetry(retryConfig);
+    imageStep.addCatch(failHandlerStep, { resultPath: "$.error" });
+
     const assemblerStep = new tasks.LambdaInvoke(this, "AssemblerStep", {
       lambdaFunction: assemblerFn.fn,
       outputPath: "$.Payload",
@@ -415,6 +449,7 @@ export class PipelineStack extends Stack {
       .next(composerStep)
       .next(contentStep)
       .next(humanizerStep)
+      .next(imageStep)
       .next(assemblerStep)
       .next(qaStep)
       .next(succeedState);
