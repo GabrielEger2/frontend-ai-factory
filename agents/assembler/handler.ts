@@ -221,7 +221,7 @@ function isMissing(value: unknown): boolean {
  * Called BEFORE applyBuyerFieldOverrides and applySafeDefaults so real URLs
  * from the Image Resolver are not overwritten by placeholder fallbacks.
  */
-function mergeImageOutput(
+export function mergeImageOutput(
   humanizerOutput: HumanizerOutput,
   imageOutput: ImageOutput | undefined,
 ): HumanizerOutput {
