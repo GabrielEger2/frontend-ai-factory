@@ -106,22 +106,26 @@ function buildSlotDescriptors(
     itemMap.set(item.id, item);
   }
 
-  return componentIds
-    .map((id) => {
-      const item = itemMap.get(id);
-      if (!item) {
-        console.warn(`Component ${id} not found in ComponentsTable, skipping`);
-        return null;
-      }
+  // Fail loud on any missing component. Silent skipping previously caused a
+  // 1-of-N footer-only generation when ComponentsTable was out of sync with
+  // disk + Qdrant — Composer would happily pick 7, BatchGet would return 1,
+  // and the prompt would describe only the survivor.
+  const missing = componentIds.filter((id) => !itemMap.has(id));
+  if (missing.length > 0) {
+    throw new Error(
+      `ComponentsTable missing ${missing.length} of ${componentIds.length} picked components: ${missing.join(", ")}. Re-run \`npm run db:seed\` to repopulate.`,
+    );
+  }
 
-      return {
-        componentId: item.id,
-        componentName: item.name,
-        category: item.category,
-        slots: item.slots as ComponentSlotDescriptor["slots"],
-      };
-    })
-    .filter((desc): desc is ComponentSlotDescriptor => desc !== null);
+  return componentIds.map((id) => {
+    const item = itemMap.get(id)!;
+    return {
+      componentId: item.id,
+      componentName: item.name,
+      category: item.category,
+      slots: item.slots as ComponentSlotDescriptor["slots"],
+    };
+  });
 }
 
 /* ------------------------------------------------------------------ */
@@ -348,12 +352,6 @@ export const handler: Handler<PipelineState, PipelineState> = async (event) => {
 
   // 4. Build slot descriptors for the prompt
   const slotDescriptors = buildSlotDescriptors(componentIds, componentItems);
-
-  if (slotDescriptors.length === 0) {
-    throw new Error(
-      `No component metadata found for segment "${input.segment}" components`,
-    );
-  }
 
   // 5. Mark project as "content" before calling Claude
   await markContentStarted(input.projectId);

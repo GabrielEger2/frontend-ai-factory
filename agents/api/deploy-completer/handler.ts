@@ -28,7 +28,9 @@ interface CompleterEvent {
   styleOutput: StyleOutput | null;
 }
 
-const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
+const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}), {
+  marshallOptions: { removeUndefinedValues: true },
+});
 
 /**
  * Async background completer for the deploy pipeline. Invoked via
@@ -77,7 +79,7 @@ export const handler = async (event: CompleterEvent): Promise<void> => {
       layouts: [workingDraft.blueprint],
       selectedLayout: 0,
       source: composerOutput?.source ?? "fallback",
-      candidateCount: composerOutput?.candidateCount,
+      candidateCount: composerOutput?.candidateCount ?? null,
       avgScore: composerOutput?.avgScore ?? null,
     };
 
@@ -96,8 +98,8 @@ export const handler = async (event: CompleterEvent): Promise<void> => {
         dual: workingDraft.palette,
         monochromatic: workingDraft.palette,
       },
-      paletteSource: styleOutput?.paletteSource,
-      paletteSuggestions: styleOutput?.paletteSuggestions,
+      paletteSource: styleOutput?.paletteSource ?? null,
+      paletteSuggestions: styleOutput?.paletteSuggestions ?? null,
     };
 
     const versionItem = {

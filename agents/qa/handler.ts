@@ -290,6 +290,20 @@ function checkRequiredFilesExist(files: Record<string, string>): QAIssue[] {
 
 /**
  * Run all 5 structural checks and return the QA result.
+ *
+ * Split into:
+ *   - issues  → blocking. Hard structural failures (missing files,
+ *               broken imports, ={undefined} in JSX, enum violations).
+ *               Cause the pipeline to fail and route to QAPipelineFailed.
+ *   - warnings → non-blocking. Required-slot-null detections; the
+ *                assembler's safety-net pass already filled these with
+ *                placeholders so the site renders. Surfaced to the
+ *                seller via the dashboard gap-detection panel.
+ *
+ * The required-slot check is intentionally demoted: components mark
+ * image / logo / anchor-URL slots as required, but no upstream agent
+ * fabricates those values. Failing the pipeline over them just denies
+ * the seller a demo-able site they could otherwise edit later.
  */
 function runChecks(
   files: Record<string, string>,
@@ -297,15 +311,17 @@ function runChecks(
 ): QAOutput {
   const issues: QAIssue[] = [
     ...checkRequiredFilesExist(files),
-    ...checkRequiredSlots(humanizerOutput),
     ...checkEnumValidity(humanizerOutput),
     ...checkNoUndefinedInJsx(files),
     ...checkImportsResolve(files),
   ];
 
+  const warnings: QAIssue[] = [...checkRequiredSlots(humanizerOutput)];
+
   return {
     passed: issues.length === 0,
     issues,
+    warnings,
   };
 }
 
@@ -430,6 +446,8 @@ export const handler = async (event: unknown): Promise<unknown> => {
       passed: qaOutput.passed,
       issueCount: qaOutput.issues.length,
       issues: qaOutput.issues,
+      warningCount: qaOutput.warnings?.length ?? 0,
+      warnings: qaOutput.warnings ?? [],
     }),
   );
 

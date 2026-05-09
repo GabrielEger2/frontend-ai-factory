@@ -21,6 +21,15 @@ import { RestartPipelineButton } from "@/components/projects/RestartPipelineButt
 import { SharePanel } from "@/components/share/SharePanel";
 import type { FeedbackItem, ProjectStatus } from "@/types/project";
 
+// Opt this route out of Next.js's Full Route Cache. Pipeline status
+// transitions (humanizing → assembling → qa → ready_for_review) are written
+// to DDB by Step Functions Lambdas — those run in AWS and cannot call
+// revalidatePath. Without force-dynamic, router.refresh() from StatusPoller
+// re-requests the RSC payload but the Next.js server returns the cached one,
+// so the dashboard appears stuck at whatever status was current when the
+// route was first rendered.
+export const dynamic = "force-dynamic";
+
 // retriable=true only for steps the retry-step API actually supports
 // (agents/api/retry-step/handler.ts:ALLOWED_STEPS). The earlier SFN-internal
 // steps (research/style/composer) and the SEO placeholder cannot be re-invoked
@@ -66,8 +75,12 @@ function getStepState(
   stepIndex: number,
   currentStatus: ProjectStatus,
 ): "completed" | "current" | "pending" {
+  // The SEO row reuses status: "content" because SEO runs in the same SFN
+  // parallel branch as Content. Exclude it from findIndex so a status of
+  // "content" resolves to the actual Content row (index 6), not the SEO
+  // placeholder.
   const currentIndex = PIPELINE_STEPS.findIndex(
-    (s) => s.status === currentStatus,
+    (s) => s.status === currentStatus && s.stepName !== "seo",
   );
 
   if (
@@ -114,7 +127,8 @@ export default async function ProjectDetailPage({
 
   const isReadyForReview = project.status === "ready_for_review";
   const isDeployed = project.status === "deployed";
-  const hasEditableDraft = isReadyForReview || isDeployed;
+  const hasEditableDraft =
+    isReadyForReview || isDeployed || project.status === "deploy_failed";
   const hasVersions =
     project.currentVersionNumber != null && project.currentVersionNumber > 0;
 
@@ -299,7 +313,7 @@ export default async function ProjectDetailPage({
 
       {(hasEditableDraft || hasVersions) && !isReadyForReview && (
         <div className="mb-8 flex flex-wrap items-center gap-3">
-          {isDeployed && (
+          {hasEditableDraft && (
             <Link
               href={`/projects/${id}/edit`}
               className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-slate-800"
@@ -409,6 +423,12 @@ export default async function ProjectDetailPage({
           )}
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <DeployDraftButton projectId={id} />
+            <Link
+              href={`/projects/${id}/edit`}
+              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+            >
+              Open Visual Editor
+            </Link>
           </div>
         </div>
       )}

@@ -94,6 +94,7 @@ export interface QAIssue {
 export interface QAOutput {
   passed: boolean;
   issues: QAIssue[];
+  warnings?: QAIssue[];
 }
 
 /* ------------------------------------------------------------------ */

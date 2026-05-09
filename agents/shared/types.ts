@@ -58,15 +58,18 @@ export type HumanizerOutput = z.infer<typeof HumanizerOutputSchema>;
 /*  QA Output                                                          */
 /* ------------------------------------------------------------------ */
 
+const QAFindingSchema = z.object({
+  componentId: z.string(),
+  slot: z.string(),
+  message: z.string(),
+});
+
 export const QAOutputSchema = z.object({
   passed: z.boolean(),
-  issues: z.array(
-    z.object({
-      componentId: z.string(),
-      slot: z.string(),
-      message: z.string(),
-    }),
-  ),
+  issues: z.array(QAFindingSchema),
+  // Non-blocking advisories surfaced to the dashboard's gap-detection panel
+  // (e.g. required slots filled with placeholders by the assembler safety-net).
+  warnings: z.array(QAFindingSchema).optional(),
 });
 
 export type QAOutput = z.infer<typeof QAOutputSchema>;

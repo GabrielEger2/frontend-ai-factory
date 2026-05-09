@@ -11,10 +11,11 @@ import type { WorkingDraft } from "@/types/project";
  * the frozen pipeline outputs via initializeDraftAction before rendering
  * the shell.
  *
- * Gated on project.status in {"ready_for_review", "deployed"}: the editor
- * opens once the pipeline has assembled a draft (ready_for_review) or the
- * project has been deployed at least once. Mid-pipeline states fall through
- * to a "not yet ready" message with a link back to the detail page.
+ * Gated on project.status in {"ready_for_review", "deployed", "deploy_failed"}:
+ * the editor opens once the pipeline has assembled a draft (ready_for_review),
+ * the project has been deployed at least once, or a deploy attempt failed
+ * (workingDraft is preserved so the seller can edit and retry). Mid-pipeline
+ * states fall through to a "not yet ready" message.
  */
 export default async function VisualEditorPage({
   params,
@@ -29,7 +30,9 @@ export default async function VisualEditorPage({
   }
 
   const isEditable =
-    project.status === "ready_for_review" || project.status === "deployed";
+    project.status === "ready_for_review" ||
+    project.status === "deployed" ||
+    project.status === "deploy_failed";
 
   if (!isEditable) {
     return (

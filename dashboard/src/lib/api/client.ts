@@ -26,7 +26,12 @@ export async function apiFetch(
 
   const url = `${baseUrl}${path}`;
 
+  // cache: "no-store" — pipeline status transitions are written to DDB by
+  // Step Functions Lambdas (out of band of any Next.js revalidation). The
+  // dashboard polls every 4s and must see fresh data on every call, so opt
+  // out of Next.js's fetch Data Cache for all server-side API calls.
   return fetch(url, {
+    cache: "no-store",
     ...options,
     headers: {
       "x-api-key": apiKey,
@@ -61,6 +66,7 @@ export async function apiFetchPublic(
   const url = `${baseUrl}${path}`;
 
   return fetch(url, {
+    cache: "no-store",
     ...options,
     headers: {
       "x-api-key": apiKey,

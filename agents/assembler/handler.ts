@@ -11,6 +11,7 @@ import type {
 } from "../shared/types";
 import { buildTarBuffer } from "../shared/tar-utils";
 import { generateSiteFiles } from "./core";
+import { COMPONENT_METADATA } from "./component-sources.generated";
 import * as zlib from "zlib";
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
@@ -158,6 +159,85 @@ function applyBuyerFieldOverrides(
 }
 
 /* ------------------------------------------------------------------ */
+/*  Safety-Net Slot Defaults                                           */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Required slots that nothing in the upstream pipeline populates (image
+ * URLs, anchor URLs, logo, etc.) would otherwise leave the assembled site
+ * with `undefined` props and trip QA. We deterministically fill those
+ * with type-aware placeholders here so the seller always gets a
+ * demo-able site; missing values surface to the seller via qaWarnings
+ * (downgraded from blocking) and the dashboard's gap-detection panel.
+ *
+ * Matches the project's deterministic-vs-AI rule: this pass is pure
+ * code, runs in the assembler (already deterministic), and never
+ * invents text content — only structural placeholders.
+ */
+interface SlotMetaShape {
+  name: string;
+  type?: string;
+  optional?: boolean;
+  enum?: unknown[];
+}
+
+const PLACEHOLDER_IMAGE_URL = "https://placehold.co/1200x800?text=Imagem";
+const PLACEHOLDER_TEXT = "Em breve";
+const PLACEHOLDER_URL = "#";
+
+function defaultForSlot(slotDef: SlotMetaShape): unknown {
+  if (slotDef.enum && slotDef.enum.length > 0) {
+    return slotDef.enum[0];
+  }
+  switch (slotDef.type) {
+    case "url":
+      return PLACEHOLDER_URL;
+    case "image":
+      return PLACEHOLDER_IMAGE_URL;
+    case "list":
+      return [];
+    case "number":
+      return 0;
+    case "boolean":
+      return false;
+    case "object":
+      return {};
+    case "text":
+    default:
+      return PLACEHOLDER_TEXT;
+  }
+}
+
+function isMissing(value: unknown): boolean {
+  if (value === null || value === undefined) return true;
+  if (typeof value === "string" && value.trim() === "") return true;
+  return false;
+}
+
+function applySafeDefaults(humanizerOutput: HumanizerOutput): HumanizerOutput {
+  return {
+    components: humanizerOutput.components.map((component) => {
+      const meta = COMPONENT_METADATA[component.componentId];
+      if (!meta) return component;
+
+      const slotDefs = meta.slots as SlotMetaShape[];
+      const overrides: Record<string, unknown> = {};
+
+      for (const slotDef of slotDefs) {
+        if (slotDef.optional === true) continue;
+        const current = component.slots[slotDef.name];
+        if (isMissing(current)) {
+          overrides[slotDef.name] = defaultForSlot(slotDef);
+        }
+      }
+
+      if (Object.keys(overrides).length === 0) return component;
+      return { ...component, slots: { ...component.slots, ...overrides } };
+    }),
+  };
+}
+
+/* ------------------------------------------------------------------ */
 /*  Handler                                                            */
 /* ------------------------------------------------------------------ */
 
@@ -200,9 +280,11 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
   // Deterministic buyer-field → slot fill (footer/contact contact info).
   // This happens AFTER Humanizer, so it overwrites any LLM-generated
   // placeholder phone/email/address with the seller-supplied real values.
-  const humanizerOutput = applyBuyerFieldOverrides(
-    input.humanizerOutput,
-    input,
+  // Then a final safety-net pass fills any remaining required slots
+  // (image URLs, anchor URLs, etc.) with placeholders so the site
+  // always renders.
+  const humanizerOutput = applySafeDefaults(
+    applyBuyerFieldOverrides(input.humanizerOutput, input),
   );
 
   const files = generateSiteFiles(
