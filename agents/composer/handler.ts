@@ -52,25 +52,34 @@ class LayoutConstraintError extends Error {
 /*  Mandatory navbar/footer enforcement                                */
 /* ------------------------------------------------------------------ */
 
-const NAVBAR_ID = "navbar-sticky-01";
-const FOOTER_ID = "footer-reveal-01";
+const DEFAULT_NAVBAR_ID = "navbar-sticky-01";
+const DEFAULT_FOOTER_ID = "footer-reveal-01";
 
 /**
- * Ensure every layout begins with the mandatory navbar and ends with the
- * mandatory footer. This is an ID-based comparison: Phase 1 has exactly one
- * navbar (`navbar-sticky-01`) and one footer (`footer-reveal-01`), so direct
- * ID matching is sufficient and avoids a metadata lookup. Upgrade this to a
- * category-based check (`category === "navigation" | "footer"`) when a
- * second navbar or footer component is added.
+ * Ensure every layout begins with a navigation component and ends with a
+ * footer component. Category-based: any component whose metadata category is
+ * `"navigation"` is accepted at position 0, and any `"footer"` is accepted at
+ * the end. Only when the boundary slot is the wrong category (or missing)
+ * does the function inject the default navbar / footer ID. This avoids the
+ * double-stamp bug that occurs when the LLM picks a non-default navbar/footer
+ * at the boundaries (e.g. `navbar-dock-01`).
  */
 function enforceNavbarFooter(output: ComposerOutput): ComposerOutput {
   for (const layout of output.layouts) {
-    if (layout.components[0] !== NAVBAR_ID) {
-      layout.components.unshift(NAVBAR_ID);
+    const firstId = layout.components[0];
+    const firstCategory = firstId
+      ? COMPONENT_METADATA[firstId]?.category
+      : undefined;
+    if (firstCategory !== "navigation") {
+      layout.components.unshift(DEFAULT_NAVBAR_ID);
     }
-    const last = layout.components[layout.components.length - 1];
-    if (last !== FOOTER_ID) {
-      layout.components.push(FOOTER_ID);
+
+    const lastId = layout.components[layout.components.length - 1];
+    const lastCategory = lastId
+      ? COMPONENT_METADATA[lastId]?.category
+      : undefined;
+    if (lastCategory !== "footer") {
+      layout.components.push(DEFAULT_FOOTER_ID);
     }
   }
   return output;
