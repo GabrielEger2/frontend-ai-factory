@@ -156,7 +156,7 @@ export interface StyleOutput {
     | "corporate"
   >;
   density: "low" | "medium" | "high";
-  paletteSource?: "graph" | "fallback";
+  paletteSource?: "graph" | "llm" | "fallback-default";
   paletteSuggestions?: Palette[];
   styleKit?: {
     card?: string;
