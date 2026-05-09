@@ -1,0 +1,22 @@
+{
+  "fixtureId": "advocacia-tributaria-bh",
+  "brief": "advocacia tributária em Belo Horizonte",
+  "goldLayout": {
+    "hero": "hero-newsroom-ticker-01",
+    "content": "layout-editorial-framed-split-01",
+    "stats": "stats-count-up-01",
+    "testimonial": "testimonial-metric-card-01",
+    "faq": "faq-tabbed-01",
+    "cta": "cta-testimonial-paired-01",
+    "footer": "footer-mega-01"
+  },
+  "rationale": {
+    "hero": "Only candidate with serious+trustworthy mood; legal-news gravitas",
+    "content": "Editorial+classic+minimal, elegant+trustworthy",
+    "stats": "Minimal+corporate, low density matches firm gravitas",
+    "testimonial": "Corporate+serious — won R$X in tax cases",
+    "faq": "Modern+minimal+corporate, calm+trustworthy",
+    "cta": "Corporate+professional, trust-paired works for legal",
+    "footer": "Dense corporate footer fits regulatory/services links"
+  }
+}

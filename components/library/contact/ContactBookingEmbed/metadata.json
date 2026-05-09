@@ -84,6 +84,12 @@
     "contact-chat-embed-01",
     "contact-multi-step-01"
   ],
+  "vertical": [
+    "legal-consulting",
+    "healthcare",
+    "beauty-salon",
+    "atelier-luxe"
+  ],
   "description": "Calendar-embed contact section that hosts a Cal.com / Calendly / SavvyCal iframe alongside an editorial context column with what-to-expect bullets and an optional email-instead fallback CTA.",
   "descriptions": {
     "descriptive": "Two-column split: editorial copy and a What-to-expect bullet list (with check / clock / video icons) sit on the left; the booking iframe lives in a rounded surface on the right with a min-height so the available slots render without clipping. An optional fallback CTA below the bullets links to email when the visitor prefers it.",

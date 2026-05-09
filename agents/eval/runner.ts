@@ -160,6 +160,9 @@ function generateGrid(): RerankWeights[] {
               diversity,
               density,
               audienceFit,
+              // Pinned to default; verticalFit grid sweep deferred to Phase 5
+              // per plan C1. Required field added 2026-05-08 (Phase 3).
+              verticalFit: DEFAULT_RERANK_WEIGHTS.verticalFit,
             });
           }
         }

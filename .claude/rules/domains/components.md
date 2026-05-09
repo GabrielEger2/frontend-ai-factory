@@ -119,6 +119,52 @@ Adding a new canonical purpose token requires updating the rules doc AND the val
 
 Anything less drifts the rules doc out of sync with the validator.
 
+## Vertical Taxonomy
+
+Components MAY declare an optional `vertical[]` array on `metadata.json` that signals purpose-built fit for narrow business categories. The Composer rerank uses this as a categorical signal (match boosts, mismatch demotes). Generalist components — universal scaffolding suitable for any vertical — MUST omit the field entirely. An absent `vertical` is treated as neutral by the rerank; it is NOT an error.
+
+Values MUST come from this canonical 23-token list:
+
+```
+bakery            — Artisan bakeries, confeitarias, cafés (non-luxury)
+bakery-luxe       — Luxury / artisanal / gourmet patisserie and café
+restaurant        — Casual dining, lanchonetes, hamburger joints
+restaurant-luxe   — Fine dining, alta gastronomia, omakase
+fitness           — Gyms, crossfit, fitness studios
+auto-services     — Mechanics, oficinas, autopeças
+legal-consulting  — Advocacia, contabilidade, consultoria, consultoria-financeira
+legal-luxe        — Boutique law firms, top-tier escritórios premium
+healthcare        — Clinics, dentistry, physiotherapy, veterinary
+healthcare-luxe   — Premium aesthetics, spa, bem-estar de luxo
+beauty-salon      — Salões, barbearias, estética
+education         — Escolas, cursos, language schools
+real-estate       — Imobiliárias, corretagem
+real-estate-luxe  — High-end / alto padrão corretagem de luxo
+hospitality       — Hotels, pousadas, resorts (standard tier)
+hospitality-luxe  — Hotel boutique, resort premium
+pet-services      — Pet shops, veterinárias
+ecommerce         — Online stores, varejo, fashion retail
+construction      — Construtoras, indústria, engenharia
+saas              — SaaS, tech startups, software products
+agency            — Marketing agencies, design studios, branding
+atelier-luxe      — Ateliers de moda, joalheria, autoral fashion
+gourmet-retail    — Importadora gourmet, empório fino, mercado premium
+```
+
+`cafe` is intentionally folded into `bakery` — pure coffee-shop briefs use the `bakery` token. Luxury qualifiers (`-luxe` suffix) are separate tokens (not modifiers): a luxury patisserie should tag both `bakery-luxe` and `bakery` so the rerank matches both luxury-aware briefs and generic bakery briefs.
+
+Tag conservatively. Over-tagging (e.g. tagging `HeroAsymmetricStack` to any vertical) defeats the categorical signal — the field exists to single out purpose-built fits, not to enumerate "could plausibly work." When in doubt, omit the field.
+
+### Extending vertical[]
+
+Adding a new canonical vertical token requires updating the rules doc AND the validator constant AND the test constant in the same commit:
+
+1. Append the new token to the list in this file.
+2. Append the same token to `CANONICAL_VERTICAL` in `components/scripts/validate-metadata.ts`.
+3. Append the same token to the matching constant in `components/tests/metadata-schema.test.ts` (or the shared module).
+
+Anything less drifts the rules doc out of sync with the validator.
+
 ## Tag Enrichment Floor
 
 Components MUST have at least 3 entries in `style[]` and at least 3 entries in `mood[]`. Cap at 4 unless the component clearly fits 5 use cases. Enrichment is **additive-only** — never remove an existing tag without flagging, because `agents/composer/handler.ts::getDynamoFallbackCandidates` filters live on these arrays and components with zero overlap get dropped.

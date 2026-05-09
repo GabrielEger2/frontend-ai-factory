@@ -21,6 +21,7 @@ import {
   CANONICAL_MOOD,
   CANONICAL_PURPOSE,
   CANONICAL_CATEGORY,
+  CANONICAL_VERTICAL,
   MIN_TAG_FLOOR,
 } from "../scripts/validate-metadata";
 
@@ -74,6 +75,7 @@ interface MetadataShape {
   slots?: unknown;
   pairsWell?: unknown;
   pairsPoorly?: unknown;
+  vertical?: unknown;
 }
 
 function isStringArray(v: unknown): v is string[] {
@@ -247,6 +249,28 @@ describe("Component metadata schema", () => {
           ghosts,
           `pairsPoorly ghost ids: ${JSON.stringify(ghosts)}`,
         ).toHaveLength(0);
+      });
+
+      it("vertical[] values are all canonical (when present)", () => {
+        const verticals = isStringArray(
+          (metadata as Record<string, unknown>).vertical,
+        )
+          ? ((metadata as Record<string, unknown>).vertical as string[])
+          : [];
+        const bad = verticals.filter((v) => !CANONICAL_VERTICAL.includes(v));
+        expect(
+          bad,
+          `non-canonical vertical values: ${JSON.stringify(bad)}`,
+        ).toHaveLength(0);
+      });
+
+      it("vertical[] has no duplicates (when present)", () => {
+        const verticals = isStringArray(
+          (metadata as Record<string, unknown>).vertical,
+        )
+          ? ((metadata as Record<string, unknown>).vertical as string[])
+          : [];
+        expect(new Set(verticals).size).toBe(verticals.length);
       });
     });
   }

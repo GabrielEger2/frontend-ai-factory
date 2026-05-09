@@ -231,6 +231,7 @@ let brief: string | undefined;
 let moodOverride: string[] | undefined;
 let styleOverride: string[] | undefined;
 let densityOverride: string | undefined;
+let verticalOverride: string[] | undefined;
 let captureSlug: string | undefined;
 let offlineMode = false;
 let replanMode = false;
@@ -249,6 +250,8 @@ for (let i = 0; i < argv.length; i++) {
     styleOverride = splitCsv(argv[++i]);
   } else if (arg === "--density" && i + 1 < argv.length) {
     densityOverride = argv[++i].trim();
+  } else if (arg === "--vertical" && i + 1 < argv.length) {
+    verticalOverride = splitCsv(argv[++i]);
   } else if (arg === "--capture" && i + 1 < argv.length) {
     captureSlug = argv[++i];
   } else if (arg === "--offline" || arg === "--no-llm") {
@@ -360,6 +363,7 @@ const STYLE_OUTPUT = {
   mood: moodOverride ?? ["professional"],
   style: styleOverride ?? ["modern"],
   density: densityOverride ?? "medium",
+  vertical: verticalOverride ?? [],
 } as unknown as StyleOutput;
 
 /* ------------------------------------------------------------------ */
@@ -669,6 +673,7 @@ async function main(): Promise<void> {
         imageWeight: meta?.imageWeight,
         style: meta?.style,
         mood: meta?.mood,
+        vertical: meta?.vertical ?? [],
         source: "vector" as const,
       });
     }
@@ -721,6 +726,7 @@ async function main(): Promise<void> {
           diversityPenalty: number;
           densityPenalty: number;
           audienceFitScore: number;
+          verticalAffinityScore: number;
           rerankScore: number;
         };
       }
@@ -742,6 +748,9 @@ async function main(): Promise<void> {
     console.log(`| diversityPenalty | ${fmt(debug?.diversityPenalty)} |`);
     console.log(`| densityPenalty   | ${fmt(debug?.densityPenalty)} |`);
     console.log(`| audienceFitScore | ${fmt(debug?.audienceFitScore)} |`);
+    console.log(
+      `| verticalAffinityScore | ${fmt(debug?.verticalAffinityScore)} |`,
+    );
     console.log(`| rerankScore      | ${fmt(debug?.rerankScore)} |`);
 
     /* -------------------------------------------------------------- */
@@ -751,8 +760,10 @@ async function main(): Promise<void> {
     console.log();
     console.log(`### Re-rank top 3`);
     console.log();
-    console.log("| Rank | ID | rerankScore | audienceFitScore |");
-    console.log("|---|---|---|---|");
+    console.log(
+      "| Rank | ID | audienceFitScore | verticalAffinityScore | rerankScore |",
+    );
+    console.log("|---|---|---|---|---|");
     reranked.slice(0, 3).forEach((cand, idx) => {
       const candDebug = (
         cand as unknown as {
@@ -762,12 +773,13 @@ async function main(): Promise<void> {
             diversityPenalty: number;
             densityPenalty: number;
             audienceFitScore: number;
+            verticalAffinityScore: number;
             rerankScore: number;
           };
         }
       )._rerankDebug;
       console.log(
-        `| ${idx + 1} | ${cand.id} | ${fmt(candDebug?.rerankScore)} | ${fmt(candDebug?.audienceFitScore)} |`,
+        `| ${idx + 1} | ${cand.id} | ${fmt(candDebug?.audienceFitScore)} | ${fmt(candDebug?.verticalAffinityScore)} | ${fmt(candDebug?.rerankScore)} |`,
       );
     });
 

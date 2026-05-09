@@ -118,6 +118,7 @@
     "hero-asymmetric-stack-01",
     "hero-polaroid-collage-01"
   ],
+  "vertical": ["legal-consulting", "saas", "healthcare"],
   "description": "A conversion-led hero that pairs a left-aligned message with an inline lead-capture form on the right. Designed for SaaS landing pages, financial services, B2B sign-up flows, and any campaign measured by inbound form fills.",
   "descriptions": {
     "descriptive": "An eyebrow, balanced display headline, supporting paragraph, and a small set of trust bullets occupy the left column. The right column hosts a card-style form with optional name, email, and phone fields, a primary submit button, and a fine-print disclaimer. After submit, the card replaces itself with an inline confirmation state.",

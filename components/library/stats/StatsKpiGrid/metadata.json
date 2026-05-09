@@ -78,6 +78,7 @@
   "mobileBehavior": "stack",
   "pairsWell": ["hero-split-image-01"],
   "pairsPoorly": ["stats-count-up-01"],
+  "vertical": ["saas", "agency", "legal-consulting"],
   "description": "Dashboard-density KPI grid with monospaced numerals, trend deltas, and divider-line grouping — the comparison-first stats slot that complements the count-up hero metric panel.",
   "descriptions": {
     "descriptive": "Three-to-six metrics arranged on a divided grid (no card boxes by default) with tabular monospaced numerals, prefix/suffix support, and tinted up/down/flat trend pills next to each value. The boxed variant softens density when the section sits between visually loud neighbours.",

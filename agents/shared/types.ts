@@ -167,6 +167,7 @@ export const StyleOutputSchema = z.object({
   paletteSuggestions: z.array(PaletteSchema).optional(),
   styleKit: StyleKitSchema.optional(),
   imageryDensity: z.enum(["low", "medium", "high"]).optional(),
+  vertical: z.array(z.string()).optional(),
 });
 
 export type StyleOutput = z.infer<typeof StyleOutputSchema>;
@@ -420,4 +421,5 @@ export interface ComponentItem {
   pairsPoorly: string[];
   acceptsStyleKit: Record<string, boolean>;
   imageWeight?: number;
+  vertical?: string[];
 }

@@ -102,6 +102,32 @@ export const CANONICAL_CATEGORY: readonly string[] = [
   "products",
 ];
 
+export const CANONICAL_VERTICAL: readonly string[] = [
+  "bakery",
+  "bakery-luxe",
+  "restaurant",
+  "restaurant-luxe",
+  "fitness",
+  "auto-services",
+  "legal-consulting",
+  "legal-luxe",
+  "healthcare",
+  "healthcare-luxe",
+  "beauty-salon",
+  "education",
+  "real-estate",
+  "real-estate-luxe",
+  "hospitality",
+  "hospitality-luxe",
+  "pet-services",
+  "ecommerce",
+  "construction",
+  "saas",
+  "agency",
+  "atelier-luxe",
+  "gourmet-retail",
+];
+
 export const MIN_TAG_FLOOR = 3;
 
 const PURPOSE_TOKEN_RE = /^\S+$/;
@@ -133,6 +159,7 @@ interface MetadataJson {
   mobileBehavior: string;
   pairsWell: string[];
   pairsPoorly: string[];
+  vertical?: string[];
   variants?: ComponentVariantEntry[];
   descriptions?: {
     descriptive: string;
@@ -324,6 +351,16 @@ function validateOne(
   if (ghostsPoorly.length > 0) {
     errors.push(
       `field "pairsPoorly" references unknown component ids (ghosts): [${ghostsPoorly
+        .map((v) => `"${v}"`)
+        .join(", ")}]`,
+    );
+  }
+
+  // Rule 9b: vertical[] subset of CANONICAL_VERTICAL (when present)
+  const badVertical = notSubsetOf(metadata.vertical ?? [], CANONICAL_VERTICAL);
+  if (badVertical.length > 0) {
+    errors.push(
+      `field "vertical" contains non-canonical values: [${badVertical
         .map((v) => `"${v}"`)
         .join(", ")}]`,
     );

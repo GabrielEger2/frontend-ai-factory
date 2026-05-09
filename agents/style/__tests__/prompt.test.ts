@@ -125,6 +125,24 @@ describe("buildStyleSystemPrompt", () => {
     expect(prompt).toMatch(/Brand color anchoring/);
     expect(prompt).toMatch(/Monochromatic mode constraints/);
   });
+
+  it("includes a vertical field in the Output Schema block", () => {
+    const outputSchemaStart = prompt.indexOf("## Output Schema");
+    expect(outputSchemaStart).toBeGreaterThan(-1);
+    expect(prompt.slice(outputSchemaStart)).toContain('"vertical"');
+  });
+
+  it("includes the vertical extraction instruction with canonical token list", () => {
+    expect(prompt).toMatch(/\*\*vertical\*\*/i);
+    expect(prompt).toContain("bakery-luxe");
+    expect(prompt).toContain("legal-consulting");
+    expect(prompt).toContain("atelier-luxe");
+    expect(prompt).toContain("hospitality-luxe");
+  });
+
+  it("instructs empty array for cross-vertical/unknown briefs", () => {
+    expect(prompt).toMatch(/\[\]/);
+  });
 });
 
 describe("buildStyleUserPrompt", () => {

@@ -125,6 +125,7 @@
     "hero-split-form-01",
     "hero-asymmetric-stack-01"
   ],
+  "vertical": ["beauty-salon", "healthcare", "hospitality"],
   "description": "A playful, scrapbook-style hero with three to four rotated polaroid cards in an asymmetric collage, paired with an italic script accent in the headline. Built for cafes, weddings, family-run shops, lifestyle blogs, and brands that lead with warmth.",
   "descriptions": {
     "descriptive": "Polaroid frames sit on the right with hand-placed rotation, soft shadows, and a small tape strip at the top of each. Hovering nudges them upright. Captions read in italic serif. The headline pairs a confident sans with a script-style accent word, and the section sits on a warm muted base.",

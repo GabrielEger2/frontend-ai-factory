@@ -92,6 +92,7 @@ interface MetadataJson {
   mobileBehavior: string;
   pairsWell: string[];
   pairsPoorly: string[];
+  vertical?: string[];
   variants?: ComponentVariantEntry[];
   descriptions?: { descriptive: string; usage: string; audienceFit: string };
 }
@@ -114,6 +115,7 @@ interface ComponentSeedItem {
   mobileBehavior: string;
   pairsWell: string[];
   pairsPoorly: string[];
+  vertical?: string[];
   variants?: ComponentVariantEntry[];
 }
 
@@ -150,6 +152,7 @@ function buildItem(
     mobileBehavior: json.mobileBehavior ?? "stack",
     pairsWell: json.pairsWell ?? [],
     pairsPoorly: json.pairsPoorly ?? [],
+    vertical: json.vertical ?? [],
     variants: json.variants,
   };
 }

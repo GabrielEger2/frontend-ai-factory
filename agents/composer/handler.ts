@@ -365,6 +365,7 @@ async function getVectorCandidatesForSlot(
       imageWeight: meta?.imageWeight,
       style: meta?.style,
       mood: meta?.mood,
+      vertical: meta?.vertical ?? [],
       source: "vector" as const,
     });
   }
@@ -557,7 +558,8 @@ export const handler: Handler<
   let source: "vector" | "fallback" = "vector";
   const pickedCandidates: CandidateComponent[] = [];
   const moodTags = (input.styleOutput.mood ?? []).join(", ");
-  const SLOT_TOP_K = 5;
+  const SLOT_TOP_K = 15;
+  const LLM_PICKER_POOL_SIZE = 8;
 
   let qdrantHadAnySuccess = false;
   for (const slot of skeleton) {
@@ -610,7 +612,7 @@ export const handler: Handler<
             },
           }),
         );
-        allCandidates.push(...ranked);
+        allCandidates.push(...ranked.slice(0, LLM_PICKER_POOL_SIZE));
         qdrantHadAnySuccess = true;
       }
     } catch (err) {

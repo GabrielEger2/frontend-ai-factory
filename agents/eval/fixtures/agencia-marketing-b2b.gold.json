@@ -1,0 +1,20 @@
+{
+  "fixtureId": "agencia-marketing-b2b",
+  "brief": "agência de marketing digital B2B",
+  "goldLayout": {
+    "hero": "hero-device-chrome-01",
+    "content": "gallery-case-study-01",
+    "stats": "stats-kpi-grid-01",
+    "testimonial": "testimonial-metric-card-01",
+    "cta": "cta-testimonial-paired-01",
+    "footer": "footer-mega-01"
+  },
+  "rationale": {
+    "hero": "Modern+corporate+bold — dashboard mockup is agency-standard",
+    "content": "Editorial+modern+corporate — case studies are agency conversion",
+    "stats": "Modern+minimal+corporate, high density matches brief",
+    "testimonial": "Corporate+serious — ROI metrics for B2B",
+    "cta": "Modern+editorial+corporate, professional",
+    "footer": "High density for multi-service B2B agency"
+  }
+}
