@@ -16,10 +16,10 @@ export interface InfiniteScrollProps {
   headline: string;
   /** Supporting text below the headline */
   subheadline?: string;
-  /** Three rows of testimonials — each row scrolls independently */
-  rows?: [TestimonialItem[], TestimonialItem[], TestimonialItem[]];
+  /** Up to three rows of testimonials — each row scrolls independently. Empty/missing rows are skipped. */
+  rows?: TestimonialItem[][];
   /** Duration in seconds for one full scroll cycle per row. Defaults to [125, 75, 275] */
-  durations?: [number, number, number];
+  durations?: number[];
   /** Site-wide style configuration — accepted for API consistency */
   styleKit?: StyleKit;
   /** Informational purpose tag for the section */
@@ -31,11 +31,9 @@ export interface InfiniteScrollProps {
 /*  Defaults                                                           */
 /* ------------------------------------------------------------------ */
 
-const DEFAULT_INFINITE_SCROLL_ROWS: [
-  TestimonialItem[],
-  TestimonialItem[],
-  TestimonialItem[],
-] = [
+const DEFAULT_DURATIONS = [125, 75, 275];
+
+const DEFAULT_INFINITE_SCROLL_ROWS: TestimonialItem[][] = [
   [
     {
       image: "https://picsum.photos/seed/infinitescroll-r0-0/80/80",
@@ -170,6 +168,8 @@ function MarqueeRow({
   reverse?: boolean;
   shouldReduceMotion: boolean | null;
 }) {
+  if (!items?.length) return null;
+
   /* Triple the items to create seamless loop */
   const repeats = [0, 1, 2];
 
@@ -216,12 +216,19 @@ export default function InfiniteScroll({
   headline,
   subheadline,
   rows = DEFAULT_INFINITE_SCROLL_ROWS,
-  durations = [125, 75, 275],
+  durations = DEFAULT_DURATIONS,
   styleKit,
   purpose,
   className,
 }: InfiniteScrollProps) {
   const shouldReduceMotion = useReducedMotion();
+
+  // Tolerate any row count (1–N): filter empty/missing rows and cap to 3 visible marquees.
+  const safeRows = (rows ?? DEFAULT_INFINITE_SCROLL_ROWS)
+    .filter(
+      (row): row is TestimonialItem[] => Array.isArray(row) && row.length > 0,
+    )
+    .slice(0, 3);
 
   return (
     <section
@@ -246,28 +253,24 @@ export default function InfiniteScroll({
         {/* Left fade */}
         <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-24 bg-gradient-to-r from-neutral to-transparent" />
 
-        <div className="mb-4 flex items-center">
-          <MarqueeRow
-            items={rows[0]}
-            duration={durations[0]}
-            shouldReduceMotion={shouldReduceMotion}
-          />
-        </div>
-        <div className="mb-4 flex items-center">
-          <MarqueeRow
-            items={rows[1]}
-            duration={durations[1]}
-            reverse
-            shouldReduceMotion={shouldReduceMotion}
-          />
-        </div>
-        <div className="flex items-center">
-          <MarqueeRow
-            items={rows[2]}
-            duration={durations[2]}
-            shouldReduceMotion={shouldReduceMotion}
-          />
-        </div>
+        {safeRows.map((row, i) => (
+          <div
+            key={i}
+            className={cn(
+              "flex items-center",
+              i < safeRows.length - 1 && "mb-4",
+            )}
+          >
+            <MarqueeRow
+              items={row}
+              duration={
+                durations[i] ?? DEFAULT_DURATIONS[i] ?? DEFAULT_DURATIONS[0]
+              }
+              reverse={i === 1}
+              shouldReduceMotion={shouldReduceMotion}
+            />
+          </div>
+        ))}
 
         {/* Right fade */}
         <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-24 bg-gradient-to-l from-neutral to-transparent" />
