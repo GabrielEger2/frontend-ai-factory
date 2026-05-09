@@ -125,11 +125,11 @@
     "hero-asymmetric-stack-01",
     "hero-polaroid-collage-01"
   ],
-  "vertical": ["hospitality", "hospitality-luxe"],
-  "description": "A full-bleed cinematic hero with optional looping video backdrop, tinted overlay, and an asymmetric content block anchored to the bottom edge. Built for hospitality, fashion campaigns, agencies, and any brand whose product is a felt experience.",
+  "vertical": ["hospitality", "hospitality-luxe", "fitness"],
+  "description": "A full-bleed cinematic hero with optional looping video backdrop, tinted overlay, and an asymmetric content block anchored to the bottom edge. Built for hospitality, fashion campaigns, agencies, fitness brands, and any brand whose product is a felt experience.",
   "descriptions": {
     "descriptive": "An ambient video plays muted and looping over a poster fallback, layered with a configurable neutral tint and a soft bottom-up gradient for legibility. Headline, subheadline, and CTAs anchor in a chosen quadrant, with an optional metadata strip along the bottom for credits, locations, or release dates.",
-    "usage": "Use as the homepage opener for brands that have strong moving footage — hotels, fashion campaigns, agencies, restaurants, festivals, and media properties. Falls back to the poster image when no video URL is provided or when the user prefers reduced motion.",
-    "audienceFit": "Works for design-aware visitors who associate cinematic motion with quality. Best for brands that already have professional video assets and need a confident first frame."
+    "usage": "Use as the homepage opener for brands that have strong moving footage — hotels, fashion campaigns, agencies, restaurants, festivals, fitness studios, gyms, crossfit boxes, sports and action brands, and media properties. Falls back to the poster image when no video URL is provided or when the user prefers reduced motion.",
+    "audienceFit": "Works for design-aware visitors who associate cinematic motion with quality, and for athletic audiences who respond to action and energy. Best for brands that already have professional video assets — luxury hospitality, fashion editorial, gyms and fitness studios with class footage, crossfit boxes — and need a confident first frame."
   }
 }
