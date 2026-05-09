@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from "motion/react";
 import type { IconType } from "react-icons";
 import {
   LuActivity,
-  LuBarChart,
+  LuChartBar,
   LuBookOpen,
   LuBriefcase,
   LuCalendar,
@@ -172,7 +172,7 @@ export interface FeaturesIconTrioProps {
  */
 const ICON_MAP: Record<string, IconType> = {
   activity: LuActivity,
-  "bar-chart": LuBarChart,
+  "bar-chart": LuChartBar,
   "book-open": LuBookOpen,
   briefcase: LuBriefcase,
   calendar: LuCalendar,
