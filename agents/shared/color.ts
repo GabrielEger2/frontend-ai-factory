@@ -91,3 +91,72 @@ export function deriveContentColor(bgHex: string): string {
     ? CONTENT_WHITE_OKLCH
     : CONTENT_NEAR_BLACK_OKLCH;
 }
+
+/**
+ * Inverse of `srgbToLinear` — convert a linear-RGB channel in [0..1] back to
+ * an sRGB channel in [0..1]. WCAG 2.1 standard inverse transfer function.
+ */
+function linearToSrgb(c: number): number {
+  return c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
+}
+
+/**
+ * Linearly interpolate between two hex colors in **linear-RGB space**
+ * (gamma-corrected), then convert the result back to sRGB hex.
+ *
+ * `t = 0` returns `hex1` exactly (verbatim 6-digit hex, lowercased).
+ * `t = 1` returns `hex2` exactly.
+ * Intermediate `t` values blend in linear-RGB to avoid the gamma skew that
+ * sRGB-space midpoints suffer from (e.g. blending #000 with #fff at t=0.5
+ * yields ~#bcbcbc in linear space, NOT the perceptually-darker #808080
+ * that naive sRGB averaging produces).
+ *
+ * Returns 6-digit lowercase hex prefixed with `#`. On malformed input,
+ * returns `hex1` lowercased (same fail-safe philosophy as
+ * `relativeLuminance`).
+ */
+export function blendHex(hex1: string, hex2: string, t: number): string {
+  // Pure endpoint short-circuits — guarantees t=0 returns hex1 verbatim and
+  // t=1 returns hex2 verbatim, regardless of any rounding drift through the
+  // sRGB → linear → sRGB roundtrip.
+  if (t === 0) return normalizeHex(hex1);
+  if (t === 1) return normalizeHex(hex2);
+
+  const rgb1 = parseHex(hex1);
+  const rgb2 = parseHex(hex2);
+  if (rgb1 === null || rgb2 === null) return normalizeHex(hex1);
+
+  const [r1, g1, b1] = rgb1;
+  const [r2, g2, b2] = rgb2;
+
+  // sRGB → linear
+  const lr1 = srgbToLinear(r1 / 255);
+  const lg1 = srgbToLinear(g1 / 255);
+  const lb1 = srgbToLinear(b1 / 255);
+  const lr2 = srgbToLinear(r2 / 255);
+  const lg2 = srgbToLinear(g2 / 255);
+  const lb2 = srgbToLinear(b2 / 255);
+
+  // Linear-space lerp
+  const lr = lr1 + (lr2 - lr1) * t;
+  const lg = lg1 + (lg2 - lg1) * t;
+  const lb = lb1 + (lb2 - lb1) * t;
+
+  // Linear → sRGB → 8-bit
+  const r = Math.round(Math.max(0, Math.min(1, linearToSrgb(lr))) * 255);
+  const g = Math.round(Math.max(0, Math.min(1, linearToSrgb(lg))) * 255);
+  const b = Math.round(Math.max(0, Math.min(1, linearToSrgb(lb))) * 255);
+
+  return `#${toHexByte(r)}${toHexByte(g)}${toHexByte(b)}`;
+}
+
+function toHexByte(n: number): string {
+  return n.toString(16).padStart(2, "0");
+}
+
+function normalizeHex(hex: string): string {
+  const rgb = parseHex(hex);
+  if (rgb === null) return typeof hex === "string" ? hex.toLowerCase() : hex;
+  const [r, g, b] = rgb;
+  return `#${toHexByte(r)}${toHexByte(g)}${toHexByte(b)}`;
+}
