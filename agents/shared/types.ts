@@ -55,6 +55,28 @@ export const HumanizerOutputSchema = z.object({
 export type HumanizerOutput = z.infer<typeof HumanizerOutputSchema>;
 
 /* ------------------------------------------------------------------ */
+/*  Image Output                                                       */
+/* ------------------------------------------------------------------ */
+
+export const ImageSlotSchema = z.object({
+  url: z.string().url(),
+  alt: z.string().optional(),
+  photographerCredit: z.string().optional(),
+});
+
+export const ImageOutputSchema = z.object({
+  components: z.array(
+    z.object({
+      componentId: z.string(),
+      imageSlots: z.record(z.string(), ImageSlotSchema),
+    }),
+  ),
+});
+
+export type ImageSlot = z.infer<typeof ImageSlotSchema>;
+export type ImageOutput = z.infer<typeof ImageOutputSchema>;
+
+/* ------------------------------------------------------------------ */
 /*  QA Output                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -385,6 +407,7 @@ export const PipelineStateSchema = z.object({
   composerOutput: ComposerOutputSchema.optional(),
   contentOutput: ContentOutputSchema.optional(),
   humanizerOutput: HumanizerOutputSchema.optional(),
+  imageOutput: ImageOutputSchema.optional(),
   assemblerOutput: AssemblerOutputSchema.optional(),
   qaOutput: QAOutputSchema.optional(),
   previewUrl: z.string().optional(),
