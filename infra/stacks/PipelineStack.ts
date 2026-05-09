@@ -29,6 +29,9 @@ export interface PipelineStackProps extends StackProps {
   readonly qdrantEndpointSsmPath: string;
   readonly qdrantApiKeySsmPath: string;
   readonly openAiApiKeySsmPath: string;
+  readonly imageCacheTableName: string;
+  readonly imageCacheTableArn: string;
+  readonly pexelsApiKeySsmPath: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -90,6 +93,12 @@ export class PipelineStack extends Stack {
       this,
       "ComponentsTable",
       props.componentsTableArn,
+    );
+
+    const imageCacheTable = dynamodb.Table.fromTableArn(
+      this,
+      "ImageCacheTable",
+      props.imageCacheTableArn,
     );
 
     const pipelineBucket = s3.Bucket.fromBucketArn(

@@ -62,6 +62,9 @@ export class MainStage extends Construct {
       qdrantEndpointSsmPath: vector.qdrantEndpointSsmPath,
       qdrantApiKeySsmPath: vector.qdrantApiKeySsmPath,
       openAiApiKeySsmPath: vector.openAiApiKeySsmPath,
+      imageCacheTableName: database.imageCacheTableName,
+      imageCacheTableArn: database.imageCacheTableArn,
+      pexelsApiKeySsmPath: "/sitegen/dev/pexels-api-key",
     });
 
     /* ---------------------------------------------------------------- */
