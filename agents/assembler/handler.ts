@@ -5,6 +5,7 @@ import { AssemblerInputSchema } from "./types";
 import type { AssemblerInput, AssemblerResult } from "./types";
 import type {
   HumanizerOutput,
+  ImageOutput,
   Palette,
   Typography,
   WorkingDraft,
@@ -214,6 +215,44 @@ function isMissing(value: unknown): boolean {
   return false;
 }
 
+/**
+ * Merge imageOutput URLs into humanizerOutput slots.
+ * imageOutput takes precedence over any existing value for image/video slots.
+ * Called BEFORE applyBuyerFieldOverrides and applySafeDefaults so real URLs
+ * from the Image Resolver are not overwritten by placeholder fallbacks.
+ */
+function mergeImageOutput(
+  humanizerOutput: HumanizerOutput,
+  imageOutput: ImageOutput | undefined,
+): HumanizerOutput {
+  if (!imageOutput) return humanizerOutput;
+
+  const imageMap = new Map(
+    imageOutput.components.map((c) => [c.componentId, c.imageSlots]),
+  );
+
+  return {
+    components: humanizerOutput.components.map((component) => {
+      const imageSlots = imageMap.get(component.componentId);
+      if (!imageSlots || Object.keys(imageSlots).length === 0) return component;
+
+      const overrides: Record<string, unknown> = {};
+      for (const [slotName, imageSlot] of Object.entries(imageSlots)) {
+        overrides[slotName] = imageSlot.url;
+        // If there is a paired alt slot AND it's empty (null OR absent/undefined),
+        // write the Pexels alt. Falsy check catches both null (Humanizer wrote null)
+        // and undefined (slot key was never written by Humanizer).
+        const altSlotName = `${slotName}Alt`;
+        if (imageSlot.alt && !component.slots[altSlotName]) {
+          overrides[altSlotName] = imageSlot.alt;
+        }
+      }
+
+      return { ...component, slots: { ...component.slots, ...overrides } };
+    }),
+  };
+}
+
 function applySafeDefaults(humanizerOutput: HumanizerOutput): HumanizerOutput {
   return {
     components: humanizerOutput.components.map((component) => {
@@ -284,7 +323,10 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
   // (image URLs, anchor URLs, etc.) with placeholders so the site
   // always renders.
   const humanizerOutput = applySafeDefaults(
-    applyBuyerFieldOverrides(input.humanizerOutput, input),
+    applyBuyerFieldOverrides(
+      mergeImageOutput(input.humanizerOutput, input.imageOutput),
+      input,
+    ),
   );
 
   const files = generateSiteFiles(
