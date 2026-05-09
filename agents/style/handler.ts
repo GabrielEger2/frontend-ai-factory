@@ -180,12 +180,14 @@ export const handler: Handler<StyleAgentInput, void> = async (event) => {
   await markStylingStarted(input.projectId);
 
   // 3. Generate style via Claude. Neo4j palette suggestions are gone in
-  //    Phase A; paletteSource is always "fallback". The enum on
-  //    StyleOutputSchema retains "graph" as a legacy value (existing DDB
-  //    items written during Stage 2 still parse), but new executions always
-  //    write "fallback".
+  //    Phase A; new executions emit paletteSource = "llm" (truthful — the
+  //    palette comes from the LLM, not a hardcoded fallback). The enum on
+  //    StyleOutputSchema retains "graph" as a legacy value and reserves
+  //    "fallback-default" for the assembler DEFAULT_PALETTE path. Legacy
+  //    DDB items with paletteSource = "fallback" are coerced to "llm" by
+  //    the schema's .catch on re-parse.
   const styleOutput = await generateStyle(input);
-  styleOutput.paletteSource = "fallback";
+  styleOutput.paletteSource = "llm";
 
   console.log(
     JSON.stringify({

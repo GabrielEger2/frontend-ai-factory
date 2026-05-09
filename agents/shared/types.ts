@@ -104,13 +104,18 @@ export type ResearchOutput = z.infer<typeof ResearchOutputSchema>;
 /*  Style Output                                                       */
 /* ------------------------------------------------------------------ */
 
+const HEX_COLOR_REGEX = /^#[0-9a-fA-F]{6}$/;
+const HEX_COLOR_MESSAGE = {
+  message: "must be a 6-digit hex color (e.g. #1A2B3C)",
+};
+
 export const PaletteSchema = z.object({
-  primary: z.string(),
-  secondary: z.string(),
-  accent: z.string(),
-  neutral: z.string(),
-  primaryLight: z.string(),
-  primaryDark: z.string(),
+  primary: z.string().regex(HEX_COLOR_REGEX, HEX_COLOR_MESSAGE),
+  secondary: z.string().regex(HEX_COLOR_REGEX, HEX_COLOR_MESSAGE),
+  accent: z.string().regex(HEX_COLOR_REGEX, HEX_COLOR_MESSAGE),
+  neutral: z.string().regex(HEX_COLOR_REGEX, HEX_COLOR_MESSAGE),
+  primaryLight: z.string().regex(HEX_COLOR_REGEX, HEX_COLOR_MESSAGE),
+  primaryDark: z.string().regex(HEX_COLOR_REGEX, HEX_COLOR_MESSAGE),
 });
 
 export const PaletteModesSchema = z.object({
@@ -166,7 +171,10 @@ export const StyleOutputSchema = z.object({
     ]),
   ),
   density: z.enum(["low", "medium", "high"]),
-  paletteSource: z.enum(["graph", "fallback"]).optional(),
+  paletteSource: z
+    .enum(["graph", "llm", "fallback-default"])
+    .catch("llm")
+    .optional(),
   paletteSuggestions: z.array(PaletteSchema).optional(),
   styleKit: StyleKitSchema.optional(),
   imageryDensity: z.enum(["low", "medium", "high"]).optional(),
