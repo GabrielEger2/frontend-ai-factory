@@ -16,6 +16,7 @@
     "api/**/*.ts",
     "content/**/*.ts",
     "humanizer/**/*.ts",
+    "image/**/*.ts",
     "qa/**/*.ts",
     "assembler/**/*.ts",
     "deploy/**/*.ts",
