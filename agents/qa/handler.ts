@@ -3,8 +3,9 @@ import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { S3Client } from "@aws-sdk/client-s3";
 import { QAInputSchema } from "./types";
 import type { QAInput } from "./types";
-import type { QAOutput, HumanizerOutput } from "../shared/types";
+import type { QAOutput, HumanizerOutput, Palette } from "../shared/types";
 import { fetchAssembledFiles } from "../shared/tar-utils";
+import { contrastRatio } from "../shared/color";
 import { COMPONENT_METADATA } from "../assembler/component-sources.generated";
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
@@ -289,25 +290,78 @@ function checkRequiredFilesExist(files: Record<string, string>): QAIssue[] {
 }
 
 /**
- * Run all 5 structural checks and return the QA result.
+ * Check 6 — WCAG AA contrast ratio on palette backgrounds (non-blocking).
+ *
+ * For each background field of the Style Agent's palette, compute the best
+ * achievable contrast ratio (white-or-near-black, whichever wins — mirrors
+ * the assembler's `deriveContentColor` choice). If `< 4.5:1`, emit a
+ * non-blocking warning.
+ *
+ * Reads palette directly from `input.styleOutput?.palette` rather than
+ * parsing the assembled `globals.css` from the tar. Simpler, but has a
+ * known blind spot: does NOT catch assembler-level color corruption (e.g.
+ * `hexToOklch` silently returning a neutral fallback for malformed hex).
+ * The hex regex on `PaletteSchema` closes most of this gap upstream.
+ *
+ * Emitted as warnings, NOT issues — QA `maxAttempts: 1` means adding to
+ * issues would terminal-fail the pipeline. Sellers see contrast warnings
+ * via the dashboard's gap-detection panel.
+ */
+function checkContrastRatios(palette: Palette | undefined): QAIssue[] {
+  if (palette === undefined) return [];
+
+  const findings: QAIssue[] = [];
+  const backgroundFields = [
+    "primaryLight",
+    "primary",
+    "secondary",
+    "accent",
+    "neutral",
+  ] as const;
+
+  for (const field of backgroundFields) {
+    const bgHex = palette[field];
+    const bestContrast = Math.max(
+      contrastRatio(bgHex, "#ffffff"),
+      contrastRatio(bgHex, "#1a1a1a"),
+    );
+    if (bestContrast < 4.5) {
+      findings.push({
+        componentId: "globals.css",
+        slot: field,
+        message: `Contrast ${bestContrast.toFixed(1)}:1 < 4.5:1 WCAG AA minimum`,
+      });
+    }
+  }
+
+  return findings;
+}
+
+/**
+ * Run all structural and accessibility checks and return the QA result.
  *
  * Split into:
  *   - issues  → blocking. Hard structural failures (missing files,
  *               broken imports, ={undefined} in JSX, enum violations).
  *               Cause the pipeline to fail and route to QAPipelineFailed.
- *   - warnings → non-blocking. Required-slot-null detections; the
- *                assembler's safety-net pass already filled these with
- *                placeholders so the site renders. Surfaced to the
- *                seller via the dashboard gap-detection panel.
+ *   - warnings → non-blocking. Required-slot-null detections (assembler's
+ *                safety-net pass already filled with placeholders);
+ *                contrast-ratio violations on palette backgrounds.
+ *                Surfaced to the seller via the dashboard gap-detection panel.
  *
  * The required-slot check is intentionally demoted: components mark
  * image / logo / anchor-URL slots as required, but no upstream agent
  * fabricates those values. Failing the pipeline over them just denies
  * the seller a demo-able site they could otherwise edit later.
+ *
+ * Contrast warnings are also demoted: QA has `maxAttempts: 1` and contrast
+ * is enforced upstream by the Style Agent's in-Lambda retry loop. A
+ * downstream finding here is informational only.
  */
 function runChecks(
   files: Record<string, string>,
   humanizerOutput: HumanizerOutput,
+  palette?: Palette,
 ): QAOutput {
   const issues: QAIssue[] = [
     ...checkRequiredFilesExist(files),
@@ -316,7 +370,10 @@ function runChecks(
     ...checkImportsResolve(files),
   ];
 
-  const warnings: QAIssue[] = [...checkRequiredSlots(humanizerOutput)];
+  const warnings: QAIssue[] = [
+    ...checkRequiredSlots(humanizerOutput),
+    ...checkContrastRatios(palette),
+  ];
 
   return {
     passed: issues.length === 0,
@@ -437,7 +494,11 @@ export const handler = async (event: unknown): Promise<unknown> => {
   );
 
   /* ---- Run structural checks ---- */
-  const qaOutput = runChecks(files, input.humanizerOutput);
+  const qaOutput = runChecks(
+    files,
+    input.humanizerOutput,
+    input.styleOutput?.palette,
+  );
 
   console.log(
     JSON.stringify({
