@@ -1,0 +1,40 @@
+{
+  "projectId": "style-fixture-legal-luxe-boutique",
+  "status": "styling",
+  "companyName": "Barros & Associados Advocacia Tributária",
+  "segment": "legal-luxe",
+  "description": "Escritório boutique de advocacia tributária localizado na Vila Olímpia, São Paulo, especializado em planejamento fiscal estratégico para holdings familiares, M&A e contencioso tributário de alta complexidade. Banca enxuta com 12 advogados sêniores — sem terceirizar a operação para juniores como os grandes escritórios — atendendo um portfólio restrito de famílias empresariais e grupos econômicos de médio porte. Diferenciais: equipe formada nos top-10 LL.M. (USP, FGV, NYU, Georgetown), publicações regulares no JOTA e Valor Econômico, e abordagem consultiva de longo prazo (não 'caso a caso'). Casos típicos: reorganização societária pré-sucessão, defesa em autos de infração de alto valor, due diligence tributária em M&A, contencioso em CARF e tribunais superiores. Comunicação institucional, sóbria, técnica, sem auto-promoção barata — autoridade silenciosa, tradição reinterpretada com rigor moderno.",
+  "brandColor": "#1B2B4B",
+  "colorsToAvoid": ["neon", "bright green", "candy", "fluorescent"],
+  "brandToneKeywords": [
+    "autoridade",
+    "sóbrio",
+    "técnico",
+    "tradição",
+    "discreto"
+  ],
+  "objectives": [
+    "Gerar contato qualificado de holdings familiares e CFOs",
+    "Comunicar autoridade técnica e tradição boutique",
+    "Diferenciar de grandes escritórios de massa"
+  ],
+  "researchOutput": {
+    "companyName": "Barros & Associados Advocacia Tributária",
+    "segment": "legal-luxe",
+    "summary": "Escritório boutique de advocacia tributária em Vila Olímpia (SP), com 12 advogados sêniores atendendo holdings familiares e grupos econômicos de médio porte. Diferencial: equipe top-LL.M., publicações em mídia especializada, abordagem consultiva de longo prazo.",
+    "competitors": [
+      {
+        "name": "Mattos Filho Tributário",
+        "url": "https://mattosfilho.com.br"
+      },
+      {
+        "name": "Machado Meyer Tributário",
+        "url": "https://machadomeyer.com.br"
+      }
+    ],
+    "toneKeywords": ["autoridade", "sóbrio", "técnico", "tradição"],
+    "uniqueValue": "Banca enxuta sem terceirizar para juniores; equipe top-LL.M. com publicações regulares; abordagem consultiva pluri-anual ao invés de caso a caso."
+  },
+  "sellerId": "fixture-seller",
+  "taskToken": "FIXTURE_TASK_TOKEN_legal_luxe_boutique"
+}

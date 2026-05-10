@@ -1,0 +1,37 @@
+{
+  "projectId": "style-fixture-luxe-clinic",
+  "status": "styling",
+  "companyName": "Clínica Estética Lumière",
+  "segment": "healthcare-luxe",
+  "description": "Clínica de estética avançada e medicina regenerativa localizada no Itaim Bibi, São Paulo, atendendo um público exigente que valoriza ciência, sofisticação e discrição. Tratamentos premium incluem harmonização facial, bioestimuladores de colágeno, laser fracionado, drug delivery e protocolos personalizados de bem-estar pós-procedimento. Equipe de dermatologistas e biomédicas com formação internacional (Espanha e EUA). Ambiente que combina rigor clínico com hospitalidade de spa: salas individuais, recepção com curadoria de chá e essências, atendimento sem pressa, total privacidade. Diferencial: protocolos baseados em evidência científica recente, equipamentos de última geração e abordagem holística que respeita a anatomia individual de cada paciente — nada de resultados padronizados ou estética 'instagrammável'. Comunicação refinada, sóbria, científica — luxo silencioso.",
+  "brandColor": null,
+  "colorsToAvoid": ["neon", "fluorescent", "electric blue", "lime"],
+  "brandToneKeywords": [
+    "sofisticado",
+    "científico",
+    "discreto",
+    "refinado",
+    "premium"
+  ],
+  "objectives": [
+    "Captar leads qualificados para avaliação presencial",
+    "Comunicar autoridade científica e sofisticação",
+    "Diferenciar de clínicas de estética populares e agressivas"
+  ],
+  "researchOutput": {
+    "companyName": "Clínica Estética Lumière",
+    "segment": "healthcare-luxe",
+    "summary": "Clínica premium de estética avançada no Itaim Bibi (SP) combinando dermatologia baseada em evidência, medicina regenerativa e experiência de spa de luxo. Atende público de alta renda que valoriza discrição, ciência e resultados naturais.",
+    "competitors": [
+      { "name": "Clínica Bellitá", "url": "https://bellita.com.br" },
+      {
+        "name": "Renata Espíndola Dermatologia",
+        "url": "https://renataespindola.com.br"
+      }
+    ],
+    "toneKeywords": ["sofisticado", "científico", "discreto", "refinado"],
+    "uniqueValue": "Protocolos baseados em evidência, equipe com formação internacional, ambiente de spa de luxo com rigor clínico."
+  },
+  "sellerId": "fixture-seller",
+  "taskToken": "FIXTURE_TASK_TOKEN_luxe_clinic"
+}

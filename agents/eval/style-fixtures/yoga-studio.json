@@ -1,0 +1,34 @@
+{
+  "projectId": "style-fixture-yoga-studio",
+  "status": "styling",
+  "companyName": "Estúdio Sereno Yoga",
+  "segment": "wellness",
+  "description": "Estúdio de yoga boutique localizado em Pinheiros, São Paulo, dedicado à prática consciente e individualizada. Aulas em turmas reduzidas (até 8 alunos) de hatha, yin, vinyasa suave e meditação guiada, com foco em alunos adultos buscando reduzir estresse, melhorar postura e cultivar bem-estar mental. Espaço com piso de madeira clara, luz natural, jardim interno com plantas e cheiro de palo santo. Filosofia anti-academia: nada de competição, sem espelhos, sem música alta — só respiração, atenção plena e movimento consciente. Professores certificados pela Yoga Alliance com background em fisioterapia. Atendemos também gestantes e idosos com aulas adaptadas. Comunicação calma, acolhedora, próxima — o oposto da estética fluorescente fitness.",
+  "brandColor": null,
+  "colorsToAvoid": ["neon green", "lime green", "verde neon"],
+  "brandToneKeywords": [
+    "calmo",
+    "acolhedor",
+    "consciente",
+    "natural",
+    "individualizado"
+  ],
+  "objectives": [
+    "Gerar agendamentos de aula experimental",
+    "Comunicar a filosofia anti-academia e acolhedora",
+    "Atrair público adulto urbano buscando bem-estar"
+  ],
+  "researchOutput": {
+    "companyName": "Estúdio Sereno Yoga",
+    "segment": "wellness",
+    "summary": "Estúdio de yoga boutique em Pinheiros (SP) com prática individualizada, turmas pequenas e filosofia anti-academia. Diferencia-se por ambiente sereno, professores com formação em fisioterapia e foco em adultos urbanos estressados.",
+    "competitors": [
+      { "name": "Yoga Pura Vila Madalena", "url": "https://yogapura.com.br" },
+      { "name": "Mukti Yoga Shala", "url": "https://muktiyoga.com.br" }
+    ],
+    "toneKeywords": ["calmo", "acolhedor", "consciente", "natural"],
+    "uniqueValue": "Turmas reduzidas, professores com formação em fisioterapia, ambiente que privilegia silêncio e luz natural."
+  },
+  "sellerId": "fixture-seller",
+  "taskToken": "FIXTURE_TASK_TOKEN_yoga_studio"
+}

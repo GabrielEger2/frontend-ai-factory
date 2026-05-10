@@ -1,0 +1,16 @@
+{
+  "fixtureId": "yoga-studio",
+  "vertical": "wellness",
+  "saturationBucket": "muted",
+  "forbidden": ["neon", "fluorescent", "electric green", "lime", "candy"],
+  "exampleBadOutputs": ["#C8F078", "#A0F060", "#B4E33D", "#FFD700", "#7FFF00"],
+  "expectedColorFamilies": [
+    "sage",
+    "dusty rose",
+    "warm ivory",
+    "soft terracotta",
+    "muted teal",
+    "off-white"
+  ],
+  "notes": "Wellness brief with explicit colorsToAvoid covering the lime-green failure mode. All background-tier fields (primaryLight, neutral) MUST be low-chroma; no electric/fluorescent green even if WCAG passes. The colorsToAvoid array uses pt-BR ('verde neon') and English ('neon green', 'lime green') variants — the prompt must treat all three as perceptual exclusions, not exact-code filters."
+}
