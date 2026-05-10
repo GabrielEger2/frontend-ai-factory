@@ -12,6 +12,7 @@ export const StyleAgentInputSchema = PipelineStateSchema.pick({
   segment: true,
   description: true,
   brandColor: true,
+  colorsToAvoid: true,
   brandToneKeywords: true,
   objectives: true,
 }).extend({

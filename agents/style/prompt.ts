@@ -57,7 +57,7 @@ Given a company brief and research output, you must produce a cohesive style def
     Use the exact tokens from this list: bakery, bakery-luxe, restaurant, restaurant-luxe,
     fitness, auto-services, legal-consulting, legal-luxe, healthcare, healthcare-luxe,
     beauty-salon, education, real-estate, real-estate-luxe, hospitality, hospitality-luxe,
-    pet-services, ecommerce, construction, saas, agency, atelier-luxe, gourmet-retail.
+    pet-services, ecommerce, construction, saas, agency, atelier-luxe, gourmet-retail, wellness.
 
     Each row in the "Default vertical → tag clusters" table corresponds to a canonical token.
     For luxury overrides, emit the -luxe variant first then the base
@@ -119,6 +119,39 @@ Palette rules for food, grocery, distributor, comfort, and hospitality segments:
   - Saturated reds/oranges allowed as ACCENT only (CTAs, badges) — NEVER as primary surface.
   - Avoid bright primary red as the dominant brand color in food/comfort segments.
 
+## Vertical Color Forbidden Zones
+
+Each canonical vertical has off-character color zones that must be avoided regardless of WCAG contrast compliance. Apply these as hard constraints in addition to (not in place of) the food/comfort palette rules above.
+
+| Vertical | Forbidden zone |
+|---|---|
+| bakery | Avoid clinical white, cold greys, neon-saturated backgrounds. Palette MUST stay in warm neutrals (cream, off-white, soft beige) with natural accents. |
+| bakery-luxe | NEVER use bright high-chroma primaries or playful pastels. Restrained ivory, warm taupe, deep chocolate, matte gold accents only. |
+| restaurant | Avoid cold desaturated palettes (clinical blue, grey-dominant). Saturated reds/oranges/earth tones allowed as primary; NEVER neon. |
+| restaurant-luxe | NEVER bright or playful. Deep, muted, sophisticated — burgundy, charcoal, warm ivory; no fluorescent accents. |
+| fitness | Avoid pale pastels and corporate grey (low-energy signal). Bold, high-contrast primary expected; NEVER muted beige as dominant background. |
+| auto-services | Avoid soft pastels, floral, fashion-adjacent. Industrial authority requires strong contrast; NEVER neon or candy-hued accents. |
+| legal-consulting | NEVER neon, electric, or saturated playful colors. Authoritative: navy, charcoal, dark teal, warm off-white. High chroma on backgrounds prohibited. |
+| legal-luxe | Absolute prohibition on bright primaries, neon, pastels. Deep muted serious tones only: midnight navy, dark charcoal, champagne, restrained gold. ✗ DO NOT use #C8F078, #39FF14, #FFD700. |
+| healthcare | Avoid electric greens, fluorescent yellows, aggressive reds. Clinical trust = muted blues, soft teals, clean whites. NEVER high-chroma backgrounds. |
+| healthcare-luxe | NEVER electric or fluorescent. Premium aesthetics demand low-chroma: warm ivory, sage, dusty rose. ✗ DO NOT use #C8F078, #A0F060, #7FFFD4 as background-tier colors. |
+| beauty-salon | Avoid cold industrial palettes. Warmth and approachability required; NEVER neon/electric for calm/feminine beauty brands. |
+| education | Avoid dark oppressive palettes. NEVER neon for children's-adjacent education; corporate education allows bold but not fluorescent. |
+| real-estate | Avoid playful candy-hued palettes. Trust requires muted earth tones, blues, warm neutrals; NEVER neon backgrounds. |
+| real-estate-luxe | Absolute prohibition on bright/saturated/playful colors. Deeply muted: champagne, dark grey, warm ivory, restrained metallic hints. |
+| hospitality | Avoid cold/clinical/aggressive palettes. Warmth = earth tones or coastal neutrals; NEVER neon or electric primaries. |
+| hospitality-luxe | NEVER electric or fluorescent. Luxury hospitality: ivory, sand, sage, deep navy; all background-tier fields low-chroma. ✗ DO NOT use #C8F078, #FFD700, #00FFCC. |
+| pet-services | Avoid cold intimidating palettes. Friendly warmth required; bright/playful is OK but NOT neon/electric. |
+| ecommerce | Avoid muddy low-contrast palettes. Fluorescent accents OK ONLY as micro-accent — NEVER as background-tier primary surface. |
+| construction | Avoid soft pastels or decorative palettes. Industrial authority: dark navy, concrete grey, amber accents; no candy hues. |
+| saas | Avoid overly warm rustic palettes. Clean modern primaries; fluorescent OK ONLY as micro-accent — NEVER as background primary. |
+| agency | Avoid stale corporate navy/grey AND muddy low-contrast non-palettes. Range is wide but NEVER undefined mud. |
+| atelier-luxe | Absolute prohibition on mass-market brights, neon, candy pastels. Editorial restrained only: matte black, warm ivory, dusty rose, taupe. |
+| gourmet-retail | Avoid clinical whites and cold palettes. Warm rich tones — deep terracotta, cream, slate — NEVER fluorescent or neon. |
+| wellness | NEVER neon, electric, or fluorescent colors. Calm grounding energy: muted sage, dusty rose, warm ivory, soft earthy tones at low chroma. DO NOT use lime-green or electric green as background-tier even if WCAG passes. ✗ DO NOT use #C8F078, #A0F060, #B4E33D. |
+
+**Brand color exception:** If the seller's \`brandColor\` falls inside a vertical's forbidden zone, \`primary\` MUST still equal it exactly (Rule 8 wins) — but ALL other palette fields (secondary, accent, neutral, primaryLight, primaryDark) MUST be deeply muted to compensate.
+
 ## StyleKit Selection
 
 The \`styleKit.background\` field controls a project-wide visual motif that echoes across compatible hero/CTA/contact sections for cohesion.
@@ -173,7 +206,52 @@ Mood modifiers refine the same palette family:
 - **elegant / calm** → softer contrast, muted saturation, harmonious neighboring hues
 - **playful + energetic together** → push toward bright accents; never wash out primary
 
+## Per-Mood Saturation Buckets
+
+Each canonical mood maps to a saturation bucket — a target chroma/energy level the palette should embody. Buckets are guidance, not hard validation; use them to calibrate overall character before picking specific hex values.
+
+| Mood | Saturation bucket | What it means for palette |
+|---|---|---|
+| calm | muted | All palette fields stay low-chroma. Backgrounds MUST be muted — no electric or fluorescent tones even if WCAG passes. |
+| elegant | muted | Deep, refined, still. No vivid primaries; accent may be restrained metallic or dusty tone. |
+| trustworthy | restrained | Controlled saturation signals reliability. Midrange blues, teals, warm neutrals — avoid both washed-out grey and loud brights. |
+| professional | restrained | Authoritative but not cold. Enough saturation to feel confident; not washed out, not vivid. |
+| serious | restrained | No pastels, no playful brights. Sober, high-contrast, intentional — dark primaries with clean light backgrounds. |
+| friendly | pastel | Warm approachable tones. Mid-saturation OK; electric/fluorescent pastels still forbidden — soft warmth, not synthetic lightness. |
+| fun | vivid | High-chroma primaries and expressive accents. Fluorescent ONLY as micro-accent — NEVER as background-tier color. |
+| energetic | vivid | Bold and kinetic. Strong contrast, high-chroma primary; secondary can anchor with darker tone to prevent visual chaos. |
+
+**Vertical override:** If a vertical's forbidden zone prohibits high-chroma backgrounds (wellness, healthcare-luxe, hospitality-luxe, atelier-luxe), the effective bucket for background-tier fields (primaryLight, neutral) caps at \`muted\` regardless of mood bucket.
+
+## Color Character Principles
+
+These principles encode how color actually works in digital contexts. Apply them when choosing hex values — they override hue-wheel intuitions.
+
+**Principle 1 — Chroma defines mood more than hue does**
+→ Two greens at identical hue but different chroma feel like completely different colors: muted sage reads calm and natural; same hue at full saturation reads electric and synthetic. When building a palette, determine correct chroma level first (per bucket table), then select the hue. Chroma is primary driver of perceived character; hue family is secondary.
+
+**Principle 2 — Lightness + chroma together control perceived energy**
+→ High lightness + high chroma = electric/neon (the fluorescent effect). High lightness + low chroma = airy/calm (correct for wellness, healthcare-luxe backgrounds). Low lightness + high chroma = vivid/bold (correct for energetic brands). Low lightness + low chroma = serious/authoritative (correct for legal-luxe, atelier-luxe). Before finalizing any background-tier color, verify BOTH lightness and chroma — not just WCAG contrast. A color can pass contrast and still be wrong.
+
+**Principle 3 — The lime-green failure mode (explicit rule)**
+→ Light-tinted colors with high chroma appear electric and garish even at high contrast ratios. Pale lime-green (#C8F078) passes WCAG 4.5:1 but reads as synthetic and completely off-character for calm verticals. For wellness, healthcare-luxe, hospitality-luxe, atelier-luxe, and any calm/elegant/trustworthy mood: ALL background-tier colors (primaryLight, neutral) MUST be low-chroma. If a color looks like it could glow under a blacklight, it is wrong for these verticals — regardless of contrast ratio.
+
+**Principle 4 — Color temperature shifts hue AND saturation together**
+→ "Warm" is not only orange-red hues. Warm palette tilts entire color set toward yellow-red AND reduces cool-blue saturation across all fields. "Cool" does the opposite. When applying a warm brand character, shift hue temperature consistently — don't pick warm primary and leave rest neutral-cool. Inconsistent temperature feels accidental.
+
+**Principle 5 — Hue-only harmony rules are weak and context-blind**
+→ Do NOT build palettes using complementary or triadic hue-wheel rules alone. They produce technically balanced palettes that are contextually wrong (a complementary red-green pair is festive, not professional — regardless of brief). Character (which bucket), context (vertical, mood), and chroma consistency dominate over hue-relationship geometry. Always ask: "Does this palette feel right for the brand?" not "Does it look balanced on a color wheel?"
+
+**Principle 6 — Pigment-mixing intuition does not apply to RGB/hex**
+→ In physical paint, blue + yellow = green. In RGB hex space, this is not how mixing works — do not reason about hex value relationships using pigment intuition. When specifying palette relationships (e.g., primaryLight as a lightened version of primary), think in lightness shifts and chroma reductions, not additive/subtractive color mixing.
+
+Apply in this order: (1) set chroma appropriate to vertical and mood bucket, (2) select hue within non-forbidden zone, (3) adjust lightness for contrast compliance, (4) verify temperature consistency across all six palette fields.
+
 ## Hard Rules — Color Contrast
+
+### Seller-Specified Colors to Avoid
+
+If the seller has provided a \`colorsToAvoid\` list in the user prompt, **DO NOT use any of those colors or their near-perceptual matches** across any palette field (primary, secondary, accent, neutral, primaryLight, primaryDark). The list may contain hex codes (e.g., #C8F078), color names (e.g., 'lime green'), or descriptive terms (e.g., 'avoid anything fluorescent') — treat all as **perceptual exclusions**, not exact-code filters. Before emitting the JSON object, **self-verify**: for each item in \`colorsToAvoid\`, confirm none of your palette fields look visually similar in hue, saturation, and brightness. If you detect a near-match, replace that palette field with a harmonious muted alternative.
 
 ### ABSOLUTE PROHIBITION: low-contrast text-on-background pairs
 
@@ -382,6 +460,19 @@ export function buildStyleUserPrompt(
       ].join("\n")
     : "";
 
+  const colorsToAvoidSection =
+    input.colorsToAvoid && input.colorsToAvoid.length > 0
+      ? [
+          "## Seller-Specified Colors to Avoid",
+          "",
+          "The seller has flagged the following as off-brand or forbidden. Treat as perceptual exclusions — applies to hex codes, named colors, and descriptive terms alike:",
+          "",
+          ...input.colorsToAvoid.map((c) => `- ${c}`),
+          "",
+          "Self-verify: before emitting JSON, confirm none of your palette fields visually resemble any item above.",
+        ].join("\n")
+      : "";
+
   return [
     companySection,
     "",
@@ -394,6 +485,8 @@ export function buildStyleUserPrompt(
     objectivesSection,
     "",
     brandColorSection,
+    "",
+    colorsToAvoidSection,
     "",
     "Based on the company brief and research output above, define the complete visual identity JSON.",
   ]

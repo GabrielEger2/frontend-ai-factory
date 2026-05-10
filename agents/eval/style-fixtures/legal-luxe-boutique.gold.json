@@ -1,0 +1,23 @@
+{
+  "fixtureId": "legal-luxe-boutique",
+  "vertical": "legal-luxe",
+  "saturationBucket": "restrained",
+  "primaryMustEqual": "#1B2B4B",
+  "forbidden": [
+    "neon",
+    "bright green",
+    "candy",
+    "electric",
+    "fluorescent",
+    "playful bright"
+  ],
+  "exampleBadOutputs": ["#C8F078", "#39FF14", "#FF69B4", "#FFD700", "#00FFCC"],
+  "expectedColorFamilies": [
+    "midnight navy (from brandColor)",
+    "champagne",
+    "warm off-white",
+    "charcoal",
+    "restrained gold"
+  ],
+  "notes": "primary MUST equal #1B2B4B in all runs; if not, Rule 8 is broken. The brandColor #1B2B4B is already inside the legal-luxe allowed zone (midnight navy), so the brand-color-exception carve-out is NOT triggered here — but Rule 8 enforcement still applies. All OTHER palette fields (secondary, accent, neutral, primaryLight, primaryDark) must be deeply muted: champagne, warm off-white, charcoal, restrained gold. Absolutely no neon, no bright green, no candy pinks, no fluorescent accents — even as micro-accents."
+}

@@ -1,0 +1,31 @@
+{
+  "projectId": "style-fixture-yoga-studio",
+  "status": "styling",
+  "companyName": "Estúdio Sereno Yoga",
+  "segment": "wellness",
+  "description": "Estúdio de yoga boutique localizado em Pinheiros, São Paulo, dedicado à prática consciente e individualizada. Aulas em turmas reduzidas (até 8 alunos) de hatha, yin, vinyasa suave e meditação guiada, com foco em alunos adultos buscando reduzir estresse, melhorar postura e cultivar bem-estar mental. Espaço com piso de madeira clara, luz natural, jardim interno com plantas e cheiro de palo santo. Filosofia anti-academia: nada de competição, sem espelhos, sem música alta — só respiração, atenção plena e movimento consciente. Professores certificados pela Yoga Alliance com background em fisioterapia. Atendemos também gestantes e idosos com aulas adaptadas. Comunicação calma, acolhedora, próxima — o oposto da estética fluorescente fitness.",
+  "brandColor": null,
+  "colorsToAvoid": ["neon green", "lime green", "verde neon"],
+  "brandToneKeywords": [
+    "calmo",
+    "acolhedor",
+    "consciente",
+    "natural",
+    "individualizado"
+  ],
+  "objectives": [
+    "Gerar agendamentos de aula experimental",
+    "Comunicar a filosofia anti-academia e acolhedora",
+    "Atrair público adulto urbano buscando bem-estar"
+  ],
+  "researchOutput": {
+    "companySummary": "Estúdio de yoga boutique em Pinheiros (SP) com prática individualizada, turmas pequenas e filosofia anti-academia. Diferencia-se por ambiente sereno, professores com formação em fisioterapia e foco em adultos urbanos estressados.",
+    "segment": "wellness",
+    "targetAudience": "Adultos urbanos de 28 a 55 anos em Pinheiros e bairros próximos, profissionais com rotina estressante buscando reduzir ansiedade, melhorar postura e cultivar bem-estar mental. Inclui também gestantes e idosos que precisam de aulas adaptadas. Público que rejeita a estética fitness fluorescente e busca silêncio, atenção plena e prática consciente.",
+    "toneKeywords": ["calmo", "acolhedor", "consciente", "natural"],
+    "competitorInsights": "Concorrentes diretos como Yoga Pura (Vila Madalena) e Mukti Yoga Shala focam em públicos mais amplos e estética colorida-vibrante. Lacuna no mercado para um estúdio com posicionamento explicitamente anti-academia e branding visualmente sereno: madeira clara, jardim interno, ausência de música alta. Comunicação concorrente tende a ser energética; a oportunidade é o oposto — silêncio, presença e cuidado.",
+    "differentiators": "Turmas reduzidas (até 8 alunos), professores com formação em fisioterapia, ambiente que privilegia silêncio e luz natural. Aulas adaptadas para gestantes e idosos. Posicionamento anti-academia explícito: sem competição, sem espelhos, sem música alta."
+  },
+  "sellerId": "fixture-seller",
+  "taskToken": "FIXTURE_TASK_TOKEN_yoga_studio"
+}

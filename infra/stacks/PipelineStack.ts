@@ -365,6 +365,7 @@ export class PipelineStack extends Stack {
         "segment.$": "$.segment",
         "description.$": "$.description",
         "brandColor.$": "$.brandColor",
+        "colorsToAvoid.$": "$.colorsToAvoid",
         "sellerId.$": "$.sellerId",
         "researchOutput.$": "$.researchOutput",
         "brandToneKeywords.$": "$.brandToneKeywords",

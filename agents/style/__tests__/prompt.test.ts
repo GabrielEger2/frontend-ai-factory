@@ -86,13 +86,36 @@ describe("buildStyleSystemPrompt", () => {
   });
 
   it("never emits non-enum tokens as mood or style values inside table cells", () => {
-    // Table rows look like "| col | col | col |". Backtick-wrapped tokens are
-    // disclaimers/quotes (e.g. "no `warm` mood") and are stripped before checking.
-    // The food-palette rule's "neutral-warm" prose lives outside table rows.
-    const tableRows = prompt
-      .split("\n")
-      .filter((line) => /^\|/.test(line) && !/^\|\s*-+/.test(line));
-    for (const row of tableRows) {
+    // Only inspect mood/style cluster tables — those tables have `| mood |`
+    // AND `| style |` column headers and risk leaking non-enum tokens into the
+    // mood/style cells the LLM imitates. Prose tables added by Color Quality
+    // v2 (Forbidden Zones, Saturation Buckets) describe color characteristics
+    // and legitimately use words like "warm" in descriptive prose — they are
+    // not enum value sources and must not be checked here.
+    // Backtick-wrapped tokens are stripped (disclaimers like "no `warm` mood").
+    const lines = prompt.split("\n");
+    const moodStyleTableRows: string[] = [];
+    let inMoodStyleTable = false;
+    for (const line of lines) {
+      const isTableLine = /^\|/.test(line);
+      if (!isTableLine) {
+        inMoodStyleTable = false;
+        continue;
+      }
+      const header = line.toLowerCase();
+      const isHeaderRow =
+        header.includes("| mood ") && header.includes("| style ");
+      if (isHeaderRow) {
+        inMoodStyleTable = true;
+        continue;
+      }
+      if (/^\|\s*-+/.test(line)) continue; // separator row
+      if (inMoodStyleTable) {
+        moodStyleTableRows.push(line);
+      }
+    }
+    expect(moodStyleTableRows.length).toBeGreaterThan(0);
+    for (const row of moodStyleTableRows) {
       const stripped = row.replace(/`[^`]*`/g, "");
       for (const token of FORBIDDEN_TOKENS) {
         expect(stripped.toLowerCase()).not.toMatch(
@@ -182,5 +205,96 @@ describe("buildStyleUserPrompt", () => {
   it("omits the brandColor anchor section when no brandColor is supplied", () => {
     const userPrompt = buildStyleUserPrompt(sampleInput, []);
     expect(userPrompt).not.toContain("Brand Color (Mandatory Anchor)");
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/*  Color Quality v2 — new prompt sections                             */
+/* ------------------------------------------------------------------ */
+
+function buildMinimalStyleInput(
+  overrides: Partial<StyleAgentInput> = {},
+): StyleAgentInput {
+  return {
+    projectId: "p_test_minimal",
+    status: "styling",
+    companyName: "Acme Co.",
+    segment: "agencia",
+    description: "Agência minimal para testes.",
+    brandColor: null,
+    colorsToAvoid: null,
+    brandToneKeywords: [],
+    objectives: [],
+    researchOutput: {
+      companySummary: "Empresa de teste.",
+      segment: "agencia",
+      targetAudience: "público geral",
+      toneKeywords: ["modern"],
+      competitorInsights: "n/a",
+      differentiators: "n/a",
+    },
+    taskToken: "task-token-minimal",
+    ...overrides,
+  } as unknown as StyleAgentInput;
+}
+
+describe("Color Quality v2 — new prompt sections", () => {
+  let systemPrompt: string;
+
+  beforeAll(() => {
+    systemPrompt = buildStyleSystemPrompt();
+  });
+
+  it("T1 — includes Vertical Color Forbidden Zones with wellness row", () => {
+    expect(systemPrompt).toContain("## Vertical Color Forbidden Zones");
+    expect(systemPrompt).toContain("wellness");
+    expect(systemPrompt).toContain("NEVER neon, electric, or fluorescent");
+  });
+
+  it("T2 — includes Per-Mood Saturation Buckets with all four bucket labels", () => {
+    expect(systemPrompt).toContain("## Per-Mood Saturation Buckets");
+    expect(systemPrompt).toContain("muted");
+    expect(systemPrompt).toContain("vivid");
+    expect(systemPrompt).toContain("restrained");
+    expect(systemPrompt).toContain("pastel");
+  });
+
+  it("T3 — includes Color Character Principles with chroma and lime-green failure mode", () => {
+    expect(systemPrompt).toContain("## Color Character Principles");
+    expect(systemPrompt).toContain("Chroma defines mood");
+    expect(systemPrompt).toContain("lime-green failure mode");
+  });
+
+  it("T4 — includes brand-vs-forbidden-zone carve-out", () => {
+    expect(systemPrompt).toContain("Brand color exception");
+    expect(systemPrompt).toContain("Rule 8 wins");
+  });
+
+  it("T5 — includes Seller-Specified Colors to Avoid hard-rule section in system prompt", () => {
+    expect(systemPrompt).toContain("### Seller-Specified Colors to Avoid");
+    expect(systemPrompt).toContain("near-perceptual");
+    expect(systemPrompt.toLowerCase()).toContain("self-verify");
+  });
+
+  it("T6 — renders colorsToAvoid user-prompt section when list is non-empty", () => {
+    const input = buildMinimalStyleInput({
+      colorsToAvoid: ["lime green", "neon green", "#C8F078"],
+    });
+    const userPrompt = buildStyleUserPrompt(input, []);
+    expect(userPrompt).toContain("Seller-Specified Colors to Avoid");
+    expect(userPrompt).toContain("lime green");
+    expect(userPrompt).toContain("#C8F078");
+  });
+
+  it("T7 — omits colorsToAvoid section when value is null", () => {
+    const input = buildMinimalStyleInput({ colorsToAvoid: null });
+    const userPrompt = buildStyleUserPrompt(input, []);
+    expect(userPrompt).not.toContain("Seller-Specified Colors to Avoid");
+  });
+
+  it("T8 — omits colorsToAvoid section when value is an empty array", () => {
+    const input = buildMinimalStyleInput({ colorsToAvoid: [] });
+    const userPrompt = buildStyleUserPrompt(input, []);
+    expect(userPrompt).not.toContain("Seller-Specified Colors to Avoid");
   });
 });

@@ -1,0 +1,23 @@
+{
+  "fixtureId": "luxe-clinic",
+  "vertical": "healthcare-luxe",
+  "saturationBucket": "muted",
+  "forbidden": [
+    "neon",
+    "fluorescent",
+    "electric",
+    "candy pink",
+    "lime",
+    "bright primary"
+  ],
+  "exampleBadOutputs": ["#C8F078", "#FF69B4", "#00FFCC", "#7FFFD4", "#FFD700"],
+  "expectedColorFamilies": [
+    "champagne",
+    "warm ivory",
+    "sage",
+    "dusty rose",
+    "deep slate",
+    "soft blush"
+  ],
+  "notes": "Healthcare-luxe is a high-risk luxury vertical. No electric or fluorescent tones in ANY palette field. Background-tier fields (primaryLight, neutral) must be low-chroma even if WCAG passes. Candy pink and aqua-mint must be avoided — they signal mass-market beauty, not luxury aesthetics. The forbidden-zone table in the prompt explicitly bans #C8F078, #A0F060, #7FFFD4 for this vertical."
+}
