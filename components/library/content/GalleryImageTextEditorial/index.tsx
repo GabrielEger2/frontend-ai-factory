@@ -162,7 +162,7 @@ export default function GalleryImageTextEditorial({
       <div className="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
         {/* Header */}
         <motion.div
-          className="mx-auto mb-16 max-w-2xl md:mb-24"
+          className="mb-16 max-w-2xl md:mb-24"
           variants={containerVariants}
           initial={shouldReduceMotion ? false : "hidden"}
           whileInView="visible"
