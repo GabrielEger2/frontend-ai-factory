@@ -58,7 +58,9 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
     const lowerSearch = search.toLowerCase();
 
     const filtered = projects.filter((p) => {
-      const matchesSearch = p.companyName.toLowerCase().includes(lowerSearch);
+      const matchesSearch = (p.companyName ?? "")
+        .toLowerCase()
+        .includes(lowerSearch);
       const matchesStatus = statusFilter === "" || p.status === statusFilter;
       return matchesSearch && matchesStatus;
     });
@@ -70,7 +72,7 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
         comparison =
           new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
       } else {
-        comparison = a.companyName.localeCompare(b.companyName);
+        comparison = (a.companyName ?? "").localeCompare(b.companyName ?? "");
       }
 
       return sortDirection === "asc" ? comparison : -comparison;
