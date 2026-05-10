@@ -42,6 +42,18 @@
       "optional": true
     },
     {
+      "name": "monthlyCadenceLabel",
+      "type": "text",
+      "maxLength": 30,
+      "optional": true
+    },
+    {
+      "name": "annualCadenceLabel",
+      "type": "text",
+      "maxLength": 40,
+      "optional": true
+    },
+    {
       "name": "defaultCycle",
       "type": "text",
       "maxLength": 10,
