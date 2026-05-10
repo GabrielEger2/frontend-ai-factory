@@ -235,7 +235,7 @@ export default function GalleryLightboxGrid({
     >
       <div className="mx-auto max-w-7xl px-4 md:px-8">
         <motion.div
-          className="mx-auto mb-12 flex max-w-2xl flex-col text-left md:mb-16"
+          className="mb-12 flex max-w-2xl flex-col text-left md:mb-16"
           variants={containerVariants}
           initial={shouldReduceMotion ? false : "hidden"}
           whileInView="visible"
