@@ -208,6 +208,10 @@ Mood modifiers refine the same palette family:
 
 ## Hard Rules — Color Contrast
 
+### Seller-Specified Colors to Avoid
+
+If the seller has provided a \`colorsToAvoid\` list in the user prompt, **DO NOT use any of those colors or their near-perceptual matches** across any palette field (primary, secondary, accent, neutral, primaryLight, primaryDark). The list may contain hex codes (e.g., #C8F078), color names (e.g., 'lime green'), or descriptive terms (e.g., 'avoid anything fluorescent') — treat all as **perceptual exclusions**, not exact-code filters. Before emitting the JSON object, **self-verify**: for each item in \`colorsToAvoid\`, confirm none of your palette fields look visually similar in hue, saturation, and brightness. If you detect a near-match, replace that palette field with a harmonious muted alternative.
+
 ### ABSOLUTE PROHIBITION: low-contrast text-on-background pairs
 
 The palette you emit will be used as raw CSS background colors. Foreground text is rendered on top of these backgrounds at runtime. If the contrast ratio between text and background falls below WCAG AA, the resulting site is unusable for vision-impaired users and gets rejected.
@@ -415,6 +419,19 @@ export function buildStyleUserPrompt(
       ].join("\n")
     : "";
 
+  const colorsToAvoidSection =
+    input.colorsToAvoid && input.colorsToAvoid.length > 0
+      ? [
+          "## Seller-Specified Colors to Avoid",
+          "",
+          "The seller has flagged the following as off-brand or forbidden. Treat as perceptual exclusions — applies to hex codes, named colors, and descriptive terms alike:",
+          "",
+          ...input.colorsToAvoid.map((c) => `- ${c}`),
+          "",
+          "Self-verify: before emitting JSON, confirm none of your palette fields visually resemble any item above.",
+        ].join("\n")
+      : "";
+
   return [
     companySection,
     "",
@@ -427,6 +444,8 @@ export function buildStyleUserPrompt(
     objectivesSection,
     "",
     brandColorSection,
+    "",
+    colorsToAvoidSection,
     "",
     "Based on the company brief and research output above, define the complete visual identity JSON.",
   ]
