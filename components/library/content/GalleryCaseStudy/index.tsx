@@ -243,10 +243,13 @@ export default function GalleryCaseStudy({
           })}
         </div>
 
-        {/* Metrics band */}
+        {/* Metrics band — ruled editorial grid: a single hairline frame with
+            serif numerals and column dividers. Distinct from the dark slab
+            used by CarouselBeforeAfter / FeaturesBentoGrid so two content
+            sections in a row don't collapse into a single dark stripe. */}
         {metrics && metrics.length > 0 && (
           <motion.div
-            className="mt-20 grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:mt-28 md:grid-cols-4 md:px-12 md:py-14"
+            className="mt-20 grid grid-cols-2 border-y border-base-content/15 md:mt-28 md:grid-cols-4"
             variants={containerVariants}
             initial={shouldReduceMotion ? false : "hidden"}
             whileInView="visible"
@@ -256,12 +259,21 @@ export default function GalleryCaseStudy({
               <motion.div
                 key={i}
                 variants={fadeUp}
-                className="flex flex-col items-start gap-1"
+                className={cn(
+                  "flex flex-col items-start gap-2 px-4 py-8 md:px-8 md:py-12",
+                  // Vertical dividers between columns on md+, and between
+                  // the two stacked rows on mobile.
+                  i % 2 === 1 ? "border-l border-base-content/15" : "",
+                  i < 2 ? "border-b border-base-content/15 md:border-b-0" : "",
+                  i >= 2 ? "md:border-l md:border-base-content/15" : "",
+                  i === 0 ? "md:border-l-0" : "",
+                  i === 2 ? "md:border-l md:border-base-content/15" : "",
+                )}
               >
-                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
+                <span className="font-serif text-4xl font-semibold tracking-tight text-base-content md:text-6xl">
                   {m.value}
                 </span>
-                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
+                <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-base-content/55 md:text-xs">
                   {m.label}
                 </span>
               </motion.div>

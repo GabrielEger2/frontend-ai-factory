@@ -56,7 +56,7 @@ export function VisualEditorShell({
 }: VisualEditorShellProps) {
   const router = useRouter();
   const [draft, setDraft] = useState<WorkingDraft>(initialDraft);
-  const [viewport, setViewport] = useState<Viewport>(1280);
+  const [viewport, setViewport] = useState<Viewport>(1920);
   const [activePicker, setActivePicker] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"sections" | "style" | "content">(
@@ -401,7 +401,7 @@ export function VisualEditorShell({
       {/* Center panel */}
       <section className="flex min-w-0 flex-1 flex-col gap-3">
         <div className="flex items-center justify-center gap-2">
-          {([1280, 768, 375] as const).map((w) => (
+          {([1920, 768, 375] as const).map((w) => (
             <button
               key={w}
               type="button"
@@ -413,7 +413,7 @@ export function VisualEditorShell({
                   : "border border-slate-200 text-slate-600 hover:bg-slate-50")
               }
             >
-              {w === 1280 ? "Desktop" : w === 768 ? "Tablet" : "Mobile"}
+              {w === 1920 ? "Desktop" : w === 768 ? "Tablet" : "Mobile"}
             </button>
           ))}
           <button
@@ -431,7 +431,7 @@ export function VisualEditorShell({
             )}
           </button>
         </div>
-        <div className="flex min-h-0 flex-1 items-start justify-center overflow-auto rounded-lg bg-slate-100 p-4">
+        <div className="flex min-h-0 flex-1 items-start justify-center">
           <BlueprintPreview draft={draft} viewportWidth={viewport} />
         </div>
       </section>

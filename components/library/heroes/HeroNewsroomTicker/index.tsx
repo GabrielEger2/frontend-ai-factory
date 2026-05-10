@@ -150,40 +150,6 @@ export default function HeroNewsroomTicker({
         className,
       )}
     >
-      {/* Top ticker row */}
-      <div className="relative w-full overflow-hidden border-b border-base-300 bg-base-200/40 py-2">
-        <motion.div
-          className="flex whitespace-nowrap"
-          animate={shouldReduceMotion ? undefined : { x: ["0%", "-50%"] }}
-          transition={{
-            duration: 45,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        >
-          {tickerLoop.map((item, i) => {
-            const trend = item.trend ?? "flat";
-            return (
-              <span
-                key={i}
-                className="flex shrink-0 items-center gap-2 px-5 font-mono text-[11px] uppercase tracking-[0.18em]"
-              >
-                <span className="text-base-content/60">{item.label}</span>
-                <span className={TREND_TINT[trend]} aria-hidden="true">
-                  {TREND_GLYPH[trend]}
-                </span>
-                <span className={cn("font-semibold", TREND_TINT[trend])}>
-                  {item.value}
-                </span>
-                <span className="text-base-content/60" aria-hidden="true">
-                  ·
-                </span>
-              </span>
-            );
-          })}
-        </motion.div>
-      </div>
-
       <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 md:px-8 md:py-16 lg:grid-cols-12 lg:gap-14 lg:px-12 lg:py-20">
         {/* -- Headline column -- */}
         <motion.div
@@ -272,6 +238,41 @@ export default function HeroNewsroomTicker({
             </div>
           </aside>
         )}
+      </div>
+
+      {/* Bottom ticker row — anchored after the editorial grid so it never
+          collides with a fixed navbar at the top of the page. */}
+      <div className="relative mt-auto w-full overflow-hidden border-t border-base-300 bg-base-200/40 py-2">
+        <motion.div
+          className="flex whitespace-nowrap"
+          animate={shouldReduceMotion ? undefined : { x: ["0%", "-50%"] }}
+          transition={{
+            duration: 45,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        >
+          {tickerLoop.map((item, i) => {
+            const trend = item.trend ?? "flat";
+            return (
+              <span
+                key={i}
+                className="flex shrink-0 items-center gap-2 px-5 font-mono text-[11px] uppercase tracking-[0.18em]"
+              >
+                <span className="text-base-content/60">{item.label}</span>
+                <span className={TREND_TINT[trend]} aria-hidden="true">
+                  {TREND_GLYPH[trend]}
+                </span>
+                <span className={cn("font-semibold", TREND_TINT[trend])}>
+                  {item.value}
+                </span>
+                <span className="text-base-content/60" aria-hidden="true">
+                  ·
+                </span>
+              </span>
+            );
+          })}
+        </motion.div>
       </div>
     </section>
   );

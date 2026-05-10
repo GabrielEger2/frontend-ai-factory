@@ -473,11 +473,15 @@ export default function FeaturesIconTrio({
           </motion.figure>
         )}
 
-        {/* Outcome metrics band */}
+        {/* Outcome metrics — large centred numerals on a light surface,
+            split by vertical hairlines. Mirrors the trio rhythm of the
+            features above (3-up centred, no chrome) instead of repeating
+            the dark slab used by sibling content sections. */}
         {metrics && metrics.length > 0 && (
           <motion.div
             className={cn(
-              "grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:grid-cols-4 md:px-12 md:py-14",
+              "grid grid-cols-2 gap-y-10 bg-base-200/40 px-4 py-10 md:grid-cols-4 md:gap-y-0 md:px-8 md:py-14",
+              "rounded-2xl",
               pullQuote ? "mt-12 md:mt-16" : "mt-16 md:mt-20",
             )}
             initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
@@ -486,11 +490,21 @@ export default function FeaturesIconTrio({
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             {metrics.map((m, i) => (
-              <div key={i} className="flex flex-col items-start gap-1">
-                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
+              <div
+                key={i}
+                className={cn(
+                  "flex flex-col items-center gap-2 px-2 text-center md:px-4",
+                  // Vertical hairline dividers between adjacent columns.
+                  i > 0 && i % 2 !== 0 ? "border-l border-base-300" : "",
+                  i >= 2 ? "md:border-l md:border-base-300" : "",
+                  i === 0 || i === 2 ? "md:border-l-0" : "",
+                  i === 2 ? "md:border-l md:border-base-300" : "",
+                )}
+              >
+                <span className="font-mono text-4xl font-semibold tracking-tight text-base-content md:text-6xl">
                   {m.value}
                 </span>
-                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-base-content/60 md:text-xs">
                   {m.label}
                 </span>
               </div>

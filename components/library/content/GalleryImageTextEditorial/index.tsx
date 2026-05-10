@@ -159,7 +159,7 @@ export default function GalleryImageTextEditorial({
     <section
       className={cn("w-full bg-base-100 py-16 md:py-24 lg:py-32", className)}
     >
-      <div className="mx-auto max-w-6xl px-4 md:px-8">
+      <div className="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
         {/* Header */}
         <motion.div
           className="mx-auto mb-16 max-w-2xl md:mb-24"

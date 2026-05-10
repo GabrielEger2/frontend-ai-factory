@@ -4192,7 +4192,7 @@ export default function EditorialFramedSplit({
         )}
 
         {/* ---------- Editorial grid ---------- */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-10">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-10">
           {/* Row 1 — framed headline card */}
           <motion.div
             {...sharedReveal}
@@ -4247,14 +4247,19 @@ export default function EditorialFramedSplit({
             )}
           </motion.figure>
 
-          {/* Row 2 — secondary image */}
-          <motion.figure {...sharedReveal} className="flex flex-col gap-3">
-            <div className="overflow-hidden rounded-lg">
+          {/* Row 2 — secondary image. The figure stretches to match the
+              supporting body card on lg+, with the image filling the
+              available height instead of being capped by aspect ratio. */}
+          <motion.figure
+            {...sharedReveal}
+            className="flex h-full flex-col gap-3"
+          >
+            <div className="aspect-[4/3] flex-1 overflow-hidden rounded-lg lg:aspect-auto">
               <img
                 src={secondaryImage}
                 alt={secondaryImageAlt}
                 loading="lazy"
-                className="aspect-[4/3] h-full w-full object-cover"
+                className="h-full w-full object-cover"
               />
             </div>
             {secondaryImageCaption && (
@@ -4333,11 +4338,15 @@ export default function EditorialFramedSplit({
           </motion.figure>
         )}
 
-        {/* ---------- Outcome metrics band ---------- */}
+        {/* ---------- Outcome metrics — editorial framed list ----------
+            Magazine treatment: a single hairline-bordered row with
+            serif numerals, mono-caps labels, and small index numerals.
+            Distinct from the dark slab used elsewhere so two content
+            sections back-to-back read as two different chapters. */}
         {metrics && metrics.length > 0 && (
           <motion.div
             className={cn(
-              "grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:grid-cols-4 md:px-12 md:py-14",
+              "grid grid-cols-2 border-y border-base-content/20 md:grid-cols-4",
               pullQuote ? "mt-12 md:mt-16" : "mt-16 md:mt-24",
             )}
             initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
@@ -4346,11 +4355,22 @@ export default function EditorialFramedSplit({
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             {metrics.map((m, i) => (
-              <div key={i} className="flex flex-col items-start gap-1">
-                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
+              <div
+                key={i}
+                className={cn(
+                  "flex flex-col items-start gap-3 px-4 py-8 md:px-8 md:py-12",
+                  i % 2 === 1 ? "border-l border-base-content/15" : "",
+                  i < 2 ? "border-b border-base-content/15 md:border-b-0" : "",
+                  i === 2 ? "md:border-l md:border-base-content/15" : "",
+                )}
+              >
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-base-content/45">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="font-serif text-4xl font-semibold leading-none tracking-tight text-base-content md:text-6xl">
                   {m.value}
                 </span>
-                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
+                <span className="text-xs leading-snug text-base-content/65 md:text-sm">
                   {m.label}
                 </span>
               </div>
@@ -4893,11 +4913,15 @@ export default function FeaturesBentoGrid({
           </motion.figure>
         )}
 
-        {/* Outcome metrics band */}
+        {/* Outcome metrics — bento-flavoured: each metric is its own small
+            tinted tile with mixed corner radii, mirroring the asymmetric
+            bento grid above it instead of resolving into a single dark
+            slab. Keeps this section visually distinct from sibling content
+            sections that use the dark slab treatment. */}
         {metrics && metrics.length > 0 && (
           <motion.div
             className={cn(
-              "grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:grid-cols-4 md:px-12 md:py-14",
+              "grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4",
               pullQuote ? "mt-12 md:mt-16" : "mt-16 md:mt-24",
             )}
             initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
@@ -4906,11 +4930,17 @@ export default function FeaturesBentoGrid({
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             {metrics.slice(0, 4).map((m, i) => (
-              <div key={i} className="flex flex-col items-start gap-1">
-                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
+              <div
+                key={i}
+                className={cn(
+                  "flex flex-col items-start justify-between gap-3 border border-base-300 bg-base-200 p-5 md:p-6",
+                  indexToRadius(i),
+                )}
+              >
+                <span className="font-mono text-3xl font-semibold tracking-tight text-primary md:text-5xl">
                   {m.value}
                 </span>
-                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
+                <span className="text-xs leading-snug text-base-content/70 md:text-sm">
                   {m.label}
                 </span>
               </div>
@@ -5358,11 +5388,15 @@ export default function FeaturesCheckList({
           </motion.figure>
         )}
 
-        {/* Outcome metrics band */}
+        {/* Outcome metrics — checklist-flavoured strip: each metric is
+            prefixed with the same FiCheck icon used by the list above so
+            this section's "results" feel like the natural continuation of
+            its checklist, not a generic dark slab shared across every
+            content component. */}
         {metrics && metrics.length > 0 && (
-          <motion.div
+          <motion.ul
             className={cn(
-              "grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:grid-cols-4 md:px-12 md:py-14",
+              "grid grid-cols-1 gap-3 rounded-2xl border border-base-300 bg-base-200/60 p-4 md:grid-cols-2 md:gap-4 md:p-6 lg:grid-cols-4",
               pullQuote ? "mt-12 md:mt-16" : "mt-16 md:mt-24",
             )}
             initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
@@ -5371,16 +5405,24 @@ export default function FeaturesCheckList({
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             {metrics.map((m, i) => (
-              <div key={i} className="flex flex-col items-start gap-1">
-                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
-                  {m.value}
+              <li
+                key={i}
+                className="flex items-start gap-3 rounded-xl bg-base-100 p-4 shadow-[0_2px_8px_-4px_rgba(0,0,0,0.05)] md:p-5"
+              >
+                <span className="mt-1 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+                  <FiCheck className="h-4 w-4" aria-hidden="true" />
                 </span>
-                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
-                  {m.label}
-                </span>
-              </div>
+                <div className="flex flex-col gap-1">
+                  <span className="font-mono text-2xl font-semibold tracking-tight text-base-content md:text-3xl">
+                    {m.value}
+                  </span>
+                  <span className="text-xs leading-snug text-base-content/65 md:text-sm">
+                    {m.label}
+                  </span>
+                </div>
+              </li>
             ))}
-          </motion.div>
+          </motion.ul>
         )}
 
         {hasCta && (
@@ -5874,11 +5916,15 @@ export default function FeaturesIconTrio({
           </motion.figure>
         )}
 
-        {/* Outcome metrics band */}
+        {/* Outcome metrics — large centred numerals on a light surface,
+            split by vertical hairlines. Mirrors the trio rhythm of the
+            features above (3-up centred, no chrome) instead of repeating
+            the dark slab used by sibling content sections. */}
         {metrics && metrics.length > 0 && (
           <motion.div
             className={cn(
-              "grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:grid-cols-4 md:px-12 md:py-14",
+              "grid grid-cols-2 gap-y-10 bg-base-200/40 px-4 py-10 md:grid-cols-4 md:gap-y-0 md:px-8 md:py-14",
+              "rounded-2xl",
               pullQuote ? "mt-12 md:mt-16" : "mt-16 md:mt-20",
             )}
             initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
@@ -5887,11 +5933,21 @@ export default function FeaturesIconTrio({
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             {metrics.map((m, i) => (
-              <div key={i} className="flex flex-col items-start gap-1">
-                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
+              <div
+                key={i}
+                className={cn(
+                  "flex flex-col items-center gap-2 px-2 text-center md:px-4",
+                  // Vertical hairline dividers between adjacent columns.
+                  i > 0 && i % 2 !== 0 ? "border-l border-base-300" : "",
+                  i >= 2 ? "md:border-l md:border-base-300" : "",
+                  i === 0 || i === 2 ? "md:border-l-0" : "",
+                  i === 2 ? "md:border-l md:border-base-300" : "",
+                )}
+              >
+                <span className="font-mono text-4xl font-semibold tracking-tight text-base-content md:text-6xl">
                   {m.value}
                 </span>
-                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-base-content/60 md:text-xs">
                   {m.label}
                 </span>
               </div>
@@ -6180,10 +6236,13 @@ export default function GalleryCaseStudy({
           })}
         </div>
 
-        {/* Metrics band */}
+        {/* Metrics band — ruled editorial grid: a single hairline frame with
+            serif numerals and column dividers. Distinct from the dark slab
+            used by CarouselBeforeAfter / FeaturesBentoGrid so two content
+            sections in a row don't collapse into a single dark stripe. */}
         {metrics && metrics.length > 0 && (
           <motion.div
-            className="mt-20 grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:mt-28 md:grid-cols-4 md:px-12 md:py-14"
+            className="mt-20 grid grid-cols-2 border-y border-base-content/15 md:mt-28 md:grid-cols-4"
             variants={containerVariants}
             initial={shouldReduceMotion ? false : "hidden"}
             whileInView="visible"
@@ -6193,12 +6252,21 @@ export default function GalleryCaseStudy({
               <motion.div
                 key={i}
                 variants={fadeUp}
-                className="flex flex-col items-start gap-1"
+                className={cn(
+                  "flex flex-col items-start gap-2 px-4 py-8 md:px-8 md:py-12",
+                  // Vertical dividers between columns on md+, and between
+                  // the two stacked rows on mobile.
+                  i % 2 === 1 ? "border-l border-base-content/15" : "",
+                  i < 2 ? "border-b border-base-content/15 md:border-b-0" : "",
+                  i >= 2 ? "md:border-l md:border-base-content/15" : "",
+                  i === 0 ? "md:border-l-0" : "",
+                  i === 2 ? "md:border-l md:border-base-content/15" : "",
+                )}
               >
-                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
+                <span className="font-serif text-4xl font-semibold tracking-tight text-base-content md:text-6xl">
                   {m.value}
                 </span>
-                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
+                <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-base-content/55 md:text-xs">
                   {m.label}
                 </span>
               </motion.div>
@@ -6384,7 +6452,7 @@ export default function GalleryImageTextEditorial({
     <section
       className={cn("w-full bg-base-100 py-16 md:py-24 lg:py-32", className)}
     >
-      <div className="mx-auto max-w-6xl px-4 md:px-8">
+      <div className="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
         {/* Header */}
         <motion.div
           className="mx-auto mb-16 max-w-2xl md:mb-24"
@@ -13329,40 +13397,6 @@ export default function HeroNewsroomTicker({
         className,
       )}
     >
-      {/* Top ticker row */}
-      <div className="relative w-full overflow-hidden border-b border-base-300 bg-base-200/40 py-2">
-        <motion.div
-          className="flex whitespace-nowrap"
-          animate={shouldReduceMotion ? undefined : { x: ["0%", "-50%"] }}
-          transition={{
-            duration: 45,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        >
-          {tickerLoop.map((item, i) => {
-            const trend = item.trend ?? "flat";
-            return (
-              <span
-                key={i}
-                className="flex shrink-0 items-center gap-2 px-5 font-mono text-[11px] uppercase tracking-[0.18em]"
-              >
-                <span className="text-base-content/60">{item.label}</span>
-                <span className={TREND_TINT[trend]} aria-hidden="true">
-                  {TREND_GLYPH[trend]}
-                </span>
-                <span className={cn("font-semibold", TREND_TINT[trend])}>
-                  {item.value}
-                </span>
-                <span className="text-base-content/60" aria-hidden="true">
-                  ·
-                </span>
-              </span>
-            );
-          })}
-        </motion.div>
-      </div>
-
       <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 md:px-8 md:py-16 lg:grid-cols-12 lg:gap-14 lg:px-12 lg:py-20">
         {/* -- Headline column -- */}
         <motion.div
@@ -13451,6 +13485,41 @@ export default function HeroNewsroomTicker({
             </div>
           </aside>
         )}
+      </div>
+
+      {/* Bottom ticker row — anchored after the editorial grid so it never
+          collides with a fixed navbar at the top of the page. */}
+      <div className="relative mt-auto w-full overflow-hidden border-t border-base-300 bg-base-200/40 py-2">
+        <motion.div
+          className="flex whitespace-nowrap"
+          animate={shouldReduceMotion ? undefined : { x: ["0%", "-50%"] }}
+          transition={{
+            duration: 45,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        >
+          {tickerLoop.map((item, i) => {
+            const trend = item.trend ?? "flat";
+            return (
+              <span
+                key={i}
+                className="flex shrink-0 items-center gap-2 px-5 font-mono text-[11px] uppercase tracking-[0.18em]"
+              >
+                <span className="text-base-content/60">{item.label}</span>
+                <span className={TREND_TINT[trend]} aria-hidden="true">
+                  {TREND_GLYPH[trend]}
+                </span>
+                <span className={cn("font-semibold", TREND_TINT[trend])}>
+                  {item.value}
+                </span>
+                <span className="text-base-content/60" aria-hidden="true">
+                  ·
+                </span>
+              </span>
+            );
+          })}
+        </motion.div>
       </div>
     </section>
   );
@@ -15355,11 +15424,13 @@ export default function NavbarDock({
 
   return (
     <>
-      {/* Top bar — logo + optional CTA */}
+      {/* Top bar — logo + optional CTA. Frosted backdrop keeps the bar
+          legible against any page content scrolling underneath, mirroring
+          the dock's own glass treatment. */}
       <div
         className={cn(
           positioning,
-          "left-0 right-0 top-0 z-40 w-full px-5 py-4 lg:px-10",
+          "left-0 right-0 top-0 z-40 w-full border-b border-base-300/60 bg-base-100/70 px-5 py-4 backdrop-blur-xl lg:px-10",
           className,
         )}
       >
@@ -16098,17 +16169,32 @@ function NavbarCta({
   text,
   url,
   style,
+  scrolled,
 }: {
   text: string;
   url: string;
   style: CtaStyle;
+  scrolled: boolean;
 }) {
+  /* When the bar is filled (scrolled state, dark \`bg-neutral\` background)
+     we swap the CTA into a high-contrast inverted treatment so it stays
+     legible against the dark fill. The unscrolled state keeps the
+     original primary-tinted look. */
   return (
     <CtaButton
       variant={style}
       href={url}
       colorScheme="primary"
-      className="text-sm"
+      className={cn(
+        "text-sm transition-colors duration-300",
+        scrolled && [
+          // Border + text inherit the navbar's neutral-content tone so the
+          // pill is visible on \`bg-neutral\`. The \`arrow\` variant pulls its
+          // colors from the surrounding text, so this also covers it.
+          "[&]:border-neutral-content/40 [&]:text-neutral-content",
+          "hover:[&]:border-neutral-content hover:[&]:bg-neutral-content hover:[&]:text-neutral",
+        ],
+      )}
     >
       {text}
     </CtaButton>
@@ -16361,7 +16447,12 @@ export default function NavbarSticky({
           <DesktopLinks links={links} />
 
           {ctaText && ctaUrl && (
-            <NavbarCta text={ctaText} url={ctaUrl} style={ctaStyle} />
+            <NavbarCta
+              text={ctaText}
+              url={ctaUrl}
+              style={ctaStyle}
+              scrolled={scrolled}
+            />
           )}
         </div>
 
