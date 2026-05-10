@@ -19,18 +19,12 @@
     "Diferenciar de clínicas de estética populares e agressivas"
   ],
   "researchOutput": {
-    "companyName": "Clínica Estética Lumière",
+    "companySummary": "Clínica premium de estética avançada no Itaim Bibi (SP) combinando dermatologia baseada em evidência, medicina regenerativa e experiência de spa de luxo. Atende público de alta renda que valoriza discrição, ciência e resultados naturais.",
     "segment": "healthcare-luxe",
-    "summary": "Clínica premium de estética avançada no Itaim Bibi (SP) combinando dermatologia baseada em evidência, medicina regenerativa e experiência de spa de luxo. Atende público de alta renda que valoriza discrição, ciência e resultados naturais.",
-    "competitors": [
-      { "name": "Clínica Bellitá", "url": "https://bellita.com.br" },
-      {
-        "name": "Renata Espíndola Dermatologia",
-        "url": "https://renataespindola.com.br"
-      }
-    ],
+    "targetAudience": "Mulheres e homens de alta renda (40-65 anos) residentes em São Paulo, especialmente Itaim, Jardins, Vila Nova Conceição e Pinheiros. Executivos, empresárias, profissionais liberais e figuras públicas que valorizam discrição absoluta, atendimento individualizado sem pressa, base científica e resultados naturais. Rejeitam clínicas populares, estética agressiva e visual 'instagrammável'.",
     "toneKeywords": ["sofisticado", "científico", "discreto", "refinado"],
-    "uniqueValue": "Protocolos baseados em evidência, equipe com formação internacional, ambiente de spa de luxo com rigor clínico."
+    "competitorInsights": "Concorrentes como Clínica Bellitá e Renata Espíndola Dermatologia disputam o mesmo segmento de alta renda em São Paulo. Bellitá enfatiza tecnologia e tratamentos rápidos; Renata Espíndola constrói autoridade pessoal da médica titular. Lacuna no mercado para uma marca institucional (não centrada em uma única figura) que combine rigor clínico baseado em evidência com hospitalidade de spa de luxo — luxo silencioso ao invés de luxo demonstrativo.",
+    "differentiators": "Protocolos baseados em evidência científica recente, equipe com formação internacional (Espanha, EUA), equipamentos de última geração, abordagem holística respeitando anatomia individual. Ambiente que combina rigor clínico com hospitalidade de spa: salas individuais, curadoria de chá e essências na recepção, atendimento sem pressa, total privacidade."
   },
   "sellerId": "fixture-seller",
   "taskToken": "FIXTURE_TASK_TOKEN_luxe_clinic"

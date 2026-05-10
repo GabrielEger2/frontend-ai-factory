@@ -19,21 +19,12 @@
     "Diferenciar de grandes escritórios de massa"
   ],
   "researchOutput": {
-    "companyName": "Barros & Associados Advocacia Tributária",
+    "companySummary": "Escritório boutique de advocacia tributária em Vila Olímpia (SP), com 12 advogados sêniores atendendo holdings familiares e grupos econômicos de médio porte. Diferencial: equipe top-LL.M., publicações em mídia especializada, abordagem consultiva de longo prazo.",
     "segment": "legal-luxe",
-    "summary": "Escritório boutique de advocacia tributária em Vila Olímpia (SP), com 12 advogados sêniores atendendo holdings familiares e grupos econômicos de médio porte. Diferencial: equipe top-LL.M., publicações em mídia especializada, abordagem consultiva de longo prazo.",
-    "competitors": [
-      {
-        "name": "Mattos Filho Tributário",
-        "url": "https://mattosfilho.com.br"
-      },
-      {
-        "name": "Machado Meyer Tributário",
-        "url": "https://machadomeyer.com.br"
-      }
-    ],
+    "targetAudience": "Sócios-controladores de holdings familiares, CFOs de grupos econômicos de médio porte (R$ 100M–R$ 2bi de faturamento) e family offices em São Paulo e capitais do Sudeste. Decisores que precisam de assessoria tributária de alta complexidade (reorganização societária pré-sucessão, M&A, contencioso CARF) e rejeitam o atendimento padronizado dos grandes escritórios.",
     "toneKeywords": ["autoridade", "sóbrio", "técnico", "tradição"],
-    "uniqueValue": "Banca enxuta sem terceirizar para juniores; equipe top-LL.M. com publicações regulares; abordagem consultiva pluri-anual ao invés de caso a caso."
+    "competitorInsights": "Concorrentes como Mattos Filho e Machado Meyer dominam o mercado tributário top-tier com bancas grandes e nomes consolidados, mas operam com equipes piramidais — clientes interagem majoritariamente com associates e juniores. Lacuna para um boutique que ofereça acesso direto a sêniores em toda a operação, mantendo o mesmo nível técnico (LL.M. top-10, publicações em JOTA/Valor) sem a impessoalidade dos grandes.",
+    "differentiators": "Banca enxuta sem terceirizar para juniores; equipe formada nos top-10 LL.M. (USP, FGV, NYU, Georgetown); publicações regulares em JOTA e Valor Econômico; abordagem consultiva pluri-anual ao invés de caso a caso."
   },
   "sellerId": "fixture-seller",
   "taskToken": "FIXTURE_TASK_TOKEN_legal_luxe_boutique"
