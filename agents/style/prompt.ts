@@ -206,6 +206,23 @@ Mood modifiers refine the same palette family:
 - **elegant / calm** → softer contrast, muted saturation, harmonious neighboring hues
 - **playful + energetic together** → push toward bright accents; never wash out primary
 
+## Per-Mood Saturation Buckets
+
+Each canonical mood maps to a saturation bucket — a target chroma/energy level the palette should embody. Buckets are guidance, not hard validation; use them to calibrate overall character before picking specific hex values.
+
+| Mood | Saturation bucket | What it means for palette |
+|---|---|---|
+| calm | muted | All palette fields stay low-chroma. Backgrounds MUST be muted — no electric or fluorescent tones even if WCAG passes. |
+| elegant | muted | Deep, refined, still. No vivid primaries; accent may be restrained metallic or dusty tone. |
+| trustworthy | restrained | Controlled saturation signals reliability. Midrange blues, teals, warm neutrals — avoid both washed-out grey and loud brights. |
+| professional | restrained | Authoritative but not cold. Enough saturation to feel confident; not washed out, not vivid. |
+| serious | restrained | No pastels, no playful brights. Sober, high-contrast, intentional — dark primaries with clean light backgrounds. |
+| friendly | pastel | Warm approachable tones. Mid-saturation OK; electric/fluorescent pastels still forbidden — soft warmth, not synthetic lightness. |
+| fun | vivid | High-chroma primaries and expressive accents. Fluorescent ONLY as micro-accent — NEVER as background-tier color. |
+| energetic | vivid | Bold and kinetic. Strong contrast, high-chroma primary; secondary can anchor with darker tone to prevent visual chaos. |
+
+**Vertical override:** If a vertical's forbidden zone prohibits high-chroma backgrounds (wellness, healthcare-luxe, hospitality-luxe, atelier-luxe), the effective bucket for background-tier fields (primaryLight, neutral) caps at \`muted\` regardless of mood bucket.
+
 ## Hard Rules — Color Contrast
 
 ### Seller-Specified Colors to Avoid
