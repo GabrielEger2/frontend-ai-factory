@@ -57,7 +57,7 @@ Given a company brief and research output, you must produce a cohesive style def
     Use the exact tokens from this list: bakery, bakery-luxe, restaurant, restaurant-luxe,
     fitness, auto-services, legal-consulting, legal-luxe, healthcare, healthcare-luxe,
     beauty-salon, education, real-estate, real-estate-luxe, hospitality, hospitality-luxe,
-    pet-services, ecommerce, construction, saas, agency, atelier-luxe, gourmet-retail.
+    pet-services, ecommerce, construction, saas, agency, atelier-luxe, gourmet-retail, wellness.
 
     Each row in the "Default vertical → tag clusters" table corresponds to a canonical token.
     For luxury overrides, emit the -luxe variant first then the base

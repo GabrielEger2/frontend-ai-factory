@@ -126,6 +126,7 @@ export const CANONICAL_VERTICAL: readonly string[] = [
   "agency",
   "atelier-luxe",
   "gourmet-retail",
+  "wellness",
 ];
 
 export const MIN_TAG_FLOOR = 3;

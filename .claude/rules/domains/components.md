@@ -149,6 +149,7 @@ saas              — SaaS, tech startups, software products
 agency            — Marketing agencies, design studios, branding
 atelier-luxe      — Ateliers de moda, joalheria, autoral fashion
 gourmet-retail    — Importadora gourmet, empório fino, mercado premium
+wellness          — Yoga studios, meditation centers, holistic wellness, spas (non-luxury)
 ```
 
 `cafe` is intentionally folded into `bakery` — pure coffee-shop briefs use the `bakery` token. Luxury qualifiers (`-luxe` suffix) are separate tokens (not modifiers): a luxury patisserie should tag both `bakery-luxe` and `bakery` so the rerank matches both luxury-aware briefs and generic bakery briefs.
