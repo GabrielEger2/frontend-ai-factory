@@ -233,7 +233,7 @@ export default function EditorialFramedSplit({
         )}
 
         {/* ---------- Editorial grid ---------- */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-10">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-10">
           {/* Row 1 — framed headline card */}
           <motion.div
             {...sharedReveal}
@@ -288,14 +288,19 @@ export default function EditorialFramedSplit({
             )}
           </motion.figure>
 
-          {/* Row 2 — secondary image */}
-          <motion.figure {...sharedReveal} className="flex flex-col gap-3">
-            <div className="overflow-hidden rounded-lg">
+          {/* Row 2 — secondary image. The figure stretches to match the
+              supporting body card on lg+, with the image filling the
+              available height instead of being capped by aspect ratio. */}
+          <motion.figure
+            {...sharedReveal}
+            className="flex h-full flex-col gap-3"
+          >
+            <div className="aspect-[4/3] flex-1 overflow-hidden rounded-lg lg:aspect-auto">
               <img
                 src={secondaryImage}
                 alt={secondaryImageAlt}
                 loading="lazy"
-                className="aspect-[4/3] h-full w-full object-cover"
+                className="h-full w-full object-cover"
               />
             </div>
             {secondaryImageCaption && (
@@ -374,11 +379,15 @@ export default function EditorialFramedSplit({
           </motion.figure>
         )}
 
-        {/* ---------- Outcome metrics band ---------- */}
+        {/* ---------- Outcome metrics — editorial framed list ----------
+            Magazine treatment: a single hairline-bordered row with
+            serif numerals, mono-caps labels, and small index numerals.
+            Distinct from the dark slab used elsewhere so two content
+            sections back-to-back read as two different chapters. */}
         {metrics && metrics.length > 0 && (
           <motion.div
             className={cn(
-              "grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:grid-cols-4 md:px-12 md:py-14",
+              "grid grid-cols-2 border-y border-base-content/20 md:grid-cols-4",
               pullQuote ? "mt-12 md:mt-16" : "mt-16 md:mt-24",
             )}
             initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
@@ -387,11 +396,22 @@ export default function EditorialFramedSplit({
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             {metrics.map((m, i) => (
-              <div key={i} className="flex flex-col items-start gap-1">
-                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
+              <div
+                key={i}
+                className={cn(
+                  "flex flex-col items-start gap-3 px-4 py-8 md:px-8 md:py-12",
+                  i % 2 === 1 ? "border-l border-base-content/15" : "",
+                  i < 2 ? "border-b border-base-content/15 md:border-b-0" : "",
+                  i === 2 ? "md:border-l md:border-base-content/15" : "",
+                )}
+              >
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-base-content/45">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="font-serif text-4xl font-semibold leading-none tracking-tight text-base-content md:text-6xl">
                   {m.value}
                 </span>
-                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
+                <span className="text-xs leading-snug text-base-content/65 md:text-sm">
                   {m.label}
                 </span>
               </div>

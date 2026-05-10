@@ -416,11 +416,15 @@ export default function FeaturesCheckList({
           </motion.figure>
         )}
 
-        {/* Outcome metrics band */}
+        {/* Outcome metrics — checklist-flavoured strip: each metric is
+            prefixed with the same FiCheck icon used by the list above so
+            this section's "results" feel like the natural continuation of
+            its checklist, not a generic dark slab shared across every
+            content component. */}
         {metrics && metrics.length > 0 && (
-          <motion.div
+          <motion.ul
             className={cn(
-              "grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:grid-cols-4 md:px-12 md:py-14",
+              "grid grid-cols-1 gap-3 rounded-2xl border border-base-300 bg-base-200/60 p-4 md:grid-cols-2 md:gap-4 md:p-6 lg:grid-cols-4",
               pullQuote ? "mt-12 md:mt-16" : "mt-16 md:mt-24",
             )}
             initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
@@ -429,16 +433,24 @@ export default function FeaturesCheckList({
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             {metrics.map((m, i) => (
-              <div key={i} className="flex flex-col items-start gap-1">
-                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
-                  {m.value}
+              <li
+                key={i}
+                className="flex items-start gap-3 rounded-xl bg-base-100 p-4 shadow-[0_2px_8px_-4px_rgba(0,0,0,0.05)] md:p-5"
+              >
+                <span className="mt-1 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+                  <FiCheck className="h-4 w-4" aria-hidden="true" />
                 </span>
-                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
-                  {m.label}
-                </span>
-              </div>
+                <div className="flex flex-col gap-1">
+                  <span className="font-mono text-2xl font-semibold tracking-tight text-base-content md:text-3xl">
+                    {m.value}
+                  </span>
+                  <span className="text-xs leading-snug text-base-content/65 md:text-sm">
+                    {m.label}
+                  </span>
+                </div>
+              </li>
             ))}
-          </motion.div>
+          </motion.ul>
         )}
 
         {hasCta && (

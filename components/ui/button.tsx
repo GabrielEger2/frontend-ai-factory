@@ -229,7 +229,7 @@ const DrawOutlineButton = React.forwardRef<
     <button
       ref={ref}
       className={cn(
-        "group relative px-4 py-2 font-medium text-base-content transition-colors duration-400",
+        "group relative px-4 py-2 font-medium text-current transition-colors duration-400",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ring-offset-base-100",
         "disabled:pointer-events-none disabled:opacity-50",
         scheme.text,

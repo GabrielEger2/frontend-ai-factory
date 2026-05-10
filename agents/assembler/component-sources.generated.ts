@@ -4192,7 +4192,7 @@ export default function EditorialFramedSplit({
         )}
 
         {/* ---------- Editorial grid ---------- */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-10">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-10">
           {/* Row 1 — framed headline card */}
           <motion.div
             {...sharedReveal}
@@ -4247,14 +4247,19 @@ export default function EditorialFramedSplit({
             )}
           </motion.figure>
 
-          {/* Row 2 — secondary image */}
-          <motion.figure {...sharedReveal} className="flex flex-col gap-3">
-            <div className="overflow-hidden rounded-lg">
+          {/* Row 2 — secondary image. The figure stretches to match the
+              supporting body card on lg+, with the image filling the
+              available height instead of being capped by aspect ratio. */}
+          <motion.figure
+            {...sharedReveal}
+            className="flex h-full flex-col gap-3"
+          >
+            <div className="aspect-[4/3] flex-1 overflow-hidden rounded-lg lg:aspect-auto">
               <img
                 src={secondaryImage}
                 alt={secondaryImageAlt}
                 loading="lazy"
-                className="aspect-[4/3] h-full w-full object-cover"
+                className="h-full w-full object-cover"
               />
             </div>
             {secondaryImageCaption && (
@@ -4333,11 +4338,15 @@ export default function EditorialFramedSplit({
           </motion.figure>
         )}
 
-        {/* ---------- Outcome metrics band ---------- */}
+        {/* ---------- Outcome metrics — editorial framed list ----------
+            Magazine treatment: a single hairline-bordered row with
+            serif numerals, mono-caps labels, and small index numerals.
+            Distinct from the dark slab used elsewhere so two content
+            sections back-to-back read as two different chapters. */}
         {metrics && metrics.length > 0 && (
           <motion.div
             className={cn(
-              "grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:grid-cols-4 md:px-12 md:py-14",
+              "grid grid-cols-2 border-y border-base-content/20 md:grid-cols-4",
               pullQuote ? "mt-12 md:mt-16" : "mt-16 md:mt-24",
             )}
             initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
@@ -4346,11 +4355,22 @@ export default function EditorialFramedSplit({
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             {metrics.map((m, i) => (
-              <div key={i} className="flex flex-col items-start gap-1">
-                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
+              <div
+                key={i}
+                className={cn(
+                  "flex flex-col items-start gap-3 px-4 py-8 md:px-8 md:py-12",
+                  i % 2 === 1 ? "border-l border-base-content/15" : "",
+                  i < 2 ? "border-b border-base-content/15 md:border-b-0" : "",
+                  i === 2 ? "md:border-l md:border-base-content/15" : "",
+                )}
+              >
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-base-content/45">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="font-serif text-4xl font-semibold leading-none tracking-tight text-base-content md:text-6xl">
                   {m.value}
                 </span>
-                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
+                <span className="text-xs leading-snug text-base-content/65 md:text-sm">
                   {m.label}
                 </span>
               </div>
@@ -4893,11 +4913,15 @@ export default function FeaturesBentoGrid({
           </motion.figure>
         )}
 
-        {/* Outcome metrics band */}
+        {/* Outcome metrics — bento-flavoured: each metric is its own small
+            tinted tile with mixed corner radii, mirroring the asymmetric
+            bento grid above it instead of resolving into a single dark
+            slab. Keeps this section visually distinct from sibling content
+            sections that use the dark slab treatment. */}
         {metrics && metrics.length > 0 && (
           <motion.div
             className={cn(
-              "grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:grid-cols-4 md:px-12 md:py-14",
+              "grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4",
               pullQuote ? "mt-12 md:mt-16" : "mt-16 md:mt-24",
             )}
             initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
@@ -4906,11 +4930,17 @@ export default function FeaturesBentoGrid({
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             {metrics.slice(0, 4).map((m, i) => (
-              <div key={i} className="flex flex-col items-start gap-1">
-                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
+              <div
+                key={i}
+                className={cn(
+                  "flex flex-col items-start justify-between gap-3 border border-base-300 bg-base-200 p-5 md:p-6",
+                  indexToRadius(i),
+                )}
+              >
+                <span className="font-mono text-3xl font-semibold tracking-tight text-primary md:text-5xl">
                   {m.value}
                 </span>
-                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
+                <span className="text-xs leading-snug text-base-content/70 md:text-sm">
                   {m.label}
                 </span>
               </div>
@@ -5358,11 +5388,15 @@ export default function FeaturesCheckList({
           </motion.figure>
         )}
 
-        {/* Outcome metrics band */}
+        {/* Outcome metrics — checklist-flavoured strip: each metric is
+            prefixed with the same FiCheck icon used by the list above so
+            this section's "results" feel like the natural continuation of
+            its checklist, not a generic dark slab shared across every
+            content component. */}
         {metrics && metrics.length > 0 && (
-          <motion.div
+          <motion.ul
             className={cn(
-              "grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:grid-cols-4 md:px-12 md:py-14",
+              "grid grid-cols-1 gap-3 rounded-2xl border border-base-300 bg-base-200/60 p-4 md:grid-cols-2 md:gap-4 md:p-6 lg:grid-cols-4",
               pullQuote ? "mt-12 md:mt-16" : "mt-16 md:mt-24",
             )}
             initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
@@ -5371,16 +5405,24 @@ export default function FeaturesCheckList({
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             {metrics.map((m, i) => (
-              <div key={i} className="flex flex-col items-start gap-1">
-                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
-                  {m.value}
+              <li
+                key={i}
+                className="flex items-start gap-3 rounded-xl bg-base-100 p-4 shadow-[0_2px_8px_-4px_rgba(0,0,0,0.05)] md:p-5"
+              >
+                <span className="mt-1 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+                  <FiCheck className="h-4 w-4" aria-hidden="true" />
                 </span>
-                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
-                  {m.label}
-                </span>
-              </div>
+                <div className="flex flex-col gap-1">
+                  <span className="font-mono text-2xl font-semibold tracking-tight text-base-content md:text-3xl">
+                    {m.value}
+                  </span>
+                  <span className="text-xs leading-snug text-base-content/65 md:text-sm">
+                    {m.label}
+                  </span>
+                </div>
+              </li>
             ))}
-          </motion.div>
+          </motion.ul>
         )}
 
         {hasCta && (
@@ -5405,7 +5447,7 @@ import { motion, useReducedMotion } from "motion/react";
 import type { IconType } from "react-icons";
 import {
   LuActivity,
-  LuBarChart,
+  LuChartBar,
   LuBookOpen,
   LuBriefcase,
   LuCalendar,
@@ -5573,7 +5615,7 @@ export interface FeaturesIconTrioProps {
  */
 const ICON_MAP: Record<string, IconType> = {
   activity: LuActivity,
-  "bar-chart": LuBarChart,
+  "bar-chart": LuChartBar,
   "book-open": LuBookOpen,
   briefcase: LuBriefcase,
   calendar: LuCalendar,
@@ -5874,11 +5916,15 @@ export default function FeaturesIconTrio({
           </motion.figure>
         )}
 
-        {/* Outcome metrics band */}
+        {/* Outcome metrics — large centred numerals on a light surface,
+            split by vertical hairlines. Mirrors the trio rhythm of the
+            features above (3-up centred, no chrome) instead of repeating
+            the dark slab used by sibling content sections. */}
         {metrics && metrics.length > 0 && (
           <motion.div
             className={cn(
-              "grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:grid-cols-4 md:px-12 md:py-14",
+              "grid grid-cols-2 gap-y-10 bg-base-200/40 px-4 py-10 md:grid-cols-4 md:gap-y-0 md:px-8 md:py-14",
+              "rounded-2xl",
               pullQuote ? "mt-12 md:mt-16" : "mt-16 md:mt-20",
             )}
             initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
@@ -5887,11 +5933,21 @@ export default function FeaturesIconTrio({
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             {metrics.map((m, i) => (
-              <div key={i} className="flex flex-col items-start gap-1">
-                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
+              <div
+                key={i}
+                className={cn(
+                  "flex flex-col items-center gap-2 px-2 text-center md:px-4",
+                  // Vertical hairline dividers between adjacent columns.
+                  i > 0 && i % 2 !== 0 ? "border-l border-base-300" : "",
+                  i >= 2 ? "md:border-l md:border-base-300" : "",
+                  i === 0 || i === 2 ? "md:border-l-0" : "",
+                  i === 2 ? "md:border-l md:border-base-300" : "",
+                )}
+              >
+                <span className="font-mono text-4xl font-semibold tracking-tight text-base-content md:text-6xl">
                   {m.value}
                 </span>
-                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-base-content/60 md:text-xs">
                   {m.label}
                 </span>
               </div>
@@ -6180,10 +6236,13 @@ export default function GalleryCaseStudy({
           })}
         </div>
 
-        {/* Metrics band */}
+        {/* Metrics band — ruled editorial grid: a single hairline frame with
+            serif numerals and column dividers. Distinct from the dark slab
+            used by CarouselBeforeAfter / FeaturesBentoGrid so two content
+            sections in a row don't collapse into a single dark stripe. */}
         {metrics && metrics.length > 0 && (
           <motion.div
-            className="mt-20 grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:mt-28 md:grid-cols-4 md:px-12 md:py-14"
+            className="mt-20 grid grid-cols-2 border-y border-base-content/15 md:mt-28 md:grid-cols-4"
             variants={containerVariants}
             initial={shouldReduceMotion ? false : "hidden"}
             whileInView="visible"
@@ -6193,12 +6252,21 @@ export default function GalleryCaseStudy({
               <motion.div
                 key={i}
                 variants={fadeUp}
-                className="flex flex-col items-start gap-1"
+                className={cn(
+                  "flex flex-col items-start gap-2 px-4 py-8 md:px-8 md:py-12",
+                  // Vertical dividers between columns on md+, and between
+                  // the two stacked rows on mobile.
+                  i % 2 === 1 ? "border-l border-base-content/15" : "",
+                  i < 2 ? "border-b border-base-content/15 md:border-b-0" : "",
+                  i >= 2 ? "md:border-l md:border-base-content/15" : "",
+                  i === 0 ? "md:border-l-0" : "",
+                  i === 2 ? "md:border-l md:border-base-content/15" : "",
+                )}
               >
-                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
+                <span className="font-serif text-4xl font-semibold tracking-tight text-base-content md:text-6xl">
                   {m.value}
                 </span>
-                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
+                <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-base-content/55 md:text-xs">
                   {m.label}
                 </span>
               </motion.div>
@@ -6384,10 +6452,10 @@ export default function GalleryImageTextEditorial({
     <section
       className={cn("w-full bg-base-100 py-16 md:py-24 lg:py-32", className)}
     >
-      <div className="mx-auto max-w-6xl px-4 md:px-8">
+      <div className="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
         {/* Header */}
         <motion.div
-          className="mx-auto mb-16 max-w-2xl md:mb-24"
+          className="mb-16 max-w-2xl md:mb-24"
           variants={containerVariants}
           initial={shouldReduceMotion ? false : "hidden"}
           whileInView="visible"
@@ -12511,7 +12579,7 @@ export default function HeroBakeryEditorial({
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.4, ease: "easeOut" }}
-              className="absolute right-0 bottom-0 z-40 w-[clamp(360px,70vw,640px)] sm:right-[-20px] sm:bottom-[-30px] lg:right-[-180px] lg:bottom-[-100px] lg:w-[clamp(600px,70vw,800px)]"
+              className="absolute right-0 bottom-0 z-40 w-[clamp(300px,60vw,540px)] sm:right-[-15px] sm:bottom-[-20px] lg:right-[-120px] lg:bottom-[-80px] lg:w-[clamp(500px,60vw,600px)]"
               style={{
                 filter: "drop-shadow(0 30px 30px rgba(0,0,0,0.18))",
               }}
@@ -13329,40 +13397,6 @@ export default function HeroNewsroomTicker({
         className,
       )}
     >
-      {/* Top ticker row */}
-      <div className="relative w-full overflow-hidden border-b border-base-300 bg-base-200/40 py-2">
-        <motion.div
-          className="flex whitespace-nowrap"
-          animate={shouldReduceMotion ? undefined : { x: ["0%", "-50%"] }}
-          transition={{
-            duration: 45,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        >
-          {tickerLoop.map((item, i) => {
-            const trend = item.trend ?? "flat";
-            return (
-              <span
-                key={i}
-                className="flex shrink-0 items-center gap-2 px-5 font-mono text-[11px] uppercase tracking-[0.18em]"
-              >
-                <span className="text-base-content/60">{item.label}</span>
-                <span className={TREND_TINT[trend]} aria-hidden="true">
-                  {TREND_GLYPH[trend]}
-                </span>
-                <span className={cn("font-semibold", TREND_TINT[trend])}>
-                  {item.value}
-                </span>
-                <span className="text-base-content/60" aria-hidden="true">
-                  ·
-                </span>
-              </span>
-            );
-          })}
-        </motion.div>
-      </div>
-
       <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 md:px-8 md:py-16 lg:grid-cols-12 lg:gap-14 lg:px-12 lg:py-20">
         {/* -- Headline column -- */}
         <motion.div
@@ -13451,6 +13485,41 @@ export default function HeroNewsroomTicker({
             </div>
           </aside>
         )}
+      </div>
+
+      {/* Bottom ticker row — anchored after the editorial grid so it never
+          collides with a fixed navbar at the top of the page. */}
+      <div className="relative mt-auto w-full overflow-hidden border-t border-base-300 bg-base-200/40 py-2">
+        <motion.div
+          className="flex whitespace-nowrap"
+          animate={shouldReduceMotion ? undefined : { x: ["0%", "-50%"] }}
+          transition={{
+            duration: 45,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        >
+          {tickerLoop.map((item, i) => {
+            const trend = item.trend ?? "flat";
+            return (
+              <span
+                key={i}
+                className="flex shrink-0 items-center gap-2 px-5 font-mono text-[11px] uppercase tracking-[0.18em]"
+              >
+                <span className="text-base-content/60">{item.label}</span>
+                <span className={TREND_TINT[trend]} aria-hidden="true">
+                  {TREND_GLYPH[trend]}
+                </span>
+                <span className={cn("font-semibold", TREND_TINT[trend])}>
+                  {item.value}
+                </span>
+                <span className="text-base-content/60" aria-hidden="true">
+                  ·
+                </span>
+              </span>
+            );
+          })}
+        </motion.div>
       </div>
     </section>
   );
@@ -15355,11 +15424,13 @@ export default function NavbarDock({
 
   return (
     <>
-      {/* Top bar — logo + optional CTA */}
+      {/* Top bar — logo + optional CTA. Frosted backdrop keeps the bar
+          legible against any page content scrolling underneath, mirroring
+          the dock's own glass treatment. */}
       <div
         className={cn(
           positioning,
-          "left-0 right-0 top-0 z-40 w-full px-5 py-4 lg:px-10",
+          "left-0 right-0 top-0 z-40 w-full border-b border-base-300/60 bg-base-100/70 px-5 py-4 backdrop-blur-xl lg:px-10",
           className,
         )}
       >
@@ -16098,17 +16169,32 @@ function NavbarCta({
   text,
   url,
   style,
+  scrolled,
 }: {
   text: string;
   url: string;
   style: CtaStyle;
+  scrolled: boolean;
 }) {
+  /* When the bar is filled (scrolled state, dark \`bg-neutral\` background)
+     we swap the CTA into a high-contrast inverted treatment so it stays
+     legible against the dark fill. The unscrolled state keeps the
+     original primary-tinted look. */
   return (
     <CtaButton
       variant={style}
       href={url}
       colorScheme="primary"
-      className="text-sm"
+      className={cn(
+        "text-sm transition-colors duration-300",
+        scrolled && [
+          // Border + text inherit the navbar's neutral-content tone so the
+          // pill is visible on \`bg-neutral\`. The \`arrow\` variant pulls its
+          // colors from the surrounding text, so this also covers it.
+          "[&]:border-neutral-content/40 [&]:text-neutral-content",
+          "hover:[&]:border-neutral-content hover:[&]:bg-neutral-content hover:[&]:text-neutral",
+        ],
+      )}
     >
       {text}
     </CtaButton>
@@ -16361,7 +16447,12 @@ export default function NavbarSticky({
           <DesktopLinks links={links} />
 
           {ctaText && ctaUrl && (
-            <NavbarCta text={ctaText} url={ctaUrl} style={ctaStyle} />
+            <NavbarCta
+              text={ctaText}
+              url={ctaUrl}
+              style={ctaStyle}
+              scrolled={scrolled}
+            />
           )}
         </div>
 
@@ -16883,6 +16974,10 @@ export interface PricingMonthlyAnnualToggleProps {
   annualLabel?: string;
   /** Discount badge text shown next to the annual label (e.g. "Save 18%") */
   annualDiscountBadge?: string;
+  /** Cadence suffix shown after the price on monthly cards (e.g. "/mo", "/mês") */
+  monthlyCadenceLabel?: string;
+  /** Cadence suffix shown after the price on annual cards (e.g. "/mo · billed yearly", "/mês · cobrado anualmente") */
+  annualCadenceLabel?: string;
   /** Initial billing cycle — defaults to "monthly" */
   defaultCycle?: "monthly" | "annual";
   /** Plan tiles — between 2 and 4 */
@@ -17230,6 +17325,8 @@ export default function PricingMonthlyAnnualToggle({
   monthlyLabel = "Monthly",
   annualLabel = "Annual",
   annualDiscountBadge,
+  monthlyCadenceLabel = "/mo",
+  annualCadenceLabel = "/mo · billed yearly",
   defaultCycle = "monthly",
   plans = DEFAULT_PLANS,
   footnote,
@@ -17307,8 +17404,8 @@ export default function PricingMonthlyAnnualToggle({
               cycle={cycle}
               ctaVariant={ctaVariant}
               ctaColorScheme={ctaColorScheme}
-              monthlyCadenceLabel="/mo"
-              annualCadenceLabel="/mo · billed yearly"
+              monthlyCadenceLabel={monthlyCadenceLabel}
+              annualCadenceLabel={annualCadenceLabel}
             />
           ))}
         </motion.div>
@@ -22681,10 +22778,10 @@ export interface InfiniteScrollProps {
   headline: string;
   /** Supporting text below the headline */
   subheadline?: string;
-  /** Three rows of testimonials — each row scrolls independently */
-  rows?: [TestimonialItem[], TestimonialItem[], TestimonialItem[]];
+  /** Up to three rows of testimonials — each row scrolls independently. Empty/missing rows are skipped. */
+  rows?: TestimonialItem[][];
   /** Duration in seconds for one full scroll cycle per row. Defaults to [125, 75, 275] */
-  durations?: [number, number, number];
+  durations?: number[];
   /** Site-wide style configuration — accepted for API consistency */
   styleKit?: StyleKit;
   /** Informational purpose tag for the section */
@@ -22696,11 +22793,9 @@ export interface InfiniteScrollProps {
 /*  Defaults                                                           */
 /* ------------------------------------------------------------------ */
 
-const DEFAULT_INFINITE_SCROLL_ROWS: [
-  TestimonialItem[],
-  TestimonialItem[],
-  TestimonialItem[],
-] = [
+const DEFAULT_DURATIONS = [125, 75, 275];
+
+const DEFAULT_INFINITE_SCROLL_ROWS: TestimonialItem[][] = [
   [
     {
       image: "https://picsum.photos/seed/infinitescroll-r0-0/80/80",
@@ -22835,6 +22930,8 @@ function MarqueeRow({
   reverse?: boolean;
   shouldReduceMotion: boolean | null;
 }) {
+  if (!items?.length) return null;
+
   /* Triple the items to create seamless loop */
   const repeats = [0, 1, 2];
 
@@ -22881,12 +22978,19 @@ export default function InfiniteScroll({
   headline,
   subheadline,
   rows = DEFAULT_INFINITE_SCROLL_ROWS,
-  durations = [125, 75, 275],
+  durations = DEFAULT_DURATIONS,
   styleKit,
   purpose,
   className,
 }: InfiniteScrollProps) {
   const shouldReduceMotion = useReducedMotion();
+
+  // Tolerate any row count (1–N): filter empty/missing rows and cap to 3 visible marquees.
+  const safeRows = (rows ?? DEFAULT_INFINITE_SCROLL_ROWS)
+    .filter(
+      (row): row is TestimonialItem[] => Array.isArray(row) && row.length > 0,
+    )
+    .slice(0, 3);
 
   return (
     <section
@@ -22911,28 +23015,24 @@ export default function InfiniteScroll({
         {/* Left fade */}
         <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-24 bg-gradient-to-r from-neutral to-transparent" />
 
-        <div className="mb-4 flex items-center">
-          <MarqueeRow
-            items={rows[0]}
-            duration={durations[0]}
-            shouldReduceMotion={shouldReduceMotion}
-          />
-        </div>
-        <div className="mb-4 flex items-center">
-          <MarqueeRow
-            items={rows[1]}
-            duration={durations[1]}
-            reverse
-            shouldReduceMotion={shouldReduceMotion}
-          />
-        </div>
-        <div className="flex items-center">
-          <MarqueeRow
-            items={rows[2]}
-            duration={durations[2]}
-            shouldReduceMotion={shouldReduceMotion}
-          />
-        </div>
+        {safeRows.map((row, i) => (
+          <div
+            key={i}
+            className={cn(
+              "flex items-center",
+              i < safeRows.length - 1 && "mb-4",
+            )}
+          >
+            <MarqueeRow
+              items={row}
+              duration={
+                durations[i] ?? DEFAULT_DURATIONS[i] ?? DEFAULT_DURATIONS[0]
+              }
+              reverse={i === 1}
+              shouldReduceMotion={shouldReduceMotion}
+            />
+          </div>
+        ))}
 
         {/* Right fade */}
         <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-24 bg-gradient-to-l from-neutral to-transparent" />
@@ -25062,7 +25162,7 @@ const DrawOutlineButton = React.forwardRef<
     <button
       ref={ref}
       className={cn(
-        "group relative px-4 py-2 font-medium text-base-content transition-colors duration-400",
+        "group relative px-4 py-2 font-medium text-current transition-colors duration-400",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ring-offset-base-100",
         "disabled:pointer-events-none disabled:opacity-50",
         scheme.text,
@@ -28116,7 +28216,7 @@ export const COMPONENT_METADATA: Record<string, { slots: unknown[]; acceptsStyle
   "cta-image-backdrop-01": {"slots":[{"name":"eyebrow","type":"text","maxLength":120},{"name":"displayWord","type":"text","maxLength":30},{"name":"body","type":"text","maxLength":240},{"name":"backgroundImage","type":"image","aspectRatio":"16:9"},{"name":"backgroundImageAlt","type":"text","maxLength":160},{"name":"ctaText","type":"text","optional":true,"maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"overlayOpacity","type":"number","optional":true},{"name":"parallax","type":"boolean","optional":true},{"name":"align","type":"text","optional":true,"enum":["left","center"]},{"name":"minHeight","type":"text","optional":true},{"name":"highlightWord","type":"text","optional":true,"maxLength":30},{"name":"revealDisplayWord","type":"boolean","optional":true}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":[],"pairsPoorly":[],"category":"cta","nativeMotif":null,"density":"low","imageWeight":0.1,"style":["editorial","luxury","modern"],"mood":["elegant","calm","trustworthy"],"vertical":[]},
   "cta-sticky-image-list-01": {"slots":[{"name":"eyebrow","type":"text","optional":true,"maxLength":40},{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","optional":true,"maxLength":200},{"name":"items","type":"list","minItems":3,"maxItems":6,"itemSchema":{"index":{"type":"text","optional":true,"maxLength":4},"eyebrow":{"type":"text","optional":true,"maxLength":30},"title":{"type":"text","maxLength":60},"description":{"type":"text","maxLength":240},"ctaText":{"type":"text","optional":true,"maxLength":30},"ctaUrl":{"type":"url","optional":true},"image":{"type":"image","aspectRatio":"4:5"},"imageAlt":{"type":"text","maxLength":160}}},{"name":"ctaText","type":"text","optional":true,"maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow","arrow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"imageSide","type":"text","optional":true,"enum":["left","right"]},{"name":"tone","type":"text","optional":true,"enum":["light","dark"]}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":false,"button":true},"pairsWell":["cta-hover-reveal-list-01","footer-reveal-01","faq-tabbed-01"],"pairsPoorly":[],"category":"cta","nativeMotif":null,"density":"medium","imageWeight":0.45,"style":["editorial","modern","minimal","luxury"],"mood":["elegant","trustworthy","calm","professional"],"vertical":[]},
   "cta-testimonial-paired-01": {"slots":[{"name":"eyebrow","type":"text","maxLength":40,"optional":true},{"name":"headline","type":"text","maxLength":90},{"name":"description","type":"text","maxLength":240,"optional":true},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"},{"name":"secondaryText","type":"text","maxLength":30,"optional":true},{"name":"secondaryUrl","type":"url","optional":true},{"name":"perks","type":"list","maxItems":4,"optional":true,"itemSchema":{"type":"text","maxLength":80}},{"name":"quote","type":"text","maxLength":240},{"name":"authorName","type":"text","maxLength":60},{"name":"authorRole","type":"text","maxLength":80},{"name":"authorImage","type":"image","aspectRatio":"1:1","optional":true},{"name":"authorImageAlt","type":"text","maxLength":120,"optional":true},{"name":"attribution","type":"text","maxLength":60,"optional":true},{"name":"metricValue","type":"text","maxLength":16,"optional":true},{"name":"metricLabel","type":"text","maxLength":40,"optional":true},{"name":"layoutVariant","type":"text","optional":true,"enum":["split","stacked"]},{"name":"tone","type":"text","optional":true,"enum":["neutral","muted","inverse"]}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":false,"button":true},"pairsWell":["footer-mega-01","footer-pulse-01","stats-kpi-grid-01"],"pairsPoorly":["cta-image-backdrop-01","testimonial-spotlight-quote-01"],"category":"cta","nativeMotif":null,"density":"medium","imageWeight":0.15,"style":["modern","editorial","corporate"],"mood":["professional","trustworthy","calm"],"vertical":[]},
-  "cta-video-backdrop-01": {"slots":[{"name":"eyebrow","type":"text","maxLength":40,"optional":true},{"name":"headline","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":200,"optional":true},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"},{"name":"secondaryText","type":"text","maxLength":30,"optional":true},{"name":"secondaryUrl","type":"url","optional":true},{"name":"videoSrc","type":"url"},{"name":"videoSrcWebm","type":"url","optional":true},{"name":"poster","type":"image","aspectRatio":"16:9"},{"name":"videoAriaLabel","type":"text","maxLength":160},{"name":"overlayOpacity","type":"number","optional":true},{"name":"align","type":"text","optional":true,"enum":["left","center"]},{"name":"minHeight","type":"text","optional":true},{"name":"showControls","type":"boolean","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["footer-mega-01","footer-pulse-01","stats-count-up-01"],"pairsPoorly":["cta-image-backdrop-01","hero-video-backdrop-01"],"category":"cta","nativeMotif":null,"density":"low","imageWeight":0.85,"style":["bold","editorial","modern"],"mood":["energetic","elegant","trustworthy"],"vertical":[]},
+  "cta-video-backdrop-01": {"slots":[{"name":"eyebrow","type":"text","maxLength":40,"optional":true},{"name":"headline","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":200,"optional":true},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"},{"name":"secondaryText","type":"text","maxLength":30,"optional":true},{"name":"secondaryUrl","type":"url","optional":true},{"name":"videoSrc","type":"video","aspectRatio":"16:9","optional":true},{"name":"videoSrcWebm","type":"url","optional":true},{"name":"poster","type":"image","aspectRatio":"16:9"},{"name":"videoAriaLabel","type":"text","maxLength":160},{"name":"overlayOpacity","type":"number","optional":true},{"name":"align","type":"text","optional":true,"enum":["left","center"]},{"name":"minHeight","type":"text","optional":true},{"name":"showControls","type":"boolean","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["footer-mega-01","footer-pulse-01","stats-count-up-01"],"pairsPoorly":["cta-image-backdrop-01","hero-video-backdrop-01"],"category":"cta","nativeMotif":null,"density":"low","imageWeight":0.85,"style":["bold","editorial","modern"],"mood":["energetic","elegant","trustworthy"],"vertical":[]},
   "faq-categorized-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"categories","type":"list","maxItems":6,"itemSchema":{"type":"object","fields":[{"name":"label","type":"text","maxLength":32},{"name":"description","type":"text","maxLength":160,"optional":true},{"name":"questions","type":"list","maxItems":8,"itemSchema":{"type":"object","fields":[{"name":"question","type":"text","maxLength":140},{"name":"answer","type":"text","maxLength":600}]}}]}}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":[],"pairsPoorly":["faq-solutions-01","faq-tabbed-01"],"category":"faq","nativeMotif":null,"density":"medium","imageWeight":0,"style":["modern","editorial","corporate"],"mood":["professional","trustworthy","calm"],"vertical":[]},
   "faq-solutions-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","maxLength":160},{"name":"items","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"title","type":"text","maxLength":60},{"name":"description","type":"text","maxLength":300},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"},{"name":"image","type":"image","aspectRatio":"4:3"},{"name":"imageAlt","type":"text","maxLength":120}]}},{"name":"ctaStyle","type":"text","optional":true},{"name":"ctaColorScheme","type":"text","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":[],"pairsPoorly":[],"category":"faq","nativeMotif":null,"density":"medium","imageWeight":0,"style":["modern","bold","editorial"],"mood":["professional","energetic","trustworthy"],"vertical":[]},
   "faq-tabbed-01": {"slots":[{"name":"headline","type":"text","maxLength":100},{"name":"subheadline","type":"text","maxLength":200,"optional":true},{"name":"categories","type":"list","maxItems":6,"itemSchema":{"type":"object","fields":[{"name":"label","type":"text","maxLength":30},{"name":"description","type":"text","maxLength":160,"optional":true},{"name":"questions","type":"list","maxItems":10,"itemSchema":{"type":"object","fields":[{"name":"question","type":"text","maxLength":140},{"name":"answer","type":"text","maxLength":600}]}}]}},{"name":"defaultCategoryIndex","type":"number","optional":true},{"name":"defaultOpenQuestionIndex","type":"number","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":false},"pairsWell":["footer-pulse-01","footer-reveal-01"],"pairsPoorly":["faq-solutions-01"],"category":"faq","nativeMotif":null,"density":"medium","imageWeight":0,"style":["modern","minimal","corporate"],"mood":["professional","calm","trustworthy"],"vertical":[]},
@@ -28136,12 +28236,12 @@ export const COMPONENT_METADATA: Record<string, { slots: unknown[]; acceptsStyle
   "hero-polaroid-collage-01": {"slots":[{"name":"eyebrow","type":"text","optional":true,"maxLength":60},{"name":"headline","type":"text","maxLength":100},{"name":"scriptAccent","type":"text","optional":true,"maxLength":30},{"name":"scriptAccentColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"subheadline","type":"text","optional":true,"maxLength":220},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow","arrow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow","arrow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"polaroids","type":"list","maxItems":4,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"1:1"},{"name":"imageAlt","type":"text","maxLength":120},{"name":"caption","type":"text","optional":true,"maxLength":60}]}},{"name":"tapeColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":true,"button":true},"pairsWell":["stats-count-up-01"],"pairsPoorly":["hero-split-image-01","hero-bakery-editorial-01","hero-grid-gallery-01","hero-video-backdrop-01","hero-newsroom-ticker-01","hero-split-form-01","hero-asymmetric-stack-01"],"category":"hero","nativeMotif":null,"density":"medium","imageWeight":0.5,"style":["playful","editorial","classic"],"mood":["friendly","energetic","elegant"],"vertical":["beauty-salon","healthcare","hospitality"]},
   "hero-split-form-01": {"slots":[{"name":"eyebrow","type":"text","optional":true,"maxLength":60},{"name":"headline","type":"text","maxLength":120},{"name":"subheadline","type":"text","optional":true,"maxLength":220},{"name":"trustBullets","type":"list","optional":true,"maxItems":4,"itemSchema":{"type":"object","fields":[{"name":"label","type":"text","maxLength":50}]}},{"name":"formTitle","type":"text","maxLength":80},{"name":"formSubtitle","type":"text","optional":true,"maxLength":140},{"name":"submitText","type":"text","maxLength":30},{"name":"submitColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"emailPlaceholder","type":"text","optional":true,"maxLength":60},{"name":"namePlaceholder","type":"text","optional":true,"maxLength":60},{"name":"phonePlaceholder","type":"text","optional":true,"maxLength":60},{"name":"disclaimer","type":"text","optional":true,"maxLength":240},{"name":"successHeadline","type":"text","optional":true,"maxLength":80},{"name":"successBody","type":"text","optional":true,"maxLength":200},{"name":"tone","type":"text","optional":true,"enum":["light","muted","accent"]}],"acceptsStyleKit":{"card":true,"background":true,"textDecoration":true,"button":true},"pairsWell":["stats-count-up-01"],"pairsPoorly":["hero-split-image-01","hero-bakery-editorial-01","hero-grid-gallery-01","hero-video-backdrop-01","hero-newsroom-ticker-01","hero-asymmetric-stack-01","hero-polaroid-collage-01"],"category":"hero","nativeMotif":null,"density":"medium","imageWeight":0,"style":["modern","corporate","minimal"],"mood":["professional","trustworthy","friendly"],"vertical":["legal-consulting","saas","healthcare"]},
   "hero-split-image-01": {"slots":[{"name":"headline","type":"text","maxLength":80},{"name":"headlineAccent","type":"text","optional":true,"maxLength":40},{"name":"highlightWord","type":"text","optional":true,"maxLength":20},{"name":"revealHeadline","type":"boolean","optional":true},{"name":"headlineRotatingWords","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"text","maxLength":40}},{"name":"subheadline","type":"text","maxLength":200},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"whatsappUrl","type":"url","optional":true},{"name":"whatsappLabel","type":"text","optional":true,"maxLength":40},{"name":"image","type":"image","aspectRatio":"1:1","optional":true},{"name":"imageAlt","type":"text","maxLength":120},{"name":"badgeHeadline","type":"text","optional":true,"maxLength":40},{"name":"badgeDescription","type":"text","optional":true,"maxLength":100},{"name":"rotatingBadgeText","type":"text","optional":true,"maxLength":60},{"name":"featuredItems","type":"list","optional":true,"maxItems":6,"itemSchema":{"type":"object","fields":[{"name":"image","type":"image","aspectRatio":"4:3"},{"name":"imageAlt","type":"text","maxLength":80},{"name":"title","type":"text","maxLength":40},{"name":"price","type":"text","optional":true,"maxLength":20},{"name":"discountPrice","type":"text","optional":true,"maxLength":20}]}},{"name":"featuredItemsLabel","type":"text","optional":true,"maxLength":40},{"name":"featuredItemsLinkText","type":"text","optional":true,"maxLength":30},{"name":"featuredItemsLinkUrl","type":"url","optional":true},{"name":"gridBackground","type":"boolean","optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":true,"button":true},"pairsWell":["testimonial-infinitescroll-01"],"pairsPoorly":["hero-bakery-editorial-01"],"category":"hero","nativeMotif":null,"density":"medium","imageWeight":0.15,"style":["modern","editorial","corporate"],"mood":["professional","elegant","trustworthy"],"vertical":[]},
-  "hero-video-backdrop-01": {"slots":[{"name":"videoUrl","type":"url","optional":true},{"name":"posterImage","type":"image","aspectRatio":"16:9"},{"name":"posterAlt","type":"text","maxLength":120},{"name":"eyebrow","type":"text","optional":true,"maxLength":60},{"name":"headline","type":"text","maxLength":100},{"name":"subheadline","type":"text","optional":true,"maxLength":220},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow","arrow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow","arrow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"contentAlign","type":"text","optional":true,"enum":["bottom-left","bottom-center","center"]},{"name":"overlayStrength","type":"text","optional":true},{"name":"metaItems","type":"list","optional":true,"maxItems":4,"itemSchema":{"type":"text","maxLength":28}}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":["stats-count-up-01"],"pairsPoorly":["hero-split-image-01","hero-bakery-editorial-01","hero-grid-gallery-01","hero-newsroom-ticker-01","hero-split-form-01","hero-asymmetric-stack-01","hero-polaroid-collage-01"],"category":"hero","nativeMotif":null,"density":"low","imageWeight":0.7,"style":["bold","modern","luxury","editorial"],"mood":["energetic","elegant","trustworthy"],"vertical":["hospitality","hospitality-luxe","fitness"]},
+  "hero-video-backdrop-01": {"slots":[{"name":"videoUrl","type":"video","aspectRatio":"16:9","optional":true},{"name":"posterImage","type":"image","aspectRatio":"16:9"},{"name":"posterAlt","type":"text","maxLength":120},{"name":"eyebrow","type":"text","optional":true,"maxLength":60},{"name":"headline","type":"text","maxLength":100},{"name":"subheadline","type":"text","optional":true,"maxLength":220},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow","arrow"]},{"name":"ctaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"secondaryCtaText","type":"text","optional":true,"maxLength":30},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"secondaryCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow","arrow"]},{"name":"secondaryCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"contentAlign","type":"text","optional":true,"enum":["bottom-left","bottom-center","center"]},{"name":"overlayStrength","type":"text","optional":true},{"name":"metaItems","type":"list","optional":true,"maxItems":4,"itemSchema":{"type":"text","maxLength":28}}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":true,"button":true},"pairsWell":["stats-count-up-01"],"pairsPoorly":["hero-split-image-01","hero-bakery-editorial-01","hero-grid-gallery-01","hero-newsroom-ticker-01","hero-split-form-01","hero-asymmetric-stack-01","hero-polaroid-collage-01"],"category":"hero","nativeMotif":null,"density":"low","imageWeight":0.7,"style":["bold","modern","luxury","editorial"],"mood":["energetic","elegant","trustworthy"],"vertical":["hospitality","hospitality-luxe","fitness"]},
   "navbar-dock-01": {"slots":[{"name":"logo","type":"image","aspectRatio":"auto","optional":true},{"name":"links","type":"list","maxItems":6,"itemSchema":{"text":{"type":"text","maxLength":24},"href":{"type":"url"},"icon":{"type":"text","enum":["home","work","projects","about","contact","layers","briefcase"]}}},{"name":"ctaText","type":"text","maxLength":24,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow","arrow"]}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["footer-pulse-01","footer-reveal-01"],"pairsPoorly":[],"category":"navigation","nativeMotif":null,"density":"low","imageWeight":0,"style":["modern","playful","editorial"],"mood":["elegant","friendly","energetic"],"vertical":[]},
   "navbar-mega-panel-01": {"slots":[{"name":"logo","type":"image","aspectRatio":"auto","optional":true},{"name":"links","type":"list","maxItems":6,"itemSchema":{"text":{"type":"text","maxLength":30},"href":{"type":"url"},"panel":{"type":"list","optional":true,"maxItems":1,"itemSchema":{"groups":{"type":"list","maxItems":3,"itemSchema":{"title":{"type":"text","maxLength":30},"items":{"type":"list","maxItems":6,"itemSchema":{"label":{"type":"text","maxLength":40},"description":{"type":"text","maxLength":80,"optional":true},"href":{"type":"url"},"badge":{"type":"text","maxLength":12,"optional":true}}}}},"feature":{"type":"list","optional":true,"maxItems":1,"itemSchema":{"eyebrow":{"type":"text","maxLength":24,"optional":true},"title":{"type":"text","maxLength":60},"description":{"type":"text","maxLength":140,"optional":true},"href":{"type":"url"},"ctaLabel":{"type":"text","maxLength":24,"optional":true},"image":{"type":"image","aspectRatio":"16:10","optional":true},"imageAlt":{"type":"text","maxLength":120,"optional":true}}}}}}},{"name":"signInText","type":"text","maxLength":20,"optional":true},{"name":"signInUrl","type":"url","optional":true},{"name":"ctaText","type":"text","maxLength":24,"optional":true},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow","arrow"]}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["footer-pulse-01","footer-reveal-01"],"pairsPoorly":[],"category":"navigation","nativeMotif":null,"density":"medium","imageWeight":0.05,"style":["modern","corporate","minimal"],"mood":["professional","trustworthy","serious"],"vertical":[]},
   "navbar-sticky-01": {"slots":[{"name":"logo","type":"image","aspectRatio":"auto","optional":true},{"name":"links","type":"list","maxItems":6,"itemSchema":{"text":{"type":"text","maxLength":30},"href":{"type":"url"}}},{"name":"ctaText","type":"text","maxLength":20},{"name":"ctaUrl","type":"url","optional":true},{"name":"ctaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline"]}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":[],"pairsPoorly":[],"category":"navigation","nativeMotif":null,"density":"low","imageWeight":0,"style":["modern","minimal","corporate"],"mood":["professional","trustworthy","friendly"],"vertical":[]},
   "pricing-freemium-ladder-01": {"slots":[{"name":"label","type":"text","maxLength":40,"optional":true},{"name":"headline","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":220,"optional":true},{"name":"steps","type":"list","maxItems":5,"itemSchema":{"type":"object","fields":[{"name":"name","type":"text","maxLength":30},{"name":"price","type":"text","maxLength":20},{"name":"cadence","type":"text","maxLength":24,"optional":true},{"name":"audience","type":"text","maxLength":80,"optional":true},{"name":"unlocks","type":"list","maxItems":5,"itemSchema":{"type":"text","maxLength":80}},{"name":"ctaText","type":"text","maxLength":28},{"name":"ctaUrl","type":"url"},{"name":"recommended","type":"boolean","optional":true}]}},{"name":"footnote","type":"text","maxLength":200,"optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["stats-kpi-grid-01"],"pairsPoorly":["pricing-tier-cards-01"],"category":"pricing","nativeMotif":null,"density":"medium","imageWeight":0,"style":["modern","editorial","playful","bold"],"mood":["energetic","friendly","trustworthy"],"vertical":[]},
-  "pricing-monthly-annual-toggle-01": {"slots":[{"name":"label","type":"text","maxLength":40,"optional":true},{"name":"headline","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":220,"optional":true},{"name":"monthlyLabel","type":"text","maxLength":20,"optional":true},{"name":"annualLabel","type":"text","maxLength":20,"optional":true},{"name":"annualDiscountBadge","type":"text","maxLength":24,"optional":true},{"name":"defaultCycle","type":"text","maxLength":10,"optional":true},{"name":"plans","type":"list","maxItems":4,"itemSchema":{"type":"object","fields":[{"name":"name","type":"text","maxLength":30},{"name":"description","type":"text","maxLength":140,"optional":true},{"name":"monthlyPrice","type":"text","maxLength":20},{"name":"annualPrice","type":"text","maxLength":20},{"name":"annualTotal","type":"text","maxLength":40,"optional":true},{"name":"badge","type":"text","maxLength":24,"optional":true},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"},{"name":"features","type":"list","maxItems":8,"itemSchema":{"type":"text","maxLength":80}},{"name":"featured","type":"boolean","optional":true}]}},{"name":"footnote","type":"text","maxLength":200,"optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["faq-tabbed-01"],"pairsPoorly":["pricing-tier-cards-01","pricing-freemium-ladder-01"],"category":"pricing","nativeMotif":null,"density":"medium","imageWeight":0,"style":["modern","corporate","playful","minimal"],"mood":["professional","energetic","trustworthy"],"vertical":["saas","fitness","ecommerce"]},
+  "pricing-monthly-annual-toggle-01": {"slots":[{"name":"label","type":"text","maxLength":40,"optional":true},{"name":"headline","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":220,"optional":true},{"name":"monthlyLabel","type":"text","maxLength":20,"optional":true},{"name":"annualLabel","type":"text","maxLength":20,"optional":true},{"name":"annualDiscountBadge","type":"text","maxLength":24,"optional":true},{"name":"monthlyCadenceLabel","type":"text","maxLength":30,"optional":true},{"name":"annualCadenceLabel","type":"text","maxLength":40,"optional":true},{"name":"defaultCycle","type":"text","maxLength":10,"optional":true},{"name":"plans","type":"list","maxItems":4,"itemSchema":{"type":"object","fields":[{"name":"name","type":"text","maxLength":30},{"name":"description","type":"text","maxLength":140,"optional":true},{"name":"monthlyPrice","type":"text","maxLength":20},{"name":"annualPrice","type":"text","maxLength":20},{"name":"annualTotal","type":"text","maxLength":40,"optional":true},{"name":"badge","type":"text","maxLength":24,"optional":true},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"},{"name":"features","type":"list","maxItems":8,"itemSchema":{"type":"text","maxLength":80}},{"name":"featured","type":"boolean","optional":true}]}},{"name":"footnote","type":"text","maxLength":200,"optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["faq-tabbed-01"],"pairsPoorly":["pricing-tier-cards-01","pricing-freemium-ladder-01"],"category":"pricing","nativeMotif":null,"density":"medium","imageWeight":0,"style":["modern","corporate","playful","minimal"],"mood":["professional","energetic","trustworthy"],"vertical":["saas","fitness","ecommerce"]},
   "pricing-single-price-01": {"slots":[{"name":"label","type":"text","maxLength":40,"optional":true},{"name":"headline","type":"text","maxLength":100},{"name":"description","type":"text","maxLength":380,"optional":true},{"name":"highlights","type":"list","maxItems":6,"optional":true,"itemSchema":{"type":"text","maxLength":80}},{"name":"proof","type":"text","maxLength":140,"optional":true},{"name":"packageName","type":"text","maxLength":40},{"name":"packageNote","type":"text","maxLength":40,"optional":true},{"name":"price","type":"text","maxLength":24},{"name":"cadence","type":"text","maxLength":24,"optional":true},{"name":"originalPrice","type":"text","maxLength":24,"optional":true},{"name":"discountBadge","type":"text","maxLength":40,"optional":true},{"name":"inclusions","type":"list","maxItems":8,"itemSchema":{"type":"text","maxLength":100}},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"},{"name":"secondaryCtaText","type":"text","maxLength":40,"optional":true},{"name":"secondaryCtaUrl","type":"url","optional":true},{"name":"footnote","type":"text","maxLength":220,"optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":["testimonial-spotlight-quote-01","stats-kpi-grid-01"],"pairsPoorly":["pricing-tier-cards-01"],"category":"pricing","nativeMotif":null,"density":"medium","imageWeight":0,"style":["editorial","modern","luxury","minimal"],"mood":["elegant","trustworthy","professional"],"vertical":[]},
   "pricing-tier-cards-01": {"slots":[{"name":"label","type":"text","maxLength":40,"optional":true},{"name":"headline","type":"text","maxLength":80},{"name":"description","type":"text","maxLength":220,"optional":true},{"name":"tiers","type":"list","maxItems":4,"itemSchema":{"type":"object","fields":[{"name":"name","type":"text","maxLength":30},{"name":"description","type":"text","maxLength":140,"optional":true},{"name":"price","type":"text","maxLength":20},{"name":"cadence","type":"text","maxLength":24,"optional":true},{"name":"badge","type":"text","maxLength":24,"optional":true},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"},{"name":"features","type":"list","maxItems":8,"itemSchema":{"type":"text","maxLength":80}},{"name":"featured","type":"boolean","optional":true}]}},{"name":"footnote","type":"text","maxLength":160,"optional":true}],"acceptsStyleKit":{"card":false,"background":false,"textDecoration":false,"button":true},"pairsWell":[],"pairsPoorly":[],"category":"pricing","nativeMotif":null,"density":"medium","imageWeight":0,"style":["modern","corporate","minimal","editorial"],"mood":["professional","trustworthy","serious"],"vertical":[]},
   "products-bundle-cards-01": {"slots":[{"name":"eyebrow","type":"text","optional":true,"maxLength":30},{"name":"headline","type":"text","maxLength":80},{"name":"subheadline","type":"text","optional":true,"maxLength":200},{"name":"bundles","type":"list","minItems":2,"maxItems":3,"itemSchema":{"type":"object","fields":[{"name":"name","type":"text","maxLength":40},{"name":"description","type":"text","optional":true,"maxLength":140},{"name":"image","type":"image","optional":true,"aspectRatio":"4:3"},{"name":"imageAlt","type":"text","optional":true,"maxLength":160},{"name":"items","type":"list","minItems":2,"maxItems":6,"itemSchema":{"type":"text","maxLength":60}},{"name":"price","type":"text","maxLength":20},{"name":"priceCompare","type":"text","optional":true,"maxLength":20},{"name":"savingsHint","type":"text","optional":true,"maxLength":30},{"name":"badge","type":"text","optional":true,"enum":["popular","best-value","editor-pick"]},{"name":"ctaText","type":"text","maxLength":30},{"name":"ctaUrl","type":"url"}]}},{"name":"footerCtaText","type":"text","optional":true,"maxLength":40},{"name":"footerCtaUrl","type":"url","optional":true},{"name":"footerCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow","arrow"]},{"name":"footerCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"cardCtaStyle","type":"text","optional":true,"enum":["default","slide","dotExpand","drawOutline","glow","arrow"]},{"name":"cardCtaColorScheme","type":"text","optional":true,"enum":["primary","secondary","accent","neutral"]},{"name":"tone","type":"text","optional":true,"enum":["light","dark"]}],"acceptsStyleKit":{"card":false,"background":true,"textDecoration":false,"button":true},"pairsWell":["products-featured-strip-01","products-spotlight-01","cta-dual-offer-split-01","hero-bakery-editorial-01"],"pairsPoorly":["pricing-tier-cards-01","pricing-freemium-ladder-01"],"category":"products","nativeMotif":null,"density":"medium","imageWeight":0.3,"style":["editorial","modern","minimal","bold"],"mood":["trustworthy","friendly","professional","elegant"],"vertical":[]},

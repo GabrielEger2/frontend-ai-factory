@@ -124,6 +124,12 @@
       "contact-chat-embed-01",
       "contact-multi-step-01"
     ],
+    "vertical": [
+      "legal-consulting",
+      "healthcare",
+      "beauty-salon",
+      "atelier-luxe"
+    ],
     "description": "Calendar-embed contact section that hosts a Cal.com / Calendly / SavvyCal iframe alongside an editorial context column with what-to-expect bullets and an optional email-instead fallback CTA.",
     "descriptions": {
       "descriptive": "Two-column split: editorial copy and a What-to-expect bullet list (with check / clock / video icons) sit on the left; the booking iframe lives in a rounded surface on the right with a min-height so the available slots render without clipping. An optional fallback CTA below the bullets links to email when the visitor prefers it.",
@@ -2805,6 +2811,11 @@
     "pairsPoorly": [
       "gallery-masonry-01"
     ],
+    "vertical": [
+      "agency",
+      "saas",
+      "legal-consulting"
+    ],
     "description": "Long-form case study with hero image, project meta strip, alternating zig-zag chapters (problem / approach / result), and an organic-numbers metric band. Generous editorial spacing throughout.",
     "descriptions": {
       "descriptive": "Hero image at 16:9 anchors a wide centered column. Below, an underlined meta strip lists client / role / year / team in mono caps. Three chapters alternate image-left then image-right at lg breakpoint and stack on mobile. A dark metric band lifts the outcomes in mono numerals — designed for organic numbers (47.2 percent, 3,847) rather than rounded vanity stats. Closing CTA is left-aligned to keep the editorial rhythm.",
@@ -5157,6 +5168,11 @@
       "carousel-thumbnail-nav-01",
       "hero-video-backdrop-01"
     ],
+    "vertical": [
+      "hospitality",
+      "hospitality-luxe",
+      "ecommerce"
+    ],
     "description": "An edge-to-edge image rotator with overlaid eyebrow, headline, description, and CTA per slide. Auto-advances with a progress-bar dot indicator and pauses on hover or focus. Designed to anchor a page as a hero replacement when the brand story spans multiple imagery beats.",
     "descriptions": {
       "descriptive": "Full-bleed background image with a subtle neutral-toned gradient for caption legibility. Each slide carries its own eyebrow / headline / description / CTA; transitions are spring-animated with a soft scale-on-enter. Pagination dots double as a linear progress bar for the active slide; hover, focus, and an explicit pause button all halt the auto-advance.",
@@ -5444,6 +5460,11 @@
     "pairsPoorly": [
       "hero-split-image-01"
     ],
+    "vertical": [
+      "bakery",
+      "bakery-luxe",
+      "gourmet-retail"
+    ],
     "description": "An editorial hero with a framed card layout, hand-script accent word, circular stamp seal, and a hero product photo that breaks out of the right column. Designed for artisan food, bakery, deli, café, and small-batch consumer brands that want a tactile, story-led first impression.",
     "descriptions": {
       "descriptive": "A boxed editorial hero with a soft grid background, italicized hand-script accent inside a serif headline, a circular dashed stamp seal, and floating decorative seed glyphs that gently drift in place. The product image deliberately breaks out of the right column, giving the layout an asymmetric, magazine-style focal weight.",
@@ -5642,6 +5663,10 @@
       "hero-split-form-01",
       "hero-asymmetric-stack-01",
       "hero-polaroid-collage-01"
+    ],
+    "vertical": [
+      "saas",
+      "agency"
     ],
     "description": "A SaaS-classic hero pairing a tight content column with a product screenshot mounted in the device frame of your choice — browser window, macbook lid, phone, or tablet. Built for software products whose conversion lever is showing the actual UI.",
     "descriptions": {
@@ -6027,6 +6052,10 @@
       "hero-asymmetric-stack-01",
       "hero-polaroid-collage-01"
     ],
+    "vertical": [
+      "legal-consulting",
+      "saas"
+    ],
     "description": "An editorial-newsroom hero with a live data ticker, oversized serif headline, lede paragraph, and a side rail of featured stories. Built for publications, financial-data products, research firms, and any brand that wants to read like a front page.",
     "descriptions": {
       "descriptive": "A monospace ticker scrolls along the top edge with up/down sentiment glyphs and trend tints. Below, an issue rule frames a serif display headline and a horizontal divider tucks the lede beneath the title. The right rail stacks featured stories with kickers, optional thumbnails, and meta lines that read like a print contents page.",
@@ -6218,6 +6247,11 @@
       "hero-split-form-01",
       "hero-asymmetric-stack-01"
     ],
+    "vertical": [
+      "beauty-salon",
+      "healthcare",
+      "hospitality"
+    ],
     "description": "A playful, scrapbook-style hero with three to four rotated polaroid cards in an asymmetric collage, paired with an italic script accent in the headline. Built for cafes, weddings, family-run shops, lifestyle blogs, and brands that lead with warmth.",
     "descriptions": {
       "descriptive": "Polaroid frames sit on the right with hand-placed rotation, soft shadows, and a small tape strip at the top of each. Hovering nudges them upright. Captions read in italic serif. The headline pairs a confident sans with a script-style accent word, and the section sits on a warm muted base.",
@@ -6373,6 +6407,11 @@
       "hero-newsroom-ticker-01",
       "hero-asymmetric-stack-01",
       "hero-polaroid-collage-01"
+    ],
+    "vertical": [
+      "legal-consulting",
+      "saas",
+      "healthcare"
     ],
     "description": "A conversion-led hero that pairs a left-aligned message with an inline lead-capture form on the right. Designed for SaaS landing pages, financial services, B2B sign-up flows, and any campaign measured by inbound form fills.",
     "descriptions": {
@@ -6819,11 +6858,16 @@
       "hero-asymmetric-stack-01",
       "hero-polaroid-collage-01"
     ],
-    "description": "A full-bleed cinematic hero with optional looping video backdrop, tinted overlay, and an asymmetric content block anchored to the bottom edge. Built for hospitality, fashion campaigns, agencies, and any brand whose product is a felt experience.",
+    "vertical": [
+      "hospitality",
+      "hospitality-luxe",
+      "fitness"
+    ],
+    "description": "A full-bleed cinematic hero with optional looping video backdrop, tinted overlay, and an asymmetric content block anchored to the bottom edge. Built for hospitality, fashion campaigns, agencies, fitness brands, and any brand whose product is a felt experience.",
     "descriptions": {
       "descriptive": "An ambient video plays muted and looping over a poster fallback, layered with a configurable neutral tint and a soft bottom-up gradient for legibility. Headline, subheadline, and CTAs anchor in a chosen quadrant, with an optional metadata strip along the bottom for credits, locations, or release dates.",
-      "usage": "Use as the homepage opener for brands that have strong moving footage — hotels, fashion campaigns, agencies, restaurants, festivals, and media properties. Falls back to the poster image when no video URL is provided or when the user prefers reduced motion.",
-      "audienceFit": "Works for design-aware visitors who associate cinematic motion with quality. Best for brands that already have professional video assets and need a confident first frame."
+      "usage": "Use as the homepage opener for brands that have strong moving footage — hotels, fashion campaigns, agencies, restaurants, festivals, fitness studios, gyms, crossfit boxes, sports and action brands, and media properties. Falls back to the poster image when no video URL is provided or when the user prefers reduced motion.",
+      "audienceFit": "Works for design-aware visitors who associate cinematic motion with quality, and for athletic audiences who respond to action and energy. Best for brands that already have professional video assets — luxury hospitality, fashion editorial, gyms and fitness studios with class footage, crossfit boxes — and need a confident first frame."
     }
   },
   {
@@ -7451,6 +7495,11 @@
     "pairsPoorly": [
       "pricing-tier-cards-01",
       "pricing-freemium-ladder-01"
+    ],
+    "vertical": [
+      "saas",
+      "fitness",
+      "ecommerce"
     ],
     "description": "Tier cards with an animated monthly / annual billing-cycle switch. The toggle uses a shared-layoutId sliding pill; per-plan prices cross-fade on cycle change; an annual discount badge inverts when active. Designed to make the savings legible without forcing the buyer to read math.",
     "descriptions": {
@@ -8827,6 +8876,13 @@
     "pairsPoorly": [
       "hero-split-image-01"
     ],
+    "vertical": [
+      "bakery-luxe",
+      "restaurant-luxe",
+      "ecommerce",
+      "atelier-luxe",
+      "gourmet-retail"
+    ],
     "descriptions": {
       "descriptive": "Clean, magazine-style layout with generous white space and refined typography. Features high-quality product imagery with subtle shadows and minimal text overlays. Uses sophisticated color palette with restrained visual elements that emphasize the products themselves through elegant spacing and professional presentation.",
       "usage": "Highlights premium product collections on main pages or dedicated showcase sections. Drives conversions by presenting select items with compelling brand messaging and clear call-to-action buttons. Perfect for landing pages that need to establish product credibility while guiding users toward purchase decisions.",
@@ -9230,6 +9286,11 @@
     "pairsPoorly": [
       "stats-count-up-01"
     ],
+    "vertical": [
+      "saas",
+      "agency",
+      "legal-consulting"
+    ],
     "description": "Dashboard-density KPI grid with monospaced numerals, trend deltas, and divider-line grouping — the comparison-first stats slot that complements the count-up hero metric panel.",
     "descriptions": {
       "descriptive": "Three-to-six metrics arranged on a divided grid (no card boxes by default) with tabular monospaced numerals, prefix/suffix support, and tinted up/down/flat trend pills next to each value. The boxed variant softens density when the section sits between visually loud neighbours.",
@@ -9379,6 +9440,11 @@
       "testimonial-spotlight-quote-01"
     ],
     "pairsPoorly": [],
+    "vertical": [
+      "legal-consulting",
+      "atelier-luxe",
+      "healthcare"
+    ],
     "description": "Editorial single-founder split. Tall 4:5 portrait beside an extended multi-paragraph bio, optional signature image, credential chips, primary and secondary CTAs. Portrait can swap sides via portraitSide.",
     "descriptions": {
       "descriptive": "A two-column editorial split that frames one person as the page. The copy column carries an eyebrow, balanced headline, an attribution block separated by a primary-tinted vertical rule, one to three bio paragraphs in a 60ch measure, and a signature row that prefers an actual signature image but falls back to a typed serif `— Name`. Optional credential chips render as monospaced uppercase pills. The portrait column is a tall 4:5 rounded image with a soft caption ribbon. Side can be flipped with `portraitSide`.",

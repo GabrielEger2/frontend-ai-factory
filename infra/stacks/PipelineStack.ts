@@ -29,6 +29,9 @@ export interface PipelineStackProps extends StackProps {
   readonly qdrantEndpointSsmPath: string;
   readonly qdrantApiKeySsmPath: string;
   readonly openAiApiKeySsmPath: string;
+  readonly imageCacheTableName: string;
+  readonly imageCacheTableArn: string;
+  readonly pexelsApiKeySsmPath: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -90,6 +93,12 @@ export class PipelineStack extends Stack {
       this,
       "ComponentsTable",
       props.componentsTableArn,
+    );
+
+    const imageCacheTable = dynamodb.Table.fromTableArn(
+      this,
+      "ImageCacheTable",
+      props.imageCacheTableArn,
     );
 
     const pipelineBucket = s3.Bucket.fromBucketArn(
@@ -170,6 +179,33 @@ export class PipelineStack extends Stack {
       new iam.PolicyStatement({
         actions: ["ssm:GetParameter"],
         resources: [claudeSsmArn],
+      }),
+    );
+
+    /* -------------------------------------------------------------- */
+    /*  Image Resolver Lambda (deterministic — no LLM)                */
+    /* -------------------------------------------------------------- */
+
+    const imageFn = new AgentLambda(this, "ImageAgent", {
+      entry: path.join(__dirname, "../../agents/image/handler.ts"),
+      agentName: "image",
+      timeout: Duration.minutes(5),
+      memorySize: 512,
+      environment: {
+        PROJECTS_TABLE_NAME: props.projectsTableName,
+        IMAGE_CACHE_TABLE_NAME: props.imageCacheTableName,
+        PEXELS_API_KEY_SSM_PATH: props.pexelsApiKeySsmPath,
+      },
+    });
+
+    projectsTable.grantReadWriteData(imageFn.fn);
+    imageCacheTable.grantReadWriteData(imageFn.fn);
+
+    const pexelsSsmArn = `arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${props.pexelsApiKeySsmPath}`;
+    imageFn.fn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["ssm:GetParameter"],
+        resources: [pexelsSsmArn],
       }),
     );
 
@@ -380,6 +416,13 @@ export class PipelineStack extends Stack {
     humanizerStep.addRetry(retryConfig);
     humanizerStep.addCatch(failHandlerStep, { resultPath: "$.error" });
 
+    const imageStep = new tasks.LambdaInvoke(this, "ImageStep", {
+      lambdaFunction: imageFn.fn,
+      outputPath: "$.Payload",
+    });
+    imageStep.addRetry(retryConfig);
+    imageStep.addCatch(failHandlerStep, { resultPath: "$.error" });
+
     const assemblerStep = new tasks.LambdaInvoke(this, "AssemblerStep", {
       lambdaFunction: assemblerFn.fn,
       outputPath: "$.Payload",
@@ -406,6 +449,7 @@ export class PipelineStack extends Stack {
       .next(composerStep)
       .next(contentStep)
       .next(humanizerStep)
+      .next(imageStep)
       .next(assemblerStep)
       .next(qaStep)
       .next(succeedState);

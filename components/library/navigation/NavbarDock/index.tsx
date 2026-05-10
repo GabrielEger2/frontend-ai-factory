@@ -302,11 +302,13 @@ export default function NavbarDock({
 
   return (
     <>
-      {/* Top bar — logo + optional CTA */}
+      {/* Top bar — logo + optional CTA. Frosted backdrop keeps the bar
+          legible against any page content scrolling underneath, mirroring
+          the dock's own glass treatment. */}
       <div
         className={cn(
           positioning,
-          "left-0 right-0 top-0 z-40 w-full px-5 py-4 lg:px-10",
+          "left-0 right-0 top-0 z-40 w-full border-b border-base-300/60 bg-base-100/70 px-5 py-4 backdrop-blur-xl lg:px-10",
           className,
         )}
       >

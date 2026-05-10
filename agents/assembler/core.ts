@@ -1,4 +1,5 @@
 import type { HumanizerOutput, Palette, Typography } from "../shared/types";
+import { blendHex, deriveContentColor } from "../shared/color";
 import {
   COMPONENT_SOURCES,
   COMPONENT_ID_TO_PATH,
@@ -45,12 +46,13 @@ interface SlotMeta {
  * Field declaration extracted from a slot's itemSchema. Supports both shapes
  * the registry produces (flat-record and {type, fields[]}).
  */
-interface FieldDecl {
+export interface FieldDecl {
   name: string;
   type?: string;
   optional?: boolean;
   enum?: unknown[];
   itemSchema?: unknown;
+  aspectRatio?: string;
 }
 
 /**
@@ -58,7 +60,9 @@ interface FieldDecl {
  * map of field-name → field declaration. Returns an empty object if the
  * shape is unrecognized.
  */
-function fieldsFromItemSchema(itemSchema: unknown): Record<string, FieldDecl> {
+export function fieldsFromItemSchema(
+  itemSchema: unknown,
+): Record<string, FieldDecl> {
   if (!itemSchema || typeof itemSchema !== "object") return {};
   const schema = itemSchema as Record<string, unknown>;
 
@@ -617,14 +621,21 @@ export function generateGlobalsCss(
   palette: Palette,
   typography: Typography,
 ): string {
-  // DaisyUI v4 contrast/content colors — keep hardcoded since Palette doesn't
-  // carry per-semantic contrast values. These are near-white / near-black
-  // approximations that read well on top of the corresponding semantic color.
+  // Each `*-content` token is derived from the actual luminance of its paired
+  // background hex via `deriveContentColor` — picks white or near-black,
+  // whichever wins WCAG AA against that background. Avoids hardcoded literals
+  // that fail catastrophically on near-white `primaryLight` (e.g. legal-luxe).
   const primaryOklch = hexToOklch(palette.primary);
   const secondaryOklch = hexToOklch(palette.secondary);
   const accentOklch = hexToOklch(palette.accent);
   const neutralOklch = hexToOklch(palette.neutral);
   const base100Oklch = hexToOklch(palette.primaryLight);
+  // base-200 is a slightly-darker variant of base-100 used by daisyUI for
+  // alternating section backgrounds. Without this fix it collapses onto
+  // base-100, killing every two-tone section. Linear-RGB blend at t=0.15
+  // toward primaryDark gives a perceptually-distinct but still-light tint.
+  const base200Hex = blendHex(palette.primaryLight, palette.primaryDark, 0.15);
+  const base200Oklch = hexToOklch(base200Hex);
   const base300Oklch = hexToOklch(palette.primaryDark);
 
   // Escape font family strings for CSS custom property values.
@@ -637,17 +648,17 @@ export function generateGlobalsCss(
 
 :root {
   --color-base-100: ${base100Oklch};
-  --color-base-200: ${base100Oklch};
+  --color-base-200: ${base200Oklch};
   --color-base-300: ${base300Oklch};
-  --color-base-content: 0.27 0.02 261.3;
+  --color-base-content: ${deriveContentColor(palette.primaryLight)};
   --color-primary: ${primaryOklch};
-  --color-primary-content: 0.98 0.005 264.38;
+  --color-primary-content: ${deriveContentColor(palette.primary)};
   --color-secondary: ${secondaryOklch};
-  --color-secondary-content: 0.98 0.005 230.5;
+  --color-secondary-content: ${deriveContentColor(palette.secondary)};
   --color-accent: ${accentOklch};
-  --color-accent-content: 0.98 0.005 280.12;
+  --color-accent-content: ${deriveContentColor(palette.accent)};
   --color-neutral: ${neutralOklch};
-  --color-neutral-content: 0.94 0.005 106.42;
+  --color-neutral-content: ${deriveContentColor(palette.neutral)};
   --color-info: 0.62 0.14 243.65;
   --color-info-content: 0.98 0.005 243.65;
   --color-success: 0.62 0.17 152.55;

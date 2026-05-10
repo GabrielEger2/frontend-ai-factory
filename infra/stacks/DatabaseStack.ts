@@ -45,6 +45,9 @@ export class DatabaseStack extends Stack {
   /** Share tokens table — token→project mapping for public share links. DDB TTL on expiresAt. */
   public readonly shareTokensTable: Table;
 
+  /** Image cache table — Pexels search result cache keyed by query hash. TTL on expiresAt. */
+  public readonly imageCacheTable: Table;
+
   /* ---- S3 Bucket ---- */
 
   /** Pipeline bucket — temporary storage for assembled site archives. */
@@ -92,6 +95,18 @@ export class DatabaseStack extends Stack {
       partitionKey: { name: "pk", type: AttributeType.STRING },
       billingMode: BillingMode.PAY_PER_REQUEST,
       removalPolicy: RemovalPolicy.RETAIN,
+      timeToLiveAttribute: "expiresAt",
+    });
+
+    /* -------------------------------------------------------------- */
+    /*  ImageCacheTable                                                */
+    /* -------------------------------------------------------------- */
+
+    this.imageCacheTable = new Table(this, "ImageCacheTable", {
+      tableName: "sitegen-image-cache",
+      partitionKey: { name: "pk", type: AttributeType.STRING },
+      billingMode: BillingMode.PAY_PER_REQUEST,
+      removalPolicy: RemovalPolicy.DESTROY, // diverges from shareTokensTable RETAIN — cache is ephemeral
       timeToLiveAttribute: "expiresAt",
     });
 
@@ -155,6 +170,16 @@ export class DatabaseStack extends Stack {
   /** ShareTokensTable ARN. */
   get shareTokensTableArn(): string {
     return this.shareTokensTable.tableArn;
+  }
+
+  /** ImageCacheTable name. */
+  get imageCacheTableName(): string {
+    return this.imageCacheTable.tableName;
+  }
+
+  /** ImageCacheTable ARN. */
+  get imageCacheTableArn(): string {
+    return this.imageCacheTable.tableArn;
   }
 
   /** PipelineBucket name. */

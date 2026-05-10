@@ -431,7 +431,7 @@ export function VisualEditorShell({
             )}
           </button>
         </div>
-        <div className="flex min-h-0 flex-1 items-start justify-center overflow-auto rounded-lg bg-slate-100 p-4">
+        <div className="flex min-h-0 flex-1 items-start justify-center">
           <BlueprintPreview draft={draft} viewportWidth={viewport} />
         </div>
       </section>

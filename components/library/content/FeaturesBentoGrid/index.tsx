@@ -494,11 +494,15 @@ export default function FeaturesBentoGrid({
           </motion.figure>
         )}
 
-        {/* Outcome metrics band */}
+        {/* Outcome metrics — bento-flavoured: each metric is its own small
+            tinted tile with mixed corner radii, mirroring the asymmetric
+            bento grid above it instead of resolving into a single dark
+            slab. Keeps this section visually distinct from sibling content
+            sections that use the dark slab treatment. */}
         {metrics && metrics.length > 0 && (
           <motion.div
             className={cn(
-              "grid grid-cols-2 gap-6 rounded-3xl bg-base-content px-6 py-10 text-base-100 md:grid-cols-4 md:px-12 md:py-14",
+              "grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4",
               pullQuote ? "mt-12 md:mt-16" : "mt-16 md:mt-24",
             )}
             initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
@@ -507,11 +511,17 @@ export default function FeaturesBentoGrid({
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             {metrics.slice(0, 4).map((m, i) => (
-              <div key={i} className="flex flex-col items-start gap-1">
-                <span className="font-mono text-3xl font-semibold tracking-tight md:text-5xl">
+              <div
+                key={i}
+                className={cn(
+                  "flex flex-col items-start justify-between gap-3 border border-base-300 bg-base-200 p-5 md:p-6",
+                  indexToRadius(i),
+                )}
+              >
+                <span className="font-mono text-3xl font-semibold tracking-tight text-primary md:text-5xl">
                   {m.value}
                 </span>
-                <span className="text-xs leading-snug text-base-100/70 md:text-sm">
+                <span className="text-xs leading-snug text-base-content/70 md:text-sm">
                   {m.label}
                 </span>
               </div>

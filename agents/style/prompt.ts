@@ -173,13 +173,71 @@ Mood modifiers refine the same palette family:
 - **elegant / calm** → softer contrast, muted saturation, harmonious neighboring hues
 - **playful + energetic together** → push toward bright accents; never wash out primary
 
+## Hard Rules — Color Contrast
+
+### ABSOLUTE PROHIBITION: low-contrast text-on-background pairs
+
+The palette you emit will be used as raw CSS background colors. Foreground text is rendered on top of these backgrounds at runtime. If the contrast ratio between text and background falls below WCAG AA, the resulting site is unusable for vision-impaired users and gets rejected.
+
+**Numeric thresholds (WCAG 2.1 § 1.4.3):**
+- Normal text MUST achieve a contrast ratio of **at least 4.5:1** against its background.
+- Large text (≥ 18pt, or ≥ 14pt bold) MUST achieve a contrast ratio of **at least 3:1**.
+- 4.5:1 is the floor, not a target. Aim higher (7:1 AAA where possible).
+
+**These pairs MUST pass 4.5:1.** They are the actual rendering surfaces in the assembled site:
+
+- text on \`primaryLight\` — \`primaryLight\` is the page base background (\`--color-base-100\`). Body copy renders directly on top of it.
+- text on \`neutral\` — \`neutral\` is the footer / stats / dark-section background. Light text renders on top of it.
+- text on \`primary\` — used for hero buttons and primary CTA backgrounds. Button label text renders on top.
+- text on \`secondary\` — used for secondary buttons and section accents. Label text renders on top.
+- text on \`accent\` — used for highlighted CTAs and badges. Label text renders on top.
+
+**The downstream Assembler picks the best content color per background** (white \`#ffffff\` or near-black \`#1a1a1a\`, whichever wins). So the palette is acceptable only if **at least one** of those two content colors achieves ≥ 4.5:1 against EACH of the five backgrounds above. A mid-gray background like \`#7C7C7C\` fails both — neither white nor black gives 4.5:1 — and is therefore INVALID.
+
+**Self-verify before emitting JSON.** For each of the five background fields, mentally compute:
+\`\`\`
+best_contrast = max(contrast(bg, "#ffffff"), contrast(bg, "#1a1a1a"))
+\`\`\`
+If \`best_contrast < 4.5\` for any of the five, that color is unusable as a background — adjust the hex value (push it lighter or darker) until it passes. Do NOT swap which colors play which role; the role labels (\`primary\`, \`primaryLight\`, etc.) are anchored upstream.
+
+### Verified legal-luxe Palette Examples
+
+PASSING palettes (each background passes 4.5:1 against its best content color):
+
+\`\`\`
+✓ Primary: #1C2B3A | primaryLight: #F5F4F0 | neutral: #2D2D2D
+  base-content (#1a1a1a) on base-100 (#F5F4F0) → 16.4:1
+  neutral-content (#ffffff) on neutral (#2D2D2D) → 12.6:1
+  primary-content (#ffffff) on primary (#1C2B3A) → 12.4:1
+\`\`\`
+
+\`\`\`
+✓ Primary: #2B3A4F | primaryLight: #FAF8F4 | neutral: #1F1F1F | secondary: #8B7355 | accent: #C9A96E
+  base-content on #FAF8F4 → 17.3:1   (near-black wins)
+  neutral-content on #1F1F1F → 17.4:1 (white wins)
+  primary-content on #2B3A4F → 9.8:1
+  secondary-content on #8B7355 → 4.9:1 (white passes)
+  accent-content on #C9A96E → 7.7:1 (near-black wins on warm gold)
+\`\`\`
+
+INVALID palette (do NOT emit anything resembling this):
+
+\`\`\`
+✗ INVALID: primaryLight: #4A4A4A | neutral: #F8F6F2
+  text on #4A4A4A — best contrast 7.6:1 (white wins) — passes alone, BUT
+  primaryLight is the PAGE BACKGROUND — it must be light, not dark gray
+  text on #F8F6F2 (neutral, used for footer) — best contrast 1.05:1 (white) and 17.4:1 (near-black)
+  → The role mapping is reversed: a near-white "neutral" cannot serve as a dark footer background.
+  Reject: roles inverted, neutral too light to be a footer surface.
+\`\`\`
+
 ## Rules
 
 1. Output ONLY valid JSON. No explanations, no markdown, no comments outside the JSON.
 2. All palette values must be valid hex color codes (e.g. "#1A2B3C").
 3. Typography fonts must be available on Google Fonts.
 4. mood and style arrays must use EXACTLY the values from the allowed lists in sections 3 and 4 above. No synonyms, no variations. Common rejected tokens that fail validation: \`warm\`, \`refined\`, \`sophisticated\`, \`vibrant\`, \`approachable\`, \`industrial\`, \`artisan\` are NOT valid mood or style values. If the research suggests "warmth", emit \`friendly\` plus \`elegant\` or \`calm\`. If it suggests "sophistication" or "refinement", emit \`elegant\` plus \`editorial\` or \`luxury\`. If it suggests "vibrance", emit \`energetic\` plus \`fun\`.
-5. Ensure sufficient color contrast between primary and neutral for accessibility.
+5. See ## Hard Rules — Color Contrast above — WCAG AA (4.5:1) is required, not optional.
 6. The palette should feel cohesive — colors should work harmoniously together.
 7. heading and body fonts should complement each other (avoid pairing two very similar fonts).
 8. **Brand color anchoring (when a brandColor is supplied):** \`primary\` MUST equal the supplied brandColor EXACTLY (same hex, character-for-character, uppercase normalized). Derive \`primaryLight\` by increasing the brand color's lightness by ~25% (in HSL space) and \`primaryDark\` by decreasing lightness by ~20%. The brand color must remain the \`primary\` across ALL three variants in \`paletteModes\` (single, dual, monochromatic) — only the secondary, accent, and neutral relationships change between modes.
@@ -341,4 +399,39 @@ export function buildStyleUserPrompt(
   ]
     .filter(Boolean)
     .join("\n");
+}
+
+/* ------------------------------------------------------------------ */
+/*  Contrast Retry User Prompt (appends WCAG violations)               */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Build a retry user prompt that appends WCAG AA contrast violations to the
+ * base user prompt. Used by the Style Agent's in-Lambda retry loop when
+ * post-parse contrast validation fails.
+ *
+ * Mirrors `buildRetryUserPrompt` in agents/content/prompt.ts:122-147.
+ */
+export function buildContrastRetryUserPrompt(
+  input: Parameters<typeof buildStyleUserPrompt>[0],
+  contrastErrors: Array<{ pair: string; ratio: number; minimum: number }>,
+): string {
+  const basePrompt = buildStyleUserPrompt(input, []);
+
+  const errorLines = contrastErrors.map(
+    (err) =>
+      `- ${err.pair}: ${err.ratio.toFixed(2)}:1 (minimum ${err.minimum.toFixed(1)}:1)`,
+  );
+
+  return [
+    basePrompt,
+    "",
+    "## Contrast Violations — corrections required",
+    "",
+    "The previous palette failed WCAG AA contrast validation on the following background fields. Each line lists the achieved best-case contrast (white-or-near-black, whichever wins) against the WCAG AA minimum:",
+    "",
+    ...errorLines,
+    "",
+    "Return the complete JSON again with all contrast violations corrected.",
+  ].join("\n");
 }

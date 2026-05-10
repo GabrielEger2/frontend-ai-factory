@@ -74,17 +74,32 @@ function NavbarCta({
   text,
   url,
   style,
+  scrolled,
 }: {
   text: string;
   url: string;
   style: CtaStyle;
+  scrolled: boolean;
 }) {
+  /* When the bar is filled (scrolled state, dark `bg-neutral` background)
+     we swap the CTA into a high-contrast inverted treatment so it stays
+     legible against the dark fill. The unscrolled state keeps the
+     original primary-tinted look. */
   return (
     <CtaButton
       variant={style}
       href={url}
       colorScheme="primary"
-      className="text-sm"
+      className={cn(
+        "text-sm transition-colors duration-300",
+        scrolled && [
+          // Border + text inherit the navbar's neutral-content tone so the
+          // pill is visible on `bg-neutral`. The `arrow` variant pulls its
+          // colors from the surrounding text, so this also covers it.
+          "[&]:border-neutral-content/40 [&]:text-neutral-content",
+          "hover:[&]:border-neutral-content hover:[&]:bg-neutral-content hover:[&]:text-neutral",
+        ],
+      )}
     >
       {text}
     </CtaButton>
@@ -337,7 +352,12 @@ export default function NavbarSticky({
           <DesktopLinks links={links} />
 
           {ctaText && ctaUrl && (
-            <NavbarCta text={ctaText} url={ctaUrl} style={ctaStyle} />
+            <NavbarCta
+              text={ctaText}
+              url={ctaUrl}
+              style={ctaStyle}
+              scrolled={scrolled}
+            />
           )}
         </div>
 

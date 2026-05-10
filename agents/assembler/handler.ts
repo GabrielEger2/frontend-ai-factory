@@ -5,6 +5,7 @@ import { AssemblerInputSchema } from "./types";
 import type { AssemblerInput, AssemblerResult } from "./types";
 import type {
   HumanizerOutput,
+  ImageOutput,
   Palette,
   Typography,
   WorkingDraft,
@@ -194,6 +195,8 @@ function defaultForSlot(slotDef: SlotMetaShape): unknown {
       return PLACEHOLDER_URL;
     case "image":
       return PLACEHOLDER_IMAGE_URL;
+    case "video":
+      return "";
     case "list":
       return [];
     case "number":
@@ -212,6 +215,125 @@ function isMissing(value: unknown): boolean {
   if (value === null || value === undefined) return true;
   if (typeof value === "string" && value.trim() === "") return true;
   return false;
+}
+
+/**
+ * Decoded image-slot key: either a flat slot name or a nested-list path.
+ *
+ * Nested keys produced by the Image Resolver have the shape
+ * `${listName}[${index}].${fieldName}` — e.g. `entries[0].image` for a
+ * gallery-style component whose images live inside a list itemSchema.
+ */
+const NESTED_KEY_PATTERN = /^([^[]+)\[(\d+)\]\.(.+)$/;
+
+interface NestedSlotKey {
+  listName: string;
+  index: number;
+  field: string;
+}
+
+function parseNestedKey(key: string): NestedSlotKey | null {
+  const match = NESTED_KEY_PATTERN.exec(key);
+  if (!match) return null;
+  return {
+    listName: match[1],
+    index: parseInt(match[2], 10),
+    field: match[3],
+  };
+}
+
+/**
+ * Merge imageOutput URLs into humanizerOutput slots.
+ * imageOutput takes precedence over any existing value for image/video slots.
+ * Called BEFORE applyBuyerFieldOverrides and applySafeDefaults so real URLs
+ * from the Image Resolver are not overwritten by placeholder fallbacks.
+ *
+ * Supports two key shapes:
+ *   - flat:   "heroImage"           → component.slots.heroImage = url
+ *   - nested: "entries[0].image"    → component.slots.entries[0].image = url
+ *
+ * Alt-text pairing: for flat `${name}` writes `${name}Alt` if empty;
+ * for nested `${list}[${i}].${field}` writes `${list}[${i}].${field}Alt`
+ * if empty. The Pexels alt is only written when the existing alt is falsy
+ * (null / undefined / empty string).
+ */
+export function mergeImageOutput(
+  humanizerOutput: HumanizerOutput,
+  imageOutput: ImageOutput | undefined,
+): HumanizerOutput {
+  if (!imageOutput) return humanizerOutput;
+
+  const imageMap = new Map(
+    imageOutput.components.map((c) => [c.componentId, c.imageSlots]),
+  );
+
+  return {
+    components: humanizerOutput.components.map((component) => {
+      const imageSlots = imageMap.get(component.componentId);
+      if (!imageSlots || Object.keys(imageSlots).length === 0) return component;
+
+      const flatOverrides: Record<string, unknown> = {};
+      // listName -> index -> partial item override
+      const listPatches = new Map<
+        string,
+        Map<number, Record<string, unknown>>
+      >();
+
+      for (const [key, imageSlot] of Object.entries(imageSlots)) {
+        const nested = parseNestedKey(key);
+
+        if (nested) {
+          const { listName, index, field } = nested;
+          if (!listPatches.has(listName)) {
+            listPatches.set(listName, new Map());
+          }
+          const indexMap = listPatches.get(listName)!;
+          if (!indexMap.has(index)) indexMap.set(index, {});
+          const patch = indexMap.get(index)!;
+
+          patch[field] = imageSlot.url;
+
+          // Alt pairing — peek at the existing item to honor pre-written alts.
+          const existingList = component.slots[listName];
+          const existingItem = Array.isArray(existingList)
+            ? existingList[index]
+            : undefined;
+          const existingAlt =
+            existingItem && typeof existingItem === "object"
+              ? (existingItem as Record<string, unknown>)[`${field}Alt`]
+              : undefined;
+          if (imageSlot.alt && !existingAlt) {
+            patch[`${field}Alt`] = imageSlot.alt;
+          }
+        } else {
+          flatOverrides[key] = imageSlot.url;
+          const altSlotName = `${key}Alt`;
+          if (imageSlot.alt && !component.slots[altSlotName]) {
+            flatOverrides[altSlotName] = imageSlot.alt;
+          }
+        }
+      }
+
+      // Apply list patches: rebuild each affected list with patched items.
+      // Items not referenced in the patch map pass through unchanged.
+      for (const [listName, indexMap] of listPatches) {
+        const original = component.slots[listName];
+        if (!Array.isArray(original)) continue;
+        const newList = original.map((item, idx) => {
+          const patch = indexMap.get(idx);
+          if (!patch) return item;
+          if (!item || typeof item !== "object") return item;
+          return { ...(item as Record<string, unknown>), ...patch };
+        });
+        flatOverrides[listName] = newList;
+      }
+
+      return {
+        ...component,
+        slots: { ...component.slots, ...flatOverrides },
+      };
+    }),
+  };
 }
 
 function applySafeDefaults(humanizerOutput: HumanizerOutput): HumanizerOutput {
@@ -284,7 +406,10 @@ export const handler = async (event: unknown): Promise<AssemblerResult> => {
   // (image URLs, anchor URLs, etc.) with placeholders so the site
   // always renders.
   const humanizerOutput = applySafeDefaults(
-    applyBuyerFieldOverrides(input.humanizerOutput, input),
+    applyBuyerFieldOverrides(
+      mergeImageOutput(input.humanizerOutput, input.imageOutput),
+      input,
+    ),
   );
 
   const files = generateSiteFiles(

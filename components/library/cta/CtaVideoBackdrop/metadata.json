@@ -32,7 +32,12 @@
       "optional": true
     },
     { "name": "secondaryUrl", "type": "url", "optional": true },
-    { "name": "videoSrc", "type": "url" },
+    {
+      "name": "videoSrc",
+      "type": "video",
+      "aspectRatio": "16:9",
+      "optional": true
+    },
     { "name": "videoSrcWebm", "type": "url", "optional": true },
     { "name": "poster", "type": "image", "aspectRatio": "16:9" },
     { "name": "videoAriaLabel", "type": "text", "maxLength": 160 },

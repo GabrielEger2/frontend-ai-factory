@@ -4,9 +4,14 @@ import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import Anthropic from "@anthropic-ai/sdk";
 
-import { StyleOutput, StyleOutputSchema } from "../shared/types";
+import { Palette, StyleOutput, StyleOutputSchema } from "../shared/types";
+import { contrastRatio } from "../shared/color";
 import { StyleAgentInput, StyleAgentInputSchema } from "./types";
-import { buildStyleSystemPrompt, buildStyleUserPrompt } from "./prompt";
+import {
+  buildContrastRetryUserPrompt,
+  buildStyleSystemPrompt,
+  buildStyleUserPrompt,
+} from "./prompt";
 
 const DEFAULT_STYLE_KIT = {
   card: "base",
@@ -74,6 +79,46 @@ async function markStylingStarted(projectId: string): Promise<void> {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Post-parse WCAG AA contrast validation                             */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Mirror of the assembler's `deriveContentColor` choice and the QA agent's
+ * `checkContrastRatios` metric: for each background field that downstream
+ * code renders text on top of, compute the BEST achievable contrast (white
+ * vs near-black, whichever wins) and flag the field if it falls under the
+ * WCAG AA 4.5:1 floor.
+ *
+ * Background fields checked: primaryLight (page base), neutral (footer /
+ * dark sections), primary (primary buttons), secondary (secondary buttons),
+ * accent (highlighted CTAs / badges).
+ */
+function validateContrast(
+  palette: Palette,
+): Array<{ pair: string; ratio: number; minimum: number }> {
+  const BACKGROUND_FIELDS = [
+    "primaryLight",
+    "primary",
+    "secondary",
+    "accent",
+    "neutral",
+  ] as const;
+
+  const errors: Array<{ pair: string; ratio: number; minimum: number }> = [];
+  for (const field of BACKGROUND_FIELDS) {
+    const bgHex = palette[field];
+    const best = Math.max(
+      contrastRatio(bgHex, "#ffffff"),
+      contrastRatio(bgHex, "#1a1a1a"),
+    );
+    if (best < 4.5) {
+      errors.push({ pair: field, ratio: best, minimum: 4.5 });
+    }
+  }
+  return errors;
+}
+
+/* ------------------------------------------------------------------ */
 /*  Call Claude API for style generation                               */
 /* ------------------------------------------------------------------ */
 
@@ -123,6 +168,66 @@ async function generateStyle(
   validated.palette = validated.paletteModes[validated.paletteMode];
   validated.styleKit = validated.styleKit ?? DEFAULT_STYLE_KIT;
   validated.imageryDensity = validated.imageryDensity ?? "medium";
+
+  // Post-parse WCAG AA contrast validation. If any background field fails the
+  // 4.5:1 floor, re-prompt Claude with explicit feedback exactly once. Mirrors
+  // the validate → re-prompt → re-validate → throw pattern from
+  // agents/content/handler.ts:366-398.
+  let contrastErrors = validateContrast(validated.palette);
+  if (contrastErrors.length > 0) {
+    console.log(
+      JSON.stringify({
+        agent: "style",
+        action: "contrast-retry",
+        contrastErrors,
+      }),
+    );
+
+    const retryUserPrompt = buildContrastRetryUserPrompt(input, contrastErrors);
+
+    const retryResponse = await client.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 2048,
+      system: systemPrompt,
+      messages: [{ role: "user", content: retryUserPrompt }],
+    });
+
+    const retryTextBlock = retryResponse.content.find(
+      (block) => block.type === "text",
+    );
+    if (!retryTextBlock || retryTextBlock.type !== "text") {
+      throw new Error("Claude retry response did not contain a text block");
+    }
+
+    const retryRawJson = retryTextBlock.text.trim();
+    const retryJsonString = retryRawJson
+      .replace(/^```(?:json)?\s*/i, "")
+      .replace(/\s*```\s*$/, "");
+
+    let retryParsed: unknown;
+    try {
+      retryParsed = JSON.parse(retryJsonString);
+    } catch {
+      throw new Error(
+        `Failed to parse Style Claude retry response as JSON: ${retryJsonString.substring(0, 200)}...`,
+      );
+    }
+
+    const retryValidated = StyleOutputSchema.parse(retryParsed);
+    retryValidated.palette =
+      retryValidated.paletteModes[retryValidated.paletteMode];
+    retryValidated.styleKit = retryValidated.styleKit ?? DEFAULT_STYLE_KIT;
+    retryValidated.imageryDensity = retryValidated.imageryDensity ?? "medium";
+
+    contrastErrors = validateContrast(retryValidated.palette);
+    if (contrastErrors.length > 0) {
+      throw new Error(
+        `Style contrast validation failed after retry: ${JSON.stringify(contrastErrors)}`,
+      );
+    }
+    return retryValidated;
+  }
+
   return validated;
 }
 
@@ -180,12 +285,14 @@ export const handler: Handler<StyleAgentInput, void> = async (event) => {
   await markStylingStarted(input.projectId);
 
   // 3. Generate style via Claude. Neo4j palette suggestions are gone in
-  //    Phase A; paletteSource is always "fallback". The enum on
-  //    StyleOutputSchema retains "graph" as a legacy value (existing DDB
-  //    items written during Stage 2 still parse), but new executions always
-  //    write "fallback".
+  //    Phase A; new executions emit paletteSource = "llm" (truthful — the
+  //    palette comes from the LLM, not a hardcoded fallback). The enum on
+  //    StyleOutputSchema retains "graph" as a legacy value and reserves
+  //    "fallback-default" for the assembler DEFAULT_PALETTE path. Legacy
+  //    DDB items with paletteSource = "fallback" are coerced to "llm" by
+  //    the schema's .catch on re-parse.
   const styleOutput = await generateStyle(input);
-  styleOutput.paletteSource = "fallback";
+  styleOutput.paletteSource = "llm";
 
   console.log(
     JSON.stringify({

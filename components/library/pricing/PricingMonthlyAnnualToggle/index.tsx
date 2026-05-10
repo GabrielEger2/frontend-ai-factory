@@ -50,6 +50,10 @@ export interface PricingMonthlyAnnualToggleProps {
   annualLabel?: string;
   /** Discount badge text shown next to the annual label (e.g. "Save 18%") */
   annualDiscountBadge?: string;
+  /** Cadence suffix shown after the price on monthly cards (e.g. "/mo", "/mês") */
+  monthlyCadenceLabel?: string;
+  /** Cadence suffix shown after the price on annual cards (e.g. "/mo · billed yearly", "/mês · cobrado anualmente") */
+  annualCadenceLabel?: string;
   /** Initial billing cycle — defaults to "monthly" */
   defaultCycle?: "monthly" | "annual";
   /** Plan tiles — between 2 and 4 */
@@ -397,6 +401,8 @@ export default function PricingMonthlyAnnualToggle({
   monthlyLabel = "Monthly",
   annualLabel = "Annual",
   annualDiscountBadge,
+  monthlyCadenceLabel = "/mo",
+  annualCadenceLabel = "/mo · billed yearly",
   defaultCycle = "monthly",
   plans = DEFAULT_PLANS,
   footnote,
@@ -474,8 +480,8 @@ export default function PricingMonthlyAnnualToggle({
               cycle={cycle}
               ctaVariant={ctaVariant}
               ctaColorScheme={ctaColorScheme}
-              monthlyCadenceLabel="/mo"
-              annualCadenceLabel="/mo · billed yearly"
+              monthlyCadenceLabel={monthlyCadenceLabel}
+              annualCadenceLabel={annualCadenceLabel}
             />
           ))}
         </motion.div>

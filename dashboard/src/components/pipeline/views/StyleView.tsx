@@ -39,7 +39,9 @@ export function StyleView({ output }: StyleViewProps) {
           >
             {output.paletteSource === "graph"
               ? "graph palette"
-              : "fallback palette"}
+              : output.paletteSource === "fallback-default"
+                ? "default palette"
+                : "AI palette"}
           </Badge>
         </div>
       )}

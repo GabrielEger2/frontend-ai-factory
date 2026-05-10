@@ -62,14 +62,21 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       }),
     );
 
-    const projects = (result.Items ?? []).map((item) => ({
-      projectId: item.projectId,
-      companyName: item.companyName,
-      segment: item.segment,
-      status: item.status,
-      createdAt: item.createdAt,
-      sellerId: item.sellerId,
-    }));
+    const projects = (result.Items ?? [])
+      .filter(
+        (item) =>
+          typeof item.projectId === "string" &&
+          typeof item.companyName === "string" &&
+          item.companyName.length > 0,
+      )
+      .map((item) => ({
+        projectId: item.projectId,
+        companyName: item.companyName,
+        segment: item.segment,
+        status: item.status,
+        createdAt: item.createdAt,
+        sellerId: item.sellerId,
+      }));
 
     const nextCursor = result.LastEvaluatedKey
       ? Buffer.from(JSON.stringify(result.LastEvaluatedKey)).toString("base64")
