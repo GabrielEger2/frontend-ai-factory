@@ -4,8 +4,22 @@ import { Component as ReactComponent, type ReactNode } from "react";
 import { componentsById } from "@components/library";
 import { paletteToCssVars } from "@/lib/palette-to-css";
 import type { WorkingDraft } from "@/types/project";
+import { PreviewIframe } from "./PreviewIframe";
 
-export type PreviewViewportWidth = 1280 | 768 | 375;
+export type PreviewViewportWidth = 1920 | 1280 | 768 | 375;
+
+/**
+ * Device-class viewport height per width. Fixes `100vh` / `min-h-screen`
+ * to a stable value inside the preview iframe — without this, auto-sizing
+ * the iframe to content creates a feedback loop with viewport-height
+ * units that runs the iframe up to extreme heights.
+ */
+const VIEWPORT_HEIGHT: Record<PreviewViewportWidth, number> = {
+  1920: 1080,
+  1280: 832,
+  768: 1024,
+  375: 812,
+};
 
 interface BlueprintPreviewProps {
   /** The WorkingDraft to render — blueprint order, contentSlots, palette, typography. */
@@ -16,7 +30,7 @@ interface BlueprintPreviewProps {
    */
   viewportWidth?: PreviewViewportWidth;
   /**
-   * When false, the preview wrapper disables pointer events so hover/click
+   * When false, the preview disables pointer events so hover/click
    * interactions inside library components don't fire. Used by the public
    * /share/[token] page for read-only client previews.
    */
@@ -71,11 +85,17 @@ class SectionErrorBoundary extends ReactComponent<
  * component in `draft.blueprint.components` in order, passing the matching
  * content slots from `draft.contentSlots` as props.
  *
+ * Renders inside an <iframe> via PreviewIframe so library components see an
+ * isolated CSS viewport. `lg:`/`xl:` breakpoints, `100vh`-sized footers,
+ * and `position: fixed` chrome (sticky navbars, docks) all evaluate against
+ * the seller-chosen preview width — they no longer leak out into the
+ * dashboard's window viewport.
+ *
  * DaisyUI token bridge: library components are tagged with classes like
  * `bg-primary`, `text-base-content` compiled against `oklch(var(--color-*))`.
- * We inject those custom properties on `.preview-root` via inline style
- * from `paletteToCssVars(draft.palette, draft.typography)` so the preview
- * honors the seller's palette edits without a full rebuild.
+ * We inject those custom properties on the iframe body via
+ * `paletteToCssVars(draft.palette, draft.typography)` so the preview honors
+ * the seller's palette edits without a full rebuild.
  *
  * If a component ID is present in the blueprint but not registered in
  * `componentsById`, we render a warning placeholder instead of crashing.
@@ -91,50 +111,48 @@ export function BlueprintPreview({
   const cssVars = paletteToCssVars(draft.palette, draft.typography);
 
   return (
-    <div
-      className="preview-root mx-auto overflow-auto rounded-md border border-slate-200 bg-white shadow-sm"
-      style={{
-        ...cssVars,
-        width: viewportWidth,
-        maxWidth: "100%",
-        contain: "paint",
-        pointerEvents: interactive ? "auto" : "none",
-      }}
-    >
-      {draft.blueprint.components.map((componentId, index) => {
-        const Component = componentsById[componentId];
-        if (!Component) {
-          return (
-            <div
-              key={`${componentId}-${index}`}
-              className="p-4 text-sm text-yellow-800 bg-yellow-50 border-b border-yellow-200"
-            >
-              Unknown component: <code>{componentId}</code>
-            </div>
+    <div className="mx-auto h-full w-full overflow-auto rounded-md border border-slate-200 bg-white shadow-sm">
+      <PreviewIframe
+        width={viewportWidth}
+        height={VIEWPORT_HEIGHT[viewportWidth]}
+        cssVars={cssVars}
+        interactive={interactive}
+      >
+        {draft.blueprint.components.map((componentId, index) => {
+          const Component = componentsById[componentId];
+          if (!Component) {
+            return (
+              <div
+                key={`${componentId}-${index}`}
+                className="border-b border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800"
+              >
+                Unknown component: <code>{componentId}</code>
+              </div>
+            );
+          }
+
+          const contentEntry = draft.contentSlots.components.find(
+            (c) => c.componentId === componentId,
           );
-        }
+          const slots = (contentEntry?.slots ?? {}) as Record<string, unknown>;
+          const variant = draft.blueprint.variantSelections?.[componentId];
+          const previewProps =
+            componentId === "navbar-sticky-01" ? { previewMode: true } : {};
 
-        const contentEntry = draft.contentSlots.components.find(
-          (c) => c.componentId === componentId,
-        );
-        const slots = (contentEntry?.slots ?? {}) as Record<string, unknown>;
-        const variant = draft.blueprint.variantSelections?.[componentId];
-        const previewProps =
-          componentId === "navbar-sticky-01" ? { previewMode: true } : {};
-
-        return (
-          <SectionErrorBoundary
-            key={`${componentId}-${index}`}
-            componentId={componentId}
-          >
-            <Component
-              {...slots}
-              {...(variant ? { variant } : {})}
-              {...previewProps}
-            />
-          </SectionErrorBoundary>
-        );
-      })}
+          return (
+            <SectionErrorBoundary
+              key={`${componentId}-${index}`}
+              componentId={componentId}
+            >
+              <Component
+                {...slots}
+                {...(variant ? { variant } : {})}
+                {...previewProps}
+              />
+            </SectionErrorBoundary>
+          );
+        })}
+      </PreviewIframe>
     </div>
   );
 }
