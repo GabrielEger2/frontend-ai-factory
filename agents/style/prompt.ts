@@ -223,6 +223,30 @@ Each canonical mood maps to a saturation bucket — a target chroma/energy level
 
 **Vertical override:** If a vertical's forbidden zone prohibits high-chroma backgrounds (wellness, healthcare-luxe, hospitality-luxe, atelier-luxe), the effective bucket for background-tier fields (primaryLight, neutral) caps at \`muted\` regardless of mood bucket.
 
+## Color Character Principles
+
+These principles encode how color actually works in digital contexts. Apply them when choosing hex values — they override hue-wheel intuitions.
+
+**Principle 1 — Chroma defines mood more than hue does**
+→ Two greens at identical hue but different chroma feel like completely different colors: muted sage reads calm and natural; same hue at full saturation reads electric and synthetic. When building a palette, determine correct chroma level first (per bucket table), then select the hue. Chroma is primary driver of perceived character; hue family is secondary.
+
+**Principle 2 — Lightness + chroma together control perceived energy**
+→ High lightness + high chroma = electric/neon (the fluorescent effect). High lightness + low chroma = airy/calm (correct for wellness, healthcare-luxe backgrounds). Low lightness + high chroma = vivid/bold (correct for energetic brands). Low lightness + low chroma = serious/authoritative (correct for legal-luxe, atelier-luxe). Before finalizing any background-tier color, verify BOTH lightness and chroma — not just WCAG contrast. A color can pass contrast and still be wrong.
+
+**Principle 3 — The lime-green failure mode (explicit rule)**
+→ Light-tinted colors with high chroma appear electric and garish even at high contrast ratios. Pale lime-green (#C8F078) passes WCAG 4.5:1 but reads as synthetic and completely off-character for calm verticals. For wellness, healthcare-luxe, hospitality-luxe, atelier-luxe, and any calm/elegant/trustworthy mood: ALL background-tier colors (primaryLight, neutral) MUST be low-chroma. If a color looks like it could glow under a blacklight, it is wrong for these verticals — regardless of contrast ratio.
+
+**Principle 4 — Color temperature shifts hue AND saturation together**
+→ "Warm" is not only orange-red hues. Warm palette tilts entire color set toward yellow-red AND reduces cool-blue saturation across all fields. "Cool" does the opposite. When applying a warm brand character, shift hue temperature consistently — don't pick warm primary and leave rest neutral-cool. Inconsistent temperature feels accidental.
+
+**Principle 5 — Hue-only harmony rules are weak and context-blind**
+→ Do NOT build palettes using complementary or triadic hue-wheel rules alone. They produce technically balanced palettes that are contextually wrong (a complementary red-green pair is festive, not professional — regardless of brief). Character (which bucket), context (vertical, mood), and chroma consistency dominate over hue-relationship geometry. Always ask: "Does this palette feel right for the brand?" not "Does it look balanced on a color wheel?"
+
+**Principle 6 — Pigment-mixing intuition does not apply to RGB/hex**
+→ In physical paint, blue + yellow = green. In RGB hex space, this is not how mixing works — do not reason about hex value relationships using pigment intuition. When specifying palette relationships (e.g., primaryLight as a lightened version of primary), think in lightness shifts and chroma reductions, not additive/subtractive color mixing.
+
+Apply in this order: (1) set chroma appropriate to vertical and mood bucket, (2) select hue within non-forbidden zone, (3) adjust lightness for contrast compliance, (4) verify temperature consistency across all six palette fields.
+
 ## Hard Rules — Color Contrast
 
 ### Seller-Specified Colors to Avoid
