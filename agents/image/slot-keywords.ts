@@ -14,12 +14,12 @@
 /**
  * SKIP_PATTERN — slots matching this regex are skipped (never call Pexels).
  *
- * Logos / avatars / member photos / author images / company logos are
- * uniformly poorly served by stock photography. Returning `null` for these
- * slots lets the Assembler's existing `applySafeDefaults()` fill with a
- * neutral placeholder.
+ * Brand logos (companyLogo, partnerLogo, etc.) and explicit `avatar` slots
+ * are uniformly poorly served by stock photography. Author/team portraits
+ * (authorImage, memberPhoto) DO resolve — generic professional portraits
+ * are acceptable showcase content; the seller swaps them at review time.
  */
-export const SKIP_PATTERN = /logo|avatar|memberPhoto|authorImage|companyLogo/i;
+export const SKIP_PATTERN = /logo|avatar/i;
 
 /**
  * SLOT_KEYWORD_MAP — maps slot name patterns to English search keywords.
@@ -44,7 +44,13 @@ export const SLOT_KEYWORD_MAP: Record<string, string> = {
   founderImage: "professional portrait",
   clientImage: "satisfied client",
   bestsellerThumb: "product close-up",
-  videoSrc: "business atmosphere", // video slot
+  // Video slots
+  videoSrc: "business atmosphere",
+  videoUrl: "business atmosphere",
+  // Author / team portraits — generic stock professional portraits are
+  // acceptable showcase content; seller swaps them at review time.
+  authorImage: "professional portrait headshot",
+  memberPhoto: "professional portrait headshot",
 };
 
 /**

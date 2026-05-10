@@ -46,12 +46,13 @@ interface SlotMeta {
  * Field declaration extracted from a slot's itemSchema. Supports both shapes
  * the registry produces (flat-record and {type, fields[]}).
  */
-interface FieldDecl {
+export interface FieldDecl {
   name: string;
   type?: string;
   optional?: boolean;
   enum?: unknown[];
   itemSchema?: unknown;
+  aspectRatio?: string;
 }
 
 /**
@@ -59,7 +60,9 @@ interface FieldDecl {
  * map of field-name → field declaration. Returns an empty object if the
  * shape is unrecognized.
  */
-function fieldsFromItemSchema(itemSchema: unknown): Record<string, FieldDecl> {
+export function fieldsFromItemSchema(
+  itemSchema: unknown,
+): Record<string, FieldDecl> {
   if (!itemSchema || typeof itemSchema !== "object") return {};
   const schema = itemSchema as Record<string, unknown>;
 

@@ -63,6 +63,18 @@ describe("SKIP_PATTERN", () => {
   it("does NOT match heroImage", () => {
     expect(SKIP_PATTERN.test("heroImage")).toBe(false);
   });
+
+  it("does NOT match authorImage (resolves as showcase portrait)", () => {
+    expect(SKIP_PATTERN.test("authorImage")).toBe(false);
+  });
+
+  it("does NOT match memberPhoto (resolves as showcase portrait)", () => {
+    expect(SKIP_PATTERN.test("memberPhoto")).toBe(false);
+  });
+
+  it("matches avatar slot names", () => {
+    expect(SKIP_PATTERN.test("clientAvatar")).toBe(true);
+  });
 });
 
 /* ------------------------------------------------------------------ */

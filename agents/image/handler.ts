@@ -9,6 +9,8 @@ import type { ImageOutput, PipelineState } from "../shared/types";
 import { ImageAgentInputSchema } from "./types";
 import { resolveImageSlot } from "./resolver";
 import { COMPONENT_METADATA } from "../assembler/component-sources.generated";
+import { fieldsFromItemSchema } from "../assembler/core";
+import { SKIP_PATTERN } from "./slot-keywords";
 
 /* ------------------------------------------------------------------ */
 /*  Clients (reused across Lambda invocations)                         */
@@ -25,6 +27,7 @@ interface SlotMetaShape {
   type?: string;
   aspectRatio?: string;
   optional?: boolean;
+  itemSchema?: unknown;
 }
 
 /* ------------------------------------------------------------------ */
@@ -97,28 +100,93 @@ export const handler = async (event: unknown): Promise<PipelineState> => {
       { url: string; alt?: string; photographerCredit?: string }
     > = {};
 
-    for (const slotDef of slotDefs) {
-      const slot = slotDef as {
-        name: string;
-        type?: string;
-        aspectRatio?: string;
-        optional?: boolean;
-      };
-      if (slot.type !== "image" && slot.type !== "video") continue;
+    /**
+     * Enumerated targets for this component — covers both top-level slots
+     * and image/video fields nested inside list `itemSchema`.
+     *
+     * `outputKey` is the key used in `imageSlots` (and decoded by the
+     * Assembler's `mergeImageOutput`). For top-level slots it's just the
+     * slot name; for nested-list fields it's `${listName}[${index}].${field}`.
+     */
+    interface MediaTarget {
+      outputKey: string;
+      slotName: string;
+      slotType: "image" | "video";
+      aspectRatio: string | undefined;
+      existingAltText: string | null;
+    }
 
-      // Read existing alt text (humanizer-authored) for this slot's
-      // companion `${slotName}Alt` slot. If the humanizer wrote a non-empty
-      // alt, the resolver preserves it.
-      const altSlotName = `${slot.name}Alt`;
-      const rawAlt = component.slots[altSlotName];
-      const existingAltText =
-        typeof rawAlt === "string" && rawAlt.trim().length > 0 ? rawAlt : null;
+    const targets: MediaTarget[] = [];
+
+    for (const slotDef of slotDefs) {
+      // Case 1: top-level image / video slot.
+      if (slotDef.type === "image" || slotDef.type === "video") {
+        const altSlotName = `${slotDef.name}Alt`;
+        const rawAlt = component.slots[altSlotName];
+        const existingAltText =
+          typeof rawAlt === "string" && rawAlt.trim().length > 0
+            ? rawAlt
+            : null;
+
+        targets.push({
+          outputKey: slotDef.name,
+          slotName: slotDef.name,
+          slotType: slotDef.type,
+          aspectRatio: slotDef.aspectRatio,
+          existingAltText,
+        });
+        continue;
+      }
+
+      // Case 2: list slot — descend into itemSchema.fields[] looking for
+      // image/video fields, one resolution per existing list item.
+      if (slotDef.type === "list" && slotDef.itemSchema) {
+        const fieldDecls = fieldsFromItemSchema(slotDef.itemSchema);
+        const listValue = component.slots[slotDef.name];
+        if (!Array.isArray(listValue)) continue;
+
+        for (let idx = 0; idx < listValue.length; idx++) {
+          const item = listValue[idx];
+          if (!item || typeof item !== "object") continue;
+          const itemRecord = item as Record<string, unknown>;
+
+          for (const fieldDecl of Object.values(fieldDecls)) {
+            if (fieldDecl.type !== "image" && fieldDecl.type !== "video") {
+              continue;
+            }
+
+            const altFieldName = `${fieldDecl.name}Alt`;
+            const rawAlt = itemRecord[altFieldName];
+            const existingAltText =
+              typeof rawAlt === "string" && rawAlt.trim().length > 0
+                ? rawAlt
+                : null;
+
+            targets.push({
+              outputKey: `${slotDef.name}[${idx}].${fieldDecl.name}`,
+              slotName: fieldDecl.name,
+              slotType: fieldDecl.type,
+              aspectRatio: fieldDecl.aspectRatio,
+              existingAltText,
+            });
+          }
+        }
+      }
+    }
+
+    for (const target of targets) {
+      // Skipped slots (logos / avatars) — count them up front so the
+      // counter is accurate regardless of where the slot lived.
+      if (SKIP_PATTERN.test(target.slotName)) {
+        skipped += 1;
+        continue;
+      }
 
       const result = await resolveImageSlot({
-        slotName: slot.name,
-        slotType: slot.type === "video" ? "video" : "image",
-        aspectRatio: slot.aspectRatio,
-        existingAltText,
+        slotName: target.slotName,
+        slotType: target.slotType,
+        aspectRatio: target.aspectRatio,
+        existingAltText: target.existingAltText,
         vertical,
         mood,
         ddb,
@@ -128,21 +196,11 @@ export const handler = async (event: unknown): Promise<PipelineState> => {
       });
 
       if (result === null) {
-        // Distinguish skip-pattern matches (deliberate no-call) from
-        // resolver failures (no-results / api-error). The resolver's own
-        // structured warn covers the failure path; here we conservatively
-        // count as `skipped` for the SKIP_PATTERN-matching slot names.
-        // The remaining nulls (api-error, no-results) get attributed to
-        // `failed` based on whether the resolver swallowed an exception.
-        // Without a richer return shape we approximate: SKIP_PATTERN hits
-        // are always counted skipped via the resolver, so we treat all
-        // null returns as `failed` here for telemetry simplicity. Logos
-        // are already excluded upstream.
         failed += 1;
         continue;
       }
 
-      imageSlots[slot.name] = result;
+      imageSlots[target.outputKey] = result;
       resolved += 1;
     }
 
@@ -151,24 +209,6 @@ export const handler = async (event: unknown): Promise<PipelineState> => {
         componentId: component.componentId,
         imageSlots,
       });
-    }
-  }
-
-  // Re-attribute "skipped" by counting slot names that matched SKIP_PATTERN.
-  // This gives the smoke test a clean breakdown without changing the
-  // resolver's return shape.
-  for (const component of input.humanizerOutput.components) {
-    const meta = COMPONENT_METADATA[component.componentId];
-    if (!meta) continue;
-    const slotDefs = meta.slots as SlotMetaShape[];
-    for (const slotDef of slotDefs) {
-      const slot = slotDef as { name: string; type?: string };
-      if (slot.type !== "image" && slot.type !== "video") continue;
-      if (/logo|avatar|memberPhoto|authorImage|companyLogo/i.test(slot.name)) {
-        skipped += 1;
-        // Skipped slots were also counted as `failed` above — subtract.
-        failed = Math.max(0, failed - 1);
-      }
     }
   }
 

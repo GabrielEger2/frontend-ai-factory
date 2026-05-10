@@ -198,4 +198,178 @@ describe("mergeImageOutput", () => {
     // Falsy check on the absent slot key (undefined) lets the Pexels alt land.
     expect(result.components[0].slots.heroImageAlt).toBe("Cozy cafe interior");
   });
+
+  it("writes nested-list keys into entries[i].image", () => {
+    const humanizerOutput: HumanizerOutput = {
+      components: [
+        {
+          componentId: "gallery-image-text-editorial-01",
+          slots: {
+            headline: "Showcase",
+            entries: [
+              {
+                heading: "First",
+                body: "Body 1",
+                image: "https://placehold.co/1200x800?text=Imagem",
+                imageAlt: null,
+              },
+              {
+                heading: "Second",
+                body: "Body 2",
+                image: "https://placehold.co/1200x800?text=Imagem",
+                imageAlt: "Existing alt",
+              },
+            ],
+          },
+        },
+      ],
+    };
+
+    const imageOutput: ImageOutput = {
+      components: [
+        {
+          componentId: "gallery-image-text-editorial-01",
+          imageSlots: {
+            "entries[0].image": {
+              url: "https://images.pexels.com/photos/100.jpg",
+              alt: "Editorial bakery scene",
+            },
+            "entries[1].image": {
+              url: "https://images.pexels.com/photos/101.jpg",
+              alt: "Pexels alt that must NOT win",
+            },
+          },
+        },
+      ],
+    };
+
+    const result = mergeImageOutput(humanizerOutput, imageOutput);
+    const entries = result.components[0].slots.entries as Array<
+      Record<string, unknown>
+    >;
+
+    expect(entries[0].image).toBe("https://images.pexels.com/photos/100.jpg");
+    expect(entries[1].image).toBe("https://images.pexels.com/photos/101.jpg");
+    // entries[0].imageAlt was null (falsy) → Pexels alt lands.
+    expect(entries[0].imageAlt).toBe("Editorial bakery scene");
+    // entries[1].imageAlt was non-empty → existing alt preserved.
+    expect(entries[1].imageAlt).toBe("Existing alt");
+    // Non-image fields are untouched.
+    expect(entries[0].heading).toBe("First");
+    expect(entries[1].heading).toBe("Second");
+    // Other top-level slots are untouched.
+    expect(result.components[0].slots.headline).toBe("Showcase");
+  });
+
+  it("does not mutate the original entries array on nested write", () => {
+    const originalEntries = [
+      {
+        heading: "First",
+        image: "https://placehold.co/1200x800?text=Imagem",
+      },
+    ];
+    const humanizerOutput: HumanizerOutput = {
+      components: [
+        {
+          componentId: "gallery-image-text-editorial-01",
+          slots: {
+            entries: originalEntries,
+          },
+        },
+      ],
+    };
+
+    const imageOutput: ImageOutput = {
+      components: [
+        {
+          componentId: "gallery-image-text-editorial-01",
+          imageSlots: {
+            "entries[0].image": {
+              url: "https://images.pexels.com/photos/200.jpg",
+            },
+          },
+        },
+      ],
+    };
+
+    mergeImageOutput(humanizerOutput, imageOutput);
+
+    // Reference equality on the input array — input must not be mutated.
+    expect(originalEntries[0].image).toBe(
+      "https://placehold.co/1200x800?text=Imagem",
+    );
+  });
+
+  it("silently skips a nested write when the list slot is missing", () => {
+    const humanizerOutput: HumanizerOutput = {
+      components: [
+        {
+          componentId: "gallery-image-text-editorial-01",
+          slots: {
+            headline: "Showcase",
+            // entries is intentionally omitted
+          },
+        },
+      ],
+    };
+
+    const imageOutput: ImageOutput = {
+      components: [
+        {
+          componentId: "gallery-image-text-editorial-01",
+          imageSlots: {
+            "entries[0].image": {
+              url: "https://images.pexels.com/photos/300.jpg",
+            },
+          },
+        },
+      ],
+    };
+
+    expect(() => mergeImageOutput(humanizerOutput, imageOutput)).not.toThrow();
+    const result = mergeImageOutput(humanizerOutput, imageOutput);
+    // No `entries` slot was written, no crash.
+    expect(result.components[0].slots.entries).toBeUndefined();
+    expect(result.components[0].slots.headline).toBe("Showcase");
+  });
+
+  it("merges flat and nested keys for the same component", () => {
+    const humanizerOutput: HumanizerOutput = {
+      components: [
+        {
+          componentId: "mixed-component-01",
+          slots: {
+            heroImage: "https://placehold.co/1200x800?text=Imagem",
+            entries: [{ heading: "A", image: "https://placehold.co/1200x800" }],
+          },
+        },
+      ],
+    };
+
+    const imageOutput: ImageOutput = {
+      components: [
+        {
+          componentId: "mixed-component-01",
+          imageSlots: {
+            heroImage: {
+              url: "https://images.pexels.com/photos/400.jpg",
+            },
+            "entries[0].image": {
+              url: "https://images.pexels.com/photos/401.jpg",
+            },
+          },
+        },
+      ],
+    };
+
+    const result = mergeImageOutput(humanizerOutput, imageOutput);
+    const entries = result.components[0].slots.entries as Array<
+      Record<string, unknown>
+    >;
+
+    expect(result.components[0].slots.heroImage).toBe(
+      "https://images.pexels.com/photos/400.jpg",
+    );
+    expect(entries[0].image).toBe("https://images.pexels.com/photos/401.jpg");
+  });
 });
