@@ -119,6 +119,39 @@ Palette rules for food, grocery, distributor, comfort, and hospitality segments:
   - Saturated reds/oranges allowed as ACCENT only (CTAs, badges) — NEVER as primary surface.
   - Avoid bright primary red as the dominant brand color in food/comfort segments.
 
+## Vertical Color Forbidden Zones
+
+Each canonical vertical has off-character color zones that must be avoided regardless of WCAG contrast compliance. Apply these as hard constraints in addition to (not in place of) the food/comfort palette rules above.
+
+| Vertical | Forbidden zone |
+|---|---|
+| bakery | Avoid clinical white, cold greys, neon-saturated backgrounds. Palette MUST stay in warm neutrals (cream, off-white, soft beige) with natural accents. |
+| bakery-luxe | NEVER use bright high-chroma primaries or playful pastels. Restrained ivory, warm taupe, deep chocolate, matte gold accents only. |
+| restaurant | Avoid cold desaturated palettes (clinical blue, grey-dominant). Saturated reds/oranges/earth tones allowed as primary; NEVER neon. |
+| restaurant-luxe | NEVER bright or playful. Deep, muted, sophisticated — burgundy, charcoal, warm ivory; no fluorescent accents. |
+| fitness | Avoid pale pastels and corporate grey (low-energy signal). Bold, high-contrast primary expected; NEVER muted beige as dominant background. |
+| auto-services | Avoid soft pastels, floral, fashion-adjacent. Industrial authority requires strong contrast; NEVER neon or candy-hued accents. |
+| legal-consulting | NEVER neon, electric, or saturated playful colors. Authoritative: navy, charcoal, dark teal, warm off-white. High chroma on backgrounds prohibited. |
+| legal-luxe | Absolute prohibition on bright primaries, neon, pastels. Deep muted serious tones only: midnight navy, dark charcoal, champagne, restrained gold. ✗ DO NOT use #C8F078, #39FF14, #FFD700. |
+| healthcare | Avoid electric greens, fluorescent yellows, aggressive reds. Clinical trust = muted blues, soft teals, clean whites. NEVER high-chroma backgrounds. |
+| healthcare-luxe | NEVER electric or fluorescent. Premium aesthetics demand low-chroma: warm ivory, sage, dusty rose. ✗ DO NOT use #C8F078, #A0F060, #7FFFD4 as background-tier colors. |
+| beauty-salon | Avoid cold industrial palettes. Warmth and approachability required; NEVER neon/electric for calm/feminine beauty brands. |
+| education | Avoid dark oppressive palettes. NEVER neon for children's-adjacent education; corporate education allows bold but not fluorescent. |
+| real-estate | Avoid playful candy-hued palettes. Trust requires muted earth tones, blues, warm neutrals; NEVER neon backgrounds. |
+| real-estate-luxe | Absolute prohibition on bright/saturated/playful colors. Deeply muted: champagne, dark grey, warm ivory, restrained metallic hints. |
+| hospitality | Avoid cold/clinical/aggressive palettes. Warmth = earth tones or coastal neutrals; NEVER neon or electric primaries. |
+| hospitality-luxe | NEVER electric or fluorescent. Luxury hospitality: ivory, sand, sage, deep navy; all background-tier fields low-chroma. ✗ DO NOT use #C8F078, #FFD700, #00FFCC. |
+| pet-services | Avoid cold intimidating palettes. Friendly warmth required; bright/playful is OK but NOT neon/electric. |
+| ecommerce | Avoid muddy low-contrast palettes. Fluorescent accents OK ONLY as micro-accent — NEVER as background-tier primary surface. |
+| construction | Avoid soft pastels or decorative palettes. Industrial authority: dark navy, concrete grey, amber accents; no candy hues. |
+| saas | Avoid overly warm rustic palettes. Clean modern primaries; fluorescent OK ONLY as micro-accent — NEVER as background primary. |
+| agency | Avoid stale corporate navy/grey AND muddy low-contrast non-palettes. Range is wide but NEVER undefined mud. |
+| atelier-luxe | Absolute prohibition on mass-market brights, neon, candy pastels. Editorial restrained only: matte black, warm ivory, dusty rose, taupe. |
+| gourmet-retail | Avoid clinical whites and cold palettes. Warm rich tones — deep terracotta, cream, slate — NEVER fluorescent or neon. |
+| wellness | NEVER neon, electric, or fluorescent colors. Calm grounding energy: muted sage, dusty rose, warm ivory, soft earthy tones at low chroma. DO NOT use lime-green or electric green as background-tier even if WCAG passes. ✗ DO NOT use #C8F078, #A0F060, #B4E33D. |
+
+**Brand color exception:** If the seller's \`brandColor\` falls inside a vertical's forbidden zone, \`primary\` MUST still equal it exactly (Rule 8 wins) — but ALL other palette fields (secondary, accent, neutral, primaryLight, primaryDark) MUST be deeply muted to compensate.
+
 ## StyleKit Selection
 
 The \`styleKit.background\` field controls a project-wide visual motif that echoes across compatible hero/CTA/contact sections for cohesion.
