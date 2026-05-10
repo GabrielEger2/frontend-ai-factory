@@ -307,7 +307,7 @@ export default function HeroBakeryEditorial({
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.4, ease: "easeOut" }}
-              className="absolute right-0 bottom-0 z-40 w-[clamp(360px,70vw,640px)] sm:right-[-20px] sm:bottom-[-30px] lg:right-[-180px] lg:bottom-[-100px] lg:w-[clamp(600px,70vw,800px)]"
+              className="absolute right-0 bottom-0 z-40 w-[clamp(300px,60vw,540px)] sm:right-[-15px] sm:bottom-[-20px] lg:right-[-120px] lg:bottom-[-80px] lg:w-[clamp(500px,60vw,600px)]"
               style={{
                 filter: "drop-shadow(0 30px 30px rgba(0,0,0,0.18))",
               }}
